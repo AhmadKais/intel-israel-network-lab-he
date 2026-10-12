@@ -37,7 +37,7 @@
 - מותר להשאיר מהדוגמה את **המבנה והשיטה**; אסור להשאיר את **הערכים** (שמות, VLANים, כתובות,
   סיסמאות). הרשימה המלאה בתבנית.
 
-> **גרסה זו בעברית כוללת את שלושת הפרקים הראשונים בלבד (שלבים 00–02).**
+> **גרסה זו בעברית כוללת את שלבים 00–05.**
 > שאר השלבים יתורגמו בהמשך. עד אז הם זמינים בגרסה האנגלית:
 > [github.com/AhmadKais/intel-israel-network-lab](https://github.com/AhmadKais/intel-israel-network-lab).
 > בשתי הגרסאות אותם מכשירים, פורטים, כתובות וסיסמאות — אפשר לעבור ביניהן בכל שלב.
@@ -85,9 +85,9 @@ flowchart LR
 | 00 | [מתחילים](steps/00-getting-started) | Packet Tracer, מצבי ה-CLI, בחירת הפרויקט שלכם | 2 שיעורים |
 | 01 | [מתכננים את הרשת](steps/01-plan-the-network) | תכנון כתובות IP, טבלאות VLAN, שמות — **תוכנית הפרויקט שלכם, קודם על נייר** | 2 שיעורים |
 | 02 | [המתג הראשון ו-VLANים](steps/02-first-switch-vlans) | הקשחה בסיסית, VLANים, פורטי access | 1–2 שיעורים |
-| 03 | Trunks ו-VTP | ‏802.1Q trunks, ‏native VLAN, ‏VTP | *טרם תורגם* |
-| 04 | EtherChannel ו-STP | ‏LACP, ‏Rapid-PVST+, ‏root bridge, ‏PortFast, ‏BPDU/Root guard | *טרם תורגם* |
-| 05 | Inter-VLAN, ‏HSRP, ‏DHCP | ‏SVI, יתירות שער, DHCP על מתג שכבה 3 | *טרם תורגם* |
+| 03 | [Trunks ו-VTP](steps/03-trunks-and-vtp) | ‏802.1Q trunks, ‏native VLAN, ‏VTP | 2 שיעורים |
+| 04 | [EtherChannel ו-STP](steps/04-etherchannel-and-stp) | ‏LACP, ‏Rapid-PVST+, ‏root bridge, ‏PortFast, ‏BPDU/Root guard | 2 שיעורים |
+| 05 | [Inter-VLAN, ‏HSRP, ‏DHCP](steps/05-intervlan-hsrp-dhcp) | ‏SVI, יתירות שער, DHCP על מתג שכבה 3 | 2–3 שיעורים |
 | 06 | אבטחת שכבה 2 | ‏Port-security, ‏DHCP snooping, הקשחה | *טרם תורגם* |
 | 07 | ניהול ב-SSH | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | *טרם תורגם* |
 | 08 | Core, ‏OSPF, שרתים | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | *טרם תורגם* |
