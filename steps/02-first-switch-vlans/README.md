@@ -1,11 +1,11 @@
-# Step 02 — First switch: hardening & VLANs
+# שלב 02 — המתג הראשון: הקשחה ו-VLANים
 
-> ⏱ 1–2 lessons · 🎯 ministry requirements 22.1, 22.2, 22.3, 22.6 · 📁 start from: `my-work/step01.pkt` · 💾 save as: `my-work/step02.pkt`
+> ⏱ ‏1–2 שיעורים · 🎯 דרישות משרד החינוך 22.1, ‏22.2, ‏22.3, ‏22.6 · 📁 מתחילים מ: `my-work/step01.pkt` · 💾 שומרים בשם: `my-work/step02.pkt`
 
-## What you will have at the end
-One access switch in Haifa building A, protected with the basic security settings every
-device in the project needs, with one VLAN per department. PCs in the **same** VLAN can talk;
-PCs in **different** VLANs can't (yet — on purpose).
+## מה יהיה לכם בסוף השלב
+מתג access אחד בבניין A בחיפה, מוגן בהגדרות האבטחה הבסיסיות שכל מכשיר בפרויקט צריך, עם
+VLAN אחד לכל מחלקה. מחשבים ב-VLAN **זהה** יכולים לדבר; מחשבים ב-VLANים **שונים** לא יכולים
+(עדיין — וזה בכוונה).
 
 ```
                         SW-HFA-A-ACC1  (2960)
@@ -17,92 +17,92 @@ PCs in **different** VLANs can't (yet — on purpose).
 
 ---
 
-## Part 1 — Understand it first (simple English)
+## חלק 1 — קודם מבינים (בשפה פשוטה)
 
-### 1.1 What is a VLAN?
-Without VLANs, a switch is **one big room**: every device hears every "shout" (broadcast)
-of every other device, and anyone can talk to anyone.
+### 1.1 מה זה VLAN?
+בלי VLANים, מתג הוא **חדר אחד גדול**: כל מכשיר שומע כל "צעקה" (broadcast) של כל מכשיר
+אחר, וכל אחד יכול לדבר עם כל אחד.
 
-A **VLAN (Virtual LAN)** cuts one physical switch into several **separate virtual
-switches**. Imagine one office floor divided by walls into closed rooms: Engineering in
-one room, Finance in another. They share the same building (switch), but:
-- a broadcast in Engineering **never** reaches Finance;
-- an Engineering PC **cannot** talk to a Finance PC directly — it needs a router (step 05),
-  and that's where we can later control who may talk to whom.
+‏**VLAN ‏(Virtual LAN)** חותך מתג פיזי אחד לכמה **מתגים וירטואליים נפרדים**. דמיינו קומת
+משרדים אחת שמחולקת בקירות לחדרים סגורים: הנדסה בחדר אחד, כספים בחדר אחר. הם חולקים את
+אותו בניין (מתג), אבל:
+- צעקה (broadcast) בחדר של הנדסה **אף פעם** לא מגיעה לכספים;
+- מחשב של הנדסה **לא יכול** לדבר ישירות עם מחשב של כספים — צריך נתב (שלב 05), ושם נוכל
+  בהמשך לקבוע מי רשאי לדבר עם מי.
 
-| Why companies use VLANs | Example |
+| למה חברות משתמשות ב-VLANים | דוגמה |
 |---|---|
-| **Security** | Guests can't see the Finance PCs |
-| **Less noise** | Fewer devices per broadcast domain → less wasted traffic |
-| **Organisation** | Move a person's desk anywhere — just put their port in their department's VLAN |
+| **אבטחה** | אורחים לא יכולים לראות את המחשבים של כספים |
+| **פחות רעש** | פחות מכשירים בכל אזור broadcast ← פחות תעבורה מבוזבזת |
+| **סדר** | מעבירים עובד לשולחן אחר בכל מקום — רק משייכים את הפורט שלו ל-VLAN של המחלקה שלו |
 
-Each VLAN has a **number** (1–4094) and a **name**. In our design each VLAN = one IP subnet
-(VLAN 10 = `10.10.16.0/24`, VLAN 20 = `10.10.17.0/24`…).
+לכל VLAN יש **מספר** (1–4094) ו**שם**. בתכנון שלנו כל VLAN = רשת IP אחת
+(‏VLAN 10 = ‏`10.10.16.0/24`, ‏VLAN 20 = ‏`10.10.17.0/24`…).
 
-### 1.2 Port names and access ports
-`Fa0/1` = **F**ast **E**thernet (100 Mb/s), slot **0**, port **1**. `Gi0/1` = **Gi**gabit (1000 Mb/s).
-The 2960 has 24 Fa ports for devices and 2 Gi ports for uplinks.
+### 1.2 שמות פורטים ופורטי access
+‏`Fa0/1` = ‏**F**ast **E**thernet ‏(100 Mb/s), חריץ (slot) **0**, פורט **1**. ‏`Gi0/1` = ‏**Gi**gabit ‏(1000 Mb/s).
+למתג 2960 יש 24 פורטי Fa למכשירים ו-2 פורטי Gi לקישורים כלפי מעלה (uplinks).
 
-An **access port** belongs to exactly **one** VLAN and connects **one end device** (PC,
-printer). The PC doesn't know VLANs exist — the switch decides which "room" it's in.
+**פורט access** שייך ל-VLAN **אחד** בדיוק ומחבר **מכשיר קצה אחד** (מחשב, מדפסת). המחשב
+בכלל לא יודע ש-VLANים קיימים — המתג מחליט באיזה "חדר" הוא נמצא.
 
-### 1.3 Hardening — the basic protection every device gets
-"Hardening" = closing the easy doors before an attacker finds them.
+### 1.3 הקשחה (Hardening) — ההגנה הבסיסית שכל מכשיר מקבל
+"הקשחה" = לסגור את הדלתות הקלות לפני שתוקף מוצא אותן.
 
-| Setting | What it does | Why |
+| הגדרה | מה היא עושה | למה |
 |---|---|---|
-| `hostname` | Gives the device a name | Logical names (req. 22.1); also needed later for SSH |
-| `enable secret` | Password to enter `#` mode, stored as a **hash** (scrambled one way, can't be turned back) | Anyone reading the config can't see it (req. 22.3) |
-| `service password-encryption` | Scrambles the **other** passwords (console etc.) | A printed config doesn't show them in clear text. Weak (type 7), but better than nothing |
-| `banner motd` | Message shown before login | Legal warning: "authorised access only". Needed to prosecute an intruder (req. 22.2) |
-| `line console 0` + `password` + `login` | Password on the physical console port | Someone standing next to the switch still needs a password |
-| `no ip domain-lookup` | Stops the switch treating typos as hostnames | Saves 30 seconds of waiting after every typo |
-| `exec-timeout 10 0` | Logs out after 10 minutes without typing | An admin who walks away doesn't leave an open session |
-| `logging synchronous` | Messages don't cut into the line you are typing | Comfort |
+| `hostname` | נותנת למכשיר שם | שמות לוגיים (דרישה 22.1); נדרש גם בהמשך עבור SSH |
+| `enable secret` | סיסמה לכניסה למצב `#`, נשמרת כ-**hash** (מעורבלת בכיוון אחד, אי אפשר להחזיר אותה) | מי שקורא את ההגדרות לא יכול לראות אותה (דרישה 22.3) |
+| `service password-encryption` | מערבלת את **שאר** הסיסמאות (console ועוד) | הגדרות מודפסות לא מציגות אותן כטקסט גלוי. הצפנה חלשה (type 7), אבל עדיף מכלום |
+| `banner motd` | הודעה שמוצגת לפני ההתחברות | אזהרה משפטית: "גישה למורשים בלבד". נדרשת כדי להעמיד פורץ לדין (דרישה 22.2) |
+| `line console 0` + `password` + `login` | סיסמה על פורט ה-console הפיזי | גם מי שעומד ליד המתג צריך סיסמה |
+| `no ip domain-lookup` | מונעת מהמתג להתייחס לשגיאות הקלדה כשמות מחשבים | חוסך 30 שניות המתנה אחרי כל שגיאת הקלדה |
+| `exec-timeout 10 0` | מנתקת אחרי 10 דקות בלי הקלדה | מנהל שהולך מהמחשב לא משאיר חיבור פתוח |
+| `logging synchronous` | הודעות המערכת לא נחתכות לתוך השורה שאתם מקלידים | נוחות |
 
-> `secret` vs `password`: **always use `secret`** where it exists. `password` is stored in
-> clear text (or weak type 7).
+> ‏`secret` לעומת `password`: **תמיד השתמשו ב-`secret`** כשהוא קיים. ‏`password` נשמר כטקסט
+> גלוי (או בהצפנה החלשה type 7).
 
-### 1.4 Unused ports — the "parking" VLAN
-An empty port in a meeting room is an open door: anyone can plug in a laptop. We put every
-unused port in VLAN 999 (which leads nowhere) **and** shut it down. To use it, an admin has
-to deliberately turn it on.
-
----
-
-## Part 2 — Prepare
-1. Open Packet Tracer → **File → Open** → `my-work/step01.pkt`.
-2. Immediately **File → Save As** → `my-work/step02.pkt`.
-   (Now step01 stays untouched — if you break something you can always go back.)
+### 1.4 פורטים שלא בשימוש — ה-VLAN של ה"חניה"
+פורט ריק בחדר ישיבות הוא דלת פתוחה: כל אחד יכול לחבר אליו לפטופ. אנחנו מעבירים כל פורט
+שלא בשימוש ל-VLAN 999 (שלא מוביל לשום מקום) **וגם** מכבים אותו. כדי להשתמש בו, מנהל צריך
+להפעיל אותו בכוונה.
 
 ---
 
-## Part 3 — Build (click by click)
+## חלק 2 — הכנה
+1. פתחו את Packet Tracer ← **File → Open** ← `my-work/step01.pkt`.
+2. מיד אחר כך **File → Save As** ← `my-work/step02.pkt`.
+   (כך step01 נשאר כמו שהוא — אם תשברו משהו, תמיד אפשר לחזור אליו.)
 
-### 3.1 Place the switch
-1. Device-type box (bottom left) → **Network Devices** → **Switches**.
-2. Drag a **2960** (`2960-24TT`) into the **Building A** rectangle.
-3. Click it → **Config** tab → **Display Name**: type `SW-HFA-A-ACC1` → close the window.
+---
 
-### 3.2 Place the end devices
-1. **End Devices** → **End Devices**. Hold **Ctrl**, click the **PC** icon, and click 5 times
-   under the switch (5 PCs). Press **Esc**.
-2. Drag one **Printer** next to them.
-3. Rename each one (click → **Config** → **Display Name**):
+## חלק 3 — בונים (לחיצה אחרי לחיצה)
 
-| Rename | to |
+### 3.1 מציבים את המתג
+1. תיבת סוגי המכשירים (שמאל למטה) ← **Network Devices** ← **Switches**.
+2. גררו מתג **2960** ‏(`2960-24TT`) לתוך המלבן של **בניין A**.
+3. לחצו עליו ← לשונית **Config** ← **Display Name**: הקלידו `SW-HFA-A-ACC1` ← סגרו את החלון.
+
+### 3.2 מציבים את מכשירי הקצה
+1. ‏**End Devices** ← **End Devices**. החזיקו **Ctrl**, לחצו על סמל ה-**PC**, ולחצו 5 פעמים
+   מתחת למתג (5 מחשבים). לחצו **Esc**.
+2. גררו **Printer** (מדפסת) אחת לידם.
+3. שנו את השם של כל אחד (לחיצה ← **Config** ← **Display Name**):
+
+| שנו את | לשם |
 |---|---|
-| first PC | `PC-HFA-ENG-01` |
-| second PC | `PC-HFA-ENG-02` |
-| third PC | `PC-HFA-FIN-01` |
-| fourth PC | `PC-HFA-FIN-02` |
-| fifth PC | `PC-HFA-ADMIN-01` |
-| printer | `PRN-HFA-A-01` |
+| המחשב הראשון | `PC-HFA-ENG-01` |
+| המחשב השני | `PC-HFA-ENG-02` |
+| המחשב השלישי | `PC-HFA-FIN-01` |
+| המחשב הרביעי | `PC-HFA-FIN-02` |
+| המחשב החמישי | `PC-HFA-ADMIN-01` |
+| המדפסת | `PRN-HFA-A-01` |
 
-### 3.3 Cable them
-Use **Connections → Copper Straight-Through** each time (end device ↔ switch = different devices).
+### 3.3 מחברים כבלים
+השתמשו בכל פעם ב-**Connections** ← **Copper Straight-Through** (מכשיר קצה ↔ מתג = מכשירים מסוגים שונים).
 
-| Click first | Port | Click second | Port |
+| לחצו קודם על | פורט | לחצו אחר כך על | פורט |
 |---|---|---|---|
 | PC-HFA-ENG-01 | FastEthernet0 | SW-HFA-A-ACC1 | **FastEthernet0/1** |
 | PC-HFA-ENG-02 | FastEthernet0 | SW-HFA-A-ACC1 | **FastEthernet0/2** |
@@ -111,40 +111,42 @@ Use **Connections → Copper Straight-Through** each time (end device ↔ switch
 | PRN-HFA-A-01 | FastEthernet0 | SW-HFA-A-ACC1 | **FastEthernet0/21** |
 | PC-HFA-ADMIN-01 | FastEthernet0 | SW-HFA-A-ACC1 | **FastEthernet0/22** |
 
-Press **Fast Forward Time** until all lights are green. Thanks to the port labels
-(step 00, Options → Preferences) you can check every port number on the screen.
+לחצו **Fast Forward Time** עד שכל הנוריות ירוקות. בזכות תוויות הפורטים (שלב 00,
+‏Options → Preferences) אפשר לבדוק כל מספר פורט על המסך.
 
-### 3.4 The port plan (why these ports?)
-Every access switch in building A follows the same plan, so anybody can guess where a
-device is plugged in:
+### 3.4 תוכנית הפורטים (למה דווקא הפורטים האלה?)
+כל מתג access בבניין A עובד לפי אותה תוכנית, כך שכל אחד יכול לנחש לאן מכשיר מחובר:
 
-| Ports | VLAN | Use |
+| פורטים | VLAN | שימוש |
 |---|---|---|
-| Fa0/1–10 | 10 ENGINEERING | users |
-| Fa0/11–20 | 20 FINANCE | users |
-| Fa0/21 | 30 PRINTERS-A | printer |
-| Fa0/22 | 99 MGMT-A | admin PC (on ACC1) |
-| Fa0/23–24 | 999 PARKING | unused, shut down |
-| Gi0/1, Gi0/2 | trunks to DIST1 / DIST2 | step 03 |
+| Fa0/1–10 | ‏10 ‏ENGINEERING | משתמשים |
+| Fa0/11–20 | ‏20 ‏FINANCE | משתמשים |
+| Fa0/21 | ‏30 ‏PRINTERS-A | מדפסת |
+| Fa0/22 | ‏99 ‏MGMT-A | מחשב המנהל (ב-ACC1) |
+| Fa0/23–24 | ‏999 ‏PARKING | לא בשימוש, מכובים |
+| Gi0/1, ‏Gi0/2 | ‏trunks ל-DIST1 / DIST2 | שלב 03 |
 
 ---
 
-## Part 4 — Configure the switch (type it — don't paste)
+## חלק 4 — מגדירים את המתג (הקלידו — אל תדביקו)
 
-### 4.1 Open the CLI
-1. Click **SW-HFA-A-ACC1** → **CLI** tab.
-2. Click in the black area and press **Enter**. You see `Switch>`.
+### 4.1 פותחים את ה-CLI
+1. לחצו על **SW-HFA-A-ACC1** ← לשונית **CLI**.
+2. לחצו בתוך האזור השחור ולחצו **Enter**. מופיע `Switch>`.
 
-> Type **each line** and press **Enter**. The lines starting with `!` are **comments** — don't
-> type them, they explain the next command. If you mistype, IOS shows
-> `% Invalid input detected at '^' marker` — press **↑**, fix the line, press **Enter**.
+> הקלידו **כל שורה** ולחצו **Enter**. השורות שמתחילות ב-`!` הן **הערות** — אל תקלידו אותן,
+> הן מסבירות את הפקודה שאחריהן. הרווח בתחילת חלק מהשורות הוא רק לקריאוּת — לא חייבים להקליד
+> אותו. אם טעיתם, ‏IOS מציג `% Invalid input detected at '^' marker` — לחצו **↑**, תקנו את
+> השורה ולחצו **Enter**.
 
-### 4.2 Hardening
+> ודאו שהמקלדת על **אנגלית**. בסיסמאות יש חשיבות לאותיות גדולות וקטנות: `Intel#En4ble` ≠ `intel#en4ble`.
+
+### 4.2 הקשחה
 ```
 enable
 configure terminal
 ```
-The prompt is now `Switch(config)#`.
+שורת הפקודה היא עכשיו `Switch(config)#`.
 ```
 ! give the switch its logical name - the prompt changes immediately
 hostname SW-HFA-A-ACC1
@@ -155,9 +157,12 @@ enable secret Intel#En4ble
 ! scramble every other password in the config
 service password-encryption
 ```
-Now the banner. Type `banner motd #` and press Enter. The switch answers
-`Enter TEXT message. End with the character '#'.` — type the text, and finish with a line
-containing only `#`:
+(ההערות באנגלית אומרות: לתת למתג את השם הלוגי שלו — שורת הפקודה משתנה מיד; לבטל ניסיון
+לפענח שגיאות הקלדה כשמות; הסיסמה של `enable` שנשמרת כ-hash; לערבל את כל שאר הסיסמאות.)
+
+עכשיו ה-banner. הקלידו `banner motd #` ולחצו Enter. המתג עונה
+`Enter TEXT message. End with the character '#'.` — הקלידו את הטקסט, וסיימו בשורה שמכילה
+רק את התו `#`:
 ```
 banner motd #
 *********************************************************
@@ -167,7 +172,10 @@ banner motd #
 *********************************************************
 #
 ```
-Console line:
+> את טקסט ה-banner כתבו באנגלית (‏IOS לא מציג עברית). אסור שהתו `#` יופיע בתוך הטקסט — הוא
+> מסיים את ההודעה.
+
+קו ה-console:
 ```
 line console 0
  password Intel#Con
@@ -176,11 +184,11 @@ line console 0
  exec-timeout 10 0
  exit
 ```
-The prompt went `(config-line)#` and back to `(config)#` after `exit`.
+שורת הפקודה עברה ל-`(config-line)#`, וחזרה ל-`(config)#` אחרי `exit`.
 
-### 4.3 Create the VLANs
-Each `vlan` command enters the VLAN's sub-mode `(config-vlan)#`; the `name` line labels it.
-You can go from one `vlan` straight to the next without `exit`.
+### 4.3 יוצרים את ה-VLANים
+כל פקודת `vlan` נכנסת לתת-המצב של אותו VLAN, ‏`(config-vlan)#`; שורת ה-`name` נותנת לו שם.
+אפשר לעבור מ-`vlan` אחד ישר לבא בלי `exit`.
 ```
 vlan 10
  name ENGINEERING
@@ -201,8 +209,8 @@ vlan 999
  exit
 ```
 
-### 4.4 Put the ports in their VLANs
-`interface range` configures many ports at once — the prompt becomes `(config-if-range)#`.
+### 4.4 משייכים את הפורטים ל-VLANים שלהם
+הפקודה `interface range` מגדירה הרבה פורטים בבת אחת — שורת הפקודה הופכת ל-`(config-if-range)#`.
 ```
 interface range fa0/1 - 10
  description ENGINEERING users
@@ -221,9 +229,10 @@ interface fa0/22
  switchport mode access
  switchport access vlan 99
 ```
-> ⚠️ Type `fa0/1 - 10` with **spaces around the dash**. Without spaces PT rejects it.
+> ⚠️ הקלידו `fa0/1 - 10` **עם רווח לפני המקף ואחריו**, בדיוק כמו כאן. זו הצורה שעובדת בכל
+> הגרסאות.
 
-### 4.5 Park and shut the unused ports
+### 4.5 מעבירים ל"חניה" ומכבים את הפורטים שלא בשימוש
 ```
 interface range fa0/23 - 24
  description UNUSED
@@ -232,55 +241,60 @@ interface range fa0/23 - 24
  shutdown
  end
 ```
-You see messages like `%LINK-5-CHANGED: Interface FastEthernet0/23, changed state to
-administratively down` — that's the `shutdown` working.
+תראו הודעות כמו `%LINK-5-CHANGED: Interface FastEthernet0/23, changed state to
+administratively down` — זו פקודת ה-`shutdown` שעובדת.
 
-### 4.6 Save
+### 4.6 שומרים
 ```
 copy running-config startup-config
 ```
-It asks `Destination filename [startup-config]?` → press **Enter**. You see `[OK]`.
+המתג שואל `Destination filename [startup-config]?` ← לחצו **Enter**. תראו `[OK]`.
 
-### 4.7 What the new commands mean
-| Command | In simple English |
+### 4.7 מה הפקודות החדשות אומרות
+| פקודה | בשפה פשוטה |
 |---|---|
-| `vlan 10` → `name ENGINEERING` | "Create room number 10 and put a sign on the door: ENGINEERING" |
-| `interface range fa0/1 - 10` | "The next commands apply to ports 1 to 10 at once" |
-| `description ...` | A label for humans — shows in `show` commands, does nothing technical |
-| `switchport mode access` | "This port is for one end device, never a trunk." Also blocks an attack where a laptop pretends to be a switch (req. 13) |
-| `switchport access vlan 10` | "Whatever is plugged in here is in room 10" |
-| `shutdown` / `no shutdown` | Turn the port off / on |
-| `end` | Jump straight back to `#` mode |
-| `copy running-config startup-config` | Copy the whiteboard into the notebook (step 00) |
+| `vlan 10` ← `name ENGINEERING` | "צור חדר מספר 10 ותלה על הדלת שלט: ENGINEERING" |
+| `interface range fa0/1 - 10` | "הפקודות הבאות חלות על פורטים 1 עד 10 בבת אחת" |
+| `description ...` | תווית לבני אדם — מופיעה בפקודות `show`, לא עושה שום דבר טכני |
+| `switchport mode access` | "הפורט הזה מיועד למכשיר קצה אחד, אף פעם לא trunk." חוסם גם התקפה שבה לפטופ מתחזה למתג (דרישה 13) |
+| `switchport access vlan 10` | "מה שמחובר כאן נמצא בחדר 10" |
+| `shutdown` / `no shutdown` | כיבוי / הפעלה של הפורט |
+| `end` | קפיצה ישירה חזרה למצב `#` |
+| `copy running-config startup-config` | העתקת הלוח המחיק למחברת (שלב 00) |
 
 ---
 
-## Part 5 — Give the end devices their addresses
-For each device: click it → **Desktop** → **IP Configuration** → **Static** → fill in → close.
-(The printer has no Desktop tab: click it → **Config** → **FastEthernet0** → fill in IP and mask;
-the gateway is under **Config → Settings**.)
+## חלק 5 — נותנים כתובות למכשירי הקצה
+לכל מחשב: לחיצה ← **Desktop** ← **IP Configuration** ← **Static** ← ממלאים ← סוגרים.
 
-| Device | IPv4 Address | Subnet Mask | Default Gateway |
+**למדפסת אין לשונית Desktop.** במדפסת:
+1. לחצו עליה ← לשונית **Config** ← בצד שמאל **Settings** (תחת GLOBAL) ← בשדה **Gateway**
+   הקלידו `10.10.18.1`.
+2. בצד שמאל לחצו **FastEthernet0** (תחת INTERFACE) ← בחרו **Static** ← **IPv4 Address**
+   ‏`10.10.18.10`, ‏**Subnet Mask** ‏`255.255.255.0`.
+3. סגרו את החלון.
+
+| מכשיר | IPv4 Address | Subnet Mask | Default Gateway |
 |---|---|---|---|
-| PC-HFA-ENG-01 | 10.10.16.101 | 255.255.255.0 | (leave empty for now) |
-| PC-HFA-ENG-02 | 10.10.16.102 | 255.255.255.0 | (empty) |
-| PC-HFA-FIN-01 | 10.10.17.101 | 255.255.255.0 | (empty) |
-| PC-HFA-FIN-02 | 10.10.17.102 | 255.255.255.0 | (empty) |
-| PRN-HFA-A-01 | 10.10.18.10 | 255.255.255.0 | 10.10.18.1 (permanent) |
-| PC-HFA-ADMIN-01 | 10.10.19.100 | 255.255.255.0 | 10.10.19.1 (permanent) |
+| PC-HFA-ENG-01 | 10.10.16.101 | 255.255.255.0 | (להשאיר ריק בינתיים) |
+| PC-HFA-ENG-02 | 10.10.16.102 | 255.255.255.0 | (ריק) |
+| PC-HFA-FIN-01 | 10.10.17.101 | 255.255.255.0 | (ריק) |
+| PC-HFA-FIN-02 | 10.10.17.102 | 255.255.255.0 | (ריק) |
+| PRN-HFA-A-01 | 10.10.18.10 | 255.255.255.0 | 10.10.18.1 (קבוע) |
+| PC-HFA-ADMIN-01 | 10.10.19.100 | 255.255.255.0 | 10.10.19.1 (קבוע) |
 
-The user PCs get temporary addresses now. In step 05 they switch to **DHCP** (automatic).
+מחשבי המשתמשים מקבלים עכשיו כתובות זמניות. בשלב 05 הם יעברו ל-**DHCP** (אוטומטי).
 
 ---
 
-## Part 6 — Check your work
+## חלק 6 — בודקים את העבודה
 
-### 6.1 Check the VLANs on the switch
-In the switch CLI (`SW-HFA-A-ACC1#`):
+### 6.1 בודקים את ה-VLANים במתג
+ב-CLI של המתג (`SW-HFA-A-ACC1#`):
 ```
 show vlan brief
 ```
-You should see:
+אתם אמורים לראות:
 ```
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
@@ -294,81 +308,84 @@ VLAN Name                             Status    Ports
 998  NATIVE                           active
 999  PARKING                          active    Fa0/23, Fa0/24
 ```
-✅ VLAN 1 has **only** the two Gi uplinks (they become trunks in step 03).
+(בסוף הרשימה יופיעו גם ארבעה VLANים מובנים: ‏1002, ‏1003, ‏1004, ‏1005 — `fddi-default`
+וכו'. הם קיימים בכל מתג Cisco, אי אפשר למחוק אותם, ומתעלמים מהם.)
 
-### 6.2 Ping tests
-| From (Desktop → Command Prompt) | Type | Expected | Why |
+✅ ב-VLAN 1 נשארו **רק** שני פורטי ה-Gi (הם יהפכו ל-trunks בשלב 03).
+
+### 6.2 בדיקות ping
+| מאיפה (Desktop ← Command Prompt) | מקלידים | צפוי | למה |
 |---|---|---|---|
-| PC-HFA-ENG-01 | `ping 10.10.16.102` | ✅ replies | same VLAN |
-| PC-HFA-FIN-01 | `ping 10.10.17.102` | ✅ replies | same VLAN |
-| PC-HFA-ENG-01 | `ping 10.10.17.101` | ❌ fails | different VLAN, no router yet |
+| PC-HFA-ENG-01 | `ping 10.10.16.102` | ✅ תשובות | אותו VLAN |
+| PC-HFA-FIN-01 | `ping 10.10.17.102` | ✅ תשובות | אותו VLAN |
+| PC-HFA-ENG-01 | `ping 10.10.17.101` | ❌ נכשל | ‏VLAN אחר, ועדיין אין נתב |
 
-### 6.3 Check the security settings
-1. In the switch CLI type `exit` until you see `Press RETURN to get started.` Press **Enter**.
-2. You see the **banner**, then `User Access Verification` → `Password:` → type `Intel#Con`
-   (nothing appears while you type — that's normal).
-3. Type `enable` → `Password:` → `Intel#En4ble`.
-4. Type `show running-config` (press **Space** to page down). Find:
-   - `enable secret 5 $1$...` → hashed ✅
-   - under `line con 0`: `password 7 0822455D0A16...` → scrambled ✅
+### 6.3 בודקים את הגדרות האבטחה
+1. ב-CLI של המתג הקלידו `exit` עד שתראו `Press RETURN to get started.` לחצו **Enter**.
+2. תראו את ה-**banner**, ואז `User Access Verification` ← `Password:` ← הקלידו `Intel#Con`
+   (שום דבר לא מופיע בזמן ההקלדה — זה תקין).
+3. הקלידו `enable` ← `Password:` ← `Intel#En4ble`.
+4. הקלידו `show running-config` (לחצו **רווח** כדי לעבור לעמוד הבא). מצאו:
+   - ‏`enable secret 5 $1$...` ← מוצפן ב-hash ✅
+   - תחת `line con 0`: `password 7 0822455D0A16...` ← מעורבל ✅
+     (המספרים אחרי `7` אצלכם יכולים להיות שונים — מה שחשוב הוא ה-`7` והיעדר הטקסט הגלוי.)
 
-### 6.4 What just happened? Why does ENG → FIN fail?
-Two reasons, both on purpose:
-1. **Different VLANs** — the switch keeps rooms 10 and 20 completely apart. A frame from
-   VLAN 10 is never delivered to a port in VLAN 20.
-2. **Different subnets** — `10.10.16.x` and `10.10.17.x` are different "streets". The PC knows
-   it must use a **gateway** (router) for another street — and there is none yet.
+### 6.4 מה בעצם קרה? למה ENG ← FIN נכשל?
+שתי סיבות, ושתיהן בכוונה:
+1. **‏VLANים שונים** — המתג מפריד לגמרי בין חדר 10 לחדר 20. מסגרת (frame) מ-VLAN 10 אף
+   פעם לא נמסרת לפורט ב-VLAN 20.
+2. **רשתות משנה שונות** — ‏`10.10.16.x` ו-`10.10.17.x` הם "רחובות" שונים. המחשב יודע שהוא
+   חייב **שער** (נתב) כדי להגיע לרחוב אחר — ועדיין אין כזה.
 
-Departments are isolated by default. In step 05 we add routing and decide *deliberately*
-which traffic may cross.
+המחלקות מבודדות כברירת מחדל. בשלב 05 נוסיף ניתוב ונחליט *בכוונה* איזו תעבורה רשאית לעבור.
 
 ---
 
-## Part 7 — Save
-1. In the switch CLI: `copy running-config startup-config` (if you changed anything since 4.6).
-2. **File → Save** (`my-work/step02.pkt`).
+## חלק 7 — שומרים
+1. ב-CLI של המתג: `copy running-config startup-config` (אם שיניתם משהו מאז סעיף 4.6).
+2. ‏**File → Save** ‏(`my-work/step02.pkt`).
 
-## Checkpoint
-- [ ] `show vlan brief` matches 6.1
-- [ ] Same-VLAN pings work, cross-VLAN pings fail
-- [ ] Banner, console password and enable secret all work
-- [ ] Device names on the workspace follow the naming rule
+## נקודת ביקורת
+- [ ] הפלט של `show vlan brief` תואם לסעיף 6.1
+- [ ] פינג באותו VLAN עובד, פינג בין VLANים נכשל
+- [ ] ה-banner, סיסמת ה-console וה-enable secret עובדים
+- [ ] שמות המכשירים על משטח העבודה לפי כלל השמות
 
-## If something doesn't work
-| Problem | Fix |
+## אם משהו לא עובד
+| בעיה | פתרון |
 |---|---|
-| Ping in the same VLAN fails | `show vlan brief`: is the PC's port in the right VLAN? Check the cable goes to the right port (port labels!). Check the PC's IP/mask |
-| `% Invalid input` on `interface range fa0/1-10` | Add spaces: `fa0/1 - 10` |
-| VLAN name shows `VLAN0010` | You assigned a port before creating/naming the VLAN — go back: `vlan 10` → `name ENGINEERING` |
-| Banner never ends | You must type a line with just `#` |
-| Forgot the console password | Click **Physical** → power off/on won't help (it's saved). Re-open your saved `step01.pkt` and redo, or practise "password recovery" with the teacher |
+| פינג באותו VLAN נכשל | ‏`show vlan brief`: האם הפורט של המחשב ב-VLAN הנכון? בדקו שהכבל מחובר לפורט הנכון (תוויות הפורטים!). בדקו את ה-IP והמסיכה של המחשב |
+| `% Invalid input` על `interface range` | הקלידו בדיוק עם רווחים: `interface range fa0/1 - 10` |
+| שם ה-VLAN מופיע כ-`VLAN0010` | שייכתם פורט לפני שיצרתם/נתתם שם ל-VLAN — חזרו: `vlan 10` ← `name ENGINEERING` |
+| ה-banner לא נגמר | חייבים להקליד שורה שמכילה רק `#` |
+| הסיסמה לא מתקבלת | בדקו שהמקלדת על אנגלית ושאין Caps Lock. סיסמאות רגישות לאותיות גדולות/קטנות |
+| שכחתם את סיסמת ה-console | הכיבוי וההדלקה בלשונית **Physical** לא יעזרו (הסיסמה שמורה). פתחו מחדש את `step01.pkt` השמור ובצעו שוב, או תרגלו "שחזור סיסמה" עם המורה |
 
-## Challenge
-1. Plug a new PC into **Fa0/24**. Does it work? Why not? What would an admin have to do?
-2. Run `show interfaces fa0/24 switchport` and find the line that proves the port is in VLAN 999.
+## אתגר
+1. חברו מחשב חדש ל-**Fa0/24**. האם הוא עובד? למה לא? מה מנהל הרשת היה צריך לעשות?
+2. הריצו `show interfaces fa0/24 switchport` ומצאו את השורה שמוכיחה שהפורט נמצא ב-VLAN 999.
 
-<details><summary>Answer</summary>
+<details><summary>תשובה</summary>
 
-1. No — the port is `administratively down` (shut down) and in the parking VLAN. The admin
-   must move it to the right VLAN and type `no shutdown`. Nobody can just walk in and plug
-   a laptop in.
-2. `Access Mode VLAN: 999 (PARKING)`
+1. לא — הפורט במצב `administratively down` (כבוי) ונמצא ב-VLAN ה"חניה". המנהל צריך להעביר
+   אותו ל-VLAN הנכון ולהקליד `no shutdown`. אף אחד לא יכול סתם להיכנס ולחבר לפטופ.
+2. ‏`Access Mode VLAN: 999 (PARKING)`
 </details>
 
 ---
 
-## 👩‍🏫 Teacher notes
-- **Lesson plan (~90–120 min):** 20 min VLAN concept (draw one switch with coloured rooms on
-  the board) → 15 min hardening table → 15 min build & cable together on the projector →
-  40 min students type the config → 15 min verify + the "why does ENG → FIN fail" discussion.
-- **Make them type, not paste.** The hardening block repeats on *every* device in the project;
-  by the 3rd switch they should type it from memory. Quiz idea: "write the hardening block on paper".
-- **Common student questions**
-  - *"Is a VLAN the same as a subnet?"* — Not the same thing, but we always pair them 1:1.
-    The VLAN is the Layer-2 room; the subnet is that room's Layer-3 street address.
-  - *"Why don't we use VLAN 1?"* — It's the default on every Cisco port, so attackers know it.
-  - *"Console password vs enable secret?"* — Console password = getting into the lobby through
-    the physical cable; enable secret = the key to the manager's office (`#` mode).
-- **Typical errors:** typing a VLAN command while still inside an interface (prompt shows
-  `(config-if)#` — that's fine actually, `vlan 10` works from there too, but explain the
-  prompt); forgetting `switchport mode access`; not saving.
+## 👩‍🏫 הערות למורה
+- **מערך שיעור (כ-90–120 דקות):** ‏20 דק' מושג ה-VLAN (ציירו על הלוח מתג אחד עם חדרים
+  צבעוניים) ← 15 דק' טבלת ההקשחה ← 15 דק' בנייה וחיווט יחד על המקרן ← 40 דק' התלמידים
+  מקלידים את ההגדרות ← 15 דק' בדיקה + הדיון "למה ENG ← FIN נכשל".
+- **תנו להם להקליד, לא להדביק.** בלוק ההקשחה חוזר על *כל* מכשיר בפרויקט; עד המתג השלישי
+  הם אמורים להקליד אותו מהזיכרון. רעיון לבוחן: "כתבו את בלוק ההקשחה על נייר".
+- **שאלות נפוצות של תלמידים**
+  - *"VLAN זה אותו דבר כמו רשת משנה (subnet)?"* — לא אותו דבר, אבל אנחנו תמיד מצמידים אותם
+    אחד-לאחד. ה-VLAN הוא ה"חדר" בשכבה 2; ה-subnet הוא כתובת ה"רחוב" של החדר בשכבה 3.
+  - *"למה לא משתמשים ב-VLAN 1?"* — זו ברירת המחדל בכל פורט של Cisco, ולכן תוקפים מכירים אותו.
+  - *"מה ההבדל בין סיסמת console ל-enable secret?"* — סיסמת console = כניסה ללובי דרך הכבל
+    הפיזי; ‏enable secret = המפתח למשרד המנהל (מצב `#`).
+- **טעויות אופייניות:** הקלדת פקודת VLAN כשעדיין בתוך interface (שורת הפקודה מראה
+  `(config-if)#` — זה דווקא בסדר, `vlan 10` עובד גם משם, אבל הסבירו את שורת הפקודה);
+  שכחת `switchport mode access`; אי-שמירה; מקלדת בעברית.

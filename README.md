@@ -1,26 +1,31 @@
-# Intel Israel — Enterprise Network Lab (Cisco Packet Tracer)
+# אינטל ישראל — מעבדת רשת ארגונית (Cisco Packet Tracer)
 
-A **learn-by-building** final project for the Ministry of Education network-engineering
-track (**שאלון 735918 — פרויקט גמר הנדסאים, רשתות תקשורת**).
+פרויקט גמר שלומדים תוך כדי בנייה, למגמת הנדסאי תקשוב של משרד החינוך
+(**שאלון 735918 — פרויקט גמר הנדסאים, רשתות תקשורת**).
 
-You will build a 3-branch enterprise network for **Intel Israel** in Cisco Packet Tracer,
-one small mini-project at a time. Every step explains the *why*, gives you the exact
-devices, cables and commands, tells you how to **verify** it works, and ends with a
-**challenge** you solve on your own.
+תבנו ב-Cisco Packet Tracer רשת ארגונית של 3 סניפים עבור **אינטל ישראל**, מיני-פרויקט
+אחד בכל פעם. כל שלב מסביר *למה*, נותן את המכשירים, הכבלים והפקודות המדויקים, מראה איך
+**לבדוק** שהכול עובד, ומסתיים ב**אתגר** שפותרים לבד.
 
-> Rule of thumb: **type the commands, don't paste them** — at least the first time you
-> meet a new command. Typing is how your fingers learn IOS. Paste only what you have
-> already typed before.
+> **גרסה זו בעברית כוללת את שלושת הפרקים הראשונים בלבד (שלבים 00–02).**
+> שאר השלבים יתורגמו בהמשך.
+
+> **כלל אצבע:** **הקלידו את הפקודות, אל תדביקו אותן** — לפחות בפעם הראשונה שאתם פוגשים
+> פקודה חדשה. ההקלדה היא מה שמלמד את האצבעות את IOS. הדביקו רק פקודות שכבר הקלדתם בעבר.
+
+> **חשוב:** כל הפקודות, שמות המכשירים, הכתובות והסיסמאות נכתבים **באנגלית, בדיוק כפי שהם
+> מופיעים כאן** — כולל אותיות גדולות וקטנות. לפני שאתם מקלידים ב-Packet Tracer, ודאו
+> שהמקלדת על **אנגלית** (Alt+Shift או Win+רווח).
 
 ---
 
-## The company
+## החברה
 
-| Site | City | Role | Design style |
+| קוד | עיר | תפקיד | סגנון תכנון |
 |---|---|---|---|
-| **HFA** | Haifa (MATAM) | **Main branch (HQ)** — DMZ, firewall, wireless | 3-tier: access / distribution / core, 3 buildings |
-| **JLM** | Jerusalem | Branch | **Collapsed core** on Layer-3 switches, 3 floors |
-| **KG**  | Kiryat Gat | Branch (fab) | **IPv6-only** LAN, compact 3-tier |
+| **HFA** | חיפה (מת"ם) | **סניף ראשי (מטה)** — DMZ, חומת אש, רשת אלחוטית | 3 שכבות: access / distribution / core, ‏3 בניינים |
+| **JLM** | ירושלים | סניף | **Collapsed core** על מתגי שכבה 3, ‏3 קומות |
+| **KG** | קריית גת | סניף (מפעל) | רשת פנימית ב-**IPv6 בלבד**, תלת-שכבתי קומפקטי |
 
 ```mermaid
 flowchart LR
@@ -38,69 +43,56 @@ flowchart LR
   HOME -. "Remote-access VPN" .-> HFA
 ```
 
-## Roadmap — 17 mini-projects
+## מפת הדרכים — 17 מיני-פרויקטים
 
-Do them **in order**. Each one ends with a working, saved `.pkt` checkpoint.
+עבדו **לפי הסדר**. כל שלב מסתיים בקובץ `.pkt` שעובד ונשמר.
 
-| # | Step | You learn | Time |
+| # | שלב | מה לומדים | זמן |
 |---|---|---|---|
-| 00 | [Getting started](steps/00-getting-started) | Packet Tracer, the CLI modes, how to use this repo | 30 min |
-| 01 | [Plan the network](steps/01-plan-the-network) | IP planning, VLAN tables, naming — **on paper first** | 1–2 h |
-| 02 | [First switch & VLANs](steps/02-first-switch-vlans) | Basic hardening, VLANs, access ports | 1 h |
-| 03 | [Trunks & VTP](steps/03-trunks-and-vtp) | 802.1Q trunks, native VLAN, VTP | 1 h |
-| 04 | [EtherChannel & STP](steps/04-etherchannel-and-stp) | LACP, Rapid-PVST+, root bridge, PortFast, BPDU/Root guard | 1.5 h |
-| 05 | [Inter-VLAN, HSRP, DHCP](steps/05-intervlan-hsrp-dhcp) | SVIs, first-hop redundancy, DHCP on a router | 1.5 h |
-| 06 | [Layer-2 security](steps/06-layer2-security) | Port-security, DHCP snooping, hardening | 1 h |
-| 07 | [SSH management](steps/07-ssh-management) | Management VLAN, SSH, VTY ACL | 1 h |
-| 08 | [Core, OSPF, servers](steps/08-core-ospf-servers) | Routed links, OSPF areas, MD5, AAA/TACACS+, Syslog | 2 h |
-| 09 | [Buildings B & C + virtual link](steps/09-buildings-b-c-virtual-link) | **You** build 2 buildings; OSPF virtual link, summarization | 3 h |
-| 10 | [Wireless](steps/10-wireless) | Employee + guest WiFi, guest isolation ACL | 1 h |
-| 11 | [ASA firewall & DMZ](steps/11-asa-firewall-dmz) | inside/outside/DMZ, security levels, ACLs, 6 DMZ servers, NTP | 2 h |
-| 12 | [WAN: ISPs, BGP, NAT](steps/12-wan-isp-bgp-nat) | eBGP, OSPF inside an AS, static NAT + PAT, DSL backup | 2.5 h |
-| 13 | [Jerusalem — collapsed core](steps/13-jerusalem-collapsed-core) | EIGRP + summarization + auth, PAgP, DHCP server, dynamic NAT, CBAC | 3 h |
-| 14 | [Kiryat Gat — IPv6](steps/14-kiryat-gat-ipv6) | IPv6 addressing, SLAAC + DHCPv6, OSPFv3, HSRPv6, PAT | 3 h |
-| 15 | [VPN](steps/15-vpn) | GRE over IPsec site-to-site, remote-access VPN | 2 h |
-| 16 | [Final integration](steps/16-final-integration) | Email accounts, scale to 8 PCs/dept, full test plan, project book | 3 h |
+| 00 | [מתחילים](steps/00-getting-started) | Packet Tracer, מצבי ה-CLI, איך עובדים עם המדריך | 2 שיעורים |
+| 01 | [מתכננים את הרשת](steps/01-plan-the-network) | תכנון כתובות IP, טבלאות VLAN, שמות — **קודם על נייר** | 2 שיעורים |
+| 02 | [המתג הראשון ו-VLANים](steps/02-first-switch-vlans) | הקשחה בסיסית, VLANים, פורטי access | 1–2 שיעורים |
+| 03 | Trunks ו-VTP | ‏802.1Q trunks, ‏native VLAN, ‏VTP | *טרם תורגם* |
+| 04 | EtherChannel ו-STP | ‏LACP, ‏Rapid-PVST+, ‏root bridge, ‏PortFast, ‏BPDU/Root guard | *טרם תורגם* |
+| 05 | Inter-VLAN, ‏HSRP, ‏DHCP | ‏SVI, יתירות שער, DHCP על מתג שכבה 3 | *טרם תורגם* |
+| 06 | אבטחת שכבה 2 | ‏Port-security, ‏DHCP snooping, הקשחה | *טרם תורגם* |
+| 07 | ניהול ב-SSH | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | *טרם תורגם* |
+| 08 | Core, ‏OSPF, שרתים | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | *טרם תורגם* |
+| 09 | בניינים B ו-C + virtual link | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים | *טרם תורגם* |
+| 10 | רשת אלחוטית | WiFi לעובדים ולאורחים, ACL לבידוד אורחים | *טרם תורגם* |
+| 11 | חומת אש ASA ו-DMZ | ‏inside/outside/DMZ, ‏security levels, ‏ACL, ‏6 שרתי DMZ, ‏NTP | *טרם תורגם* |
+| 12 | ‏WAN: ספקים, BGP, ‏NAT | ‏eBGP, ‏OSPF בתוך AS, ‏static NAT + PAT, גיבוי DSL | *טרם תורגם* |
+| 13 | ירושלים — collapsed core | ‏EIGRP + סיכום + אימות, ‏PAgP, שרת DHCP, ‏dynamic NAT, ‏CBAC | *טרם תורגם* |
+| 14 | קריית גת — IPv6 | כתובות IPv6, ‏SLAAC + DHCPv6, ‏OSPFv3, ‏HSRPv6, ‏PAT | *טרם תורגם* |
+| 15 | ‏VPN | ‏GRE over IPsec בין אתרים, VPN לגישה מרחוק | *טרם תורגם* |
+| 16 | אינטגרציה סופית | חשבונות דואר, הרחבה ל-8 מחשבים למחלקה, תוכנית בדיקות מלאה, ספר הפרויקט | *טרם תורגם* |
 
-## Reference docs
+## מסמכי עזר
 
-- [docs/design.md](docs/design.md) — the full addressing / VLAN / naming plan (your "source of truth")
-- [docs/requirements-matrix.md](docs/requirements-matrix.md) — every ministry requirement → where it is built
-- [docs/passwords.md](docs/passwords.md) — password table (also needed in the project book)
-- [docs/project-book-draft-he.md](docs/project-book-draft-he.md) — **Hebrew draft of the project book** (ספר הפרויקט), in the ministry's chapter order
-- [docs/glossary.md](docs/glossary.md) — every networking term in simple English
-- [docs/cheatsheet.md](docs/cheatsheet.md) — the `show` commands you will use 100 times
-- [docs/pt-gotchas.md](docs/pt-gotchas.md) — Packet Tracer quirks and how to get past them
+- [docs/design.md](docs/design.md) — תוכנית הכתובות, ה-VLANים והשמות המלאה ("מקור האמת" שלכם)
+- [docs/passwords.md](docs/passwords.md) — טבלת הסיסמאות (נדרשת גם בספר הפרויקט)
 
-> **Status:** all 17 steps (00–16) are in the full *guided* format — every click and every
-> command for every device, simple-English explanations, break/attack labs and teacher notes.
-> A Hebrew draft of the project book is in [docs/project-book-draft-he.md](docs/project-book-draft-he.md).
+## איך בנוי כל שלב
 
-## How each step is organised
+1. **מטרה** — מה עובד בסוף השלב
+2. **מבינים קודם** — התאוריה שצריך, בקצרה ובשפה פשוטה
+3. **בונים** — אילו מכשירים לגרור, וטבלת כבלים
+4. **מגדירים** — הפקודות, עם הסבר לכל שורה
+5. **בודקים** — פקודות `show` ו-`ping`, ואיך נראית תוצאה תקינה
+6. **נקודת ביקורת** — שמירה בשם `my-work/stepNN.pkt`
+7. **אם משהו לא עובד** — טעויות נפוצות ואיך מתקנים
+8. **אתגר** — פותרים לבד; התשובה מוסתרת בבלוק שנפתח בלחיצה
 
-```
-steps/NN-name/README.md
-  1. Goal                — what works at the end
-  2. Concepts            — the theory you need, short
-  3. Build               — devices to drag + cabling table
-  4. Configure           — commands, explained line by line
-  5. Verify              — show/ping commands and what "good" looks like
-  6. Checkpoint          — save as my-work/stepNN.pkt and commit
-  7. Common mistakes
-  8. Challenge           — do it alone; answer hidden in a <details> block
-```
-
-## Saving your progress with git
+## שמירת ההתקדמות עם git (לא חובה)
 
 ```bash
 git clone <this repo>
-cd intel-israel-network-lab
+cd intel-israel-network-lab-he
 # after each step:
-git add my-work/step05.pkt
-git commit -m "Step 05: inter-VLAN routing + HSRP working"
+git add my-work/step02.pkt
+git commit -m "Step 02 done"
 git push
 ```
 
-Built for Packet Tracer **8.2.x**. Commands were written against IOS 15 / IOS-XE syntax as
-Packet Tracer implements it; where Packet Tracer is known to be picky, the step says so and
-[docs/pt-gotchas.md](docs/pt-gotchas.md) has the workaround.
+נכתב עבור Packet Tracer **8.2.x** (מתאים גם לגרסה 9). הפקודות נכתבו לפי תחביר IOS 15
+כפי ש-Packet Tracer מממש אותו.

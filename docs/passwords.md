@@ -1,23 +1,27 @@
-# Password table (טבלת סיסמאות)
+# טבלת סיסמאות
 
-The project book must include a password table. These are **lab** passwords — never reuse
-them on a real network.
+ספר הפרויקט חייב לכלול טבלת סיסמאות. אלה סיסמאות של **מעבדה** — לעולם אל תשתמשו בהן
+ברשת אמיתית.
 
-| Purpose | Where | Value |
+> הקלידו כל סיסמה **בדיוק** כפי שהיא כתובה — באנגלית, כולל אותיות גדולות/קטנות וסימנים.
+
+| מטרה | איפה | ערך |
 |---|---|---|
-| Privileged EXEC | `enable secret` on every router/switch | `Intel#En4ble` |
-| Console line (before AAA) | `line console 0` | `Intel#Con` |
-| Local admin user (SSH + AAA fallback) | `username admin privilege 15 secret` | `Intel#Adm1n` |
-| TACACS+ shared key | devices ↔ AAA server | `Intel#Tac` |
-| RADIUS shared key (optional WPA2-Enterprise) | AP ↔ AAA server | `Intel#Rad` |
-| VTP password | all switches | `Intel#Vtp` |
-| OSPF MD5 key 1 | Haifa routed links | `Intel#Ospf` |
-| EIGRP MD5 key chain | Jerusalem | `Intel#Eigrp` |
-| WiFi — employees (`INTEL-CORP`) | AP-HFA-A-EMP | `IntelCorp#2026` |
-| WiFi — guests (`INTEL-GUEST`) | AP-HFA-A-GUEST | `WelcomeGuest2026` |
-| ASA enable | ASA-HFA-FW1 | `Intel#En4ble` |
-| Site-to-site VPN pre-shared key | R-HFA-EDGE ↔ R-JLM-EDGE | `Intel#S2S-Key` |
-| Remote-access VPN group `HQ-RA` key | R-HFA-EDGE | `Intel#RA-Group` |
-| Remote-access VPN user | `remote1` | `Intel#Remote1` |
-| Email users (all) | SRV-HFA-DMZ-MAIL / SRV-KG-MAIL | `Mail#2026` |
-| FTP user `ftpadmin` | SRV-HFA-DMZ-FTP | `Intel#Ftp` |
+| ‏Privileged EXEC (מצב `#`) | ‏`enable secret` בכל נתב/מתג | `Intel#En4ble` |
+| קו ה-console (לפני AAA) | `line console 0` | `Intel#Con` |
+| משתמש מנהל מקומי (SSH + גיבוי ל-AAA) | `username admin privilege 15 secret` | `Intel#Adm1n` |
+| מפתח משותף TACACS+ | מכשירים ↔ שרת AAA | `Intel#Tac` |
+| מפתח משותף RADIUS (לא חובה, WPA2-Enterprise) | נקודת גישה ↔ שרת AAA | `Intel#Rad` |
+| סיסמת VTP | כל המתגים | `Intel#Vtp` |
+| מפתח OSPF MD5 מספר 1 | קישורים מנותבים בחיפה | `Intel#Ospf` |
+| ‏key chain של EIGRP MD5 | ירושלים | `Intel#Eigrp` |
+| ‏WiFi — עובדים (`INTEL-CORP`) | AP-HFA-A-EMP | `IntelCorp#2026` |
+| ‏WiFi — אורחים (`INTEL-GUEST`) | AP-HFA-A-GUEST | `WelcomeGuest2026` |
+| ‏enable של ה-ASA | ASA-HFA-FW1 | `Intel#En4ble` |
+| מפתח משותף ל-VPN בין אתרים | R-HFA-EDGE ↔ R-JLM-EDGE | `Intel#S2S-Key` |
+| מפתח הקבוצה `HQ-RA` ל-VPN מרחוק | R-HFA-EDGE | `Intel#RA-Group` |
+| משתמש VPN מרחוק | `remote1` | `Intel#Remote1` |
+| משתמשי דואר (כולם) | SRV-HFA-DMZ-MAIL / SRV-KG-MAIL | `Mail#2026` |
+| משתמש FTP ‏`ftpadmin` | SRV-HFA-DMZ-FTP | `Intel#Ftp` |
+
+בשלבים 00–02 משתמשים רק בשתי השורות הראשונות: `Intel#En4ble` ו-`Intel#Con`.

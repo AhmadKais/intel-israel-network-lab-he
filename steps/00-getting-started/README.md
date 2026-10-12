@@ -1,11 +1,12 @@
-# Step 00 — Getting started: networking basics + a tour of Packet Tracer
+# שלב 00 — מתחילים: יסודות הרשת + סיור ב-Packet Tracer
 
-> ⏱ about 2 lessons (2 × 90 min) · 📁 start from: nothing · 💾 save as: `my-work/step00.pkt`
+> ⏱ בערך 2 שיעורים (2 × 90 דקות) · 📁 מתחילים מ: כלום · 💾 שומרים בשם: `my-work/step00.pkt`
 
-## What you will have at the end
-- Packet Tracer installed and you know **every button** you will use in this project.
-- You understand the basic words: switch, router, IP, MAC, mask, gateway, ping.
-- You built your first tiny network and watched it work:
+## מה יהיה לכם בסוף השלב
+- תוכנת Packet Tracer מותקנת, ואתם מכירים **כל כפתור** שתשתמשו בו בפרויקט.
+- אתם מבינים את המושגים הבסיסיים: מתג (switch), נתב (router), כתובת IP, כתובת MAC, מסיכה
+  (mask), שער ברירת מחדל (gateway), ping.
+- בניתם את הרשת הקטנה הראשונה שלכם וראיתם אותה עובדת:
 
 ```
    PC0 ──────── [ Switch0 ] ──────── PC1
@@ -14,80 +15,83 @@
 
 ---
 
-## Part 1 — Understand it first (simple English)
+## חלק 1 — קודם מבינים (בשפה פשוטה)
 
-A **network** is a group of devices connected so they can send data to each other.
-The whole project is about connecting devices *correctly*, *redundantly* (if one thing
-breaks, another takes over) and *securely*.
+**רשת** היא קבוצה של מכשירים שמחוברים זה לזה כדי שיוכלו לשלוח נתונים אחד לשני.
+כל הפרויקט עוסק בחיבור מכשירים *נכון*, *עם יתירות* (אם משהו נשבר, משהו אחר נכנס במקומו)
+ו*באופן מאובטח*.
 
-### 1.1 The devices you will use
+### 1.1 המכשירים שתשתמשו בהם
 
-| Device | What it does | Everyday comparison |
+| מכשיר | מה הוא עושה | השוואה מחיי היום-יום |
 |---|---|---|
-| **PC / laptop** | Creates and uses data (browsing, email). Called an **end device**. | A person sending and receiving letters |
-| **Switch** | Connects devices **in the same place** (same office / building). Knows each device by its **MAC address**. | The mail room inside one office building — delivers letters between rooms |
-| **Router** | Connects **different networks** together (building ↔ building, company ↔ internet). Works with **IP addresses**. | The post office between cities — decides which road a letter takes |
-| **Layer-3 switch** | A switch that can *also* route. Fast and has many ports. We use it a lot. | A mail room that can also send mail to other cities |
-| **Server** | A computer that gives a **service** to others: web pages, email, DNS, DHCP… | A shop or a government office: you go there to get something |
-| **Firewall** | Checks traffic and blocks what is not allowed. | The security guard at the front door |
-| **Access point** | Connects wireless devices to the wired network. | A wireless "socket" |
+| **מחשב / לפטופ (PC)** | יוצר נתונים ומשתמש בהם (גלישה, דואר). נקרא **מכשיר קצה** (end device). | אדם ששולח ומקבל מכתבים |
+| **מתג (Switch)** | מחבר מכשירים **באותו מקום** (אותו משרד / בניין). מזהה כל מכשיר לפי **כתובת ה-MAC** שלו. | חדר הדואר בתוך בניין משרדים — מעביר מכתבים בין החדרים |
+| **נתב (Router)** | מחבר **רשתות שונות** זו לזו (בניין ↔ בניין, חברה ↔ אינטרנט). עובד עם **כתובות IP**. | סניף הדואר שבין הערים — מחליט באיזו דרך המכתב יעבור |
+| **מתג שכבה 3 (Layer-3 switch)** | מתג שיודע *גם* לנתב. מהיר ויש לו הרבה פורטים. נשתמש בו הרבה. | חדר דואר שיודע גם לשלוח דואר לערים אחרות |
+| **שרת (Server)** | מחשב שנותן **שירות** לאחרים: דפי אינטרנט, דואר, DNS, ‏DHCP… | חנות או משרד ממשלתי: הולכים אליו כדי לקבל משהו |
+| **חומת אש (Firewall)** | בודקת את התעבורה וחוסמת את מה שאסור. | המאבטח בכניסה לבניין |
+| **נקודת גישה (Access point)** | מחברת מכשירים אלחוטיים לרשת הקווית. | "שקע" אלחוטי |
 
-### 1.2 Two kinds of addresses
+### 1.2 שני סוגי כתובות
 
-| | **MAC address** | **IP address** |
+| | **כתובת MAC** | **כתובת IP** |
 |---|---|---|
-| Example | `00E0.F7A1.3B2C` | `10.10.16.25` |
-| Who sets it | Burned into the network card at the factory | The admin, or DHCP (automatic) |
-| Changes? | Never | Yes — when the device moves to another network |
-| Used by | **Switches** — to deliver inside the local network | **Routers** — to deliver between networks |
-| Comparison | Your **ID number** (ת"ז) — always the same | Your **home address** — changes when you move |
+| דוגמה | `00E0.F7A1.3B2C` | `10.10.16.25` |
+| מי קובע אותה | צרובה בכרטיס הרשת במפעל | מנהל הרשת, או DHCP (אוטומטית) |
+| משתנה? | אף פעם | כן — כשהמכשיר עובר לרשת אחרת |
+| מי משתמש בה | **מתגים** — כדי למסור בתוך הרשת המקומית | **נתבים** — כדי למסור בין רשתות |
+| השוואה | **מספר תעודת הזהות** שלכם — תמיד אותו מספר | **כתובת המגורים** שלכם — משתנה כשעוברים דירה |
 
-### 1.3 Subnet mask — "which part is the street, which part is the house"
-An IPv4 address is 4 numbers (0–255). The **subnet mask** says how many of them describe
-the **network** (the street) and how many describe the **host** (the house on that street).
+### 1.3 מסיכת רשת (Subnet mask) — "איזה חלק הוא הרחוב ואיזה חלק הוא הבית"
+כתובת IPv4 מורכבת מ-4 מספרים (כל אחד בין 0 ל-255). **מסיכת הרשת** אומרת כמה מהם מתארים
+את **הרשת** (הרחוב) וכמה מתארים את **המארח** (host — הבית ברחוב).
 
 ```
 IP:    192.168.1.25
 Mask:  255.255.255.0      -> the first 3 numbers are the "street"
          street = 192.168.1      house = 25
 ```
-- `192.168.1.25` and `192.168.1.40` → **same street** → they talk directly through the switch.
-- `192.168.1.25` and `192.168.2.40` → **different streets** → they need a **router**.
+- `192.168.1.25` ו-`192.168.1.40` ← **אותו רחוב** ← מדברים ישירות דרך המתג.
+- `192.168.1.25` ו-`192.168.2.40` ← **רחובות שונים** ← צריך **נתב**.
 
-### 1.4 Default gateway — "where do I send mail for other streets?"
-The **default gateway** is the router's address on *your* street. When a PC wants to reach
-an address on another network, it hands the packet to the gateway, and the router takes it
-from there. No gateway → the PC can only talk to its own street.
+### 1.4 שער ברירת מחדל (Default gateway) — "לאן שולחים דואר לרחובות אחרים?"
+**שער ברירת המחדל** הוא הכתובת של הנתב ב*רחוב שלכם*. כשמחשב רוצה להגיע לכתובת ברשת
+אחרת, הוא מוסר את החבילה לשער, והנתב ממשיך משם. אין שער ← המחשב יכול לדבר רק עם הרחוב
+שלו.
 
-### 1.5 Ping — "are you there?"
-`ping 192.168.1.2` sends a small "are you there?" message. If a reply comes back, the path
-works **in both directions**. It is the test you will use most in this project.
+### 1.5 פינג (Ping) — "אתה שם?"
+הפקודה `ping 192.168.1.2` שולחת הודעה קטנה של "אתה שם?". אם חוזרת תשובה, הדרך עובדת
+**בשני הכיוונים**. זו הבדיקה שתשתמשו בה הכי הרבה בפרויקט.
 
-### 1.6 Packet Tracer, IOS and the CLI
-- **Packet Tracer (PT)** — Cisco's free simulator. Devices behave like real Cisco equipment,
-  so you can build a 150-device company network on a laptop.
-- **IOS** — the operating system inside Cisco routers and switches.
-- **CLI** (command-line interface) — you configure IOS by **typing commands**. Real network
-  engineers work this way, the exams test it, and the project is graded on it.
-
----
-
-## Part 2 — Install Packet Tracer
-
-1. Go to **netacad.com** and create a free account (or log in).
-2. Click **Resources → Download Packet Tracer**. Choose the version for your computer.
-3. Install it:
-   - **Windows:** double-click the `.exe`, click *Next* until it finishes.
-   - **Linux (Ubuntu):** open a terminal in the download folder and type
-     `sudo apt install ./CiscoPacketTracer_*_Ubuntu_64bit.deb`
-4. Start Packet Tracer. The first time, it asks you to **log in** with your netacad account.
-   Tick "Keep me logged in".
+### 1.6 ‏Packet Tracer, ‏IOS וה-CLI
+- **‏Packet Tracer ‏(PT)** — הסימולטור החינמי של Cisco. המכשירים בו מתנהגים כמו ציוד Cisco
+  אמיתי, כך שאפשר לבנות רשת של חברה עם 150 מכשירים על מחשב נייד.
+- **‏IOS** — מערכת ההפעלה שבתוך הנתבים והמתגים של Cisco.
+- **‏CLI** (ממשק שורת פקודה) — מגדירים את IOS על ידי **הקלדת פקודות**. כך עובדים מהנדסי
+  רשת אמיתיים, כך בודקים במבחנים, ועל זה הפרויקט נבדק.
 
 ---
 
-## Part 3 — A tour of the Packet Tracer window
+## חלק 2 — התקנת Packet Tracer
 
-Open Packet Tracer. You see an empty white area. Here is every part you will use.
+1. היכנסו לאתר **netacad.com** וצרו חשבון חינמי (או התחברו לחשבון קיים).
+2. אחרי ההתחברות, חפשו בתפריט העליון **Resources** ← **Download Packet Tracer**.
+   אם אינכם מוצאים, היכנסו ישירות לכתובת `https://www.netacad.com/resources/lab-downloads`.
+   בחרו את הגרסה למערכת ההפעלה שלכם (גרסה 8.2 ומעלה).
+3. התקינו:
+   - **‏Windows:** לחיצה כפולה על קובץ ה-`.exe`, ואז *Next* עד הסוף.
+   - **‏Linux ‏(Ubuntu):** פתחו טרמינל בתיקיית ההורדות והקלידו
+     `sudo apt install ./CiscoPacketTracer*.deb`
+4. הפעילו את Packet Tracer. בפעם הראשונה הוא מבקש **להתחבר** עם חשבון ה-netacad שלכם.
+   סמנו "Keep me logged in".
+
+---
+
+## חלק 3 — סיור בחלון של Packet Tracer
+
+פתחו את Packet Tracer. אתם רואים שטח לבן וריק. הנה כל חלק שתשתמשו בו.
+(התוכנה באנגלית, ולכן שמות הכפתורים כאן נשארים באנגלית — חפשו אותם בדיוק בשם הזה.)
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -104,105 +108,105 @@ Open Packet Tracer. You see an empty white area. Here is every part you will use
 │ ⑦ Device-type box  │  ⑧ Device-model box             ⑨ [Realtime][Simulation] │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
-(The exact position of some parts changes a little between versions — look for the names.)
+(המיקום המדויק של חלק מהרכיבים משתנה מעט בין גרסאות — חפשו לפי השם.)
 
-| # | Part | What it is for |
+| # | חלק | בשביל מה הוא |
 |---|---|---|
-| ① | **Menu bar** | *File → Save As* (save your work), *Options → Preferences* (settings) |
-| ② | **Main toolbar** | Shortcuts: New, Open, Save, Zoom in/out |
-| ③ | **Common tools** | **Select** (arrow — the normal mouse), **Inspect** (magnifying glass — look at tables inside a device), **Delete** (X — delete a device or cable), **Note** (write a text label on the workspace), **Draw** (rectangles/ellipses to mark buildings), **Add Simple PDU** (closed envelope — a quick ping between two devices) |
-| ④ | **Logical / Physical** | *Logical* = the network diagram (you work here 99% of the time). *Physical* = cities, buildings, racks |
-| ⑤ | **Workspace** | Drag devices here and connect them |
-| ⑥ | **Time bar** | **Fast Forward Time** — makes simulated time pass quickly (links come up, protocols finish). Press it whenever you are waiting for something to turn green. **Power Cycle Devices** — reboots *all* devices (careful: unsaved configs are lost) |
-| ⑦ | **Device-type box** (bottom left) | Categories: *Network Devices* (routers, switches, wireless…), *End Devices* (PCs, servers, printers…), *Connections* (cables), *Components*, *Miscellaneous*… |
-| ⑧ | **Device-model box** | The models inside the chosen category (e.g. 2960, 3650-24PS) — **drag** from here into the workspace |
-| ⑨ | **Realtime / Simulation** | *Realtime* = normal mode. *Simulation* = slow motion: you see every packet as an envelope and can open it |
+| ① | **‏Menu bar** (שורת התפריטים) | ‏*File → Save As* (שמירת העבודה), *Options → Preferences* (הגדרות) |
+| ② | **‏Main toolbar** (סרגל הכלים הראשי) | קיצורי דרך: חדש, פתיחה, שמירה, הגדלה/הקטנה (Zoom) |
+| ③ | **‏Common tools** (כלים נפוצים) | ‏**Select** (חץ — העכבר הרגיל), **Inspect** (זכוכית מגדלת — הצצה לטבלאות בתוך מכשיר), **Delete** ‏(X — מחיקת מכשיר או כבל), **Place Note** (כתיבת תווית טקסט על משטח העבודה), **Drawing Palette** (ציור מלבנים/אליפסות לסימון בניינים), **Add Simple PDU** (מעטפה סגורה — פינג מהיר בין שני מכשירים) |
+| ④ | **‏Logical / Physical** | ‏*Logical* = שרטוט הרשת (כאן עובדים 99% מהזמן). *Physical* = ערים, בניינים, ארונות תקשורת |
+| ⑤ | **‏Workspace** (משטח העבודה) | לכאן גוררים מכשירים ומחברים אותם |
+| ⑥ | **סרגל הזמן** | ‏**Fast Forward Time** — מריץ את הזמן המדומה מהר (קישורים עולים, פרוטוקולים מסיימים). לחצו עליו בכל פעם שאתם מחכים שמשהו יהפוך לירוק. **Power Cycle Devices** — מאתחל את *כל* המכשירים (זהירות: הגדרות שלא נשמרו בתוך המכשירים יימחקו) |
+| ⑦ | **תיבת סוגי המכשירים** (שמאל למטה) | קטגוריות: *Network Devices* (נתבים, מתגים, אלחוט…), *End Devices* (מחשבים, שרתים, מדפסות…), *Connections* (כבלים), *Components*, *Miscellaneous*… |
+| ⑧ | **תיבת הדגמים** | הדגמים שבתוך הקטגוריה שנבחרה (למשל 2960, ‏3650-24PS) — **גוררים** מכאן אל משטח העבודה |
+| ⑨ | **‏Realtime / Simulation** | ‏*Realtime* = מצב רגיל. *Simulation* = הילוך איטי: רואים כל חבילה כמעטפה ואפשר לפתוח אותה |
 
-### 3.1 Two settings to turn on once (they make life much easier)
-1. **Options → Preferences** → **Interface** tab.
-2. Tick **"Always Show Port Labels in Logical Workspace"** — every cable now shows the port
-   names at both ends (e.g. `Fa0/1`, `Gi0/1`). Essential for checking your cabling.
-3. Make sure **"Show Device Name Labels"** is ticked.
-4. Close the window.
+### 3.1 שתי הגדרות שמפעילים פעם אחת (הן מקלות מאוד על העבודה)
+1. ‏**Options → Preferences** ← הלשונית **Interface**.
+2. סמנו **"Always Show Port Labels in Logical Workspace"** — מעכשיו כל כבל מציג את שמות
+   הפורטים בשני קצותיו (למשל `Fa0/1`, `Gi0/1`). חיוני לבדיקת החיווט.
+3. ודאו שגם **"Show Device Name Labels"** מסומן.
+4. סגרו את החלון.
 
-### 3.2 The device window — what opens when you click a device
-Click any device once (with the **Select** arrow) → a window opens with tabs:
+### 3.2 חלון המכשיר — מה נפתח כשלוחצים על מכשיר
+לחיצה אחת על מכשיר כלשהו (עם החץ **Select**) ← נפתח חלון עם לשוניות:
 
-| Tab | On which devices | What you do there |
+| לשונית | באילו מכשירים | מה עושים בה |
 |---|---|---|
-| **Physical** | all | See the real device, its power switch, add modules (cards, power supplies) |
-| **Config** | all | Change the **Display Name** (the label on the workspace); simple settings with buttons |
-| **CLI** | routers, switches | The **command line** — where you type IOS commands. This is where you'll spend most of the time |
-| **Desktop** | PCs, laptops | Small apps: **IP Configuration**, **Command Prompt**, **Web Browser**, **Email**, **PC Wireless**, **VPN** |
-| **Services** | servers | Turn services on/off: HTTP, DHCP, DNS, EMAIL, FTP, NTP, SYSLOG, AAA |
-| **Attributes** | all | Info only — you can ignore it |
+| **‏Physical** | כולם | רואים את המכשיר האמיתי, את מתג ההפעלה שלו, מוסיפים מודולים (כרטיסים, ספקי כוח) |
+| **‏Config** | כולם | משנים את **Display Name** (התווית שעל משטח העבודה); הגדרות פשוטות בכפתורים |
+| **‏CLI** | נתבים, מתגים | **שורת הפקודה** — כאן מקלידים פקודות IOS. כאן תבלו את רוב הזמן |
+| **‏Desktop** | מחשבים, לפטופים | אפליקציות קטנות: **IP Configuration**, **Command Prompt**, **Web Browser**, **Email**, **PC Wireless**, **VPN** |
+| **‏Services** | שרתים | הפעלה/כיבוי של שירותים: HTTP, ‏DHCP, ‏DNS, ‏EMAIL, ‏FTP, ‏NTP, ‏SYSLOG, ‏AAA |
+| **‏Attributes** | כולם | מידע בלבד — אפשר להתעלם |
 
-### 3.3 Cables — which one to choose
-Click **Connections** (the lightning bolt ⚡ in the device-type box). The cable types:
+### 3.3 כבלים — איזה לבחור
+לחצו על **Connections** (סמל הברק ⚡ בתיבת סוגי המכשירים). סוגי הכבלים:
 
-| Icon / name | Use it for |
+| סמל / שם | משתמשים בו עבור |
 |---|---|
-| ⚡ **Automatic** | PT chooses the cable. Fast, but it chooses the **port** itself too — so for this project **don't** use it; we must use exact ports |
-| **Copper Straight-Through** (solid black line) | **Different** kinds of devices: PC ↔ switch, switch ↔ router, server ↔ switch, printer ↔ switch |
-| **Copper Cross-Over** (dashed black line) | **Same** kind of devices: switch ↔ switch, router ↔ router, PC ↔ PC |
-| **Fiber** (orange) | Fiber ports (we use it only if PT says a port is fiber) |
-| **Console** (light blue) | PC RS-232 ↔ device console port (not needed — we use the CLI tab) |
-| **Phone** | DSL modem ↔ cloud (step 12) |
+| ⚡ **‏Automatic** | ‏PT בוחר את הכבל לבד. מהיר, אבל הוא בוחר גם את **הפורט** בעצמו — ולכן בפרויקט הזה **לא** משתמשים בו; אנחנו חייבים פורטים מדויקים |
+| **‏Copper Straight-Through** (קו שחור רציף) | מכשירים **מסוגים שונים**: מחשב ↔ מתג, מתג ↔ נתב, שרת ↔ מתג, מדפסת ↔ מתג |
+| **‏Copper Cross-Over** (קו שחור מקווקו) | מכשירים **מאותו סוג**: מתג ↔ מתג, נתב ↔ נתב, מחשב ↔ מחשב |
+| **‏Fiber** (כתום) | פורטים של סיב אופטי (משתמשים בו רק אם PT מציין שהפורט הוא סיב) |
+| **‏Console** (תכלת) | פורט RS-232 של מחשב ↔ פורט ה-console של המכשיר (לא צריך — אנחנו משתמשים בלשונית CLI) |
+| **‏Phone** | מודם DSL ↔ ענן (שלב 12) |
 
-How to connect a cable, every time:
-1. Click the cable type (e.g. **Copper Straight-Through**).
-2. Click the **first device** → a small list of its ports appears → click the **port** you need.
-3. Click the **second device** → choose its port.
-4. Done. The dots at each end show the link state:
+כך מחברים כבל, בכל פעם:
+1. לוחצים על סוג הכבל (למשל **Copper Straight-Through**).
+2. לוחצים על **המכשיר הראשון** ← מופיעה רשימה קטנה של הפורטים שלו ← לוחצים על **הפורט** הנדרש.
+3. לוחצים על **המכשיר השני** ← בוחרים את הפורט שלו.
+4. סיימתם. הנקודות בשני הקצוות מראות את מצב הקישור:
 
-| Link light | Meaning |
+| נורית | משמעות |
 |---|---|
-| 🟢 green | Link up and forwarding |
-| 🟠 orange | Link up but not forwarding yet (switch is still checking for loops — wait ~30 s or press **Fast Forward Time**). If it stays orange forever, Spanning Tree is blocking it (normal for backup links) |
-| 🔴 red | Link down — wrong cable type, port shut down, or device off |
+| 🟢 ירוק | הקישור פעיל ומעביר תעבורה |
+| 🟠 כתום | הקישור פעיל אבל עדיין לא מעביר (המתג עדיין בודק שאין לולאות — חכו כ-30 שניות או לחצו **Fast Forward Time**). אם הוא נשאר כתום לתמיד, Spanning Tree חוסם אותו (תקין עבור קישורי גיבוי) |
+| 🔴 אדום | הקישור למטה — סוג כבל שגוי, הפורט כבוי (shutdown), או שהמכשיר כבוי |
 
-To delete a cable: choose the **Delete** tool (X) and click the cable, or select it and press **Delete** on the keyboard.
+כדי למחוק כבל: בוחרים בכלי **Delete** ‏(X) ולוחצים על הכבל, או מסמנים אותו ולוחצים **Delete** במקלדת.
 
-### 3.4 Useful mouse & keyboard tricks
-| Trick | How |
+### 3.4 טריקים שימושיים בעכבר ובמקלדת
+| טריק | איך |
 |---|---|
-| Place many devices of the same type | Hold **Ctrl** while clicking the model, then click in the workspace several times. Press **Esc** to stop |
-| Copy devices (with their settings) | Select them with a box (drag a rectangle with the mouse), **Ctrl+C**, **Ctrl+V** |
-| Move the workspace | Drag on an empty area, or use the scroll bars |
-| Zoom | Ctrl + mouse wheel, or the zoom buttons in the toolbar |
-| Rename a device | Click it → **Config** tab → **Display Name** (or double-click the name label under the icon) |
+| להציב הרבה מכשירים מאותו סוג | מחזיקים **Ctrl** ולוחצים על הדגם, ואז לוחצים כמה פעמים במשטח העבודה. **Esc** כדי להפסיק |
+| להעתיק מכשירים (עם ההגדרות שלהם) | מסמנים אותם במלבן (גוררים מלבן עם העכבר), **Ctrl+C**, **Ctrl+V** |
+| להזיז את משטח העבודה | פסי הגלילה, או גלגלת העכבר |
+| הגדלה/הקטנה | ‏Ctrl + גלגלת העכבר, או כפתורי ה-Zoom בסרגל הכלים |
+| לשנות שם למכשיר | לוחצים עליו ← לשונית **Config** ← **Display Name** |
 
 ---
 
-## Part 4 — Your first network (click by click)
+## חלק 4 — הרשת הראשונה שלכם (לחיצה אחרי לחיצה)
 
-### 4.1 Place the devices
-1. In the device-type box (bottom left), click **Network Devices** → **Switches**.
-2. In the model box, find **2960** (its label says `2960-24TT`). **Drag** it into the middle of
-   the workspace. It's called `Switch0`.
-3. Click **End Devices** → **End Devices** (the first icon). Drag a **PC** to the left of the
-   switch, then another **PC** to the right. They are called `PC0` and `PC1`.
+### 4.1 מציבים את המכשירים
+1. בתיבת סוגי המכשירים (שמאל למטה) לחצו **Network Devices** ← **Switches**.
+2. בתיבת הדגמים מצאו את **2960** (התווית שלו: `2960-24TT`). **גררו** אותו לאמצע משטח
+   העבודה. שמו יהיה `Switch0`.
+3. לחצו **End Devices** ← **End Devices** (הסמל הראשון). גררו **PC** לשמאל המתג, ועוד
+   **PC** לימינו. שמותיהם יהיו `PC0` ו-`PC1`.
 
-### 4.2 Connect the cables
-1. Click **Connections** (⚡) → choose **Copper Straight-Through** (PC ↔ switch = different devices).
-2. Click **PC0** → choose **FastEthernet0**.
-3. Click **Switch0** → choose **FastEthernet0/1**.
-4. Again: **Copper Straight-Through** → **PC1** → **FastEthernet0** → **Switch0** → **FastEthernet0/2**.
-5. The lights are orange at first. Press **Fast Forward Time** two or three times → green.
+### 4.2 מחברים כבלים
+1. לחצו **Connections** (⚡) ← בחרו **Copper Straight-Through** (מחשב ↔ מתג = מכשירים מסוגים שונים).
+2. לחצו על **PC0** ← בחרו **FastEthernet0**.
+3. לחצו על **Switch0** ← בחרו **FastEthernet0/1**.
+4. שוב: **Copper Straight-Through** ← **PC1** ← **FastEthernet0** ← **Switch0** ← **FastEthernet0/2**.
+5. בהתחלה הנוריות כתומות. לחצו **Fast Forward Time** פעמיים-שלוש ← ירוק.
 
-### 4.3 Give the PCs IP addresses
-1. Click **PC0** → **Desktop** tab → **IP Configuration**.
-2. Make sure **Static** is selected.
-3. **IPv4 Address:** `192.168.1.1`
-4. Click in **Subnet Mask** → PT fills in `255.255.255.0` automatically. Keep it.
-5. Leave **Default Gateway** empty (there is no router).
-6. Close the window (X at the top right). PT saves the settings immediately.
-7. Do the same on **PC1** with `192.168.1.2`.
+### 4.3 נותנים למחשבים כתובות IP
+1. לחצו על **PC0** ← לשונית **Desktop** ← **IP Configuration**.
+2. ודאו שנבחר **Static**.
+3. ‏**IPv4 Address:** ‏`192.168.1.1`
+4. לחצו בתוך השדה **Subnet Mask** ← ‏PT ממלא אוטומטית `255.255.255.0`. השאירו כך.
+5. השאירו את **Default Gateway** ריק (אין נתב).
+6. סגרו את החלון (X בפינה הימנית העליונה). ‏PT שומר את ההגדרות מיד.
+7. עשו אותו דבר ב-**PC1** עם הכתובת `192.168.1.2`.
 
-### 4.4 Test with ping
-1. Click **PC0** → **Desktop** → **Command Prompt**.
-2. Type: `ping 192.168.1.2` and press Enter.
-3. You should see:
+### 4.4 בודקים עם ping
+1. לחצו על **PC0** ← **Desktop** ← **Command Prompt**.
+2. הקלידו: `ping 192.168.1.2` ולחצו Enter.
+3. אתם אמורים לראות:
 ```
 Pinging 192.168.1.2 with 32 bytes of data:
 
@@ -211,65 +215,73 @@ Reply from 192.168.1.2: bytes=32 time<1ms TTL=128
 Reply from 192.168.1.2: bytes=32 time<1ms TTL=128
 Reply from 192.168.1.2: bytes=32 time<1ms TTL=128
 ```
-🎉 Your first working network!
+(ייתכן שהשורה הראשונה תהיה `Request timed out` וייתכן שלא — שתי האפשרויות תקינות.
+ההסבר בסעיף 4.6.)
 
-### 4.5 Look inside the switch — your first CLI
-1. Click **Switch0** → **CLI** tab.
-2. Click in the black area and press **Enter**. You see `Switch>`.
-3. Type `enable` and press Enter → the prompt becomes `Switch#`.
-4. Type `show mac address-table` and press Enter:
+🎉 הרשת הראשונה שלכם עובדת!
+
+### 4.5 מציצים לתוך המתג — ה-CLI הראשון שלכם
+1. לחצו על **Switch0** ← לשונית **CLI**.
+2. לחצו בתוך האזור השחור ולחצו **Enter**. מופיע `Switch>`.
+3. הקלידו `enable` ולחצו Enter ← שורת הפקודה (prompt) הופכת ל-`Switch#`.
+4. הקלידו `show mac address-table` ולחצו Enter:
 ```
           Mac Address Table
 -------------------------------------------
+
 Vlan    Mac Address       Type        Ports
 ----    -----------       --------    -----
+
    1    0001.4211.aa01    DYNAMIC     Fa0/1
    1    0060.2f3b.cc02    DYNAMIC     Fa0/2
 ```
-The switch **learned** which PC sits on which port.
+(כתובות ה-MAC אצלכם יהיו שונות — זה תקין. מה שחשוב: שתי שורות, אחת עם `Fa0/1` ואחת עם `Fa0/2`.)
 
-### 4.6 What just happened? (explain this to students)
-1. PC0 knew PC1's **IP** (you typed it) but not its **MAC**. The switch delivers by MAC, so
-   PC0 first shouted to everyone: *"Who has 192.168.1.2? Tell me your MAC."*
-   This shout is called an **ARP broadcast**.
-2. The switch sent the shout out of every port. PC1 answered: *"That's me, my MAC is …"*
-3. While this happened, the switch **wrote down** which MAC lives on which port — that's the
-   **MAC address table** you just saw.
-4. From now on the switch sends PC0↔PC1 traffic **only** to the right port.
+המתג **למד** איזה מחשב יושב על איזה פורט.
 
-That's why the **first** ping sometimes times out — PC0 was still waiting for the ARP answer.
+### 4.6 מה בעצם קרה? (הסבירו את זה לתלמידים)
+1. ‏PC0 ידע את כתובת ה-**IP** של PC1 (הקלדתם אותה), אבל לא את כתובת ה-**MAC** שלו. המתג
+   מוסר לפי MAC, ולכן PC0 קודם צעק לכולם: *"למי יש את 192.168.1.2? תגיד לי מה ה-MAC שלך."*
+   הצעקה הזו נקראת **ARP broadcast**.
+2. המתג שלח את הצעקה לכל הפורטים. ‏PC1 ענה: *"זה אני, ה-MAC שלי הוא …"*
+3. בזמן הזה המתג **רשם לעצמו** איזו כתובת MAC נמצאת על איזה פורט — זו **טבלת כתובות ה-MAC**
+   שראיתם עכשיו.
+4. מעכשיו המתג שולח את התעבורה בין PC0 ל-PC1 **רק** לפורט הנכון.
 
-### 4.7 Watch it in slow motion (Simulation mode)
-1. PC0 → Command Prompt → type `arp -d` (clears PC0's memory of MACs). Close the window.
-2. Bottom right: click **Simulation**. A *Simulation Panel* opens.
-3. In the panel, click **Edit Filters** (or **Show All/None**) → leave only **ARP** and **ICMP** ticked.
-4. Click the closed **envelope** tool (*Add Simple PDU*) in the toolbar → click **PC0** → click **PC1**.
-5. Press **Capture / Forward** (▶|) step by step. Watch:
-   - the ARP envelope goes from PC0 to the switch, then to **all** other ports (broadcast);
-   - PC1 answers;
-   - then the ICMP (ping) envelope goes only to PC1.
-6. Click an envelope on the workspace → you see its layers (OSI model). Look at the MAC and
-   IP addresses inside.
-7. Click **Realtime** to go back to normal.
+לכן ה-ping **הראשון** לפעמים נכשל — PC0 עדיין חיכה לתשובת ה-ARP.
 
-### 4.8 See that a router is needed
-1. PC1 → Desktop → IP Configuration → change the address to `192.168.2.2`. Close.
-2. PC0 → Command Prompt → `ping 192.168.2.2` → **fails**.
-3. Same switch, same cable — but now they are on **different streets** (networks).
-   Without a router, they can't talk. We'll solve this properly in step 05.
+### 4.7 צופים בזה בהילוך איטי (מצב Simulation)
+1. ‏PC0 ← Command Prompt ← הקלידו `arp -d` (מוחק מהזיכרון של PC0 את כתובות ה-MAC שלמד). סגרו את החלון.
+2. בפינה הימנית התחתונה לחצו **Simulation**. נפתח *Simulation Panel*.
+3. בחלונית לחצו **Show All/None** כדי לבטל את כל הסינונים, ואז **Edit Filters** ← בלשונית
+   **IPv4** סמנו רק **ARP** ו-**ICMP**. סגרו את חלון הסינון.
+4. לחצו על כלי **המעטפה הסגורה** (*Add Simple PDU*) בסרגל הכלים ← לחצו על **PC0** ← לחצו על **PC1**.
+5. לחצו **Capture / Forward** (‏▶|) צעד אחרי צעד. שימו לב:
+   - מעטפת ה-ARP עוברת מ-PC0 למתג, ואז ל**כל** שאר הפורטים (broadcast);
+   - ‏PC1 עונה;
+   - ואז מעטפת ה-ICMP (ה-ping) עוברת רק ל-PC1.
+6. לחצו על מעטפה על משטח העבודה ← רואים את השכבות שלה (מודל OSI). הסתכלו על כתובות ה-MAC
+   וה-IP שבתוכה.
+7. לחצו **Realtime** כדי לחזור למצב הרגיל.
+
+### 4.8 רואים שצריך נתב
+1. ‏PC1 ← Desktop ← IP Configuration ← שנו את הכתובת ל-`192.168.2.2`. סגרו.
+2. ‏PC0 ← Command Prompt ← `ping 192.168.2.2` ← **נכשל**.
+3. אותו מתג, אותו כבל — אבל עכשיו הם ב**רחובות שונים** (רשתות שונות).
+   בלי נתב הם לא יכולים לדבר. נפתור את זה כמו שצריך בשלב 05.
 
 ---
 
-## Part 5 — The CLI: modes and the basic keys
+## חלק 5 — ה-CLI: מצבים ומקשים בסיסיים
 
-Think of a building with doors you open one after another:
+חשבו על בניין עם דלתות שפותחים אחת אחרי השנייה:
 
-| Prompt | Mode | Building comparison | What you can do |
+| שורת הפקודה | מצב | השוואה לבניין | מה אפשר לעשות |
 |---|---|---|---|
-| `Switch>` | **User EXEC** | The lobby | Look a little (ping, a few `show` commands). Can't change anything |
-| `Switch#` | **Privileged EXEC** | The manager's office (needs a key = `enable`) | See **everything**, save, reboot |
-| `Switch(config)#` | **Global configuration** | The control room | Change settings for the **whole device** |
-| `Switch(config-if)#` | **Sub-mode** (interface, line, VLAN, router…) | One machine inside the control room | Change settings for **one part** (one port, one line…) |
+| `Switch>` | **‏User EXEC** | הלובי | להסתכל קצת (ping, כמה פקודות `show`). אי אפשר לשנות כלום |
+| `Switch#` | **‏Privileged EXEC** | משרד המנהל (צריך מפתח = `enable`) | לראות **הכול**, לשמור, לאתחל |
+| `Switch(config)#` | **‏Global configuration** | חדר הבקרה | לשנות הגדרות של **כל המכשיר** |
+| `Switch(config-if)#` | **תת-מצב** (interface, ‏line, ‏VLAN, ‏router…) | מכונה אחת בתוך חדר הבקרה | לשנות הגדרות של **חלק אחד** (פורט אחד, קו אחד…) |
 
 ```
 Switch>                      user EXEC
@@ -283,65 +295,66 @@ Switch(config-if)# exit      -> one level down
 Switch(config-if)# end       -> straight back to Switch#
 ```
 
-### Keys that save you time
-| Key / command | What it does |
+### מקשים שחוסכים זמן
+| מקש / פקודה | מה זה עושה |
 |---|---|
-| **?** | Shows what you can type here. `show ?` lists all show commands. |
-| **Tab** | Completes the word: `conf` + Tab → `configure` |
-| Short forms | IOS accepts any unique start: `conf t` = `configure terminal`, `int fa0/1` = `interface FastEthernet0/1`, `sh run` = `show running-config` |
-| **↑ / ↓** | Previous / next command you typed |
-| **Ctrl+Shift+6** | Stops a long ping or a stuck lookup |
-| `do show ...` | Run a `show` command while you are in config mode |
-| `no <command>` | Removes a setting (e.g. `no shutdown`) |
+| **?** | מראה מה אפשר להקליד כאן. `show ?` מציג את כל פקודות ה-show. |
+| **‏Tab** | משלים את המילה: `conf` + Tab ← `configure` |
+| קיצורים | ‏IOS מקבל כל התחלה שהיא חד-משמעית: `conf t` = `configure terminal`, `int fa0/1` = `interface FastEthernet0/1`, `sh run` = `show running-config` |
+| **↑ / ↓** | הפקודה הקודמת / הבאה שהקלדתם |
+| **‏Ctrl+Shift+6** | עוצר ping ארוך או חיפוש שנתקע |
+| `do show ...` | מריץ פקודת `show` כשאתם בתוך מצב הגדרה (config) |
+| `no <command>` | מבטל הגדרה (למשל `no shutdown`) |
 
-### Running vs startup config
-| | Running-config | Startup-config |
+### ‏Running-config לעומת Startup-config
+| | ‏Running-config | ‏Startup-config |
 |---|---|---|
-| Where | RAM (memory) | NVRAM (permanent storage) |
-| What | What the device is doing **right now** | What it loads when it **boots** |
-| Comparison | A whiteboard | A notebook |
+| איפה | ‏RAM (זיכרון) | ‏NVRAM (אחסון קבוע) |
+| מה | מה שהמכשיר עושה **ברגע זה** | מה שהוא טוען כשהוא **עולה** |
+| השוואה | לוח מחיק | מחברת |
 
-Every command changes the **running-config** immediately. If the device restarts, the
-whiteboard is wiped — unless you copied it into the notebook:
-`copy running-config startup-config` (short: `copy run start` or `wr`).
-**Save every device at the end of every step.**
-
----
-
-## Part 6 — Save your work
-
-1. **File → Save As**.
-2. Go to the repo folder → `my-work` → name it `step00.pkt` → **Save**.
-3. (Optional, if you use git) in a terminal in the repo folder:
-   `git add my-work/step00.pkt` → `git commit -m "Step 00 done"` → `git push`.
-
-> Saving the `.pkt` file saves the whole drawing. Saving inside each device (`wr`) makes the
-> device keep its config after a reboot. **Do both.**
+כל פקודה משנה את ה-**running-config** מיד. אם המכשיר מאותחל, הלוח נמחק — אלא אם העתקתם
+אותו למחברת:
+`copy running-config startup-config` (בקיצור: `copy run start` או `wr`).
+**שמרו כל מכשיר בסוף כל שלב.**
 
 ---
 
-## Checkpoint
-- [ ] Packet Tracer runs, port labels are switched on
-- [ ] You did the 2-PC ping and saw the MAC table
-- [ ] You watched ARP in Simulation mode
-- [ ] You did the "different network" test
-- [ ] You can explain `Switch>` vs `Switch#`, and MAC vs IP, in one sentence each
+## חלק 6 — שומרים את העבודה
 
-## If something doesn't work
-| Problem | Fix |
+1. ‏**File → Save As**.
+2. היכנסו לתיקיית המדריך ← `my-work` ← תנו שם `step00.pkt` ← **Save**.
+3. (לא חובה, אם אתם משתמשים ב-git) בטרמינל בתיקיית המדריך:
+   `git add my-work/step00.pkt` ← `git commit -m "Step 00 done"` ← `git push`.
+
+> שמירת קובץ ה-`.pkt` שומרת את כל השרטוט. שמירה בתוך כל מכשיר (`wr`) גורמת למכשיר לזכור
+> את ההגדרות שלו אחרי אתחול. **עשו את שניהם.**
+
+---
+
+## נקודת ביקורת
+- [ ] ‏Packet Tracer עובד, ותוויות הפורטים מופעלות
+- [ ] עשיתם את ה-ping בין 2 המחשבים וראיתם את טבלת ה-MAC
+- [ ] צפיתם ב-ARP במצב Simulation
+- [ ] עשיתם את בדיקת "רשת אחרת"
+- [ ] אתם יודעים להסביר במשפט אחד את ההבדל בין `Switch>` ל-`Switch#`, ובין MAC ל-IP
+
+## אם משהו לא עובד
+| בעיה | פתרון |
 |---|---|
-| Cable lights red | Wrong cable type (switch ↔ switch needs **Cross-Over**), or the device is off (Physical tab → power button) |
-| Lights stay orange | Press **Fast Forward Time** a few times |
-| Ping says `Request timed out` every time | Check both IPs and masks; check the cable goes to the right PC |
-| CLI shows nothing | Click inside the black area and press **Enter** |
-| Typed a wrong command → `% Invalid input detected at '^' marker` | The `^` points to the mistake. Use **↑** to get the line back and fix it |
-| Typed a typo in `Switch#` and it waits for 30 s ("Translating…") | It thinks the typo is a hostname. Press **Ctrl+Shift+6**. (We switch this off in step 02) |
+| נורית הכבל אדומה | סוג כבל שגוי (מתג ↔ מתג צריך **Cross-Over**), או שהמכשיר כבוי (לשונית Physical ← כפתור ההפעלה) |
+| הנוריות נשארות כתומות | לחצו **Fast Forward Time** כמה פעמים |
+| ה-ping מחזיר `Request timed out` בכל פעם | בדקו את כתובות ה-IP והמסיכות בשני המחשבים; בדקו שהכבל מחובר למחשב הנכון |
+| ה-CLI לא מציג כלום | לחצו בתוך האזור השחור ולחצו **Enter** |
+| הקלדתם פקודה שגויה ← `% Invalid input detected at '^' marker` | הסימן `^` מצביע על הטעות. לחצו **↑** כדי להחזיר את השורה ותקנו אותה |
+| הקלדתם שגיאת כתיב במצב `Switch#` והמכשיר מחכה כ-30 שניות ("Translating…") | הוא חושב שהטעות היא שם של מחשב. לחצו **Ctrl+Shift+6**. (נבטל את זה בשלב 02) |
+| שום פקודה לא עובדת והאותיות נראות מוזרות | המקלדת על עברית. העבירו לאנגלית (Alt+Shift) |
 
-## Challenge
-On the switch, run `show running-config`. Find the line `hostname Switch`. Change the
-hostname to `MY-FIRST-SWITCH` and save it.
+## אתגר
+במתג, הריצו `show running-config`. מצאו את השורה `hostname Switch`. שנו את שם המתג
+ל-`MY-FIRST-SWITCH` ושמרו.
 
-<details><summary>Answer</summary>
+<details><summary>תשובה</summary>
 
 ```
 enable
@@ -350,26 +363,25 @@ hostname MY-FIRST-SWITCH
 end
 copy running-config startup-config
 ```
-The prompt changes to `MY-FIRST-SWITCH#` immediately — proof that the running-config
-changed the moment you pressed Enter. When `copy` asks `Destination filename [startup-config]?`
-just press **Enter**.
+שורת הפקודה הופכת ל-`MY-FIRST-SWITCH#` מיד — הוכחה שה-running-config השתנה ברגע שלחצתם
+Enter. כשהפקודה `copy` שואלת `Destination filename [startup-config]?` פשוט לחצו **Enter**.
 </details>
 
 ---
 
-## 👩‍🏫 Teacher notes
-- **Lesson 1 (90 min):** device table, MAC vs IP (ID number vs home address), mask and
-  gateway on the board (30 min) → install + tour of the PT window, preferences (30 min) →
-  2-PC lab and MAC table (30 min).
-- **Lesson 2 (90 min):** Simulation mode ARP demo on the projector (20 min) → students repeat
-  it (20 min) → "different network" test and discussion (15 min) → CLI modes, keys, running vs
-  startup (25 min) → save the file (10 min).
-- **Common student questions**
-  - *"Why do we need MAC **and** IP?"* — MAC delivers inside one network (one hop); IP gets
-    you across many networks. A letter needs the city address to cross the country and the
-    room number to reach the right desk in the building.
-  - *"Why does my first ping fail?"* — ARP. Ping again.
-  - *"I typed a command and the device forgot it."* — they didn't save (`wr`).
-  - *"Why not the automatic cable?"* — it picks ports randomly; the project needs exact ports.
-- **Check understanding:** each student explains to a neighbour why the 192.168.1.x ↔
-  192.168.2.x ping fails.
+## 👩‍🏫 הערות למורה
+- **שיעור 1 (90 דקות):** טבלת המכשירים, MAC מול IP (תעודת זהות מול כתובת מגורים), מסיכה
+  ושער על הלוח (30 דק') ← התקנה + סיור בחלון של PT, הגדרות Preferences ‏(30 דק') ←
+  מעבדת 2 המחשבים וטבלת ה-MAC ‏(30 דק').
+- **שיעור 2 (90 דקות):** הדגמת ARP במצב Simulation על המקרן (20 דק') ← התלמידים חוזרים על
+  זה (20 דק') ← בדיקת "רשת אחרת" ודיון (15 דק') ← מצבי CLI, מקשים, running מול startup
+  (25 דק') ← שמירת הקובץ (10 דק').
+- **שאלות נפוצות של תלמידים**
+  - *"למה צריך גם MAC **וגם** IP?"* — ‏MAC מוסר בתוך רשת אחת (קפיצה אחת); IP מעביר אתכם
+    דרך הרבה רשתות. מכתב צריך את כתובת העיר כדי לחצות את הארץ, ואת מספר החדר כדי להגיע
+    לשולחן הנכון בבניין.
+  - *"למה ה-ping הראשון שלי נכשל?"* — ‏ARP. עשו ping שוב.
+  - *"הקלדתי פקודה והמכשיר שכח אותה."* — לא שמרו (`wr`).
+  - *"למה לא להשתמש בכבל האוטומטי?"* — הוא בוחר פורטים בעצמו; הפרויקט דורש פורטים מדויקים.
+  - *"שום דבר לא מתקבל."* — כמעט תמיד המקלדת על עברית.
+- **בדיקת הבנה:** כל תלמיד מסביר לשכן שלו למה ה-ping בין 192.168.1.x ל-192.168.2.x נכשל.

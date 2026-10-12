@@ -1,60 +1,61 @@
-# Design — Intel Israel network (source of truth)
+# תכנון — רשת אינטל ישראל (מקור האמת)
 
-Every step in this repo uses the numbers on this page. If you change something here,
-change it everywhere.
+כל שלב במדריך משתמש במספרים שבעמוד הזה. אם משנים כאן משהו, משנים אותו בכל מקום.
 
-## 1. Naming convention
+> כל הערכים בטבלאות (שמות, כתובות, פורטים) נשארים באנגלית — כך מקלידים אותם ב-Packet Tracer.
+
+## 1. מוסכמת שמות
 
 ```
 <ROLE>-<SITE>-<AREA>-<FUNCTION><INDEX>
 ```
 
-| Part | Values |
+| חלק | ערכים |
 |---|---|
-| ROLE | `R` router · `SW` Layer-2 switch · `SWL3` Layer-3 switch · `ASA` firewall · `AP` access point · `SRV` server · `PC` · `LT` laptop · `PRN` printer |
-| SITE | `HFA` Haifa (HQ) · `JLM` Jerusalem · `KG` Kiryat Gat · `ISPA` / `ISPB` / `ISPC` providers |
-| AREA | building (`A`/`B`/`C`) or floor (`F1`/`F2`/`F3`) — optional |
-| FUNCTION | `ACC` access · `DIST` distribution · `CORE` core · `CC` collapsed core · `EDGE` internet edge · `BR` ISP border · `PE` ISP provider-edge |
+| ‏ROLE (תפקיד) | ‏`R` נתב · `SW` מתג שכבה 2 · `SWL3` מתג שכבה 3 · `ASA` חומת אש · `AP` נקודת גישה · `SRV` שרת · `PC` מחשב · `LT` לפטופ · `PRN` מדפסת |
+| ‏SITE (אתר) | ‏`HFA` חיפה (מטה) · `JLM` ירושלים · `KG` קריית גת · `ISPA` / `ISPB` / `ISPC` ספקי אינטרנט |
+| ‏AREA (אזור) | בניין (`A`/`B`/`C`) או קומה (`F1`/`F2`/`F3`) — לא חובה |
+| ‏FUNCTION (תפקוד) | ‏`ACC` access · `DIST` distribution · `CORE` core · `CC` collapsed core · `EDGE` יציאה לאינטרנט · `BR` נתב גבול של ספק · `PE` נתב קצה של ספק (provider-edge) |
 
-Examples: `SWL3-HFA-A-DIST1`, `SW-JLM-F2-ACC1`, `R-KG-EDGE`, `PC-HFA-ENG-01`, `SRV-HFA-DMZ-WEB`.
+דוגמאות: `SWL3-HFA-A-DIST1`, `SW-JLM-F2-ACC1`, `R-KG-EDGE`, `PC-HFA-ENG-01`, `SRV-HFA-DMZ-WEB`.
 
-Domain name everywhere: **`intel.lab`**
+שם הדומיין בכל מקום: **`intel.lab`**
 
 ---
 
-## 2. Address blocks
+## 2. בלוקי כתובות
 
-| Site | IPv4 | IPv6 | IGP | NAT type |
+| אתר | IPv4 | IPv6 | IGP | סוג NAT |
 |---|---|---|---|---|
-| Haifa HQ | `10.10.0.0/16` | — | OSPFv2 multi-area + virtual link | **Static** (+ PAT for browsing) |
-| Jerusalem | `10.20.0.0/16` | — | EIGRP AS 100 | **Dynamic** (pool) |
-| Kiryat Gat | `10.30.0.0/16` (legacy only) | `2001:DB8:30::/48` | OSPFv3 | **Overload (PAT)** |
-| VPN | `172.16.12.0/30` GRE tunnel · `172.16.250.0/24` remote-access pool | | | |
-| ISP-A (AS 100) | `200.1.0.0/16` | | OSPF 10 inside, eBGP outside | |
-| ISP-B (AS 200) | `200.2.0.0/16` | | OSPF 10 inside, eBGP outside | |
-| ISP-C (AS 300) | `200.3.0.0/16` | `2001:DB8:C::/48` | OSPF 10 inside, eBGP outside | |
-| Inter-ISP links | `200.0.0.0/16` | | | |
+| חיפה (מטה) | `10.10.0.0/16` | — | OSPFv2 multi-area + virtual link | **Static** (+ PAT לגלישה) |
+| ירושלים | `10.20.0.0/16` | — | EIGRP AS 100 | **Dynamic** (pool) |
+| קריית גת | `10.30.0.0/16` (legacy בלבד) | `2001:DB8:30::/48` | OSPFv3 | **Overload (PAT)** |
+| VPN | `172.16.12.0/30` מנהרת GRE · `172.16.250.0/24` מאגר כתובות ל-VPN מרחוק | | | |
+| ISP-A (AS 100) | `200.1.0.0/16` | | OSPF 10 בפנים, eBGP בחוץ | |
+| ISP-B (AS 200) | `200.2.0.0/16` | | OSPF 10 בפנים, eBGP בחוץ | |
+| ISP-C (AS 300) | `200.3.0.0/16` | `2001:DB8:C::/48` | OSPF 10 בפנים, eBGP בחוץ | |
+| קישורים בין הספקים | `200.0.0.0/16` | | | |
 
-Each site gets **consecutive** blocks from the 10.0.0.0/8 master block (requirement 22.4).
+כל אתר מקבל בלוקים **רצופים** מבלוק האב 10.0.0.0/8 (דרישה 22.4).
 
 ---
 
-## 3. Haifa HQ — `10.10.0.0/16`
+## 3. חיפה (מטה) — `10.10.0.0/16`
 
-The /16 is split into /20s so that **each OSPF area is one summarizable block**:
+ה-‎/16 מחולק לבלוקים של ‎/20 כך ש**כל OSPF area הוא בלוק אחד שאפשר לסכם**:
 
-| OSPF area | Block | What lives there |
+| OSPF area | בלוק | מה נמצא שם |
 |---|---|---|
-| Area 0 | `10.10.0.0/20` | core switches, server farm, P2P links, loopbacks |
-| Area 1 | `10.10.16.0/20` | Building A |
-| Area 2 | `10.10.32.0/20` | Building B (+ the B↔C links) |
-| Area 3 | `10.10.48.0/20` | Building C — **not connected to area 0 → virtual link through area 2** |
-| (none) | `10.10.200.0/24` | DMZ behind the ASA |
-| (none) | `10.10.7.0/30` | ASA outside ↔ edge router |
+| Area 0 | `10.10.0.0/20` | מתגי ה-core, חוות השרתים, קישורי נקודה-לנקודה, loopbacks |
+| Area 1 | `10.10.16.0/20` | בניין A |
+| Area 2 | `10.10.32.0/20` | בניין B (+ הקישורים B↔C) |
+| Area 3 | `10.10.48.0/20` | בניין C — **לא מחובר ל-area 0 ← virtual link דרך area 2** |
+| (אין) | `10.10.200.0/24` | ה-DMZ שמאחורי ה-ASA |
+| (אין) | `10.10.7.0/30` | ‏ASA outside ↔ נתב היציאה |
 
-### VLANs — Building A (area 1)
+### ‏VLANים — בניין A ‏(area 1)
 
-| VLAN | Name | Subnet | Gateway (HSRP VIP) | DIST1 | DIST2 | HSRP/STP primary |
+| VLAN | שם | רשת משנה | שער (HSRP VIP) | DIST1 | DIST2 | ראשי ב-HSRP/STP |
 |---|---|---|---|---|---|---|
 | 10 | ENGINEERING | 10.10.16.0/24 | .1 | .2 | .3 | DIST1 |
 | 20 | FINANCE | 10.10.17.0/24 | .1 | .2 | .3 | DIST2 |
@@ -62,56 +63,55 @@ The /16 is split into /20s so that **each OSPF area is one summarizable block**:
 | 99 | MGMT-A | 10.10.19.0/24 | .1 | .2 | .3 | DIST1 |
 | 110 | WIFI-EMP | 10.10.20.0/24 | .1 | .2 | .3 | DIST1 |
 | 120 | WIFI-GUEST | 10.10.21.0/24 | .1 | .2 | .3 | DIST2 |
-| 998 | NATIVE | — (unused, native on trunks) | | | | |
-| 999 | PARKING | — (unused ports, shut down) | | | | |
+| 998 | NATIVE | — (לא בשימוש, native על ה-trunks) | | | | |
+| 999 | PARKING | — (פורטים שלא בשימוש, מכובים) | | | | |
 
-### VLANs — Building B (area 2)
+### ‏VLANים — בניין B ‏(area 2)
 
-| VLAN | Name | Subnet | Primary |
+| VLAN | שם | רשת משנה | ראשי |
 |---|---|---|---|
 | 40 | HR | 10.10.32.0/24 | DIST1 |
 | 50 | MARKETING | 10.10.33.0/24 | DIST2 |
 | 60 | PRINTERS-B | 10.10.34.0/24 | DIST1 |
 | 99 | MGMT-B | 10.10.35.0/24 | DIST1 |
 
-### VLANs — Building C (area 3)
+### ‏VLANים — בניין C ‏(area 3)
 
-| VLAN | Name | Subnet | Primary |
+| VLAN | שם | רשת משנה | ראשי |
 |---|---|---|---|
 | 70 | RND | 10.10.48.0/24 | DIST1 |
 | 80 | IT | 10.10.49.0/24 | DIST2 |
 | 90 | PRINTERS-C | 10.10.50.0/24 | DIST1 |
 | 99 | MGMT-C | 10.10.51.0/24 | DIST1 |
 
-> VLAN 99 exists in every building but is a **different subnet** in each one. That is fine:
-> each building is its own Layer-2 island (its own VTP domain), joined to the others only
-> by routed links.
+> ‏VLAN 99 קיים בכל בניין, אבל בכל בניין הוא **רשת משנה אחרת**. זה תקין: כל בניין הוא
+> "אי" נפרד בשכבה 2 (עם דומיין VTP משלו), ומחובר לאחרים רק בקישורים מנותבים.
 
-**6 departments in HQ:** Engineering, Finance, HR, Marketing, R&D, IT.
+**‏6 מחלקות במטה:** הנדסה (Engineering), כספים (Finance), משאבי אנוש (HR), שיווק (Marketing), מחקר ופיתוח (R&D), מערכות מידע (IT).
 
-### Core / server farm (area 0)
+### ‏Core / חוות שרתים (area 0)
 
-| VLAN | Name | Subnet | VIP | CORE1 | CORE2 | ASA inside |
+| VLAN | שם | רשת משנה | VIP | CORE1 | CORE2 | ASA inside |
 |---|---|---|---|---|---|---|
 | 100 | SERVERS | 10.10.1.0/24 | .1 | .2 | .3 | **.254** |
 
-| Server | IP |
+| שרת | IP |
 |---|---|
 | SRV-HFA-SYSLOG | 10.10.1.10 |
 | SRV-HFA-AAA (TACACS+ / RADIUS) | 10.10.1.11 |
 
-### Loopbacks (router-IDs)
+### ממשקי Loopback ‏(router-IDs)
 
-| Device | Loopback0 |
+| מכשיר | Loopback0 |
 |---|---|
 | SWL3-HFA-CORE1 / CORE2 | 10.10.5.1 / 10.10.5.2 |
 | SWL3-HFA-A-DIST1 / DIST2 | 10.10.5.11 / 10.10.5.12 |
 | SWL3-HFA-B-DIST1 / DIST2 | 10.10.5.21 / 10.10.5.22 |
-| SWL3-HFA-C-DIST1 / DIST2 | **10.10.63.1 / 10.10.63.2** (inside area 3's block on purpose) |
+| SWL3-HFA-C-DIST1 / DIST2 | **10.10.63.1 / 10.10.63.2** (בכוונה בתוך הבלוק של area 3) |
 
-### Point-to-point links (/30)
+### קישורי נקודה-לנקודה (‎/30)
 
-| Link | Subnet | Side 1 | Side 2 | Area |
+| קישור | רשת משנה | צד 1 | צד 2 | Area |
 |---|---|---|---|---|
 | A-DIST1 Gi1/1/1 ↔ CORE1 Gi1/0/1 | 10.10.4.0/30 | .1 | .2 | 0 |
 | A-DIST1 Gi1/1/2 ↔ CORE2 Gi1/0/1 | 10.10.4.4/30 | .5 | .6 | 0 |
@@ -128,31 +128,31 @@ The /16 is split into /20s so that **each OSPF area is one summarizable block**:
 | B-DIST2 Gi1/1/4 ↔ C-DIST2 Gi1/1/2 | 10.10.36.12/30 | .13 | .14 | 2 |
 | ASA Gi1/1 (outside) ↔ R-HFA-EDGE Gi0/0 | 10.10.7.0/30 | .2 (ASA) | .1 (router) | — |
 
-### DMZ — `10.10.200.0/24` (gateway = ASA dmz `10.10.200.1`)
+### ‏DMZ — `10.10.200.0/24` (שער = ממשק ה-dmz של ה-ASA ‏`10.10.200.1`)
 
-| Server | IP | Public (static NAT) |
+| שרת | IP | כתובת ציבורית (static NAT) |
 |---|---|---|
 | SRV-HFA-DMZ-DNS | 10.10.200.11 | |
 | SRV-HFA-DMZ-MAIL | 10.10.200.12 | |
-| SRV-HFA-DMZ-WEB | 10.10.200.13 | **200.1.10.3** (all ports) |
-| SRV-HFA-DMZ-NTP | 10.10.200.14 | **200.1.10.4** (UDP 123 only) — main NTP server |
+| SRV-HFA-DMZ-WEB | 10.10.200.13 | **200.1.10.3** (כל הפורטים) |
+| SRV-HFA-DMZ-NTP | 10.10.200.14 | **200.1.10.4** (UDP 123 בלבד) — שרת ה-NTP הראשי |
 | SRV-HFA-DMZ-FTP | 10.10.200.15 | |
 | SRV-HFA-DMZ-AAA | 10.10.200.16 | |
 
-### Haifa edge
+### היציאה של חיפה (edge)
 
-| Interface | Address | To |
+| ממשק | כתובת | מחובר אל |
 |---|---|---|
-| R-HFA-EDGE Gi0/0 | 10.10.7.1/30 (nat inside) | ASA outside |
-| R-HFA-EDGE Gi0/1 | 200.1.1.2/30 (nat outside) | R-ISPA-PE (primary) |
-| R-HFA-EDGE Gi0/2 | 200.2.9.2/30 (nat outside) | DSL modem → cloud → R-ISPB-PE (backup) |
-| Public block routed to HQ | 200.1.10.0/29 | static NAT addresses |
+| R-HFA-EDGE Gi0/0 | 10.10.7.1/30 (nat inside) | ‏ASA outside |
+| R-HFA-EDGE Gi0/1 | 200.1.1.2/30 (nat outside) | R-ISPA-PE (ראשי) |
+| R-HFA-EDGE Gi0/2 | 200.2.9.2/30 (nat outside) | מודם DSL ← ענן ← R-ISPB-PE (גיבוי) |
+| בלוק ציבורי שמנותב למטה | 200.1.10.0/29 | כתובות ה-static NAT |
 
 ---
 
-## 4. Jerusalem — `10.20.0.0/16` — collapsed core, EIGRP 100
+## 4. ירושלים — `10.20.0.0/16` — collapsed core, ‏EIGRP 100
 
-| VLAN | Name | Subnet | VIP | CC1 | CC2 | Primary |
+| VLAN | שם | רשת משנה | VIP | CC1 | CC2 | ראשי |
 |---|---|---|---|---|---|---|
 | 41 | SALES | 10.20.10.0/24 | .1 | .2 | .3 | CC1 |
 | 42 | LOGISTICS | 10.20.11.0/24 | .1 | .2 | .3 | CC2 |
@@ -165,32 +165,32 @@ The /16 is split into /20s so that **each OSPF area is one summarizable block**:
 | 130 | PRINTERS | 10.20.2.0/24 | .1 | .2 | .3 | CC1 |
 | 998 / 999 | NATIVE / PARKING | | | | | |
 
-The six department subnets 10.20.10.0 – 10.20.15.0 sit inside **10.20.8.0/21** → one
-EIGRP summary route (requirement 22.15).
+שש רשתות המחלקות 10.20.10.0 – 10.20.15.0 נמצאות בתוך **10.20.8.0/21** ← נתיב סיכום EIGRP
+אחד (דרישה 22.15).
 
-| Server | IP |
+| שרת | IP |
 |---|---|
 | SRV-JLM-DHCP | 10.20.1.10 |
 | SRV-JLM-SYSLOG | 10.20.1.11 |
 | SRV-JLM-AAA | 10.20.1.12 |
 
-| Link | Subnet | Sides |
+| קישור | רשת משנה | צדדים |
 |---|---|---|
 | R-JLM-EDGE Gi0/0 ↔ CC1 Gi1/1/1 | 10.20.4.0/30 | .1 / .2 |
 | R-JLM-EDGE Gi0/2 ↔ CC2 Gi1/1/1 | 10.20.4.4/30 | .5 / .6 |
 | R-JLM-EDGE Gi0/1 ↔ R-ISPB-PE Gi0/1 | 200.2.1.0/30 | .2 / .1 |
-| Dynamic NAT pool | 200.2.10.0/29 | 200.2.10.1 – .6 |
+| מאגר Dynamic NAT | 200.2.10.0/29 | 200.2.10.1 – .6 |
 | Loopbacks | CC1 10.20.5.1 · CC2 10.20.5.2 · EDGE 10.20.5.10 | |
 
-Management IPs (VLAN 99): CC1 .2, CC2 .3, SW-JLM-F1-ACC1 .11, F2 .12, F3 .13, SW-JLM-SRV .14.
+כתובות ניהול (VLAN 99): CC1 .2, CC2 .3, SW-JLM-F1-ACC1 .11, F2 .12, F3 .13, SW-JLM-SRV .14.
 
 ---
 
-## 5. Kiryat Gat — `2001:DB8:30::/48` — IPv6, OSPFv3
+## 5. קריית גת — `2001:DB8:30::/48` — IPv6, ‏OSPFv3
 
-Rule: **the VLAN number is the 4th hextet**. VLAN 31 → `2001:DB8:30:31::/64`.
+כלל: **מספר ה-VLAN הוא הקבוצה (hextet) הרביעית**. ‏VLAN 31 ← `2001:DB8:30:31::/64`.
 
-| VLAN | Name | Prefix | DIST1 | DIST2 | Virtual GW |
+| VLAN | שם | Prefix | DIST1 | DIST2 | שער וירטואלי |
 |---|---|---|---|---|---|
 | 31 | FAB-OPS | 2001:DB8:30:31::/64 | ::2 | ::3 | FE80::1 |
 | 32 | QUALITY | 2001:DB8:30:32::/64 | ::2 | ::3 | FE80::1 |
@@ -200,65 +200,64 @@ Rule: **the VLAN number is the 4th hextet**. VLAN 31 → `2001:DB8:30:31::/64`.
 | 36 | TRAINING | 2001:DB8:30:36::/64 | ::2 | ::3 | FE80::1 |
 | 99 | MGMT | 2001:DB8:30:99::/64 | ::2 | ::3 | FE80::1 |
 | 100 | SERVERS | 2001:DB8:30:100::/64 | ::2 | ::3 | FE80::1 |
-| 199 | LEGACY-IPV4 | **10.30.199.0/24** (only IPv4 in the branch — see note) | .1 | — | — |
+| 199 | LEGACY-IPV4 | **10.30.199.0/24** (ה-IPv4 היחיד בסניף — ראו הערה) | .1 | — | — |
 
-| Link | IPv6 | IPv4 |
+| קישור | IPv6 | IPv4 |
 |---|---|---|
 | R-KG-EDGE Gi0/0 ↔ DIST1 Gi1/1/1 | 2001:DB8:30:FF01::/64 (::1 / ::2) | 10.30.4.0/30 (.1 / .2) |
 | R-KG-EDGE Gi0/2 ↔ DIST2 Gi1/1/1 | 2001:DB8:30:FF02::/64 (::1 / ::2) | — |
 | R-KG-EDGE Gi0/1 ↔ R-ISPC-PE Gi0/1 | 2001:DB8:C:1::/64 (::2 / ::1) | 200.3.1.0/30 (.2 / .1) |
 
-| Server | IPv6 |
+| שרת | IPv6 |
 |---|---|
 | SRV-KG-DNS | 2001:DB8:30:100::10 |
 | SRV-KG-MAIL | 2001:DB8:30:100::11 |
 | SRV-KG-SYSLOG | 2001:DB8:30:100::12 |
 | SRV-KG-AAA | 2001:DB8:30:100::13 |
 
-OSPFv3 router-IDs: EDGE 3.3.3.1 · DIST1 3.3.3.2 · DIST2 3.3.3.3.
+‏router-IDs של OSPFv3: EDGE 3.3.3.1 · DIST1 3.3.3.2 · DIST2 3.3.3.3.
 
-> **Design note — IPv6 branch vs. NAT requirement.** The ministry asks for one branch that is
-> entirely IPv6 (req. 7) *and* NAT on every branch, with overload on one of them (req. 10).
-> NAT is an IPv4 thing, so Kiryat Gat keeps exactly one small IPv4 VLAN (199 — legacy badge
-> readers / cameras that don't speak IPv6) which is PAT-ed to the internet. All users,
-> servers and management are IPv6. **Confirm this interpretation with your mentor.**
+> **הערת תכנון — סניף IPv6 מול דרישת ה-NAT.** משרד החינוך דורש סניף אחד שכולו IPv6 (דרישה 7)
+> *וגם* NAT בכל סניף, כשבאחד מהם overload (דרישה 10). ‏NAT שייך ל-IPv4, ולכן קריית גת שומרת
+> בדיוק VLAN קטן אחד של IPv4 ‏(199 — קוראי תגים ומצלמות ישנים שלא מדברים IPv6), שיוצא
+> לאינטרנט ב-PAT. כל המשתמשים, השרתים והניהול הם IPv6. **אשרו את הפרשנות הזו מול המנחה.**
 
 ---
 
-## 6. WAN
+## 6. ‏WAN
 
-| Device | Gi0/0 | Gi0/1 | Gi0/2 |
+| מכשיר | Gi0/0 | Gi0/1 | Gi0/2 |
 |---|---|---|---|
 | R-ISPA-BR (AS 100) | 200.1.0.1/30 → ISPA-PE | 200.0.12.1/30 → ISPB-BR | 200.0.13.1/30 → ISPC-BR |
 | R-ISPB-BR (AS 200) | 200.2.0.1/30 → ISPB-PE | 200.0.12.2/30 → ISPA-BR | 200.0.23.1/30 → ISPC-BR |
 | R-ISPC-BR (AS 300) | 200.3.0.1/30 → ISPC-PE | 200.0.13.2/30 → ISPA-BR | 200.0.23.2/30 → ISPB-BR |
-| R-ISPA-PE | 200.1.0.2/30 → BR | 200.1.1.1/30 → **Haifa** | 200.1.100.1/24 → internet servers |
-| R-ISPB-PE | 200.2.0.2/30 → BR | 200.2.1.1/30 → **Jerusalem** | 200.2.9.1/30 → DSL cloud → Haifa backup |
-| R-ISPC-PE | 200.3.0.2/30 → BR | 200.3.1.1/30 + 2001:DB8:C:1::1/64 → **Kiryat Gat** | 200.3.50.1/24 + 2001:DB8:C:50::1/64 → home users |
+| R-ISPA-PE | 200.1.0.2/30 → BR | 200.1.1.1/30 → **חיפה** | 200.1.100.1/24 → שרתי אינטרנט |
+| R-ISPB-PE | 200.2.0.2/30 → BR | 200.2.1.1/30 → **ירושלים** | 200.2.9.1/30 → ענן DSL → גיבוי לחיפה |
+| R-ISPC-PE | 200.3.0.2/30 → BR | 200.3.1.1/30 + 2001:DB8:C:1::1/64 → **קריית גת** | 200.3.50.1/24 + 2001:DB8:C:50::1/64 → משתמשים ביתיים |
 
-| Internet server | IP | DNS name |
+| שרת אינטרנט | IP | שם DNS |
 |---|---|---|
 | SRV-ISP-DNS | 200.1.100.10 | — |
 | SRV-ISP-WEB1 | 200.1.100.11 | www.isp-web1.com |
 | SRV-ISP-WEB2 | 200.1.100.12 | www.isp-web2.com |
 | SRV-ISPC-WEB6 | 2001:DB8:C:50::80 | www6.isp-web.com |
-| PC-HOME-01 (teleworker) | 200.3.50.10 | — |
+| PC-HOME-01 (עובד מהבית) | 200.3.50.10 | — |
 
 ---
 
-## 7. Feature allocation — no branch is a copy (req. ג)
+## 7. חלוקת הנושאים — אף סניף אינו העתק (דרישה ג)
 
-| Feature | Haifa HQ | Jerusalem | Kiryat Gat |
+| נושא | חיפה (מטה) | ירושלים | קריית גת |
 |---|---|---|---|
-| Design model | 3-tier, 3 buildings | **Collapsed core** (L3 switches), 3 floors | compact 3-tier |
-| Addressing | IPv4 | IPv4 | **IPv6** |
-| IGP | **OSPF multi-area + virtual link** | **EIGRP 100** + summarization | **OSPFv3** |
-| HSRP | v2 on L3 distribution switches | v2 on collapsed-core L3 switches | HSRP for IPv6 |
-| DHCP | **on the L3 switches** (split scopes) | **dedicated server** + ip helper | stateless DHCPv6 + SLAAC (student's choice) |
-| NAT | **Static** (web, NTP) + PAT for browsing | **Dynamic** pool | **Overload (PAT)** |
-| Firewall | **ASA 5506-X** inside/outside/DMZ | **CBAC** (ip inspect) on edge | ACL on edge |
-| EtherChannel | **LACP** dist pairs | **PAgP** collapsed-core pair | — |
-| VTP | server/client, one domain per building | server/client | **transparent** |
-| Wireless | **Employee + Guest** | — | — |
-| VPN | GRE/IPsec hub + **remote-access** server | GRE/IPsec spoke | — |
-| WAN backup | **DSL** floating static route | — | — |
+| מודל תכנון | ‏3 שכבות, 3 בניינים | **Collapsed core** (מתגי שכבה 3), 3 קומות | ‏3 שכבות קומפקטי |
+| כתובות | IPv4 | IPv4 | **IPv6** |
+| IGP | **OSPF multi-area + virtual link** | **EIGRP 100** + סיכום נתיבים | **OSPFv3** |
+| HSRP | v2 על מתגי ה-distribution שכבה 3 | v2 על מתגי ה-collapsed-core שכבה 3 | HSRP ל-IPv6 |
+| DHCP | **על מתגי שכבה 3** (split scopes) | **שרת ייעודי** + ip helper | stateless DHCPv6 + SLAAC (לבחירת התלמיד) |
+| NAT | **Static** (web, NTP) + PAT לגלישה | **Dynamic** pool | **Overload (PAT)** |
+| חומת אש | **ASA 5506-X** inside/outside/DMZ | **CBAC** (ip inspect) בנתב היציאה | ACL בנתב היציאה |
+| EtherChannel | **LACP** בזוגות ה-distribution | **PAgP** בזוג ה-collapsed-core | — |
+| VTP | server/client, דומיין אחד לכל בניין | server/client | **transparent** |
+| אלחוט | **עובדים + אורחים** | — | — |
+| VPN | ‏GRE/IPsec hub + שרת **remote-access** | GRE/IPsec spoke | — |
+| גיבוי WAN | **DSL** עם floating static route | — | — |
