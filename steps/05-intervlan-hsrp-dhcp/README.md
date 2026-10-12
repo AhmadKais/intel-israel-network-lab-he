@@ -449,7 +449,7 @@ interface vlan 10
 ---
 
 ## חלק 6 — שומרים
-`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
+‏`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏`show standby brief` נכון בשני מתגי ה-DIST

@@ -36,8 +36,6 @@ def fix_cell(c):
     if not inner or set(inner) <= set("-: "): return c
     if not HEB.search(inner) and not inner.startswith(LRM):
         inner = LRM + inner
-    elif HEB.search(inner) and first_strong(inner) == "L" and not inner.startswith(RLM):
-        inner = RLM + inner
     return " " + fix_code_spans(inner) + " "
 def split_row(line):
     # split on | not escaped and not inside code
@@ -80,11 +78,11 @@ def process(text, stats):
             while j < len(lines) and lines[j].startswith(">"): j += 1
             block = lines[i:j]; new = []
             for k, q in enumerate(block):
-                body = q[1:].lstrip(" ")
+                body = fix_code_spans(q[1:].lstrip(" "))
                 if k == 0 or block[k-1].strip() == ">":   # first line of a paragraph inside the quote
                     if HEB.search(" ".join(b[1:] for b in block)) and first_strong(body) == "L":
                         body = RLM + body; stats["rlm"] += 1
-                new.append("> " + fix_code_spans(body) if body else ">")
+                new.append("> " + body if body else ">")
             wrapped = len(out) >= 2 and out[-2] == '<div dir="rtl">'
             if not wrapped:
                 if out and out[-1] != "": out.append("")
@@ -95,9 +93,13 @@ def process(text, stats):
         if ln.startswith("<details>"):
             ln = ln.replace("<details>", '<details dir="rtl">', 1); stats["details"] += 1
         # headings, list items, paragraph starts
+        if HEB.search(ln) or re.match(r"^(#{1,6} |\s*[-*] |\s*\d+\. )", ln):
+            ln2 = fix_code_spans(ln)
+            if ln2 != ln: stats["code"] += 1
+            ln = ln2
         m = re.match(r"^(#{1,6} |\s*[-*] (?:\[[ x]\] )?|\s*\d+\. )(.*)$", ln)
         prev = out[-1] if out else ""
-        para_start = ln.strip() and not m and (prev.strip() == "" or prev.startswith("<") or prev.startswith("</")) and not ln.startswith("<")
+        para_start = ln.strip() and not m and (prev.strip() == "" or prev.startswith("<") or prev.startswith("#")) and not ln.startswith("<")
         if m:
             head, body = m.group(1), m.group(2)
             if first_strong(body) == "L" and not body.startswith(RLM):
@@ -105,10 +107,6 @@ def process(text, stats):
             ln = head + body
         elif para_start and HEB.search(ln + " " + " ".join(lines[i+1:i+4])) and first_strong(ln) == "L" and not ln.startswith(RLM):
             ln = RLM + ln; stats["rlm"] += 1
-        if HEB.search(ln) or m:
-            ln2 = fix_code_spans(ln)
-            if ln2 != ln: stats["code"] += 1
-            ln = ln2
         out.append(ln); i += 1
     return "\n".join(out)
 root = sys.argv[1]; dry = len(sys.argv) > 2

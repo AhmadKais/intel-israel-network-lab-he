@@ -341,7 +341,7 @@ interface fa0/9
 ---
 
 ## חלק 6 — שומרים
-`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
+‏`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏`show etherchannel summary` ← `Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2

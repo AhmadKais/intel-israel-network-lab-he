@@ -489,7 +489,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 ---
 
 ## חלק 6 — שומרים
-`copy running-config startup-config` בכל 4 המתגים (עשיתם את זה למעלה), ואז **File → Save**.
+‏`copy running-config startup-config` בכל 4 המתגים (עשיתם את זה למעלה), ואז **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ל-DIST1 ול-DIST2 יש ספקי כוח והם דולקים
