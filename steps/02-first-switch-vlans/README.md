@@ -296,8 +296,9 @@ interface range fa0/23 - 24
  shutdown
  end
 ```
-תראו הודעות כמו `%LINK-5-CHANGED: Interface FastEthernet0/23, changed state to
-administratively down‎` — זו פקודת ה-`‎shutdown` שעובדת.
+תראו הודעות כמו
+‎`%LINK-5-CHANGED: Interface FastEthernet0/23, changed state to administratively down`
+— זו פקודת ה-`shutdown` שעובדת.
 
 ### 4.6 שומרים
 ```

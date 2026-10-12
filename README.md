@@ -43,7 +43,7 @@
 
 <div dir="rtl">
 
-> **גרסה זו בעברית כוללת את שלבים 00–05.**
+> **גרסה זו בעברית כוללת את שלבים 00–08.**
 > שאר השלבים יתורגמו בהמשך. עד אז הם זמינים בגרסה האנגלית:
 > [github.com/AhmadKais/intel-israel-network-lab](https://github.com/AhmadKais/intel-israel-network-lab).
 > בשתי הגרסאות אותם מכשירים, פורטים, כתובות וסיסמאות — אפשר לעבור ביניהן בכל שלב.
@@ -110,9 +110,9 @@ flowchart LR
 | ‎03 | ‏[Trunks ו-VTP](steps/03-trunks-and-vtp) | ‎‏802.1Q trunks, ‏native VLAN, ‏VTP | 2 שיעורים |
 | ‎04 | ‏[EtherChannel ו-STP](steps/04-etherchannel-and-stp) | ‎‏LACP, ‏Rapid-PVST+, ‏root bridge, ‏PortFast, ‏BPDU/Root guard | 2 שיעורים |
 | ‎05 | ‎[Inter-VLAN, ‏HSRP, ‏DHCP](steps/05-intervlan-hsrp-dhcp) | ‏SVI, יתירות שער, DHCP על מתג שכבה 3 | 2–3 שיעורים |
-| ‎06 | אבטחת שכבה 2 | ‏Port-security, ‏DHCP snooping, הקשחה | *טרם תורגם* |
-| ‎07 | ניהול ב-SSH | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | *טרם תורגם* |
-| ‎08 | ‏Core, ‏OSPF, שרתים | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | *טרם תורגם* |
+| ‎06 | [אבטחת שכבה 2](steps/06-layer2-security) | ‏Port-security, ‏DHCP snooping, הקשחה | 1–2 שיעורים |
+| ‎07 | [ניהול ב-SSH](steps/07-ssh-management) | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | 1–2 שיעורים |
+| ‎08 | [Core, ‏OSPF, שרתים](steps/08-core-ospf-servers) | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | 3 שיעורים |
 | ‎09 | בניינים B ו-C + virtual link | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים | *טרם תורגם* |
 | ‎10 | רשת אלחוטית | ‏WiFi לעובדים ולאורחים, ACL לבידוד אורחים | *טרם תורגם* |
 | ‎11 | חומת אש ASA ו-DMZ | ‏inside/outside/DMZ, ‏security levels, ‏ACL, ‏6 שרתי DMZ, ‏NTP | *טרם תורגם* |

@@ -19,6 +19,11 @@ def first_strong(text):
         if ch == LRM or ch.isascii() and ch.isalpha(): return "L"
     return None
 def fix_code_spans(s):
+    # a code span that wraps onto the next line cannot be processed line by line: a mark could end up
+    # inside the command. Leave such a line alone and ask for the span to be put on one line.
+    if s.count("`") % 2:
+        print("  WARNING: unmatched backtick, line skipped (put the code span on one line):", s.strip()[:70])
+        return s
     return _fix_code_spans(fix_arrows(s))
 def _fix_code_spans(s):
     """LRM outside inline code spans whose ends are not letters (so >, #, ., / stay in place)."""

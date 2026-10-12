@@ -229,8 +229,9 @@ copy running-config startup-config
 ```
 ההערה אומרת: פורטים למכשירי קצה (מחשבים, מדפסת, מחשב המנהל): PortFast + BPDU Guard.
 
-‏PT מדפיס אזהרה ארוכה `%Warning: portfast should only be enabled on ports connected to a single
-host...` — זו תזכורת, לא שגיאה. כאן זה נכון.
+‏PT מדפיס אזהרה ארוכה:
+‎`%Warning: portfast should only be enabled on ports connected to a single host...`‎
+— זו תזכורת, לא שגיאה. כאן זה נכון.
 
 ### 4.4 ‏SW-HFA-A-ACC2
 ```
