@@ -1,0 +1,7 @@
+# Student personal data must never be committed (names, ID numbers, grades)
+*.xlsx
+*.xls
+*.csv
+*רשימות*
+*students*
+*Students*
