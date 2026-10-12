@@ -19,6 +19,8 @@ def first_strong(text):
         if ch == LRM or ch.isascii() and ch.isalpha(): return "L"
     return None
 def fix_code_spans(s):
+    return _fix_code_spans(fix_arrows(s))
+def _fix_code_spans(s):
     """LRM outside inline code spans whose ends are not letters (so >, #, ., / stay in place)."""
     out, i = [], 0
     for m in re.finditer(r"(?<!`)`([^`\n]+)`(?!`)", s):
@@ -31,6 +33,13 @@ def fix_code_spans(s):
         if need_after and not s[b:b+1] == LRM: out.append(LRM)
         i = b
     out.append(s[i:]); return "".join(out)
+def fix_arrows(s):
+    """A Hebrew-flow arrow between two English words would join their left-to-right run and point
+    backwards. Strong RTL marks on both sides keep it in the right-to-left flow."""
+    parts = re.split(r"(`[^`\n]+`)", s)
+    for k in range(0, len(parts), 2):
+        parts[k] = re.sub("\u200f?←\u200f?", RLM + "←" + RLM, parts[k])
+    return "".join(parts)
 def fix_cell(c):
     inner = c.strip()
     if not inner or set(inner) <= set("-: "): return c

@@ -2,7 +2,9 @@
 
 <div dir="rtl">
 
-> ⏱ ‏2 שיעורים · 🎯 דרישות משרד החינוך 14, ‏15, ‏22.14, ‏6, ‏13 · 📁 מתחילים מ: `my-work/step03.pkt` · 💾 שומרים בשם: `my-work/step04.pkt`
+> ⏱ ‏2 שיעורים · 🎯 דרישות משרד החינוך 14, ‏15, ‏22.14, ‏6, ‏13\
+> 📁 מתחילים מ: `my-work/step03.pkt`\
+> 💾 שומרים בשם: `my-work/step04.pkt`
 
 </div>
 
@@ -54,7 +56,7 @@
 ה-root חייב להיות מתג **distribution** חזק.
 
 **‏PVST+** = ‏**P**er-**V**LAN Spanning Tree: עץ נפרד לכל VLAN. כך DIST1 יכול להיות הבוס של
-VLAN 10 בזמן ש-DIST2 הוא הבוס של VLAN 20 ← שני מתגי ה-distribution מעבירים תעבורה
+VLAN 10 בזמן ש-DIST2 הוא הבוס של VLAN 20 ‏←‏ שני מתגי ה-distribution מעבירים תעבורה
 (**חלוקת עומס** — load sharing).
 
 **‏Rapid-PVST+** = הגרסה המודרנית והמהירה: מתאוששת מתקלה תוך כ-**שנייה אחת** במקום 30–50
@@ -107,7 +109,7 @@ VLAN 10 בזמן ש-DIST2 הוא הבוס של VLAN 20 ← שני מתגי ה-di
 מיד (מצב: *err-disabled*). מנהל צריך להפעיל אותו מחדש.
 
 ### 1.6 ‏Root Guard — "אף אחד מתחתיי לא יהיה הבוס"
-תוקף יכול לחבר מתג עם priority 0 ולהפוך ל-root ← כל התעבורה עוברת דרכו. **‏Root Guard**
+תוקף יכול לחבר מתג עם priority 0 ולהפוך ל-root ‏←‏ כל התעבורה עוברת דרכו. **‏Root Guard**
 בפורטים של מתגי ה-distribution שפונים למתגי ה-access אומר: "אם בוס טוב יותר מופיע דרך הפורט
 *הזה*, חסום את הפורט". זה מגן על בחירת ה-root.
 
@@ -294,7 +296,7 @@ VLAN0010
              This bridge is the root            <- ✅ DIST1 is boss of VLAN 10
 ```
 (ה-‏✅ אומר: DIST1 הוא הבוס של VLAN 10. כתובת ה-MAC אצלכם תהיה שונה.)
-ב-**DIST2**: `show spanning-tree vlan 20` ← `This bridge is the root` ✅
+ב-**DIST2**: `show spanning-tree vlan 20` ‏←‏ `This bridge is the root` ✅
 
 ב-**ACC1**: `show spanning-tree vlan 10`
 ```
@@ -306,29 +308,29 @@ Fa0/1            Desg FWD 19        128.1    P2p Edge   <- "Edge" = PortFast
 ```
 ‏Gi0/1 = הדרך אל הבוס (DIST1); ‏Gi0/2 = דרך הגיבוי, חסומה; ‏`Edge` = ‏PortFast.
 
-עכשיו `show spanning-tree vlan 20` ב-ACC1 ← הפעם **Gi0/2** (לכיוון DIST2) הוא ה-Root port.
+עכשיו `show spanning-tree vlan 20` ב-ACC1 ‏←‏ הפעם **Gi0/2** (לכיוון DIST2) הוא ה-Root port.
 זו חלוקת העומס: VLAN 10 עולה דרך DIST1, ו-VLAN 20 דרך DIST2.
 
 ‏`show spanning-tree summary` ← `Switch is in rapid-pvst mode` ✅
 
 ### 5.3 שוברים דברים בכוונה (הדרך הכי טובה ללמוד)
 **בדיקה 1 — יתירות**
-1. ‏PC-HFA-ENG-01 ← Command Prompt ← `ping -t 10.10.16.103` (ping רציף).
-2. לחצו על הכלי **Delete** ‏(X) ← לחצו על הכבל **ACC1 Gi0/1 ↔ DIST1**.
+1. ‏PC-HFA-ENG-01 ‏←‏ Command Prompt ‏←‏ `ping -t 10.10.16.103` (ping רציף).
+2. לחצו על הכלי **Delete** ‏(X) ‏←‏ לחצו על הכבל **ACC1 Gi0/1 ↔ DIST1**.
 3. הסתכלו על ה-ping: 1–2 שורות timeout, ואז שוב תשובות — התעבורה עברה לדרך של Gi0/2.
 4. לחצו **Ctrl+C** ב-Command Prompt כדי לעצור. החזירו את הכבל (Cross-Over,
    ‏ACC1 Gi0/1 ← DIST1 Gi1/0/1).
 
 **בדיקה 2 — ה-EtherChannel שורד כבל קרוע**
 1. מחקו את אחד משני הכבלים DIST1 ↔ DIST2.
-2. ‏`show etherchannel summary` ← ‏Po1 עדיין ‎`(SU)`‎ עם חבר אחד.
-3. החזירו את הכבל (אותם פורטים) ← אחרי רגע שני החברים שוב ‎`(P)`‎.
+2. ‏`show etherchannel summary` ‏←‏ ‏Po1 עדיין ‎`(SU)`‎ עם חבר אחד.
+3. החזירו את הכבל (אותם פורטים) ‏←‏ אחרי רגע שני החברים שוב ‎`(P)`‎.
 
 **בדיקה 3 — BPDU Guard תופס מתג מתחזה**
 1. גררו **2960** חדש ליד ACC1 (השאירו לו את השם `Switch…`‎).
-2. חברו אותו ב-**Copper Cross-Over**: המתג החדש **Fa0/1** ← ‏ACC1 **Fa0/9**.
+2. חברו אותו ב-**Copper Cross-Over**: המתג החדש **Fa0/1** ‏←‏ ‏ACC1 **Fa0/9**.
 3. הסתכלו ב-CLI של ACC1: ‎`%SPANTREE-2-BLOCK_BPDUGUARD: Received BPDU on port Fa0/9 with BPDU Guard enabled. Disabling port.`‎
-4. ‏`show interfaces status` ← ליד Fa0/9 כתוב `err-disabled`. נורית הקישור אדומה.
+4. ‏`show interfaces status` ‏←‏ ליד Fa0/9 כתוב `err-disabled`. נורית הקישור אדומה.
 5. מחקו את המתג המתחזה. החזירו את הפורט לפעולה:
 ```
 configure terminal
@@ -341,10 +343,10 @@ interface fa0/9
 ---
 
 ## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
+‏`copy running-config startup-config` בכל 4 המתגים ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
-- [ ] ‏`show etherchannel summary` ← `Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2
+- [ ] ‏`show etherchannel summary` ‏←‏ `Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2
 - [ ] ‏DIST1 הוא root של 10/30/99/110, ‏DIST2 של 20/120
 - [ ] פורטי ה-access מציגים `Edge` ‏(PortFast) ב-`show spanning-tree`
 - [ ] עשיתם את 3 בדיקות השבירה
@@ -355,7 +357,7 @@ interface fa0/9
 
 | בעיה | פתרון |
 |---|---|
-| ‏`Po1(SD)`‎ או פורטים ‎`(s)`‎ / ‎`(I)`‎ | שני הכבלים מוגדרים אחרת, או שהמתג השני עוד לא הוגדר. ב**שני** המתגים: `interface range gi1/0/23 - 24` ← `no channel-group 1` ← `exit` ← `no interface port-channel 1`, ואז הקלידו שוב את חלק ה-EtherChannel של 4.1/4.2 |
+| ‏`Po1(SD)`‎ או פורטים ‎`(s)`‎ / ‎`(I)`‎ | שני הכבלים מוגדרים אחרת, או שהמתג השני עוד לא הוגדר. ב**שני** המתגים: `interface range gi1/0/23 - 24` ‏←‏ `no channel-group 1` ‏←‏ `exit` ‏←‏ `no interface port-channel 1`, ואז הקלידו שוב את חלק ה-EtherChannel של 4.1/4.2 |
 | מתג אחד משתמש ב-`active` והשני ב-`desirable` | ערבוב של LACP ו-PAgP — השתמשו ב-`active` בשניהם |
 | המתג הלא נכון הוא ה-root | בדקו `show run \| include spanning-tree vlan` — אולי הקלדתם `primary` בשני המתגים עבור אותו VLAN |
 | המחשבים ב-ACC1 מאבדים קישוריות אחרי Root Guard | ‏`show spanning-tree vlan 10` ב-DIST1 — הפורט למתג ה-access חסום על ידי Root Guard כי למתג access יש priority נמוך יותר מ-DIST1/2. הסירו כל `spanning-tree vlan ... priority` ממתגי ה-access |
@@ -435,7 +437,7 @@ interface fa0/9
 ‏LACP ‏(IEEE 802.3ad, תקן פתוח — מצבים `active`/`passive`) ו-PAgP ‏(Cisco — מצבים
 `desirable`/`auto`). אפשר גם לכפות איחוד במצב `on` (בלי פרוטוקול).
 
-**איפה מראים:** `show etherchannel summary` ← העמודה Protocol
+**איפה מראים:** `show etherchannel summary` ‏←‏ העמודה Protocol
 </details>
 
 **4. ★1 מה תפקידו של פרוטוקול STP ברשת מקומית?**
@@ -462,7 +464,7 @@ interface fa0/9
 
 <details dir="rtl"><summary>תשובה</summary>
 
-ה-root הוא המתג עם ה-bridge ID הנמוך ביותר (priority + MAC). ‏`show spanning-tree vlan 10` ←
+ה-root הוא המתג עם ה-bridge ID הנמוך ביותר (priority + MAC). ‏`show spanning-tree vlan 10` ‏←‏
 "This bridge is the root". כדי להפוך מתג אחר ל-root: `spanning-tree vlan 10 root primary` (או
 `spanning-tree vlan 10 priority 4096`).
 
@@ -508,14 +510,14 @@ bridge ולהחליט אילו פורטים מעבירים ואילו חוסמי
 מהירה), ‏Rapid-PVST+ ‏(RSTP לכל VLAN — בו אנחנו משתמשים), ‏MSTP 802.1s (מקבץ VLANים לקבוצות).
 ‏PVST מאפשר לכל VLAN root אחר, כך ש-VLANים שונים יכולים להשתמש בקישורים שונים (חלוקת עומס).
 
-**איפה מראים:** `show spanning-tree summary` ← mode
+**איפה מראים:** `show spanning-tree summary` ‏←‏ mode
 </details>
 
 **11. ★3 כמה זמן לוקח לפורט להתחיל להעביר נתונים ב-STP הקלאסי? באילו מצבים הוא עובר?**
 
 <details dir="rtl"><summary>תשובה</summary>
 
-‏Blocking ← Listening ‏(15 שניות) ← Learning ‏(15 שניות) ← Forwarding: ‏30 שניות לפורט חדש,
+‏Blocking ‏←‏ Listening ‏(15 שניות) ‏←‏ Learning ‏(15 שניות) ‏←‏ Forwarding: ‏30 שניות לפורט חדש,
 ועד 50 שניות אם הוא מחכה קודם max-age ‏(20 שניות) אחרי שינוי בטופולוגיה. ‏Rapid-PVST+ ו-PortFast
 הופכים את זה כמעט למיידי.
 
@@ -541,7 +543,7 @@ Guard בפורטים שפונים למטה לשכבת ה-access.
 מאפשר BPDU, אבל חוסם את הפורט (root-inconsistent) אם מגיעה BPDU **עדיפה** — לפורטים בין
 מתגים, שדרכם אסור ש-root חדש יופיע.
 
-**איפה מראים:** `show running-config` בפורט שפונה למטה ← `spanning-tree guard root`; ‏`show spanning-tree vlan <שלכם>`‎
+**איפה מראים:** `show running-config` בפורט שפונה למטה ‏←‏ `spanning-tree guard root`; ‏`show spanning-tree vlan <שלכם>`‎
 </details>
 
 ---
@@ -561,10 +563,10 @@ Guard בפורטים שפונים למטה לשכבת ה-access.
 
 ## 👩‍🏫 הערות למורה
 - **שיעור 1 (90 דקות):** ציירו לולאה על הלוח ו"העבירו broadcast" סביבה עד שהכיתה רואה את
-  הסערה; בחירת STP כמו בחירת קפטן; פורטים root/designated/blocked; חלוקת עומס ב-PVST ←
-  התלמידים מגדירים STP בכל 4 המתגים ← בדיקה 5.2.
-- **שיעור 2 (90 דקות):** ‏EtherChannel (שני נתיבים = כביש אחד), ‏LACP מול PAgP ← כבלים +
-  הגדרות ← PortFast/BPDU Guard/Root Guard ← 3 בדיקות השבירה (תלמידים אוהבים את בדיקה 3).
+  הסערה; בחירת STP כמו בחירת קפטן; פורטים root/designated/blocked; חלוקת עומס ב-PVST ‏←‏
+  התלמידים מגדירים STP בכל 4 המתגים ‏←‏ בדיקה 5.2.
+- **שיעור 2 (90 דקות):** ‏EtherChannel (שני נתיבים = כביש אחד), ‏LACP מול PAgP ‏←‏ כבלים +
+  הגדרות ‏←‏ PortFast/BPDU Guard/Root Guard ‏←‏ 3 בדיקות השבירה (תלמידים אוהבים את בדיקה 3).
 - **שאלות נפוצות של תלמידים**
   - *"למה לא פשוט כבל אחד ובלי STP?"* — כבל אחד = נקודת כשל אחת. חברות משלמות על יתירות;
     ‏STP הופך אותה לבטוחה.

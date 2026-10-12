@@ -2,7 +2,9 @@
 
 <div dir="rtl">
 
-> ⏱ ‏2–3 שיעורים · 🎯 דרישות משרד החינוך 22.10, ‏17, ‏20.7, ‏22.11, ‏6 · 📁 מתחילים מ: `my-work/step04.pkt` · 💾 שומרים בשם: `my-work/step05.pkt`
+> ⏱ ‏2–3 שיעורים · 🎯 דרישות משרד החינוך 22.10, ‏17, ‏20.7, ‏22.11, ‏6\
+> 📁 מתחילים מ: `my-work/step04.pkt`\
+> 💾 שומרים בשם: `my-work/step05.pkt`
 
 </div>
 
@@ -55,7 +57,7 @@
 
 | | ‎DIST1 | ‎DIST2 | ה"וירטואלי" המשותף |
 |---|---|---|---|
-| ‏IP ב-VLAN 10 | ‎10.10.16.2 | ‎10.10.16.3 | **10.10.16.1** ← המחשבים משתמשים בזה |
+| ‏IP ב-VLAN 10 | ‎10.10.16.2 | ‎10.10.16.3 | **10.10.16.1** ‏←‏ המחשבים משתמשים בזה |
 
 </div>
 
@@ -64,7 +66,7 @@
 - **‏Preempt** — כשהמתג המועדף חוזר אחרי תקלה, הוא לוקח בחזרה את התפקיד. בלי preempt הוא היה
   נשאר Standby לתמיד.
 - ‏**`standby version 2`** — הגרסה החדשה (יותר קבוצות, תמיכה ב-IPv6). שני הצדדים חייבים להתאים.
-- אנחנו ממספרים כל **קבוצת** HSRP ‏(group) כמו ה-VLAN שלה (VLAN 10 ← קבוצה 10): קל לקריאה.
+- אנחנו ממספרים כל **קבוצת** HSRP ‏(group) כמו ה-VLAN שלה (VLAN 10 ‏←‏ קבוצה 10): קל לקריאה.
 
 **מתאימים את HSRP ל-Spanning Tree.** בשלב 04 ‏DIST1 נהיה הבוס (STP root) של VLAN 10. עכשיו
 DIST1 הוא גם ה-HSRP Active של VLAN 10. כך מסגרת ממחשב עולה ישר למתג שמנתב אותה — הדרך הקצרה
@@ -80,10 +82,10 @@ DIST1 הוא גם ה-HSRP Active של VLAN 10. כך מסגרת ממחשב עול
 
 | | הודעה | משמעות |
 |---|---|---|
-| ‎D | **‏Discover** (מחשב ← כולם) | "יש פה שרת DHCP?" |
-| ‎O | **‏Offer** (שרת ← מחשב) | "אתה יכול לקבל את 10.10.16.11" |
-| ‎R | **‏Request** (מחשב ← שרת) | "כן בבקשה, אני לוקח את 10.10.16.11" |
-| ‎A | **‏Acknowledge** (שרת ← מחשב) | "היא שלך. שער .1, ‏DNS ‏10.10.200.11" |
+| ‎D | **‏Discover** (מחשב ‏←‏ כולם) | "יש פה שרת DHCP?" |
+| ‎O | **‏Offer** (שרת ‏←‏ מחשב) | "אתה יכול לקבל את 10.10.16.11" |
+| ‎R | **‏Request** (מחשב ‏←‏ שרת) | "כן בבקשה, אני לוקח את 10.10.16.11" |
+| ‎A | **‏Acknowledge** (שרת ‏←‏ מחשב) | "היא שלך. שער .1, ‏DNS ‏10.10.200.11" |
 
 </div>
 
@@ -339,9 +341,9 @@ copy running-config startup-config
 ```
 **‏SW-HFA-A-ACC2:** אותו דבר, עם `ip address 10.10.19.12 255.255.255.0`.
 
-### 4.4 המחשבים ← DHCP
-בכל **מחשב משתמש** ‏(ENG-01/02/03, ‏FIN-01/02/03): לחיצה ← **Desktop** ← **IP Configuration**
-← בחרו **DHCP**. אחרי כמה שניות תראו `DHCP request successful` והשדות מתמלאים לבד. (אם אתם
+### 4.4 המחשבים ‏←‏ DHCP
+בכל **מחשב משתמש** ‏(ENG-01/02/03, ‏FIN-01/02/03): לחיצה ‏←‏ **Desktop** ‏←‏ **IP Configuration**
+‏←‏ בחרו **DHCP**. אחרי כמה שניות תראו `DHCP request successful` והשדות מתמלאים לבד. (אם אתם
 רואים `DHCP failed. APIPA is being used`, לחצו **Fast Forward Time** ולחצו שוב על **DHCP**.)
 
 נשארים **סטטיים**: המדפסת (10.10.18.10, שער 10.10.18.1) ומחשב המנהל (10.10.19.100, שער
@@ -395,10 +397,10 @@ C    10.10.17.0/24 is directly connected, Vlan20
 ‏`C` = ‏**C**onnected (מחובר ישירות): המתג מכיר כל VLAN כי יש לו דלת (SVI) בכל אחד.
 
 ### 5.3 ‏DHCP
-ב-**DIST1**: `show ip dhcp binding` ← כתובות בין ‎.11 ל-‎.130 עם כתובות ה-MAC של המחשבים.
-ב-**DIST2**: `show ip dhcp binding` ← אולי כמה כתובות ‎.131 ומעלה (מי שענה ראשון).
+ב-**DIST1**: `show ip dhcp binding` ‏←‏ כתובות בין ‎.11 ל-‎.130 עם כתובות ה-MAC של המחשבים.
+ב-**DIST2**: `show ip dhcp binding` ‏←‏ אולי כמה כתובות ‎.131 ומעלה (מי שענה ראשון).
 
-במחשב ← Command Prompt ← `ipconfig /all`:
+במחשב ‏←‏ Command Prompt ‏←‏ `ipconfig /all`:
 ```
    IPv4 Address......: 10.10.16.11
    Subnet Mask.......: 255.255.255.0
@@ -433,8 +435,8 @@ interface vlan 10
 ```
 3. הסתכלו על ה-ping: כמה שורות timeout (עד 10 שניות — זמן ה-hold של HSRP), ואז התשובות
    ממשיכות — ‏DIST2 לקח את ה-‎`.1`.
-4. ב-**DIST2**: `show standby brief` ← עכשיו הוא **Active** גם עבור קבוצה 10.
-5. ב**מחשב ENG** אחר ← Command Prompt: `ipconfig /release`, ואז `ipconfig /renew` ← תקבלו
+4. ב-**DIST2**: `show standby brief` ‏←‏ עכשיו הוא **Active** גם עבור קבוצה 10.
+5. ב**מחשב ENG** אחר ‏←‏ Command Prompt: `ipconfig /release`, ואז `ipconfig /renew` ‏←‏ תקבלו
    כתובת **‎.131 ומעלה** — מ-DIST2, כי DIST1 לא שומע עכשיו את VLAN 10. ה-split scope עובד!
 6. ב-**DIST1**, פתחו שוב את הדלת:
 ```
@@ -443,13 +445,13 @@ interface vlan 10
  no shutdown
  end
 ```
-   אחרי כמה שניות `show standby brief` ב-DIST1 ← שוב **Active** עבור קבוצה 10 — זה ה-**preempt**.
+   אחרי כמה שניות `show standby brief` ב-DIST1 ‏←‏ שוב **Active** עבור קבוצה 10 — זה ה-**preempt**.
 7. עצרו את ה-ping עם **Ctrl+C**.
 
 ---
 
 ## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים ← **File → Save**.
+‏`copy running-config startup-config` בכל 4 המתגים ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏`show standby brief` נכון בשני מתגי ה-DIST
@@ -478,7 +480,7 @@ interface vlan 10
 
 <details dir="rtl"><summary>תשובה</summary>
 
-מחשב ← ACC1 ← (STP מעביר לכיוון ה-root, ‏DIST2) ← DIST2 ← Po1 ← DIST1 ‏(HSRP Active) ← מנותב.
+מחשב ‏←‏ ACC1 ‏←‏ (STP מעביר לכיוון ה-root, ‏DIST2) ‏←‏ DIST2 ‏←‏ Po1 ‏←‏ DIST1 ‏(HSRP Active) ‏←‏ מנותב.
 המסגרת חוצה את ה-EtherChannel סתם: קפיצה מיותרת, והקישור בין מתגי ה-DIST נושא תעבורה שלא
 אמור לשאת. הכלל: **HSRP Active = STP root**, לכל VLAN.
 </details>
@@ -532,8 +534,8 @@ interface vlan 10
 
 <details dir="rtl"><summary>תשובה</summary>
 
-ממשק נתב אחד שמחובר ל-trunk ומחולק לתתי-ממשקים, אחד לכל VLAN (`interface g0/0.10` ←
-`encapsulation dot1Q 10` ← `ip address …`‎). הוא נותן ניתוב בין VLANים עם פורט נתב אחד בלבד.
+ממשק נתב אחד שמחובר ל-trunk ומחולק לתתי-ממשקים, אחד לכל VLAN (`interface g0/0.10` ‏←‏
+`encapsulation dot1Q 10` ‏←‏ `ip address …`‎). הוא נותן ניתוב בין VLANים עם פורט נתב אחד בלבד.
 **בפרויקט הזה הניתוב בין ה-VLANים נעשה עם SVIים במתגי שכבה 3** (מהיר יותר, בלי צוואר בקבוק של
 קישור אחד) — אמרו את זה, והסבירו את הנתב על מקל כחלופה. אם בפרויקט שלכם משתמשים בו איפשהו,
 הראו אותו שם.
@@ -560,7 +562,7 @@ interface vlan 10
 התעבורה. ה-**Standby** מקשיב ל-hello של ה-Active ונכנס במקומו אם הן נפסקות. השאר נשארים
 במצב Listen.
 
-**איפה מראים:** `show standby brief` ← העמודה State
+**איפה מראים:** `show standby brief` ‏←‏ העמודה State
 </details>
 
 **5. ★2 מהם זמני ה-hello וה-hold של HSRP? מה קורה כשה-Active נופל?**
@@ -580,7 +582,7 @@ interface vlan 10
 ה-priority הגבוה ביותר מנצח (ברירת מחדל 100); בשוויון — כתובת ה-IP הגבוהה ביותר. מגדירים
 `standby 10 priority 110` ו-`standby 10 preempt` בנתב שצריך להיות Active.
 
-**איפה מראים:** `show standby` ← Priority, ‏Preemption
+**איפה מראים:** `show standby` ‏←‏ Priority, ‏Preemption
 </details>
 
 **7. ★2 הסבר את המשמעות של הפקודה preempt.**
@@ -590,7 +592,7 @@ interface vlan 10
 נתב עם priority גבוה יותר לוקח בחזרה את תפקיד ה-Active ברגע שהוא חוזר לפעול. בלי preempt,
 הנתב שהוא Active נשאר Active גם אם נתב טוב יותר חוזר.
 
-**איפה מראים:** `show standby` ← "Preemption enabled"
+**איפה מראים:** `show standby` ‏←‏ "Preemption enabled"
 </details>
 
 **8. ★2 מהם מצבי ה-HSRP?**
@@ -607,9 +609,9 @@ interface vlan 10
 <details dir="rtl"><summary>תשובה</summary>
 
 קבוצה = הנתבים שחולקים כתובת IP וירטואלית אחת. בפרויקט הזה מספר הקבוצה שווה למספר ה-VLAN
-(‏VLAN 10 ← קבוצה 10), קבוצה אחת לכל VLAN.
+(‏VLAN 10 ‏←‏ קבוצה 10), קבוצה אחת לכל VLAN.
 
-**איפה מראים:** `show standby brief` ← העמודה Grp
+**איפה מראים:** `show standby brief` ‏←‏ העמודה Grp
 </details>
 
 **10. ★2 מה תפקידה של הפקודה track והיכן מגדירים אותה?**
@@ -670,10 +672,10 @@ interface vlan 10
 
 <details dir="rtl"><summary>תשובה</summary>
 
-מ-DHCP: המחשב שולח Discover לכולם ← השרת שולח Offer ← המחשב שולח Request ← השרת שולח Ack
+מ-DHCP: המחשב שולח Discover לכולם ‏←‏ השרת שולח Offer ‏←‏ המחשב שולח Request ‏←‏ השרת שולח Ack
 ‏(DORA). המחשב מקבל IP, מסיכה, שער ו-DNS.
 
-**איפה מראים:** מחשב ← IP Configuration ← DHCP; ‏`ipconfig /all`
+**איפה מראים:** מחשב ‏←‏ IP Configuration ‏←‏ DHCP; ‏`ipconfig /all`
 </details>
 
 **16. ★1 הצג את הטבלה שמראה את הקשר בין הכתובת הפיזית (MAC) של ההתקן לכתובת ה-IP שהוא קיבל מהשרת.**
@@ -689,10 +691,10 @@ interface vlan 10
 
 <details dir="rtl"><summary>תשובה</summary>
 
-‏`ip dhcp excluded-address` (כתובות ש-DHCP לא מחלק — שערים, שרתים), ‏`ip dhcp pool NAME` ←
+‏`ip dhcp excluded-address` (כתובות ש-DHCP לא מחלק — שערים, שרתים), ‏`ip dhcp pool NAME` ‏←‏
 ‏`network` (הרשת), ‏`default-router` (השער ‎`.1`), ‏`dns-server`.
 
-**איפה מראים:** `show running-config` ← גללו (רווח) עד שורות ה-`ip dhcp`
+**איפה מראים:** `show running-config` ‏←‏ גללו (רווח) עד שורות ה-`ip dhcp`
 </details>
 
 ---
@@ -705,17 +707,17 @@ interface vlan 10
 בעותק של קובץ שלב 05 הגמור שלכם, מחקו את ה-SVIים, שורות ה-HSRP ומאגרי ה-DHCP של VLAN **אחד**.
 בלי העמוד הזה, בנו אותם מחדש מתוך התוכנית שלכם בשני מתגי ה-distribution. יעד: **‏10 דקות לכל
 VLAN**. אחר כך הראו לבוחן: מחשב שמקבל כתובת ב-DHCP, ‏`show standby brief`, ו-ping רציף ששורד
-כיבוי של השער ה-Active ‏(`interface vlan <x>`‎ ← `shutdown` במתג ה-Active).
+כיבוי של השער ה-Active ‏(`interface vlan <x>`‎ ‏←‏ `shutdown` במתג ה-Active).
 
 ---
 
 ## 👩‍🏫 הערות למורה
-- **שיעור 1 (90 דקות):** למה VLANים לא יכולים לדבר ← SVIים כ"דלתות לנתב" ← `ip routing` ←
+- **שיעור 1 (90 דקות):** למה VLANים לא יכולים לדבר ‏←‏ SVIים כ"דלתות לנתב" ‏←‏ `ip routing` ‏←‏
   אם הכיתה איטית, הגדירו קודם SVIים ב-DIST1 בלי HSRP ובדקו ping בין VLANים.
-- **שיעור 2 (90 דקות):** ‏HSRP (שתי פקידות קבלה, מספר טלפון אחד) ← הוספת HSRP בשני המתגים ←
-  ‏`show standby brief` ← בדיקת הכשל על המקרן.
-- **שיעור 3 (60–90 דקות):** ‏DHCP ו-DORA (הראו במצב Simulation עם הסינון **DHCP**) ← split
-  scope ← מאגרים בשני המתגים ← העברת המחשבים ל-DHCP ← בדיקת release/renew כשה-SVI של VLAN 10
+- **שיעור 2 (90 דקות):** ‏HSRP (שתי פקידות קבלה, מספר טלפון אחד) ‏←‏ הוספת HSRP בשני המתגים ‏←‏
+  ‏`show standby brief` ‏←‏ בדיקת הכשל על המקרן.
+- **שיעור 3 (60–90 דקות):** ‏DHCP ו-DORA (הראו במצב Simulation עם הסינון **DHCP**) ‏←‏ split
+  scope ‏←‏ מאגרים בשני המתגים ‏←‏ העברת המחשבים ל-DHCP ‏←‏ בדיקת release/renew כשה-SVI של VLAN 10
   ב-DIST1 כבוי.
 - **שאלות נפוצות של תלמידים**
   - *"למה DHCP נותן ‎`.1` ולא ‎`.2` כשער?"* — ‏‎`.2` הוא DIST1 עצמו; אם DIST1 מת, ‏‎`.2` מת איתו.
