@@ -414,10 +414,10 @@ Switch(config-if)# end       -> straight back to Switch#
 
 | מקש / פקודה | מה זה עושה |
 |---|---|
-| ‎**?** | מראה מה אפשר להקליד כאן. `show ?`‎ מציג את כל פקודות ה-show. |
+| **‎?** | מראה מה אפשר להקליד כאן. `show ?`‎ מציג את כל פקודות ה-show. |
 | ‎**‏Tab** | משלים את המילה: `conf` + Tab ‏←‏ `configure` |
 | קיצורים | ‏IOS מקבל כל התחלה שהיא חד-משמעית: `conf t` = `configure terminal`, `int fa0/1` = `interface FastEthernet0/1`, `sh run` = `show running-config` |
-| ‎**↑ / ↓** | הפקודה הקודמת / הבאה שהקלדתם |
+| **‎↑ / ↓** | הפקודה הקודמת / הבאה שהקלדתם |
 | ‎**‏Ctrl+Shift+6** | עוצר ping ארוך או חיפוש שנתקע |
 | ‎`do show ...`‎ | מריץ פקודת `show` כשאתם בתוך מצב הגדרה (config) |
 | ‎`no <command>`‎ | מבטל הגדרה (למשל `no shutdown`) |
@@ -450,7 +450,7 @@ Switch(config-if)# end       -> straight back to Switch#
 1. ‏**File → Save As**.
 2. היכנסו לתיקיית הקורס (סעיף 0.2) ‏←‏ `my-work` ‏←‏ תנו שם `step00.pkt` ‏←‏ **Save**.
 3. (לא חובה, אם אתם משתמשים ב-git) בטרמינל בתיקיית הקורס:
-   `git add my-work/step00.pkt` ← `git commit -m "Step 00 done"` ← `git push`.
+   `git add my-work/step00.pkt` ‏←‏ `git commit -m "Step 00 done"`‎ ‏←‏ `git push`.
 
 <div dir="rtl">
 
@@ -502,6 +502,7 @@ copy running-config startup-config
 ```
 
 </div>
+
 שורת הפקודה הופכת ל-`MY-FIRST-SWITCH#`‎ מיד — הוכחה שה-running-config השתנה ברגע שלחצתם
 Enter. כשהפקודה `copy` שואלת `Destination filename [startup-config]?`‎ פשוט לחצו **Enter**.
 </details>

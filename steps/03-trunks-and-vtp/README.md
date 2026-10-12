@@ -477,7 +477,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 2. ב-**ACC2**: `show vlan brief` ‏←‏ ‏VLAN 50 TEST מופיע תוך שניות.
 3. ב-DIST1: `configure terminal` ‏←‏ `no vlan 50` ‏←‏ `end`. בדקו שוב ב-ACC2 ‏←‏ נעלם.
 4. נסו ב-ACC2: `configure terminal` ‏←‏ `vlan 60` ‏←‏ תקבלו
-   `VTP VLAN configuration not allowed when device is in CLIENT mode.` ✅
+   `VTP VLAN configuration not allowed when device is in CLIENT mode.`‎ ✅
 
 ### 5.5 רואים את התג (מצב Simulation)
 1. לחצו **Simulation** (ימין למטה). בחלונית לחצו **Show All/None** כדי לבטל את כל הסינונים,

@@ -40,11 +40,17 @@ def fix_arrows(s):
     for k in range(0, len(parts), 2):
         parts[k] = re.sub("\u200f?←\u200f?", RLM + "←" + RLM, parts[k])
     return "".join(parts)
+def put_mark(text, mark):
+    """Insert mark at the start of text. If text opens with ** / * / _ followed by punctuation,
+    put the mark after the delimiters: a mark before them would stop GitHub seeing the emphasis."""
+    m = re.match(r"(\*+|_+)(?![*_])(?=[^\w\s\u200e\u200f])", text)
+    if m: return text[:m.end()] + mark + text[m.end():]
+    return mark + text
 def fix_cell(c):
     inner = c.strip()
     if not inner or set(inner) <= set("-: "): return c
-    if not HEB.search(inner) and not inner.startswith(LRM):
-        inner = LRM + inner
+    if not HEB.search(inner) and LRM not in inner[:4]:
+        inner = put_mark(inner, LRM)
     return " " + fix_code_spans(inner) + " "
 def split_row(line):
     # split on | not escaped and not inside code
@@ -90,7 +96,7 @@ def process(text, stats):
                 body = fix_code_spans(q[1:].lstrip(" "))
                 if k == 0 or block[k-1].strip() == ">":   # first line of a paragraph inside the quote
                     if HEB.search(" ".join(b[1:] for b in block)) and first_strong(body) == "L":
-                        body = RLM + body; stats["rlm"] += 1
+                        body = put_mark(body, RLM); stats["rlm"] += 1
                 new.append("> " + body if body else ">")
             wrapped = len(out) >= 2 and out[-2] == '<div dir="rtl">'
             if not wrapped:
@@ -102,7 +108,7 @@ def process(text, stats):
         if ln.startswith("<details>"):
             ln = ln.replace("<details>", '<details dir="rtl">', 1); stats["details"] += 1
         # headings, list items, paragraph starts
-        if HEB.search(ln) or re.match(r"^(#{1,6} |\s*[-*] |\s*\d+\. )", ln):
+        if not ln.startswith("<"):
             ln2 = fix_code_spans(ln)
             if ln2 != ln: stats["code"] += 1
             ln = ln2
@@ -111,11 +117,11 @@ def process(text, stats):
         para_start = ln.strip() and not m and (prev.strip() == "" or prev.startswith("<") or prev.startswith("#")) and not ln.startswith("<")
         if m:
             head, body = m.group(1), m.group(2)
-            if first_strong(body) == "L" and not body.startswith(RLM):
-                body = RLM + body; stats["rlm"] += 1
+            if first_strong(body) == "L" and RLM not in body[:4]:
+                body = put_mark(body, RLM); stats["rlm"] += 1
             ln = head + body
-        elif para_start and HEB.search(ln + " " + " ".join(lines[i+1:i+4])) and first_strong(ln) == "L" and not ln.startswith(RLM):
-            ln = RLM + ln; stats["rlm"] += 1
+        elif para_start and HEB.search(ln + " " + " ".join(lines[i+1:i+4])) and first_strong(ln) == "L" and RLM not in ln[:4]:
+            ln = put_mark(ln, RLM); stats["rlm"] += 1
         out.append(ln); i += 1
     return "\n".join(out)
 root = sys.argv[1]; dry = len(sys.argv) > 2

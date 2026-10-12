@@ -116,7 +116,7 @@ VLAN 10 בזמן ש-DIST2 הוא הבוס של VLAN 20 ‏←‏ שני מתגי
 ---
 
 ## חלק 2 — הכנה
-‏**File → Open** ← `my-work/step03.pkt` ← **File → Save As** ← `my-work/step04.pkt`.
+‏**File → Open** ‏←‏ `my-work/step03.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step04.pkt`.
 
 ---
 
@@ -311,7 +311,7 @@ Fa0/1            Desg FWD 19        128.1    P2p Edge   <- "Edge" = PortFast
 עכשיו `show spanning-tree vlan 20` ב-ACC1 ‏←‏ הפעם **Gi0/2** (לכיוון DIST2) הוא ה-Root port.
 זו חלוקת העומס: VLAN 10 עולה דרך DIST1, ו-VLAN 20 דרך DIST2.
 
-‏`show spanning-tree summary` ← `Switch is in rapid-pvst mode` ✅
+‏`show spanning-tree summary` ‏←‏ `Switch is in rapid-pvst mode` ✅
 
 ### 5.3 שוברים דברים בכוונה (הדרך הכי טובה ללמוד)
 **בדיקה 1 — יתירות**
@@ -319,7 +319,7 @@ Fa0/1            Desg FWD 19        128.1    P2p Edge   <- "Edge" = PortFast
 2. לחצו על הכלי **Delete** ‏(X) ‏←‏ לחצו על הכבל **ACC1 Gi0/1 ↔ DIST1**.
 3. הסתכלו על ה-ping: 1–2 שורות timeout, ואז שוב תשובות — התעבורה עברה לדרך של Gi0/2.
 4. לחצו **Ctrl+C** ב-Command Prompt כדי לעצור. החזירו את הכבל (Cross-Over,
-   ‏ACC1 Gi0/1 ← DIST1 Gi1/0/1).
+   ‏ACC1 Gi0/1 ‏←‏ DIST1 Gi1/0/1).
 
 **בדיקה 2 — ה-EtherChannel שורד כבל קרוע**
 1. מחקו את אחד משני הכבלים DIST1 ↔ DIST2.

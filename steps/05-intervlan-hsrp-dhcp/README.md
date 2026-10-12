@@ -65,7 +65,7 @@
   ו-90 לשני.
 - **‏Preempt** — כשהמתג המועדף חוזר אחרי תקלה, הוא לוקח בחזרה את התפקיד. בלי preempt הוא היה
   נשאר Standby לתמיד.
-- ‏**`standby version 2`** — הגרסה החדשה (יותר קבוצות, תמיכה ב-IPv6). שני הצדדים חייבים להתאים.
+- **‏`standby version 2`** — הגרסה החדשה (יותר קבוצות, תמיכה ב-IPv6). שני הצדדים חייבים להתאים.
 - אנחנו ממספרים כל **קבוצת** HSRP ‏(group) כמו ה-VLAN שלה (VLAN 10 ‏←‏ קבוצה 10): קל לקריאה.
 
 **מתאימים את HSRP ל-Spanning Tree.** בשלב 04 ‏DIST1 נהיה הבוס (STP root) של VLAN 10. עכשיו
@@ -118,7 +118,7 @@ DIST1 הוא גם ה-HSRP Active של VLAN 10. כך מסגרת ממחשב עול
 ---
 
 ## חלק 2 — הכנה
-‏**File → Open** ← `my-work/step04.pkt` ← **File → Save As** ← `my-work/step05.pkt`.
+‏**File → Open** ‏←‏ `my-work/step04.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step05.pkt`.
 
 ---
 
@@ -599,7 +599,7 @@ interface vlan 10
 
 <details dir="rtl"><summary>תשובה</summary>
 
-‏Initial ← Learn ← Listen ← Speak ← Standby ← Active.
+‏Initial ‏←‏ Learn ‏←‏ Listen ‏←‏ Speak ‏←‏ Standby ‏←‏ Active.
 
 **איפה מראים:** `show standby`
 </details>
