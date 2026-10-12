@@ -1,9 +1,17 @@
 # שלב 03 — Trunks ו-VTP
 
+<div dir="rtl">
+
 > ⏱ ‏2 שיעורים · 🎯 דרישות משרד החינוך 22.6, ‏22.7, ‏22.8, ‏6 · 📁 מתחילים מ: `my-work/step02.pkt` · 💾 שומרים בשם: `my-work/step03.pkt`
+
+</div>
+
+<div dir="rtl">
 
 > ✅ **לפני שמתחילים:** כל הסעיפים בנקודת הביקורת של שלב 02 מסומנים, ועשיתם את
 > תרגיל ה-🔁 שלו בפרויקט שלכם. אל תדלגו על שלבים — כל שלב בנוי על הקובץ של השלב הקודם.
+
+</div>
 
 ## מה יהיה לכם בסוף השלב
 בניין A מקבל את שני מתגי ה-**distribution** שלו ומתג access שני. לכל מתג access יש **שני
@@ -43,11 +51,15 @@
 - **פורט access** = דלת לחדר אחד ← בלי מדבקה (המחשב אף פעם לא רואה תגים).
 - **פורט trunk** = הכביש המהיר ← עם מדבקות.
 
+<div dir="rtl">
+
 | | פורט access | פורט trunk |
 |---|---|---|
 | מעביר | ‏VLAN אחד | הרבה VLANים |
 | מתחבר אל | מחשב, מדפסת, נקודת גישה | מתג אחר / נתב |
 | תגים | לא | כן (חוץ מה-native VLAN) |
+
+</div>
 
 ### 1.3 ‏Native VLAN — המכוניות בלי מדבקה
 ב-trunk, ‏VLAN אחד עובר **בלי** תג: ה-**native VLAN** ‏(VLAN 1 כברירת מחדל). תוקפים יכולים
@@ -57,7 +69,7 @@
 
 ### 1.4 רשימת ה-VLANים המותרים (allowed VLAN list)
 כברירת מחדל trunk מעביר **את כל** ה-VLANים. אנחנו מפרטים רק את אלה שצריך
-(`10,20,30,99,110,120,998`): פחות תעבורה מיותרת, ופחות דרכים לתוקף להיכנס.
+(‎`10,20,30,99,110,120,998`): פחות תעבורה מיותרת, ופחות דרכים לתוקף להיכנס.
 
 ### 1.5 ‏DTP — ולמה מכבים אותו
 **‏DTP** מאפשר לשני פורטים *לנהל משא ומתן* ולהפוך ל-trunk לבד. נוח — אבל לפטופ יכול להתחזות
@@ -69,11 +81,15 @@
 הוא כמו משרד ראשי שמפרסם את הרשימה הרשמית של החדרים; כל משרד סניף מעתיק אותה אוטומטית
 (ההודעות עוברות על קווי ה-trunk).
 
+<div dir="rtl">
+
 | מצב VTP | תפקיד | השוואה |
 |---|---|---|
-| **‏Server** | כאן יוצרים / מוחקים / משנים שם ל-VLANים; שולח את הרשימה | המשרד הראשי |
-| **‏Client** | מקבל את הרשימה, לא יכול לשנות אותה | משרד סניף |
-| **‏Transparent** | מתעלם מהרשימה, שומר VLANים משלו (מעביר את ההודעות הלאה) | חנות עצמאית |
+| ‎**‏Server** | כאן יוצרים / מוחקים / משנים שם ל-VLANים; שולח את הרשימה | המשרד הראשי |
+| ‎**‏Client** | מקבל את הרשימה, לא יכול לשנות אותה | משרד סניף |
+| ‎**‏Transparent** | מתעלם מהרשימה, שומר VLANים משלו (מעביר את ההודעות הלאה) | חנות עצמאית |
+
+</div>
 
 מתגים חולקים רשימה רק אם יש להם אותו **שם דומיין** ואותה **סיסמה**. כל בניין בחיפה הוא דומיין
 נפרד (`HFA-A`, ‏`HFA-B`, ‏`HFA-C`), כי הבניינים יחוברו בקישורים **מנותבים**, שלא מעבירים VLANים.
@@ -129,31 +145,46 @@
 2. גררו 2 מחשבים מתחתיו ← שנו את שמותיהם ל-`PC-HFA-ENG-03` ו-`PC-HFA-FIN-03`.
 
 ### 3.4 כבלים — קישורים כלפי מעלה (מתג ↔ מתג = **Copper Cross-Over**)
+
+<div dir="rtl">
+
 | לחצו קודם על | פורט | לחצו אחר כך על | פורט |
 |---|---|---|---|
-| SW-HFA-A-ACC1 | **GigabitEthernet0/1** | SWL3-HFA-A-DIST1 | **GigabitEthernet1/0/1** |
-| SW-HFA-A-ACC1 | **GigabitEthernet0/2** | SWL3-HFA-A-DIST2 | **GigabitEthernet1/0/1** |
-| SW-HFA-A-ACC2 | **GigabitEthernet0/1** | SWL3-HFA-A-DIST1 | **GigabitEthernet1/0/2** |
-| SW-HFA-A-ACC2 | **GigabitEthernet0/2** | SWL3-HFA-A-DIST2 | **GigabitEthernet1/0/2** |
+| ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/1** |
+| ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/1** |
+| ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/2** |
+| ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/2** |
+
+</div>
 
 ### 3.5 כבלים — מחשבים (Copper **Straight-Through**)
+
+<div dir="rtl">
+
 | מכשיר | פורט | פורט במתג |
 |---|---|---|
-| PC-HFA-ENG-03 | FastEthernet0 | SW-HFA-A-ACC2 **Fa0/1** |
-| PC-HFA-FIN-03 | FastEthernet0 | SW-HFA-A-ACC2 **Fa0/11** |
+| ‎PC-HFA-ENG-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 **Fa0/1** |
+| ‎PC-HFA-FIN-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 **Fa0/11** |
+
+</div>
 
 לחצו **Fast Forward Time** כמה פעמים. רוב הנוריות הופכות לירוקות; **קישור אחד או יותר נשאר
 כתום** — זה Spanning Tree שחוסם את הלולאה (סעיף 1.7). נכון!
 
 ### 3.6 כתובות המחשבים (Desktop ← IP Configuration ← Static)
-| מחשב | IP | מסיכה |
+
+<div dir="rtl">
+
+| מחשב | ‎IP | מסיכה |
 |---|---|---|
-| PC-HFA-ENG-03 | 10.10.16.103 | 255.255.255.0 |
-| PC-HFA-FIN-03 | 10.10.17.103 | 255.255.255.0 |
+| ‎PC-HFA-ENG-03 | ‎10.10.16.103 | ‎255.255.255.0 |
+| ‎PC-HFA-FIN-03 | ‎10.10.17.103 | ‎255.255.255.0 |
+
+</div>
 
 ---
 
-## חלק 4 — מגדירים (הקלידו כל שורה; שורות שמתחילות ב-`!` הן הערות)
+## חלק 4 — מגדירים (הקלידו כל שורה; שורות שמתחילות ב-‎`!`‎ הן הערות)
 
 ### 4.1 ‏SWL3-HFA-A-DIST1 — בסיס + VTP **server** + trunks
 לחצו עליו ← **CLI** ← לחצו Enter.
@@ -224,9 +255,13 @@ copy running-config startup-config
 
 (הפורטים Gi1/0/23-24 נשארים כמו שהם — משתמשים בהם בשלב 04.)
 
+<div dir="rtl">
+
 > **הערה על ה-3650:** ה-3650 מדבר רק 802.1Q, ולכן הוא לא צריך (ולא מקבל) את הפקודה
 > `switchport trunk encapsulation dot1q`. אם ה-Packet Tracer שלכם דורש אותה, הקלידו אותה לפני
 > `switchport mode trunk`.
+
+</div>
 
 ### 4.2 ‏SWL3-HFA-A-DIST2 — בסיס + VTP **client** + trunks
 ```
@@ -271,9 +306,13 @@ copy running-config startup-config
 ההערה אומרת: הצטרפות בטוחה — קודם transparent ‏(revision ← 0), ואז client.
 אין כאן פקודות `vlan` — ‏DIST2 מקבל את הרשימה מ-DIST1.
 
-> ייתכן שתראו אזהרה כמו `% Access VLAN does not exist` על `switchport access vlan 999`.
+<div dir="rtl">
+
+> ייתכן שתראו אזהרה כמו ‎`% Access VLAN does not exist` על `switchport access vlan 999`.
 > זה תקין: DIST2 עוד לא קיבל את רשימת ה-VLANים (היא מגיעה ברגע שקווי ה-trunk של מתגי ה-access
 > עולים, בסעיפים 4.3–4.4). ההגדרה נשמרת ומתחילה לעבוד כש-VLAN 999 מגיע.
+
+</div>
 
 ### 4.3 ‏SW-HFA-A-ACC1 — מצטרף ל-VTP + קישורי trunk כלפי מעלה
 ‏ACC1 הוגדר בשלב 02. התחברו (סיסמת console ‏`Intel#Con`, ‏enable ‏`Intel#En4ble`):
@@ -362,16 +401,21 @@ copy running-config startup-config
 תוכנית הפורטים של ACC2: כמו ב-ACC1, חוץ מ-Fa0/22-23 ששמורים לשתי נקודות הגישה האלחוטיות.
 
 ### 4.5 מה הפקודות החדשות אומרות
+
+<div dir="rtl">
+
 | פקודה | בשפה פשוטה |
 |---|---|
-| `vtp domain HFA-A` | "אני שייך למועדון ה-VLANים של בניין A" |
-| `vtp password Intel#Vtp` | סיסמת המועדון — רק חברים שיודעים אותה חולקים רשימות |
-| `vtp mode server` / `client` / `transparent` | משרד ראשי / משרד סניף / עצמאי |
-| `vtp version 2` | להשתמש ב-VTP גרסה 2 (כל החברים חייבים להתאים) |
-| `switchport mode trunk` | "הפורט הזה הוא כביש מהיר — העבר VLANים מתויגים" |
-| `switchport trunk native vlan 998` | "מכוניות בלי מדבקה שייכות ל-VLAN 998 שלא בשימוש" |
-| `switchport trunk allowed vlan ...` | "רק ה-VLANים האלה רשאים לנסוע בכביש הזה" |
-| `switchport nonegotiate` | "אל תנהל משא ומתן עם מי שבצד השני (DTP כבוי)" |
+| ‎`vtp domain HFA-A` | "אני שייך למועדון ה-VLANים של בניין A" |
+| ‎`vtp password Intel#Vtp` | סיסמת המועדון — רק חברים שיודעים אותה חולקים רשימות |
+| ‎`vtp mode server` / `client` / `transparent` | משרד ראשי / משרד סניף / עצמאי |
+| ‎`vtp version 2` | להשתמש ב-VTP גרסה 2 (כל החברים חייבים להתאים) |
+| ‎`switchport mode trunk` | "הפורט הזה הוא כביש מהיר — העבר VLANים מתויגים" |
+| ‎`switchport trunk native vlan 998` | "מכוניות בלי מדבקה שייכות ל-VLAN 998 שלא בשימוש" |
+| ‎`switchport trunk allowed vlan ...`‎ | "רק ה-VLANים האלה רשאים לנסוע בכביש הזה" |
+| ‎`switchport nonegotiate` | "אל תנהל משא ומתן עם מי שבצד השני (DTP כבוי)" |
+
+</div>
 
 ---
 
@@ -415,11 +459,16 @@ Gig1/0/1    10,20,30,99,110,120,998
 ✅ שני הפורטים במצב `trunking`, ‏native 998, ורשימת ה-VLANים המותרים שלנו.
 
 ### 5.3 ‏Ping דרך ה-trunk
+
+<div dir="rtl">
+
 | מאיפה | מקלידים | צפוי | למה |
 |---|---|---|---|
-| PC-HFA-ENG-01 (על ACC1) | `ping 10.10.16.103` (ENG-03 על ACC2) | ✅ | ‏VLAN 10 עובר על ה-trunks דרך מתג distribution |
-| PC-HFA-FIN-01 (ACC1) | `ping 10.10.17.103` (FIN-03 על ACC2) | ✅ | גם VLAN 20 |
-| PC-HFA-ENG-01 | `ping 10.10.17.103` | ❌ | עדיין אין נתב |
+| ‏PC-HFA-ENG-01 (על ACC1) | ‏`ping 10.10.16.103` (ENG-03 על ACC2) | ‎✅ | ‏VLAN 10 עובר על ה-trunks דרך מתג distribution |
+| ‎PC-HFA-FIN-01 (ACC1) | ‏`ping 10.10.17.103` (FIN-03 על ACC2) | ‎✅ | גם VLAN 20 |
+| ‎PC-HFA-ENG-01 | ‎`ping 10.10.17.103` | ‎❌ | עדיין אין נתב |
+
+</div>
 
 ### 5.4 צופים ב-VTP בזמן אמת
 1. ב-**DIST1**: `configure terminal` ← `vlan 50` ← `name TEST` ← `end`.
@@ -449,21 +498,26 @@ Gig1/0/1    10,20,30,99,110,120,998
 - [ ] פינג ב-VLAN 10 וב-VLAN 20 עובד בין ACC1 ל-ACC2
 
 ## אם משהו לא עובד
+
+<div dir="rtl">
+
 | בעיה | פתרון |
 |---|---|
 | ה-3650 חשוך, אין פורטים | חסר ספק כוח (3.2) |
 | נורית קישור כלפי מעלה אדומה | מתג ↔ מתג צריך **Cross-Over**. מחקו את הכבל וחברו מחדש |
 | ‏ACC2 לא לומד VLANים | ‏`show vtp status` בשני הצדדים: הדומיין, הסיסמה (`show vtp password`) והגרסה חייבים להתאים **בדיוק** (רגיש לאותיות גדולות/קטנות) |
-| הודעות `%CDP-4-NATIVE_VLAN_MISMATCH` | בצד אחד של ה-trunk יש native 998 ובצד השני אין. תקנו את הצד החסר |
+| הודעות ‎`%CDP-4-NATIVE_VLAN_MISMATCH` | בצד אחד של ה-trunk יש native 998 ובצד השני אין. תקנו את הצד החסר |
 | ‏`show interfaces trunk` לא מציג כלום | הפורט לא מוגדר trunk באחד הצדדים, או שהוא כבוי |
 | פינג ENG-01 ← ENG-03 נכשל | האם VLAN 10 ברשימת המותרים **בשני** הקצוות? האם המחשבים ב-VLAN 10 (`show vlan brief`)? |
+
+</div>
 
 ## אתגר
 הריצו `show spanning-tree vlan 10` ב-ACC1. אחד משני הקישורים שלו כלפי מעלה הוא **BLK**
 (blocking — חסום). למה המתג חוסם כבל תקין לגמרי? איזה מתג הוא ה-**root bridge** כרגע, ולמה
 דווקא הוא?
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 ‏ACC1 ← DIST1 ← ACC2 ← DIST2 ← ACC1 הוא **לולאה**. בלי Spanning Tree, הודעת broadcast הייתה
 מסתובבת לנצח ("סערת broadcast") ומשביתה את הרשת תוך שניות. ‏STP חוסם פורט אחד כדי לשבור את
@@ -482,13 +536,17 @@ Gig1/0/1    10,20,30,99,110,120,998
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
 
+<div dir="rtl">
+
 | בדוגמה | בפרויקט שלכם — לוקחים מ |
 |---|---|
-| ‏Native VLAN ‏`998` | תוכנית, חלק ד (ה-VLAN ה-NATIVE שלכם) |
+| ‎‏Native VLAN ‏‎`998` | תוכנית, חלק ד (ה-VLAN ה-NATIVE שלכם) |
 | רשימת ה-VLANים המותרים ב-trunks | תוכנית, חלק ד (רק ה-VLANים **שלכם** של אותו בניין) |
-| דומיין VTP ‏`HFA-A` | שם דומיין משלכם לכל בניין, למשל `<SITE>-A` |
+| דומיין VTP ‏`HFA-A` | שם דומיין משלכם לכל בניין, למשל ‎`<SITE>-A` |
 | סיסמת VTP ‏`Intel#Vtp` | תוכנית, חלק ו |
 | שמות המכשירים ופורטי הקישורים כלפי מעלה | תוכנית, חלקים ב ו-ד |
+
+</div>
 
 **בדיקה:** ‏`show interfaces trunk` מציג את ה-native VLAN שלכם ורק את ה-VLANים שלכם;
 ‏`show vtp status` מציג את הדומיין שלכם בכל מתג בבניין.
@@ -508,7 +566,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 **1. ★2 מהו פרוטוקול 802.1Q ומדוע משתמשים בו?**
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 תקן ה-trunk: הוא מכניס לכל מסגרת Ethernet תג של 4 בתים עם מספר VLAN של 12 ביטים, כך שקישור
 אחד יכול להעביר הרבה VLANים והצד השני יודע לאיזה VLAN שייכת כל מסגרת. משתמשים בו בין מתגים,
@@ -519,7 +577,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 **2. ◆ מה זה native VLAN, ולמה אצלכם הוא VLAN שלא בשימוש?**
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 מסגרות של ה-native VLAN עוברות ב-trunk **בלי תג**. אם ה-native VLAN הוא VLAN של משתמשים, תוקף
 יכול לתייג מסגרות פעמיים (double tagging) ולקפוץ ל-VLAN אחר. ‏native VLAN שלא בשימוש, בלי
@@ -530,7 +588,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 **3. ◆ למה מגבילים את ה-VLANים המותרים ב-trunk?**
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 רק ה-VLANים שצריך עוברים בקישור: פחות תעבורת broadcast מיותרת, ו-VLAN שלא אמור להיות בבניין
 לא יכול "לדלוף" אליו.
@@ -540,7 +598,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 **4. ◆ מה זה VTP? מה ההבדל בין server, ‏client ו-transparent?**
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 ‏VTP משתף את רשימת ה-VLANים בין המתגים בדומיין אחד. ‏Server: יוצר/מוחק VLANים ומפרסם אותם.
 ‏Client: לומד את ה-VLANים מה-server ולא יכול לשנות אותם. ‏Transparent: שומר VLANים משלו ורק
@@ -551,7 +609,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 **5. ◆ מה הסכנה ב-VTP ואיך מתגוננים ממנה?**
 
-<details><summary>תשובה</summary>
+<details dir="rtl"><summary>תשובה</summary>
 
 מתג עם configuration revision גבוה יותר שמצטרף לדומיין יכול לדרוס (ואפילו למחוק) את ה-VLANים
 של כל המתגים. הגנה: סיסמת VTP, אותו שם דומיין רק איפה שמתכוונים, ואיפוס ה-revision של מתג חדש
