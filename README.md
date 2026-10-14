@@ -43,8 +43,8 @@
 
 <div dir="rtl">
 
-> **גרסה זו בעברית כוללת את שלבים 00–08.**
-> שאר השלבים יתורגמו בהמשך. עד אז הם זמינים בגרסה האנגלית:
+> **גרסה זו בעברית כוללת את כל 17 השלבים (00–16)** — מי שעובר את כולם לפי הסדר מסיים עם פרויקט
+> שלם. יש גם גרסה באנגלית:
 > [github.com/AhmadKais/intel-israel-network-lab](https://github.com/AhmadKais/intel-israel-network-lab).
 > בשתי הגרסאות אותם מכשירים, פורטים, כתובות וסיסמאות — אפשר לעבור ביניהן בכל שלב.
 
@@ -113,14 +113,14 @@ flowchart LR
 | ‎06 | [אבטחת שכבה 2](steps/06-layer2-security) | ‏Port-security, ‏DHCP snooping, הקשחה | 1–2 שיעורים |
 | ‎07 | [ניהול ב-SSH](steps/07-ssh-management) | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | 1–2 שיעורים |
 | ‎08 | [Core, ‏OSPF, שרתים](steps/08-core-ospf-servers) | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | 3 שיעורים |
-| ‎09 | בניינים B ו-C + virtual link | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים | *טרם תורגם* |
-| ‎10 | רשת אלחוטית | ‏WiFi לעובדים ולאורחים, ACL לבידוד אורחים | *טרם תורגם* |
-| ‎11 | חומת אש ASA ו-DMZ | ‏inside/outside/DMZ, ‏security levels, ‏ACL, ‏6 שרתי DMZ, ‏NTP | *טרם תורגם* |
-| ‎12 | ‏WAN: ספקים, BGP, ‏NAT | ‏eBGP, ‏OSPF בתוך AS, ‏static NAT + PAT, גיבוי DSL | *טרם תורגם* |
-| ‎13 | סניף 2 (בדוגמה: ירושלים) — collapsed core | ‏EIGRP + סיכום + אימות, ‏PAgP, שרת DHCP, ‏dynamic NAT, ‏CBAC | *טרם תורגם* |
-| ‎14 | סניף 3 (בדוגמה: קריית גת) — IPv6 | כתובות IPv6, ‏SLAAC + DHCPv6, ‏OSPFv3, ‏HSRPv6, ‏PAT | *טרם תורגם* |
-| ‎15 | ‎‏VPN | ‏GRE over IPsec בין אתרים, VPN לגישה מרחוק | *טרם תורגם* |
-| ‎16 | אינטגרציה סופית | חשבונות דואר, הרחבה ל-8 מחשבים למחלקה, תוכנית בדיקות מלאה, ספר הפרויקט | *טרם תורגם* |
+| ‎09 | [בניינים B ו-C + virtual link](steps/09-buildings-b-c-virtual-link) | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים | 4 שיעורים |
+| ‎10 | [רשת אלחוטית](steps/10-wireless) | ‏WiFi לעובדים ולאורחים, ACL לבידוד אורחים | 1–2 שיעורים |
+| ‎11 | [חומת אש ASA ו-DMZ](steps/11-asa-firewall-dmz) | ‏inside/outside/DMZ, ‏security levels, ‏ACL, ‏6 שרתי DMZ, ‏NTP | 3 שיעורים |
+| ‎12 | ‏[WAN: ספקים, BGP, ‏NAT](steps/12-wan-isp-bgp-nat) | ‏eBGP, ‏OSPF בתוך AS, ‏static NAT + PAT, גיבוי DSL | 3–4 שיעורים |
+| ‎13 | [סניף 2 (בדוגמה: ירושלים) — collapsed core](steps/13-jerusalem-collapsed-core) | ‏EIGRP + סיכום + אימות, ‏PAgP, שרת DHCP, ‏dynamic NAT, ‏CBAC | 4 שיעורים |
+| ‎14 | [סניף 3 (בדוגמה: קריית גת) — IPv6](steps/14-kiryat-gat-ipv6) | כתובות IPv6, ‏SLAAC + DHCPv6, ‏OSPFv3, ‏HSRPv6, ‏PAT | 4 שיעורים |
+| ‎15 | ‎‏[VPN](steps/15-vpn) | ‏GRE over IPsec בין אתרים, VPN לגישה מרחוק | 2–3 שיעורים |
+| ‎16 | [אינטגרציה סופית](steps/16-final-integration) | חשבונות דואר, הרחבה ל-8 מחשבים למחלקה, תוכנית בדיקות מלאה, ספר הפרויקט | 3–4 שיעורים |
 
 </div>
 
@@ -131,6 +131,11 @@ flowchart LR
 - ‏[docs/project-plan-template.md](docs/project-plan-template.md) — **התוכנית של הפרויקט שלכם** (מעתיקים ל-`my-project/plan.md` בשלב 01)
 - ‏[docs/design.md](docs/design.md) — התוכנית המלאה של הדוגמה: כתובות, VLANים ושמות (המודל לתוכנית שלכם)
 - ‏[docs/passwords.md](docs/passwords.md) — טבלת הסיסמאות של הדוגמה (לפרויקט שלכם צריך טבלה משלכם)
+- ‏[docs/requirements-matrix.md](docs/requirements-matrix.md) — כל דרישה של משרד החינוך ‏←‏ איפה היא נבנית
+- ‏[docs/project-book-draft-he.md](docs/project-book-draft-he.md) — **ספר פרויקט לדוגמה** של אינטל ישראל, לפי סדר הפרקים של משרד החינוך. השתמשו בו כדי לראות את המבנה; כתבו ספר משלכם על החברה שלכם
+- ‏[docs/glossary.md](docs/glossary.md) — כל מונח ברשתות, בשפה פשוטה
+- ‏[docs/cheatsheet.md](docs/cheatsheet.md) — פקודות ה-`show` שתשתמשו בהן 100 פעם
+- ‏[docs/pt-gotchas.md](docs/pt-gotchas.md) — המלכודות של Packet Tracer ואיך עוקפים אותן
 
 ## איך בנוי כל שלב
 
