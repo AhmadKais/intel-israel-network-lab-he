@@ -15,12 +15,22 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 05 ושומרים בשם שלב 06 (2 דקות)
+- [ ] **משימה 2** — ‏ACC1: ‏DHCP snooping ‏(10 דקות)
+- [ ] **משימה 3** — ‏ACC1: ‏port-security בפורטים של המשתמשים, המדפסת והמנהל (10 דקות)
+- [ ] **משימה 4** — ‏ACC2: אותו דבר + הפורטים של נקודות הגישה (15 דקות)
+- [ ] **משימה 5** — נותנים למתגים ללמוד את כתובות ה-MAC, ובודקים (15 דקות)
+- [ ] **משימה 6** — התקפה 1: שרת DHCP מזויף (20 דקות)
+- [ ] **משימה 7** — התקפה 2: לפטופ לא מוכר בפורט של המדפסת (15 דקות)
+- [ ] **משימה 8** — שומרים הכול (2 דקות)
+- [ ] **תרגיל** — ‏Dynamic ARP Inspection (בונוס)
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 מתגי ה-access מתגוננים מפני ההתקפות הקלאסיות שאדם יכול לבצע רק על ידי **חיבור משהו לשקע
 בקיר**: הצפת המתג בכתובות MAC מזויפות, הפעלת שרת DHCP מזויף, חיבור מכשיר לא מוכר. **תנסו את
 ההתקפות בעצמכם** ותראו איך ההגנות עוצרות אותן.
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -77,22 +87,19 @@
 
 ---
 
-## חלק 2 — הכנה
+## משימה 1 — פותחים את שלב 05 ושומרים בשם שלב 06 (איך? ‏←‏ M1)
 ‏**File → Open** ‏←‏ `my-work/step05.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step06.pkt`.
 
-## חלק 3 — בונים
-אין מה לבנות עכשיו (מעבדת ההתקפות בחלק 6 מוסיפה מכשירים באופן זמני).
+אין מה לבנות עכשיו (מעבדת ההתקפות במשימות 6–7 מוסיפה מכשירים לזמן קצר).
 
 ---
 
-## חלק 4 — מגדירים (הקלידו כל שורה)
+## משימה 2 — ‏ACC1: ‏DHCP snooping
+👉 **איפה:** ‏**SW-HFA-A-ACC1** ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SW-HFA-A-ACC1#`‎.
 
-### 4.1 ‏SW-HFA-A-ACC1
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-
-! ---------- DHCP snooping ----------
 ip dhcp snooping
 ip dhcp snooping vlan 10,20,30,99,110,120
 ! the option-82 trap (section 1.5)
@@ -102,8 +109,20 @@ no ip dhcp snooping information option
 interface range gi0/1 - 2
  ip dhcp snooping trust
  exit
+```
+🔍 **בודקים עכשיו:** ‏`do show ip dhcp snooping` ‏←‏ `Switch DHCP snooping is enabled`, ושתי שורות
+ה-`GigabitEthernet0/x` אומרות `yes` תחת **Trusted**.\
+❌ ‏`Insertion of option 82 is enabled` ‏←‏ דילגתם על `no ip dhcp snooping information option`.
+הקלידו אותה עכשיו.
 
-! ---------- user ports: Engineering + Finance ----------
+---
+
+## משימה 3 — ‏ACC1: ‏port-security בפורטים של המשתמשים, המדפסת והמנהל
+👉 **איפה:** ‏ACC1, שורת הפקודה `SW-HFA-A-ACC1(config)#`‎.
+
+### 3א — פורטי המשתמשים: Engineering + Finance (עד 2 מכשירים, רושמים הפרות)
+⌨️ מקלידים:
+```
 interface range fa0/1 - 20
  switchport port-security
  switchport port-security maximum 2
@@ -112,8 +131,11 @@ interface range fa0/1 - 20
  ip dhcp snooping limit rate 10
  no cdp enable
  exit
+```
 
-! ---------- printer port: exactly one device ----------
+### 3ב — הפורט של המדפסת והפורט של מחשב המנהל: מכשיר אחד בדיוק, נכבה בהפרה
+⌨️ מקלידים:
+```
 interface fa0/21
  switchport port-security
  switchport port-security maximum 1
@@ -121,8 +143,6 @@ interface fa0/21
  switchport port-security violation shutdown
  no cdp enable
  exit
-
-! ---------- admin PC port: exactly one device ----------
 interface fa0/22
  switchport port-security
  switchport port-security maximum 1
@@ -132,15 +152,19 @@ interface fa0/22
  end
 copy running-config startup-config
 ```
-ההערות בבלוק אומרות: ‏DHCP snooping; המלכודת של option 82 (סעיף 1.5); הקישורים כלפי מעלה
-מובילים לשרתי ה-DHCP האמיתיים (DIST1/DIST2) ‏←‏ מהימנים; פורטי משתמשים: הנדסה + כספים; פורט
-המדפסת: בדיוק מכשיר אחד; פורט מחשב המנהל: בדיוק מכשיר אחד.
+✅ ‏‎`[OK]`‎.\
+❌ ‏‎`% Command rejected: Fa0/x is a dynamic port` ‏←‏ בפורט הזה חסר `switchport mode access`
+(שלב 02). הוסיפו אותו בפורט, ואז הקלידו שוב את שורות ה-port-security.
 
-### 4.2 ‏SW-HFA-A-ACC2
+---
+
+## משימה 4 — ‏ACC2: אותו דבר + הפורטים של נקודות הגישה
+👉 **איפה:** ‏**SW-HFA-A-ACC2** ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SW-HFA-A-ACC2#`‎.
+
+### 4א — ‏Snooping, משתמשים ומדפסת (כמו ב-ACC1)
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-
 ip dhcp snooping
 ip dhcp snooping vlan 10,20,30,99,110,120
 no ip dhcp snooping information option
@@ -165,9 +189,13 @@ interface fa0/21
  switchport port-security violation shutdown
  no cdp enable
  exit
+```
 
-! ---------- the two access-point ports ----------
-! every wireless laptop's MAC appears on the AP's port -> allow many
+### 4ב — שני הפורטים של נקודות הגישה (חדש ב-ACC2)
+ה-MAC של כל לפטופ אלחוטי מופיע בפורט של נקודת הגישה ‏←‏ מרשים הרבה.
+
+⌨️ מקלידים:
+```
 interface range fa0/22 - 23
  switchport port-security
  switchport port-security maximum 30
@@ -177,14 +205,9 @@ interface range fa0/22 - 23
  end
 copy running-config startup-config
 ```
-ההערות אומרות: שני הפורטים של נקודות הגישה — כתובת ה-MAC של כל לפטופ אלחוטי מופיעה בפורט של
-נקודת הגישה ‏←‏ מאפשרים הרבה.
+✅ ‏‎`[OK]`‎.
 
-### 4.3 נותנים למתגים ללמוד את כתובות ה-MAC
-למידת sticky צריכה תעבורה. ב**כל מחשב**: ‏Desktop ‏←‏ Command Prompt ‏←‏ `ipconfig /renew` (ועשו
-ping לשער שלו). המדפסת: עשו לה ping ממחשב (`ping 10.10.18.10`).
-
-### 4.4 מה הפקודות החדשות אומרות
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -203,10 +226,22 @@ ping לשער שלו). המדפסת: עשו לה ping ממחשב (`ping 10.10.18
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 5 — נותנים למתגים ללמוד את כתובות ה-MAC, ובודקים
+🧠 **למה:** למידת sticky צריכה תעבורה. פורט לומד MAC רק אחרי שהמכשיר שולח משהו.
 
-### 5.1 ‏DHCP snooping
-ב-**ACC1**: `show ip dhcp snooping`
+### 5א — גורמים לכל מכשיר לדבר
+1. ב**כל מחשב משתמש** (6 מחשבים): ‏Desktop ‏←‏ Command Prompt ‏←‏ `ipconfig /renew`, ואז
+   ‏`ping` לשער שלו (‎`10.10.16.1` ל-ENG, ‏‎`10.10.17.1` ל-FIN).
+2. ב-**PC-HFA-ADMIN-01**: ‏`ping 10.10.19.1`.
+3. המדפסת לא יודעת להקליד — **עשו לה פינג** ממחשב: `ping 10.10.18.10`.
+
+✅ כל מחשב קיבל שוב כתובת (`ipconfig /renew` הצליח) וכל פינג ענה.\
+❌ מחשב מקבל ‎`169.254.x.x` ‏←‏ ראו סעיף 1.5 ואת טבלת התקלות.
+
+### 5ב — בודקים DHCP snooping
+👉 ב-**ACC1**: ‏`show ip dhcp snooping`
+
+✅ אמורים לראות:
 ```
 Switch DHCP snooping is enabled
 DHCP snooping is configured on following VLANs:
@@ -219,54 +254,76 @@ GigabitEthernet0/2         yes        unlimited
 FastEthernet0/1            no         10
 ...
 ```
-‏`show ip dhcp snooping binding` ‏←‏ שורה אחת לכל מחשב שקיבל כתובת (MAC, ‏IP, ‏VLAN, פורט).
+👉 ‏`show ip dhcp snooping binding` ‏←‏ ✅ שורה לכל מחשב ב-ACC1 שקיבל כתובת (MAC, ‏IP, ‏VLAN, פורט).
 
-### 5.2 ‏Port-security
-```
-show port-security
-```
+### 5ג — בודקים port-security
+👉 ב-**ACC1**: ‏`show port-security`
+
+✅ אמורים לראות:
 ```
 Secure Port  MaxSecureAddr  CurrentAddr  SecurityViolation  Security Action
      Fa0/1         2             1               0               Restrict
      Fa0/21        1             1               0               Shutdown
 ...
 ```
-‏`show port-security interface fa0/1` ‏←‏ `Port Status : Secure-up`.
-‏`show running-config | include sticky` ‏←‏ כתובות ה-MAC שנלמדו כתובות עכשיו בהגדרות.
+👉 ‏`show port-security interface fa0/1` ‏←‏ ✅ ‏`Port Status : Secure-up`.\
+👉 ‏`show running-config | include sticky` ‏←‏ ✅ כתובות ה-MAC שנלמדו כתובות עכשיו בהגדרות.
 
-### 5.3 המחשבים עדיין עובדים
-בכל מחשב: `ipconfig /release`, ואז `ipconfig /renew` ‏←‏ עדיין מקבל כתובת ✅.
-אם לא ‏←‏ סעיף 1.5 / טבלת "אם משהו לא עובד".
+### 5ד — שומרים את כתובות ה-MAC שנלמדו
+ב-ACC1 **וגם** ב-ACC2: ‏`copy running-config startup-config` (ה-MACים ה-sticky הם שורות חדשות
+בהגדרות).
 
 ---
 
-## חלק 6 — מעבדת התקפות (נסו את ההתקפות!)
+## משימה 6 — התקפה 1: שרת DHCP מזויף
+🧠 **למה:** להיות התוקף, ולראות איך DHCP snooping עוצר אתכם.
 
-### התקפה 1 — שרת DHCP מזויף
-1. ‏**End Devices** ‏←‏ גררו **Server** ליד ACC1. שנו את שמו ל-`SRV-ROGUE`.
-2. חברו אותו ב-**Copper Straight-Through**: ‏SRV-ROGUE **FastEthernet0** ‏←‏ ‏ACC1 **Fa0/9**
-   (פורט פנוי של הנדסה — VLAN 10).
-3. ‏SRV-ROGUE ‏←‏ **Desktop → IP Configuration**: ‏IP ‏‎`10.10.16.250`, מסיכה ‎`255.255.255.0`.
-4. ‏SRV-ROGUE ‏←‏ לשונית **Services** ‏←‏ **DHCP** (ברשימה משמאל):
-   - ‏Service: **On**
-   - ‏Default Gateway: ‎`10.10.16.250` (התוקף שולח את עצמו כשער!)
-   - ‏Start IP Address: ‎`10.10.16.200`, ‏Subnet Mask ‏‎`255.255.255.0`
-   - לחצו **Save**.
-5. במחשב של הנדסה: ‏Desktop ‏←‏ IP Configuration ‏←‏ לחצו **Static**, ואז שוב **DHCP**.
-6. התוצאה: המחשב מקבל כתובת בין **‎.11 ל-‎.254** עם השער **10.10.16.1** — מ-DIST1/DIST2.
-   ההצעות של השרת המזויף **נזרקו** ב-Fa0/9 (פורט לא מהימן). ✅
-7. *בונוס:* הפכו זמנית את Fa0/9 למהימן (`interface fa0/9` ‏←‏ `ip dhcp snooping trust`), ובקשו
-   שוב כתובת במחשב — עכשיו הוא עלול לקבל ‎`.200` עם השער ‎`.250`: ההתקפה עובדת.
-   **הסירו את ה-trust** (`no ip dhcp snooping trust`) מיד.
-8. מחקו את SRV-ROGUE (הכלי Delete).
+### 6א — בונים את השרת של התוקף
+1. ‏**End Devices** ‏←‏ גררו **Server** ליד ACC1. שנו את שמו ל-`SRV-ROGUE` ‏(M4).
+2. חברו אותו ב-**Copper Straight-Through**: ‏SRV-ROGUE ‏**FastEthernet0** ‏←‏ ACC1 ‏**Fa0/9**
+   (פורט פנוי של Engineering — ‏VLAN 10) ‏(M5).
+3. ‏SRV-ROGUE ‏←‏ **Desktop → IP Configuration** ‏←‏ **Static**: ‏IP ‏‎`10.10.16.250`, מסיכה
+   ‏‎`255.255.255.0`. סגרו.
 
-### התקפה 2 — מכשיר לא מוכר בפורט של המדפסת
-1. מחקו את הכבל בין **PRN-HFA-A-01** ל-ACC1.
-2. גררו **Laptop**, וחברו אותו (Straight-Through) ל-ACC1 **Fa0/21**.
-3. הלפטופ שולח מסגרת (תנו לו IP כלשהו, למשל ‎`10.10.18.50`, ועשו ping ל-‎`10.10.18.1`).
-4. ‏ACC1 מציג ‎`%PORT_SECURITY-2-PSECURE_VIOLATION` ו-Fa0/21 **נופל** (נורית אדומה).
-   ‏`show port-security interface fa0/21` ‏←‏ `Port Status : Secure-shutdown`.
-5. שחזור: מחקו את הלפטופ, חברו מחדש את המדפסת ל-Fa0/21, ואז ב-ACC1:
+### 6ב — מדליקים את שירות ה-DHCP המזויף שלו (איך? ‏←‏ M20)
+1. ‏SRV-ROGUE ‏←‏ לשונית **Services** ‏←‏ **DHCP** (ברשימה משמאל).
+2. ‏**Service**: לחצו **On**.
+3. ‏**Default Gateway**: ‏‎`10.10.16.250` (התוקף שולח את עצמו בתור השער!)
+4. ‏**Start IP Address**: ‏‎`10.10.16.200`, ‏**Subnet Mask**: ‏‎`255.255.255.0`.
+5. לחצו **Save**. סגרו את החלון.
+
+### 6ג — מנסים
+1. ב**מחשב Engineering**: ‏Desktop ‏←‏ IP Configuration ‏←‏ לחצו **Static**, ואז שוב **DHCP**.
+2. הסתכלו על הכתובת והשער שהוא קיבל.
+
+✅ המחשב מקבל כתובת בין **‎.11 ל-‎.254** עם שער **10.10.16.1** — מ-DIST1/DIST2. ההצעות של
+השרת המזויף **נזרקו** ב-Fa0/9 (פורט לא מהימן).\
+❌ המחשב קיבל ‎`.200` עם שער ‎`.250` ‏←‏ ‏Fa0/9 מוגדר מהימן בטעות, או שה-snooping לא פועל
+ב-VLAN 10. בדקו `show ip dhcp snooping`.
+
+### 6ד — בונוס: רואים את ההתקפה מצליחה
+1. ב-ACC1: ‏`configure terminal` ‏←‏ `interface fa0/9` ‏←‏ `ip dhcp snooping trust` ‏←‏ `end`.
+2. חדשו שוב את המחשב (Static ‏←‏ DHCP). עכשיו הוא עלול לקבל ‎`.200` עם שער ‎`.250`: ההתקפה עובדת.
+3. **הסירו את ה-trust מייד:** ‏`configure terminal` ‏←‏ `interface fa0/9` ‏←‏
+   ‏`no ip dhcp snooping trust` ‏←‏ `end`.
+4. חדשו את המחשב עוד פעם ‏←‏ חזרה לכתובת אמיתית עם שער ‎`.1`.
+
+### 6ה — מנקים
+מחקו את SRV-ROGUE עם כלי ה-Delete ‏(M7).
+
+---
+
+## משימה 7 — התקפה 2: לפטופ לא מוכר בפורט של המדפסת
+1. מחקו את הכבל בין **PRN-HFA-A-01** ל-ACC1 ‏(M7).
+2. גררו **Laptop** וחברו אותו (Straight-Through) ל-ACC1 ‏**Fa0/21**.
+3. גרמו ללפטופ לשלוח מסגרת: ‏Desktop ‏←‏ IP Configuration ‏←‏ Static IP ‏‎`10.10.18.50`, מסיכה
+   ‏‎`255.255.255.0` ‏←‏ Command Prompt ‏←‏ `ping 10.10.18.1`.
+4. הסתכלו על ה-CLI של ACC1.
+
+✅ מופיע ‎`%PORT_SECURITY-2-PSECURE_VIOLATION` ו-Fa0/21 יורד (**down** — נקודה אדומה).\
+👉 ‏`show port-security interface fa0/21` ‏←‏ ✅ ‏`Port Status : Secure-shutdown`.
+
+5. משחזרים: מחקו את הלפטופ, חברו שוב את המדפסת ל-**Fa0/21** ‏(Straight-Through), ואז ב-ACC1:
 ```
 configure terminal
 interface fa0/21
@@ -274,13 +331,16 @@ interface fa0/21
  no shutdown
  end
 ```
-6. עשו ping למדפסת ממחשב ‏←‏ עובד שוב ✅.
+6. עשו פינג למדפסת ממחשב (`ping 10.10.18.10`).
+
+✅ שוב יש תשובות.
 
 ---
 
-## חלק 7 — שומרים
-‏`copy running-config startup-config` ב-ACC1 וב-ACC2 (שוב, כי נלמדו כתובות MAC במצב sticky) ‏←‏
-**File → Save**.
+## משימה 8 — שומרים הכול
+‏`copy running-config startup-config` ב-ACC1 וב-ACC2 ‏←‏ **File → Save**.
+
+---
 
 ## נקודת ביקורת
 - [ ] ‏Snooping פועל, הקישורים כלפי מעלה מהימנים, option 82 כבוי — בשני מתגי ה-access
@@ -296,17 +356,34 @@ interface fa0/21
 |---|---|
 | המחשבים מקבלים ‎`169.254.x.x` אחרי השלב הזה | חסר `no ip dhcp snooping information option`, או שהקישורים כלפי מעלה לא מוגדרים `trust` |
 | ‎`% Command rejected: Fa0/x is a dynamic port` | הפורט לא מוגדר `switchport mode access` — הגדירו את זה קודם |
-| פורט של מחשב אמיתי נכנס להפרה (violation) | יותר מדי כתובות MAC (למשל הזזתם מחשבים). מחקו את כתובות ה-MAC שנלמדו: בפורט `no switchport port-security`, ואז הקלידו שוב את שורות ה-port-security שלו מסעיף 4.1, ואז `shutdown` / `no shutdown` |
-| פורט המדפסת למטה אחרי שרק הזזתם את הכבל שלה | ה-sticky זכר את ה-MAC של הפורט הקודם; שחזרו כמו בהתקפה 2 צעד 5 |
+| פורט של מחשב אמיתי נכנס להפרה (violation) | יותר מדי כתובות MAC (למשל הזזתם מחשבים). מחקו את כתובות ה-MAC שנלמדו: בפורט `no switchport port-security`, ואז הקלידו שוב את שורות ה-port-security שלו ממשימה 3, ואז `shutdown` / `no shutdown` |
+| פורט המדפסת למטה אחרי שרק הזזתם את הכבל שלה | ה-sticky זכר את ה-MAC של הפורט הקודם; שחזרו כמו במשימה 7 צעד 5 |
 
 </div>
 
-## אתגר (בונוס — בזהירות!)
-‏**Dynamic ARP Inspection ‏(DAI)** משתמש בטבלת ה-binding של ה-snooping כדי לזרוק תשובות ARP
-מזויפות (ARP poisoning — עוד תרגיל של man-in-the-middle). הפעילו אותו עבור VLAN 10 בלבד
-ב-ACC1, בלי לשבור שום דבר. אילו פורטים חייבים להיות מהימנים, ולמה רק VLAN 10?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגיל — ‏Dynamic ARP Inspection (בונוס — בזהירות!) ⭐⭐⭐
+- 🎯 **המשימה:** ‏**Dynamic ARP Inspection ‏(DAI)** משתמש בטבלת ה-binding של ה-snooping כדי
+  לזרוק תשובות ARP מזויפות (ARP poisoning — עוד תרגיל של man-in-the-middle). הפעילו אותו עבור
+  **‏VLAN 10 בלבד** ב-ACC1, בלי לשבור שום דבר.
+- 📁 **מתחילים מ:** ה-`step06.pkt` שלכם — קודם **Save As** ‏`step06-dai.pkt`.
+- 👣 **צעדים:**
+  1. החליטו אילו פורטים של ACC1 חייבים להיות **מהימנים** עבור DAI.
+  2. הפעילו DAI עבור VLAN 10.
+  3. חדשו כתובת במחשב ENG ועשו פינג לשער שלו ולמחשב ENG אחר.
+- ✅ **גמרתם כש**הפינגים עדיין עובדים, ואתם יודעים להסביר (א) על אילו פורטים סמכתם ולמה,
+  (ב) למה רק VLAN 10 ולא VLAN 30 או 99.
+
+<details dir="rtl"><summary>💡 רמז 1</summary>
+
+‏DAI משווה כל תשובת ARP לטבלת ה-binding. אילו מכשירים **לא** נמצאים בטבלה? (הסתכלו ב-`show ip dhcp snooping binding`.)
+</details>
+<details dir="rtl"><summary>💡 רמז 2</summary>
+
+הפקודות הן `ip arp inspection vlan …`‎ (גלובלית) ו-`ip arp inspection trust` (בממשק).
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 <div dir="ltr">
 
@@ -327,12 +404,20 @@ interface range gi0/1 - 2
 נזרקות.
 </details>
 
+לשלב 07 חזרו ל-`step06.pkt`.
+
 ---
 
 ## 🛠 הפרויקט שלכם
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step05.pkt` ‏←‏ **Save As** ‏`my-project/step06.pkt`
+- [ ] ‏DHCP snooping בכל מתג access: ה-VLANים **שלכם** של המשתמשים, קישורים כלפי מעלה מהימנים, option 82 כבוי
+- [ ] ‏Port-security: משתמשים `restrict`, מדפסות / מחשב מנהל `shutdown`, פורטי AP עם maximum גבוה
+- [ ] גורמים לכל מכשיר לדבר, בודקים את טבלת ה-binding ואת `show port-security`, שומרים
+- [ ] חוזרים על שתי ההתקפות (משימות 6–7) מול הרשת **שלכם** — הן חייבות להיחסם
 
 <div dir="rtl">
 

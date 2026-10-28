@@ -15,6 +15,35 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — בונים ומחברים**
+- [ ] **משימה 1** — פותחים את שלב 08 ושומרים בשם שלב 09 (2 דקות)
+- [ ] **משימה 2** — מציבים את בניין B ואת בניין C (עם 4 ספקי כוח!) (20 דקות)
+- [ ] **משימה 3** — מחברים את בניין B ‏(20 דקות)
+- [ ] **משימה 4** — מחברים את בניין C ‏(20 דקות)
+
+**שיעור 2 — בניין B**
+- [ ] **משימה 5** — ‏B-DIST1, חלק 1: הקשחה, ‏VTP, ‏VLANים, ‏STP, ‏trunks, ‏EtherChannel ‏(15 דקות)
+- [ ] **משימה 6** — ‏B-DIST1, חלק 2: שערים, ‏DHCP, קישורים כלפי מעלה, ‏OSPF, ניהול (20 דקות)
+- [ ] **משימה 7** — ‏B-DIST2: תמונת המראה של B-DIST1 ‏(25 דקות)
+- [ ] **משימה 8** — ‏B-ACC1 ו-B-ACC2 ‏(25 דקות)
+- [ ] **משימה 9** — פותחים את פורטי ה-core לכיוון בניין B ‏(10 דקות)
+- [ ] **משימה 10** — מכשירי הקצה של בניין B + בדיקת בניין B ‏(10 דקות)
+
+**שיעור 3 — בניין C**
+- [ ] **משימה 11** — ‏C-DIST1 ‏(30 דקות)
+- [ ] **משימה 12** — ‏C-DIST2 ‏(25 דקות)
+- [ ] **משימה 13** — ‏C-ACC1 ו-C-ACC2 ‏(25 דקות)
+- [ ] **משימה 14** — מכשירי הקצה של בניין C + **רואים את הבעיה** 🔍 (10 דקות)
+
+**שיעור 4 — התיקון והסיום**
+- [ ] **משימה 15** — ה-virtual links ‏(10 דקות)
+- [ ] **משימה 16** — מעדכנים את רשימת האורחים של 7 המכשירים הישנים (15 דקות)
+- [ ] **משימה 17** — רושמים את 8 המכשירים החדשים בשרת ה-AAA ‏(10 דקות)
+- [ ] **משימה 18** — בדיקות סופיות (15 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 הרשת המקומית של המטה בחיפה **שלמה**: ‏3 בניינים, ‏6 מחלקות, תכנון תלת-שכבתי, ‏OSPF areas
 ‏0/1/2/3. בניין C מחובר רק לבניין B, ולכן תפגשו בעיית OSPF אמיתית ותפתרו אותה עם
@@ -40,8 +69,6 @@ ABR בין area 2 ל-area 3, מחוברים ל-B בקישורי ‎10.10.36.x/30
 > החזרה הכי טובה על הקורס. כל השאר מקלידים מתוך המדריך.
 
 </div>
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -98,90 +125,8 @@ areas עוברים רק *דרך* area 0 — כמו ערים שמותר להן ל
 של B ‏‎`10.10.32.0/20` מכסה גם אותם, והם לא "דולפים" ל-core כנתיבים נוספים. ה-loopbacks של בניין
 C ‏(10.10.63.x) נמצאים בתוך הבלוק של **area 3** מאותה סיבה.
 
----
-
-## חלק 2 — הכנה
-**File → Open** ‏←‏ `my-work/step08.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step09.pkt`.
-
----
-
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-
-### 3.1 המכשירים של בניין B (במלבן "BUILDING B")
-
-<div dir="rtl">
-
-| דגם | ‎‏Display Name |
-|---|---|
-| ‎‏3650-24PS (+ **AC-POWER-SUPPLY**!) | ‎`SWL3-HFA-B-DIST1`, `SWL3-HFA-B-DIST2` |
-| ‎2960 | ‎`SW-HFA-B-ACC1`, `SW-HFA-B-ACC2` |
-| ‎‏PC ×4 | ‎`PC-HFA-HR-01`, `PC-HFA-HR-02`, `PC-HFA-MKT-01`, `PC-HFA-MKT-02` |
-| ‎‏Printer | ‎`PRN-HFA-B-01` |
-
-</div>
-
-### 3.2 המכשירים של בניין C (במלבן "BUILDING C")
-
-<div dir="rtl">
-
-| דגם | ‎‏Display Name |
-|---|---|
-| ‎‏3650-24PS (+ **AC-POWER-SUPPLY**!) | ‎`SWL3-HFA-C-DIST1`, `SWL3-HFA-C-DIST2` |
-| ‎2960 | ‎`SW-HFA-C-ACC1`, `SW-HFA-C-ACC2` |
-| ‎‏PC ×4 | ‎`PC-HFA-RND-01`, `PC-HFA-RND-02`, `PC-HFA-IT-01`, `PC-HFA-IT-02` |
-| ‎‏Printer | ‎`PRN-HFA-C-01` |
-
-</div>
-
-### 3.3 כבלים — בניין B (מתג ↔ מתג: **Cross-Over**; מכשיר קצה ↔ מתג: **Straight-Through**)
-
-<div dir="rtl">
-
-| לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
-|---|---|---|---|
-| ‎SW-HFA-B-ACC1 | ‎Gi0/1 | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/1 |
-| ‎SW-HFA-B-ACC1 | ‎Gi0/2 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/1 |
-| ‎SW-HFA-B-ACC2 | ‎Gi0/1 | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/2 |
-| ‎SW-HFA-B-ACC2 | ‎Gi0/2 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/2 |
-| ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/23 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/23 |
-| ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/24 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/24 |
-| ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/1** | ‎SWL3-HFA-CORE1 | ‎**Gi1/0/3** |
-| ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/2** | ‎SWL3-HFA-CORE2 | ‎**Gi1/0/3** |
-| ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/1** | ‎SWL3-HFA-CORE1 | ‎**Gi1/0/4** |
-| ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/2** | ‎SWL3-HFA-CORE2 | ‎**Gi1/0/4** |
-| ‎PC-HFA-HR-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/1 |
-| ‎PC-HFA-HR-02 | ‎Fa0 | ‎SW-HFA-B-ACC2 | ‎Fa0/1 |
-| ‎PC-HFA-MKT-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/11 |
-| ‎PC-HFA-MKT-02 | ‎Fa0 | ‎SW-HFA-B-ACC2 | ‎Fa0/11 |
-| ‎PRN-HFA-B-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/21 |
-
-</div>
-
-### 3.4 כבלים — בניין C (הקישורים כלפי מעלה שלו הולכים ל**בניין B**)
-
-<div dir="rtl">
-
-| לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
-|---|---|---|---|
-| ‎SW-HFA-C-ACC1 | ‎Gi0/1 | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/1 |
-| ‎SW-HFA-C-ACC1 | ‎Gi0/2 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/1 |
-| ‎SW-HFA-C-ACC2 | ‎Gi0/1 | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/2 |
-| ‎SW-HFA-C-ACC2 | ‎Gi0/2 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/2 |
-| ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/23 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/23 |
-| ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/24 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/24 |
-| ‎SWL3-HFA-C-DIST1 | ‎**Gi1/1/1** | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/3** |
-| ‎SWL3-HFA-C-DIST1 | ‎**Gi1/1/2** | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/3** |
-| ‎SWL3-HFA-C-DIST2 | ‎**Gi1/1/1** | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/4** |
-| ‎SWL3-HFA-C-DIST2 | ‎**Gi1/1/2** | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/4** |
-| ‎PC-HFA-RND-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/1 |
-| ‎PC-HFA-RND-02 | ‎Fa0 | ‎SW-HFA-C-ACC2 | ‎Fa0/1 |
-| ‎PC-HFA-IT-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/11 |
-| ‎PC-HFA-IT-02 | ‎Fa0 | ‎SW-HFA-C-ACC2 | ‎Fa0/11 |
-| ‎PRN-HFA-C-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/21 |
-
-</div>
-
-### 3.5 תוכנית הכתובות של השלב הזה
+### 1.5 תוכנית הכתובות של השלב הזה
+השאירו את זה פתוח — כל משימה לוקחת מכאן את המספרים.
 
 <div dir="rtl">
 
@@ -224,30 +169,175 @@ C ‏(10.10.63.x) נמצאים בתוך הבלוק של **area 3** מאותה ס
 
 </div>
 
-### 3.6 רשימת האורחים הסופית לניהול
-מעכשיו מותר לנהל את ציוד הרשת מ**כל שלושת ה-VLANים של הניהול** ומ**מחלקת IT**. כל המכשירים
-החדשים מקבלים את ה-ACL הזו; בחלק 7 מעדכנים את הישנים:
+### 1.6 שני בלוקים שתקלידו הרבה פעמים
+**בלוק הניהול** זהה בכל מתג חדש — ‏SSH (שלב 07) + רשימת האורחים הסופית + Syslog + AAA (שלב 08).
+מעכשיו מותר לנהל את ציוד הרשת מ**כל שלושת ה-VLANים של הניהול** ומ**מחלקת IT**.
+
+**🅼 בלוק ניהול — ל-4 מתגי שכבה 3** ‏(B-DIST1/2, ‏C-DIST1/2):
 ```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
 ip access-list standard MGMT-ONLY
  permit 10.10.19.0 0.0.0.255
  permit 10.10.35.0 0.0.0.255
  permit 10.10.51.0 0.0.0.255
  permit 10.10.49.0 0.0.0.255
  deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+ip tacacs source-interface loopback 0
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
 ```
+
+**🅰 בלוק ניהול — ל-4 מתגי ה-access** ‏(B-ACC1/2, ‏C-ACC1/2): בדיוק אותו דבר, **בלי** השורה
+‏`ip tacacs source-interface loopback 0` (למתגי access אין loopback).
+
+<div dir="rtl">
+
+> כמו תמיד: אם `login block-for ...`‎ או `ip tacacs source-interface` נדחים, דלגו על השורה הזו
+> (ראו את ההערות בשלבים 07–08).
+
+</div>
 
 ---
 
-## חלק 4 — מגדירים את בניין B
+## משימה 1 — פותחים את שלב 08 ושומרים בשם שלב 09 (איך? ‏←‏ M1)
+‏**File → Open** ‏←‏ `my-work/step08.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step09.pkt`.
 
-נכנסים לכל מתג חדש עם **Enter** (עדיין אין סיסמאות). כשבלוק מכיל `crypto key generate rsa`,
-עונים **‎`1024`**.
+---
 
-### 4.1 ‏SWL3-HFA-B-DIST1 — הגדרה מלאה
+## משימה 2 — מציבים את בניין B ואת בניין C
+
+### 2א — בניין B (בתוך המלבן "BUILDING B" — איך? ‏←‏ M2, ‏M3, ‏M4)
+
+<div dir="rtl">
+
+| דגם | ‎Display Name |
+|---|---|
+| ‎3650-24PS | ‎`SWL3-HFA-B-DIST1`, `SWL3-HFA-B-DIST2` |
+| ‎2960 | ‎`SW-HFA-B-ACC1`, `SW-HFA-B-ACC2` |
+| ‎PC ×4 | ‎`PC-HFA-HR-01`, `PC-HFA-HR-02`, `PC-HFA-MKT-01`, `PC-HFA-MKT-02` |
+| ‎Printer | ‎`PRN-HFA-B-01` |
+
+</div>
+
+### 2ב — בניין C (בתוך המלבן "BUILDING C")
+
+<div dir="rtl">
+
+| דגם | ‎Display Name |
+|---|---|
+| ‎3650-24PS | ‎`SWL3-HFA-C-DIST1`, `SWL3-HFA-C-DIST2` |
+| ‎2960 | ‎`SW-HFA-C-ACC1`, `SW-HFA-C-ACC2` |
+| ‎PC ×4 | ‎`PC-HFA-RND-01`, `PC-HFA-RND-02`, `PC-HFA-IT-01`, `PC-HFA-IT-02` |
+| ‎Printer | ‎`PRN-HFA-C-01` |
+
+</div>
+
+### 2ג — ספקי כוח בכל **4** מתגי ה-3650 החדשים (⚠️ איך? ‏←‏ M8)
+כל 3650 ‏←‏ **Physical** ‏←‏ גוררים **AC-POWER-SUPPLY** לחריץ הריק ‏←‏ סוגרים. סמנו:
+- [ ] ‏SWL3-HFA-B-DIST1
+- [ ] ‏SWL3-HFA-B-DIST2
+- [ ] ‏SWL3-HFA-C-DIST1
+- [ ] ‏SWL3-HFA-C-DIST2
+
+✅ ‏18 מכשירים חדשים, לכולם שמות, ו-4 מתגי 3650 עם נורות ירוקות.
+
+---
+
+## משימה 3 — מחברים את בניין B (איך? ‏←‏ M5)
+מתג ↔ מתג = **Cross-Over**; מכשיר קצה ↔ מתג = **Straight-Through**.
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎SW-HFA-B-ACC1 | ‎Gi0/1 | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/1 |
+| ‎2 | ‎Cross-Over | ‎SW-HFA-B-ACC1 | ‎Gi0/2 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/1 |
+| ‎3 | ‎Cross-Over | ‎SW-HFA-B-ACC2 | ‎Gi0/1 | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/2 |
+| ‎4 | ‎Cross-Over | ‎SW-HFA-B-ACC2 | ‎Gi0/2 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/2 |
+| ‎5 | ‎Cross-Over | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/23 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/23 |
+| ‎6 | ‎Cross-Over | ‎SWL3-HFA-B-DIST1 | ‎Gi1/0/24 | ‎SWL3-HFA-B-DIST2 | ‎Gi1/0/24 |
+| ‎7 | ‎Cross-Over | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/1** | ‎SWL3-HFA-CORE1 | ‎**Gi1/0/3** |
+| ‎8 | ‎Cross-Over | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/2** | ‎SWL3-HFA-CORE2 | ‎**Gi1/0/3** |
+| ‎9 | ‎Cross-Over | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/1** | ‎SWL3-HFA-CORE1 | ‎**Gi1/0/4** |
+| ‎10 | ‎Cross-Over | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/2** | ‎SWL3-HFA-CORE2 | ‎**Gi1/0/4** |
+| ‎11 | ‎Straight | ‎PC-HFA-HR-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/1 |
+| ‎12 | ‎Straight | ‎PC-HFA-HR-02 | ‎Fa0 | ‎SW-HFA-B-ACC2 | ‎Fa0/1 |
+| ‎13 | ‎Straight | ‎PC-HFA-MKT-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/11 |
+| ‎14 | ‎Straight | ‎PC-HFA-MKT-02 | ‎Fa0 | ‎SW-HFA-B-ACC2 | ‎Fa0/11 |
+| ‎15 | ‎Straight | ‎PRN-HFA-B-01 | ‎Fa0 | ‎SW-HFA-B-ACC1 | ‎Fa0/21 |
+
+</div>
+
+<div dir="rtl">
+
+> אם PT לא מקבל נחושת בפורטי ה-`Gi1/1/x` של ה-3650, השתמשו בכבל ה-**Fiber** הכתום (כמו בשלב 08).
+
+</div>
+
+✅ ‏15 כבלים. בדקו כל תווית (M6). סמנו כל שורה תוך כדי עבודה — קל לדלג על אחת.
+
+---
+
+## משימה 4 — מחברים את בניין C (הקישורים כלפי מעלה שלו הולכים ל**בניין B**)
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎SW-HFA-C-ACC1 | ‎Gi0/1 | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/1 |
+| ‎2 | ‎Cross-Over | ‎SW-HFA-C-ACC1 | ‎Gi0/2 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/1 |
+| ‎3 | ‎Cross-Over | ‎SW-HFA-C-ACC2 | ‎Gi0/1 | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/2 |
+| ‎4 | ‎Cross-Over | ‎SW-HFA-C-ACC2 | ‎Gi0/2 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/2 |
+| ‎5 | ‎Cross-Over | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/23 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/23 |
+| ‎6 | ‎Cross-Over | ‎SWL3-HFA-C-DIST1 | ‎Gi1/0/24 | ‎SWL3-HFA-C-DIST2 | ‎Gi1/0/24 |
+| ‎7 | ‎Cross-Over | ‎SWL3-HFA-C-DIST1 | ‎**Gi1/1/1** | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/3** |
+| ‎8 | ‎Cross-Over | ‎SWL3-HFA-C-DIST1 | ‎**Gi1/1/2** | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/3** |
+| ‎9 | ‎Cross-Over | ‎SWL3-HFA-C-DIST2 | ‎**Gi1/1/1** | ‎SWL3-HFA-B-DIST1 | ‎**Gi1/1/4** |
+| ‎10 | ‎Cross-Over | ‎SWL3-HFA-C-DIST2 | ‎**Gi1/1/2** | ‎SWL3-HFA-B-DIST2 | ‎**Gi1/1/4** |
+| ‎11 | ‎Straight | ‎PC-HFA-RND-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/1 |
+| ‎12 | ‎Straight | ‎PC-HFA-RND-02 | ‎Fa0 | ‎SW-HFA-C-ACC2 | ‎Fa0/1 |
+| ‎13 | ‎Straight | ‎PC-HFA-IT-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/11 |
+| ‎14 | ‎Straight | ‎PC-HFA-IT-02 | ‎Fa0 | ‎SW-HFA-C-ACC2 | ‎Fa0/11 |
+| ‎15 | ‎Straight | ‎PRN-HFA-C-01 | ‎Fa0 | ‎SW-HFA-C-ACC1 | ‎Fa0/21 |
+
+</div>
+
+✅ ‏15 כבלים, התוויות נבדקו. ‏**File → Save**.
+
+---
+
+## משימה 5 — ‏B-DIST1, חלק 1: הקשחה, ‏VTP, ‏VLANים, ‏STP, ‏trunks, ‏EtherChannel
+👉 **איפה:** ‏**SWL3-HFA-B-DIST1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎ (מתג חדש, עוד אין סיסמאות).
+
+### 5א — הקשחה (שלב 02)
+⌨️ מקלידים:
 ```
 enable
 configure terminal
-! ===== hardening =====
 hostname SWL3-HFA-B-DIST1
 no ip domain-lookup
 enable secret Intel#En4ble
@@ -255,7 +345,11 @@ service password-encryption
 banner motd #
 *  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
 #
-! ===== VTP server of building B + VLANs =====
+```
+
+### 5ב — שרת ה-VTP של בניין B + ‏VLANים (שלב 03)
+⌨️ מקלידים:
+```
 vtp domain HFA-B
 vtp version 2
 vtp password Intel#Vtp
@@ -273,11 +367,16 @@ vlan 998
 vlan 999
  name PARKING
  exit
-! ===== Spanning Tree =====
+```
+
+### 5ג — ‏Spanning Tree, ‏trunks, ‏EtherChannel, פורטים שלא בשימוש (שלבים 03–04)
+‏B-DIST1 הוא הבוס של 40, ‏60, ‏99; סגן של 50.
+
+⌨️ מקלידים:
+```
 spanning-tree mode rapid-pvst
 spanning-tree vlan 40,60,99 root primary
 spanning-tree vlan 50 root secondary
-! ===== trunks to the access switches + Root Guard =====
 interface range gi1/0/1 - 2
  description TRUNK to access switch
  switchport mode trunk
@@ -286,7 +385,6 @@ interface range gi1/0/1 - 2
  switchport nonegotiate
  spanning-tree guard root
  no shutdown
-! ===== EtherChannel to B-DIST2 =====
 interface range gi1/0/23 - 24
  description Po1 member to SWL3-HFA-B-DIST2
  switchport mode trunk
@@ -301,14 +399,25 @@ interface port-channel 1
  switchport trunk native vlan 998
  switchport trunk allowed vlan 40,50,60,99,998
  switchport nonegotiate
-! ===== unused =====
 interface range gi1/0/3 - 22
  description UNUSED
  switchport mode access
  switchport access vlan 999
  shutdown
  exit
-! ===== gateways (SVIs + HSRP) =====
+```
+🔍 **בודקים עכשיו:** ‏`do show vlan brief` ‏←‏ ‏VLANים 40, ‏50, ‏60, ‏99, ‏998, ‏999 עם השמות שלהם.
+
+---
+
+## משימה 6 — ‏B-DIST1, חלק 2: שערים, ‏DHCP, קישורים כלפי מעלה, ‏OSPF, ניהול
+👉 **איפה:** ‏B-DIST1, שורת הפקודה `SWL3-HFA-B-DIST1(config)#`‎.
+
+### 6א — שערים: ‏SVIs + HSRP (שלב 05)
+‏priority **‏110** ב-40, ‏60, ‏99 (‏B-DIST1 הוא Active); **‏90** ב-50.
+
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 40
  description GW HR
@@ -345,7 +454,11 @@ interface vlan 99
  ip ospf authentication message-digest
  no shutdown
  exit
-! ===== DHCP split scope: this switch gives .11-.130 =====
+```
+
+### 6ב — חלוקת טווח DHCP: המתג הזה מחלק ‎.11–.130 (שלב 05)
+⌨️ מקלידים:
+```
 ip dhcp excluded-address 10.10.32.1 10.10.32.10
 ip dhcp excluded-address 10.10.32.131 10.10.32.254
 ip dhcp excluded-address 10.10.33.1 10.10.33.10
@@ -361,7 +474,11 @@ ip dhcp pool HFA-MARKETING
  dns-server 10.10.200.11
  domain-name intel.lab
  exit
-! ===== routed uplinks: to the core (area 0) and to building C (area 2) =====
+```
+
+### 6ג — קישורים מנותבים כלפי מעלה: ל-core ‏(area 0) ולבניין C ‏(area 2) (שלב 08)
+⌨️ מקלידים:
+```
 interface loopback 0
  ip address 10.10.5.21 255.255.255.255
 interface gi1/1/1
@@ -393,7 +510,11 @@ interface gi1/1/4
  ip ospf authentication message-digest
  no shutdown
  exit
-! ===== OSPF: ABR between area 0 and area 2 =====
+```
+
+### 6ד — ‏OSPF: ‏ABR בין area 0 ל-area 2 (שלב 08)
+⌨️ מקלידים:
+```
 router ospf 1
  router-id 10.10.5.21
  passive-interface default
@@ -406,54 +527,39 @@ router ospf 1
  network 10.10.32.0 0.0.15.255 area 2
  area 2 range 10.10.32.0 255.255.240.0
  exit
-! ===== management: SSH, ACL, AAA, Syslog =====
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-ip tacacs source-interface loopback 0
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
-```
-ההערות אומרות: הקשחה; שרת VTP של בניין B + ‏VLANים; ‏Spanning Tree; ‏trunks למתגי ה-access +
-‏Root Guard; ‏EtherChannel ל-B-DIST2; פורטים לא בשימוש; שערים (SVIs + ‏HSRP); ‏DHCP בטווח מפוצל —
-המתג הזה נותן ‎.11–.130; קישורים מנותבים ל-core ‏(area 0) ולבניין C ‏(area 2); ‏OSPF — ‏ABR בין
-area 0 ל-area 2; ניהול: ‏SSH, ‏ACL, ‏AAA, ‏Syslog. כל חלק כאן כבר מוכר לכם משלבים 02–08.
+
+### 6ה — ניהול
+⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** מסעיף 1.6 (ענו ‎`1024` לשאלה על המפתח).
+
+✅ ‏‎`[OK]`‎ בסוף. 🔍 ‏`show ip interface brief` ‏←‏ ‏Loopback0 ‏‎`10.10.5.21`, ‏Gi1/1/1–4
+ו-Vlan40/50/60/99 עם הכתובות מסעיף 1.5.
+
+---
+
+## משימה 7 — ‏B-DIST2: תמונת המראה של B-DIST1
+👉 **איפה:** ‏**SWL3-HFA-B-DIST2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+מה משתנה לעומת B-DIST1:
 
 <div dir="rtl">
 
-> כמו בשלב 07: אם מתג דוחה את `login block-for ...`‎, דלגו על השורה הזו באותו מתג.
+| | ‎B-DIST1 | ‎**B-DIST2** |
+|---|---|---|
+| ‎hostname | ‎SWL3-HFA-B-DIST1 | ‎**SWL3-HFA-B-DIST2** |
+| ‎VTP | ‏server + יוצר את ה-VLANים | **‏transparent ‏←‏ client, בלי פקודות `vlan`** |
+| ‎STP root primary / secondary | ‎40,60,99 / 50 | ‎**50 / 40,60,99** |
+| כתובות ה-SVI | ‎.2 | **‎.3** |
+| ‏HSRP priority 110 ב- | ‎40, 60, 99 | ‎**50** |
+| ‏DHCP מחלק | ‎.11–.130 | **‎.131–.254** |
+| ‎Loopback0 / router-id | ‎10.10.5.21 | ‎**10.10.5.22** |
+| ‎Gi1/1/1, Gi1/1/2 | ‎10.10.4.17, .21 | ‎**10.10.4.25, .29** |
+| ‎Gi1/1/3, Gi1/1/4 | ‎10.10.36.1, .9 | ‎**10.10.36.5, .13** |
 
 </div>
 
-### 4.2 ‏SWL3-HFA-B-DIST2 — הגדרה מלאה
+### 7א — הקשחה, ‏VTP client, ‏STP, ‏trunks, ‏EtherChannel
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -500,6 +606,13 @@ interface range gi1/0/3 - 22
  switchport access vlan 999
  shutdown
  exit
+```
+לחצו **Fast Forward Time**. 🔍 **בודקים עכשיו:** ‏`do show etherchannel summary` ‏←‏ `Po1(SU)`‎, שני
+החברים ‎`(P)`‎; ‏`do show vlan brief` ‏←‏ ה-VLANים של בניין B הגיעו ב-VTP.
+
+### 7ב — שערים ו-DHCP
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 40
  description GW HR
@@ -550,6 +663,11 @@ ip dhcp pool HFA-MARKETING
  dns-server 10.10.200.11
  domain-name intel.lab
  exit
+```
+
+### 7ג — קישורים כלפי מעלה ו-OSPF
+⌨️ מקלידים:
+```
 interface loopback 0
  ip address 10.10.5.22 255.255.255.255
 interface gi1/1/1
@@ -593,43 +711,21 @@ router ospf 1
  network 10.10.32.0 0.0.15.255 area 2
  area 2 range 10.10.32.0 255.255.240.0
  exit
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
-```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-ip tacacs source-interface loopback 0
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
 ```
 
-### 4.3 ‏SW-HFA-B-ACC1 — הגדרה מלאה
+### 7ד — ניהול
+⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+
+✅ ‏‎`[OK]`‎. לחצו Fast Forward Time. 🔍 ‏`show standby brief` ‏←‏ ‏Active ל-50, ‏Standby ל-40/60/99.
+
+---
+
+## משימה 8 — ‏B-ACC1 ו-B-ACC2
+
+### 8א — ‏SW-HFA-B-ACC1
+👉 **איפה:** ‏**SW-HFA-B-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+⌨️ **הקשחה + VTP client** (שלבים 02–03):
 ```
 enable
 configure terminal
@@ -646,7 +742,9 @@ vtp version 2
 vtp password Intel#Vtp
 vtp mode client
 spanning-tree mode rapid-pvst
-! ===== uplinks =====
+```
+⌨️ **קישורים כלפי מעלה, פורטי משתמשים, מדפסת, פורטים שלא בשימוש** (שלבים 02–04, ‏06):
+```
 interface range gi0/1 - 2
  description TRUNK uplink to B-DIST1 / B-DIST2
  switchport mode trunk
@@ -655,7 +753,6 @@ interface range gi0/1 - 2
  switchport nonegotiate
  ip dhcp snooping trust
  no shutdown
-! ===== users =====
 interface range fa0/1 - 10
  description HR users
  switchport mode access
@@ -673,7 +770,6 @@ interface range fa0/1 - 20
  switchport port-security violation restrict
  ip dhcp snooping limit rate 10
  no cdp enable
-! ===== printer =====
 interface fa0/21
  description PRN-HFA-B-01
  switchport mode access
@@ -685,70 +781,119 @@ interface fa0/21
  switchport port-security mac-address sticky
  switchport port-security violation shutdown
  no cdp enable
-! ===== unused =====
 interface range fa0/22 - 24
  description UNUSED
  switchport mode access
  switchport access vlan 999
  shutdown
  exit
-! ===== DHCP snooping =====
+```
+⌨️ **‏DHCP snooping + כתובת ניהול** (שלבים 05–06):
+```
 ip dhcp snooping
 ip dhcp snooping vlan 40,50,60,99
 no ip dhcp snooping information option
-! ===== management =====
 interface vlan 99
  description MANAGEMENT
  ip address 10.10.35.11 255.255.255.0
  no shutdown
  exit
 ip default-gateway 10.10.35.1
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
-```
+⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access** (סעיף 1.6).
 
-### 4.4 ‏SW-HFA-B-ACC2 — הגדרה מלאה
-בדיוק כמו 4.3, עם **שני שינויים**:
-- ‏`hostname SW-HFA-B-ACC2`
-- ‏`ip address 10.10.35.12 255.255.255.0` תחת `interface vlan 99`
+✅ ‏‎`[OK]`‎.
 
-(הקלידו שוב את כל הבלוק מ-4.3 עם שתי השורות האלה מוחלפות.)
+### 8ב — ‏SW-HFA-B-ACC2
+👉 **איפה:** ‏**SW-HFA-B-ACC2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-### 4.5 ‏CORE1 ו-CORE2 — פותחים את הפורטים לכיוון בניין B
-**‏SWL3-HFA-CORE1:**
+בדיוק כמו 8א, עם **שני שינויים**: ‏`hostname SW-HFA-B-ACC2` וכתובת הניהול ‎`10.10.35.12`. הנה
+הבלוק המלא, כדי שלא תצטרכו לגלול:
+
+⌨️ מקלידים:
 ```
 enable
+configure terminal
+hostname SW-HFA-B-ACC2
+no ip domain-lookup
+enable secret Intel#En4ble
+service password-encryption
+banner motd #
+*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
+#
+vtp mode transparent
+vtp domain HFA-B
+vtp version 2
+vtp password Intel#Vtp
+vtp mode client
+spanning-tree mode rapid-pvst
+interface range gi0/1 - 2
+ description TRUNK uplink to B-DIST1 / B-DIST2
+ switchport mode trunk
+ switchport trunk native vlan 998
+ switchport trunk allowed vlan 40,50,60,99,998
+ switchport nonegotiate
+ ip dhcp snooping trust
+ no shutdown
+interface range fa0/1 - 10
+ description HR users
+ switchport mode access
+ switchport access vlan 40
+interface range fa0/11 - 20
+ description MARKETING users
+ switchport mode access
+ switchport access vlan 50
+interface range fa0/1 - 20
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ no cdp enable
+interface fa0/21
+ description printer
+ switchport mode access
+ switchport access vlan 60
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ no cdp enable
+interface range fa0/22 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+ exit
+ip dhcp snooping
+ip dhcp snooping vlan 40,50,60,99
+no ip dhcp snooping information option
+interface vlan 99
+ description MANAGEMENT
+ ip address 10.10.35.12 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 10.10.35.1
+```
+⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access**.
+
+✅ ‏‎`[OK]`‎. 🔍 ב-B-ACC2: ‏`show vtp status` ‏←‏ דומיין `HFA-B`, מצב Client;
+‏`show interfaces trunk` ‏←‏ ‏Gi0/1, ‏Gi0/2 במצב trunking, ‏native 998.
+
+---
+
+## משימה 9 — פותחים את פורטי ה-core לכיוון בניין B
+הפורטים האלה היו ב"חניה" וכבויים מאז שלב 08. עכשיו הם הופכים לקישורים מנותבים.
+
+### 9א — ‏SWL3-HFA-CORE1
+👉 ‏CORE1 ‏←‏ CLI ‏←‏ נכנסים (`admin` / `Intel#Adm1n`) ‏←‏ `SWL3-HFA-CORE1#`‎.
+
+⌨️ מקלידים:
+```
 configure terminal
 interface gi1/0/3
  description to SWL3-HFA-B-DIST1 Gi1/1/1
@@ -771,24 +916,74 @@ router ospf 1
  end
 copy running-config startup-config
 ```
-**‏SWL3-HFA-CORE2:** אותו דבר, עם ‎`10.10.4.22` על Gi1/0/3 (תיאור `to SWL3-HFA-B-DIST1 Gi1/1/2`)
-ו-‎`10.10.4.30` על Gi1/0/4 (תיאור `to SWL3-HFA-B-DIST2 Gi1/1/2`).
 
-### 4.6 מכשירי הקצה של בניין B
-- **מחשבים** (HR-01/02, ‏MKT-01/02): ‏Desktop ‏←‏ IP Configuration ‏←‏ **DHCP**.
-- **‏PRN-HFA-B-01**: ‏Config ‏←‏ FastEthernet0 ‏←‏ IP ‎`10.10.34.10`, מסיכה ‎`255.255.255.0`;
-  ‏Config ‏←‏ Settings ‏←‏ Gateway ‎`10.10.34.1`.
+### 9ב — ‏SWL3-HFA-CORE2
+👉 ‏CORE2 ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SWL3-HFA-CORE2#`‎. הכתובות ‎`.22` ו-‎`.30`:
 
-### 4.7 בודקים את בניין B לפני שממשיכים
-- ‏CORE1: ‏`show ip route ospf` ‏←‏ `O IA 10.10.32.0/20` דרך B-DIST1 **וגם** B-DIST2 ✅
-- מחשב HR מקבל ‎`10.10.32.x`; ‏`ping` למחשב הנדסה בבניין A ✅
-- ‏B-DIST1: ‏`show standby brief`, ‏`show etherchannel summary`, ‏`show ip ospf neighbor` ‏(CORE1, ‏CORE2, ‏B-DIST2)
+⌨️ מקלידים:
+```
+configure terminal
+interface gi1/0/3
+ description to SWL3-HFA-B-DIST1 Gi1/1/2
+ no switchport
+ ip address 10.10.4.22 255.255.255.252
+ ip ospf message-digest-key 1 md5 Intel#Ospf
+ ip ospf authentication message-digest
+ no shutdown
+interface gi1/0/4
+ description to SWL3-HFA-B-DIST2 Gi1/1/2
+ no switchport
+ ip address 10.10.4.30 255.255.255.252
+ ip ospf message-digest-key 1 md5 Intel#Ospf
+ ip ospf authentication message-digest
+ no shutdown
+ exit
+router ospf 1
+ no passive-interface gi1/0/3
+ no passive-interface gi1/0/4
+ end
+copy running-config startup-config
+```
+לחצו **Fast Forward Time** כמה פעמים.
+
+✅ ‏‎`%OSPF-5-ADJCHG ... Nbr 10.10.5.21 ... to FULL` ו-‎`... 10.10.5.22 ... to FULL` בשני מתגי ה-core.
 
 ---
 
-## חלק 5 — מגדירים את בניין C (קודם **בלי** ה-virtual link)
+## משימה 10 — מכשירי הקצה של בניין B + בדיקת בניין B
 
-### 5.1 ‏SWL3-HFA-C-DIST1 — הגדרה מלאה
+### 10א — מכשירי קצה
+- ‏**מחשבים** HR-01, ‏HR-02, ‏MKT-01, ‏MKT-02: ‏Desktop ‏←‏ IP Configuration ‏←‏ **DHCP** ‏(M16).
+- ‏**PRN-HFA-B-01** ‏(M15): ‏Config ‏←‏ FastEthernet0 ‏←‏ **Static**, ‏IP ‏‎`10.10.34.10`, מסיכה
+  ‏‎`255.255.255.0`; ‏Config ‏←‏ Settings ‏←‏ Gateway ‏‎`10.10.34.1`.
+
+### 10ב — בודקים את בניין B לפני שממשיכים
+
+<div dir="rtl">
+
+| ‎# | איפה | מקלידים | ✅ צפוי |
+|---|---|---|---|
+| ‎1 | ‎CORE1 | ‎`show ip route ospf` | ‏`O IA 10.10.32.0/20` דרך B-DIST1 **וגם** B-DIST2 |
+| ‎2 | ‎B-DIST1 | ‎`show ip ospf neighbor` | ‏CORE1, ‏CORE2 ו-B-DIST2 — כולם FULL |
+| ‎3 | ‎B-DIST1 | ‎`show standby brief` | ‏Active ל-40/60/99, ‏Standby ל-50 |
+| ‎4 | ‎B-DIST1 | ‎`show etherchannel summary` | ‏`Po1(SU)`‎, שניהם ‎`(P)`‎ |
+| ‎5 | ‎PC-HFA-HR-01 | ‎`ipconfig` | כתובת ‎`10.10.32.x`, שער ‎`10.10.32.1` |
+| ‎6 | ‎PC-HFA-HR-01 | ‏`ping` למחשב Engineering בבניין A | יש תשובות |
+
+</div>
+
+❌ אל תתחילו את בניין C לפני שכל השש עוברות. **File → Save**.
+
+---
+
+## משימה 11 — ‏C-DIST1
+👉 **איפה:** ‏**SWL3-HFA-C-DIST1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+בניין C הוא כמו בניין B עם מספרים משלו: ‏VTP ‏`HFA-C`, ‏VLANים 70/80/90/99, ‏C-DIST1 הוא הבוס
+של 70, ‏90, ‏99. **ההבדל הגדול הוא ה-OSPF ‏(11ד): אין כאן area 0.**
+
+### 11א — הקשחה, שרת VTP, ‏VLANים
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -816,6 +1011,11 @@ vlan 998
 vlan 999
  name PARKING
  exit
+```
+
+### 11ב — ‏STP, ‏trunks, ‏EtherChannel, פורטים שלא בשימוש
+⌨️ מקלידים:
+```
 spanning-tree mode rapid-pvst
 spanning-tree vlan 70,90,99 root primary
 spanning-tree vlan 80 root secondary
@@ -847,6 +1047,11 @@ interface range gi1/0/3 - 22
  switchport access vlan 999
  shutdown
  exit
+```
+
+### 11ג — שערים ו-DHCP ‏(‎.11–.130)
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 70
  description GW RND
@@ -898,10 +1103,15 @@ ip dhcp pool HFA-IT
  dns-server 10.10.200.11
  domain-name intel.lab
  exit
-! ===== loopback inside AREA 3's block =====
+```
+
+### 11ד — ‏Loopback, קישורים כלפי מעלה לבניין B, ‏OSPF areas 2 ו-3 (אין כאן area 0!)
+⌨️ מקלידים:
+```
+! loopback inside AREA 3's block
 interface loopback 0
  ip address 10.10.63.1 255.255.255.255
-! ===== uplinks to building B (area 2) =====
+! uplinks to building B (area 2)
 interface gi1/1/1
  description to SWL3-HFA-B-DIST1 Gi1/1/3
  no switchport
@@ -917,7 +1127,6 @@ interface gi1/1/2
  ip ospf authentication message-digest
  no shutdown
  exit
-! ===== OSPF: ABR between area 2 and area 3 (no area 0 here!) =====
 router ospf 1
  router-id 10.10.63.1
  passive-interface default
@@ -928,45 +1137,39 @@ router ospf 1
  network 10.10.48.0 0.0.15.255 area 3
  area 3 range 10.10.48.0 255.255.240.0
  exit
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-ip tacacs source-interface loopback 0
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
-```
-ההערות אומרות: ה-loopback נמצא בתוך הבלוק של **area 3**; קישורים כלפי מעלה לבניין B ‏(area 2);
-‏OSPF — ‏ABR בין area 2 ל-area 3 (**אין כאן area 0!**).
 
-### 5.2 ‏SWL3-HFA-C-DIST2 — הגדרה מלאה
+<div dir="rtl">
+
+> ‏`network 10.10.36.0 0.0.0.15` = ‏16 הכתובות 10.10.36.0–15: בדיוק ארבעת הקישורים בין B ל-C.
+
+</div>
+
+### 11ה — ניהול
+⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+
+✅ ‏‎`[OK]`‎.
+
+---
+
+## משימה 12 — ‏C-DIST2
+👉 **איפה:** ‏**SWL3-HFA-C-DIST2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+<div dir="rtl">
+
+| | ‎C-DIST1 | ‎**C-DIST2** |
+|---|---|---|
+| ‎VTP | ‏server + ‏VLANים | ‎**‏transparent ‏←‏ client** |
+| ‎STP root primary / secondary | ‎70,90,99 / 80 | ‎**80 / 70,90,99** |
+| ‏SVIs / ‏HSRP 110 ב- | ‎.2 / 70, 90, 99 | **‎.3 / 80** |
+| ‏DHCP מחלק | ‎.11–.130 | **‎.131–.254** |
+| ‎Loopback0 / router-id | ‎10.10.63.1 | ‎**10.10.63.2** |
+| ‎Gi1/1/1, Gi1/1/2 | ‎10.10.36.2, .6 | ‎**10.10.36.10, .14** |
+
+</div>
+
+### 12א — הקשחה, ‏VTP, ‏STP, ‏trunks, ‏EtherChannel
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -1013,6 +1216,11 @@ interface range gi1/0/3 - 22
  switchport access vlan 999
  shutdown
  exit
+```
+
+### 12ב — שערים ו-DHCP ‏(‎.131–.254)
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 70
  description GW RND
@@ -1062,6 +1270,11 @@ ip dhcp pool HFA-IT
  dns-server 10.10.200.11
  domain-name intel.lab
  exit
+```
+
+### 12ג — ‏Loopback, קישורים כלפי מעלה, ‏OSPF
+⌨️ מקלידים:
+```
 interface loopback 0
  ip address 10.10.63.2 255.255.255.255
 interface gi1/1/1
@@ -1089,43 +1302,24 @@ router ospf 1
  network 10.10.48.0 0.0.15.255 area 3
  area 3 range 10.10.48.0 255.255.240.0
  exit
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
-```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-ip tacacs source-interface loopback 0
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
 ```
 
-### 5.3 ‏SW-HFA-C-ACC1 — הגדרה מלאה
+### 12ד — ניהול
+⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+
+✅ ‏‎`[OK]`‎.
+
+---
+
+## משימה 13 — ‏C-ACC1 ו-C-ACC2
+אותו דבר כמו B-ACC1/2 (משימה 8) עם הערכים של בניין C: ‏VTP ‏`HFA-C`, ‏VLANים **‏70** ‏(R&D,
+‏Fa0/1–10), **‏80** ‏(IT, ‏Fa0/11–20), **‏90** (מדפסת, ‏Fa0/21), ניהול ‎`10.10.51.11` / ‎`.12`,
+שער ‎`10.10.51.1`.
+
+### 13א — ‏SW-HFA-C-ACC1
+👉 **איפה:** ‏**SW-HFA-C-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -1193,64 +1387,56 @@ interface vlan 99
  no shutdown
  exit
 ip default-gateway 10.10.51.1
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
-```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- permit 10.10.35.0 0.0.0.255
- permit 10.10.51.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
- exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
-```
+⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access**. ✅ ‏‎`[OK]`‎.
 
-### 5.4 ‏SW-HFA-C-ACC2 — הגדרה מלאה
-כמו 5.3 עם: `hostname SW-HFA-C-ACC2` ו-`ip address 10.10.51.12 255.255.255.0`.
+### 13ב — ‏SW-HFA-C-ACC2
+👉 **איפה:** ‏**SW-HFA-C-ACC2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-### 5.5 מכשירי הקצה של בניין C
-- מחשבים (RND-01/02, ‏IT-01/02) ‏←‏ **DHCP**.
-- ‏PRN-HFA-C-01 ‏←‏ IP ‎`10.10.50.10` / ‎`255.255.255.0`, שער ‎`10.10.50.1`.
+הקלידו **שוב את כל הבלוק של 13א**, כששתי שורות **משתנות**:
+- ‏`hostname SW-HFA-C-ACC2`
+- תחת `interface vlan 99`: ‏`ip address 10.10.51.12 255.255.255.0`
 
-### 5.6 רואים את הבעיה 🔍
-לחצו כמה פעמים על **Fast Forward Time**, ואז:
-- **‏B-DIST1** ‏`show ip ospf neighbor` ‏←‏ ‏C-DIST1 ו-C-DIST2 הם שכנים במצב FULL ‏(area 2 עובד).
-- **‏CORE1** ‏`show ip route | include 10.10.48` ‏←‏ **כלום**. ה-core לא רואה את area 3.
-- **‏PC-HFA-RND-01** ‏←‏ `ping 10.10.1.10` (שרת ה-Syslog) ‏←‏ ❌ Request timed out.
-- **‏C-DIST1** ‏`show ip route` ‏←‏ אין נתיבי `O IA` מ-areas 0 ו-1 — האי שלם.
+(ואם תרצו, `description printer` ב-Fa0/21 — זו רק תווית.)
+אחר כך את **🅰 בלוק הניהול**. ✅ ‏‎`[OK]`‎.
 
-זה הכלל מסעיף 1.2 בפעולה. עכשיו מתקנים.
+🔍 ב-C-ACC2: ‏`show vlan brief` ‏←‏ ‏VLANים 70/80/90/99 הגיעו; ‏Fa0/1 ב-70, ‏Fa0/11 ב-80.
 
 ---
 
-## חלק 6 — ה-virtual links
+## משימה 14 — מכשירי הקצה של בניין C + רואים את הבעיה 🔍
 
-**‏SWL3-HFA-B-DIST1** ו-**SWL3-HFA-B-DIST2** (‏ABRs בין 0 ל-2) — הקלידו בשניהם:
+### 14א — מכשירי קצה
+- המחשבים RND-01, ‏RND-02, ‏IT-01, ‏IT-02 ‏←‏ **DHCP**.
+- ‏PRN-HFA-C-01 ‏←‏ IP ‏‎`10.10.50.10` / ‏‎`255.255.255.0`, שער ‎`10.10.50.1`.
+
+✅ המחשבים מקבלים ‎`10.10.48.x` ‏(R&D) ו-‎`10.10.49.x` ‏(IT) — ה-DHCP עובד **בתוך** הבניין.
+
+### 14ב — רואים את הבעיה
+לחצו **Fast Forward Time** כמה פעמים, ואז:
+
+<div dir="rtl">
+
+| ‎# | איפה | מקלידים | מה רואים | המשמעות |
+|---|---|---|---|---|
+| ‎1 | ‎B-DIST1 | ‎`show ip ospf neighbor` | ‏C-DIST1 ו-C-DIST2 במצב FULL | ‏area 2 עובד |
+| ‎2 | ‎CORE1 | ‎`show ip route ospf` | ‏‎`10.10.16.0/20`, ‏‎`10.10.32.0/20` — אבל **אין** ‎`10.10.48.0/20` | ‏area 3 לא נראה ל-core |
+| ‎3 | ‎PC-HFA-RND-01 | `ping 10.10.1.10` (שרת ה-Syslog) | ‎❌ ‏Request timed out | בניין C לא יכול לצאת |
+| ‎4 | ‎C-DIST1 | ‎`show ip route` | אין נתיבי `O IA` מ-areas 0 ו-1 | האי מושלם |
+
+</div>
+
+✅ כל הארבע כמו שתואר. **זו התוצאה הצפויה** — הכלל מסעיף 1.2 בפעולה. כתבו במחברת, במשפט
+אחד, **למה** זה קורה. אחר כך תקנו את זה במשימה 15.
+
+---
+
+## משימה 15 — ה-virtual links
+🧠 **למה:** לתת לבניין C "חתיכה של area 0" דרך area 2.
+
+### 15א — ב-B-DIST1 **וגם** ב-B-DIST2 ‏(ABRs של 0/2): מצביעים על ה-router-IDs של C
+⌨️ מקלידים ב**כל אחד** מהשניים:
 ```
-enable
 configure terminal
 router ospf 1
  area 2 virtual-link 10.10.63.1
@@ -1258,9 +1444,10 @@ router ospf 1
  end
 copy running-config startup-config
 ```
-**‏SWL3-HFA-C-DIST1** ו-**SWL3-HFA-C-DIST2** (‏ABRs בין 2 ל-3) — הקלידו בשניהם:
+
+### 15ב — ב-C-DIST1 **וגם** ב-C-DIST2 ‏(ABRs של 2/3): מצביעים על ה-router-IDs של B
+⌨️ מקלידים ב**כל אחד** מהשניים:
 ```
-enable
 configure terminal
 router ospf 1
  area 2 virtual-link 10.10.5.21
@@ -1268,24 +1455,38 @@ router ospf 1
  end
 copy running-config startup-config
 ```
-לחצו על **Fast Forward Time**. תראו ‎`%OSPF-5-ADJCHG: Process 1, Nbr 10.10.63.1 on OSPF_VL0 from LOADING to FULL`.
+לחצו **Fast Forward Time**.
+
+✅ מופיע ‎`%OSPF-5-ADJCHG: Process 1, Nbr 10.10.63.1 on OSPF_VL0 from LOADING to FULL`.
 
 <div dir="rtl">
 
 | פקודה | בשפה פשוטה |
 |---|---|
-| ‎`area 2 virtual-link 10.10.63.1` | "בנה חתיכה של area 0 **דרך area 2**, אל הנתב שה-router-ID שלו הוא 10.10.63.1" |
+| ‎‏`area 2 virtual-link 10.10.63.1` | "בנה חתיכה של area 0 **דרך area 2**, אל הנתב שה-router-ID שלו הוא 10.10.63.1" |
 
 </div>
 
+🔍 **בודקים עכשיו:** ב-B-DIST1 ‏`show ip ospf virtual-links`:
+```
+Virtual Link OSPF_VL0 to router 10.10.63.1 is up
+  Transit area 2, via interface GigabitEthernet1/1/3, Cost of using 1
+  ...
+Virtual Link OSPF_VL1 to router 10.10.63.2 is up
+```
+❌ ‏`is down` ‏←‏ הקלדתם **IP של ממשק** במקום ה-**router-ID**, או שאזור המעבר הוא לא ‎`2`.
+
 ---
 
-## חלק 7 — מעדכנים את המכשירים הישנים
+## משימה 16 — מעדכנים את רשימת האורחים של 7 המכשירים הישנים
+🧠 **למה:** גם ל-IT ול-VLANים החדשים של הניהול צריך להיות מותר לנהל את בניין A, את מתגי
+ה-core ואת מתג השרתים.
 
-### 7.1 ה-ACL הסופית לניהול על 7 המכשירים הישנים
-על **ACC1, ‏ACC2, ‏DIST1, ‏DIST2 (בניין A), ‏CORE1, ‏CORE2, ‏SW-HFA-SRV**:
+ב-**SW-HFA-A-ACC1, ‏SW-HFA-A-ACC2, ‏SWL3-HFA-A-DIST1, ‏SWL3-HFA-A-DIST2, ‏SWL3-HFA-CORE1,
+‏SWL3-HFA-CORE2, ‏SW-HFA-SRV** (נכנסים עם `admin` / `Intel#Adm1n`):
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 ip access-list standard MGMT-ONLY
  no deny any log
@@ -1299,19 +1500,29 @@ copy running-config startup-config
 
 <div dir="rtl">
 
-> למה מוחקים קודם את ה-`deny`? שורות חדשות נוספות ב**תחתית** של ACL עם שם. אם ה-`deny any` היה
-> נשאר מעליהן, אף חבילה לא הייתה מגיעה ל-permits החדשים.
+> למה מוחקים קודם את ה-`deny`? שורות חדשות נוספות ל**תחתית** של ACL עם שם. אילו ה-`deny any`
+> היה נשאר מעליהן, אף פעם לא היו מגיעים ל-permit החדשים.
 
 </div>
 
-בדיקה: `show access-lists MGMT-ONLY` ‏←‏ 4 שורות permit, ואחריהן ה-deny.
+🔍 בכל אחד: ‏`show access-lists MGMT-ONLY` ‏←‏ ‏4 שורות permit, ואחריהן ה-deny. סמנו:
+- [ ] ‏A-ACC1
+- [ ] ‏A-ACC2
+- [ ] ‏A-DIST1
+- [ ] ‏A-DIST2
+- [ ] ‏CORE1
+- [ ] ‏CORE2
+- [ ] ‏SW-HFA-SRV
 
-### 7.2 רושמים את 8 המכשירים החדשים בשרת SRV-HFA-AAA
-‏SRV-HFA-AAA ‏←‏ **Services → AAA → Network Configuration** ‏←‏ מוסיפים (‏secret `Intel#Tac`, סוג **Tacacs**):
+---
+
+## משימה 17 — רושמים את 8 המכשירים החדשים בשרת ה-AAA
+👉 **איפה:** ‏SRV-HFA-AAA ‏←‏ **Services → AAA → Network Configuration** (כמו בשלב 08, משימה 13).
+לכל שורה: ‏Client Name, ‏Client IP, ‏Secret ‏`Intel#Tac`, ‏ServerType **Tacacs** ‏←‏ **Add**.
 
 <div dir="rtl">
 
-| ‎‏Client Name | ‎‏Client IP |
+| ‎Client Name | ‎Client IP |
 |---|---|
 | ‎SWL3-HFA-B-DIST1 | ‎10.10.5.21 |
 | ‎SWL3-HFA-B-DIST2 | ‎10.10.5.22 |
@@ -1324,53 +1535,47 @@ copy running-config startup-config
 
 </div>
 
+✅ ברשימת ה-clients יש עכשיו 15 שורות.
+
 ---
 
-## חלק 8 — בודקים את העבודה
+## משימה 18 — בדיקות סופיות
 
-### 8.1 ה-virtual links
-על **B-DIST1**: ‏`show ip ospf virtual-links`
-```
-Virtual Link OSPF_VL0 to router 10.10.63.1 is up
-  Transit area 2, via interface GigabitEthernet1/1/3, Cost of using 1
-  ...
-Virtual Link OSPF_VL1 to router 10.10.63.2 is up
-```
+### 18א — ה-core רואה עכשיו כל בניין כנתיב אחד
+👉 ב-**CORE1**: ‏`show ip route ospf`
 
-### 8.2 ה-core רואה עכשיו כל בניין כנתיב אחד
-על **CORE1**: ‏`show ip route ospf`
+✅ אמורים לראות:
 ```
 O IA  10.10.16.0/20 ...   <- building A (area 1)
 O IA  10.10.32.0/20 ...   <- building B (area 2)
 O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual link!
 ```
-(בניין A ‏(area 1), בניין B ‏(area 2), ובניין C ‏(area 3) — שהגיע דרך ה-virtual link!)
 
-### 8.3 בדיקות ping ו-SSH
+### 18ב — פינגים ו-SSH
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | מה אמור לקרות |
-|---|---|---|
-| ‎PC-HFA-RND-01 | ‎`ping 10.10.1.10` | ✅ (נכשל לפני ה-virtual link) |
-| ‎PC-HFA-IT-01 | `ping` למחשב הנדסה בבניין A | ‎✅ |
-| ‎PC-HFA-HR-01 | `ping` למחשב מו"פ | ‎✅ |
-| ‎PC-HFA-IT-01 | `ssh -l admin 10.10.19.11` ‏(ACC1 בבניין A) | ✅ ל-IT מותר לנהל את הציוד |
-| ‎PC-HFA-RND-01 | ‎`ssh -l admin 10.10.51.11` | ❌ נדחה (לא ברשימת האורחים) |
+| ‎# | מאיפה | מקלידים | צפוי |
+|---|---|---|---|
+| ‎1 | ‎PC-HFA-RND-01 | ‎`ping 10.10.1.10` | ✅ (נכשל לפני ה-virtual link) |
+| ‎2 | ‎PC-HFA-IT-01 | ‏`ping` למחשב Engineering בבניין A | ‎✅ |
+| ‎3 | ‎PC-HFA-HR-01 | ‏`ping` למחשב R&D | ‎✅ |
+| ‎4 | ‎PC-HFA-IT-01 | `ssh -l admin 10.10.19.11` (‏ACC1 בבניין A) | ✅ ל-IT מותר לנהל מכשירים |
+| ‎5 | ‎PC-HFA-RND-01 | ‎`ssh -l admin 10.10.51.11` | ❌ נדחה (לא ברשימת האורחים) |
 
 </div>
 
----
+### 18ג — שומרים
+‏`copy running-config startup-config` בכל מתג ששיניתם ‏←‏ **File → Save**.
 
-## חלק 9 — שומרים
-‏`copy running-config startup-config` בכל המתגים ששיניתם ‏←‏ **File → Save**.
+---
 
 ## נקודת ביקורת
 - [ ] המחשבים בבניינים B ו-C מקבלים כתובות DHCP ממתגי ה-DIST של הבניין שלהם
-- [ ] כל 4 ה-virtual links במצב up
+- [ ] כל 4 ה-virtual links ‏up
 - [ ] ל-CORE1 יש בדיוק שלושה נתיבי `O IA` של ‎/20
 - [ ] כל מחשב בכל בניין מגיע לשרתים
-- [ ] ‏IT יכולים להתחבר ב-SSH לכל מתג; מו"פ לא
+- [ ] ‏IT יכול להתחבר ב-SSH לכל מתג; ‏R&D לא
 
 ## אם משהו לא עובד
 
@@ -1383,19 +1588,50 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 | ה-core רואה הרבה נתיבים קטנים מ-area 2 | חסר `area 2 range 10.10.32.0 255.255.240.0` ב-B-DIST1/2 |
 | המחשבים בבניין C לא מקבלים כתובת | שגיאת כתיב בדומיין ה-VTP ‏`HFA-C` במתג access, או snooping בלי `trust` על הקישורים כלפי מעלה |
 | אזהרות ‎`% Access VLAN does not exist` | נורמלי בזמן ש-VTP לומד — ראו שלב 03 |
+| לכל הקישורים של 3650 חדש יש נקודות אדומות | חסר לו ספק כוח (משימה 2ג) |
 
 </div>
 
-## אתגר
-מחקו את הסיכום של area 2 ב-B-DIST1 וב-B-DIST2 (‏`router ospf 1` ‏←‏ `no area 2 range 10.10.32.0 255.255.240.0`).
-הסתכלו על טבלת הניתוב של CORE1. כמה שורות נוספו, ולמה קישורי ה-‎`10.10.36.x` ביניהן? החזירו את
-הסיכום.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — מוחקים את הסיכום ⭐⭐
+- 🎯 **המשימה:** לראות מה הסיכום של area 2 מסתיר מה-core.
+- 📁 **מתחילים מ:** ה-`step09.pkt` שלכם (‏Save As ‏`step09-exA.pkt`).
+- 👣 **צעדים:**
+  1. ב-B-DIST1 **וגם** ב-B-DIST2: ‏`configure terminal` ‏←‏ `router ospf 1` ‏←‏
+     ‏`no area 2 range 10.10.32.0 255.255.240.0` ‏←‏ `end`.
+  2. ‏Fast Forward Time. ב-CORE1: ‏`show ip route ospf`. ספרו את השורות שמתחילות ב-‎`10.10.3`.
+  3. החזירו את הסיכום בשניהם.
+- ✅ **גמרתם כש**אתם יודעים לומר כמה שורות נוספו, ולמה קישורי ה-‎`10.10.36.x` ביניהן.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+אילו רשתות נמצאות ב-area 2? ה-VLANים של בניין B… ומה עוד?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 בלי הסיכום, כל רשת של area 2 מפורסמת בנפרד כ-`O IA`: ‏4 ה-VLANים (40, ‏50, ‏60, ‏99) **וגם**
 ארבעת קישורי ה-‎/30 לבניין C — בערך 8 שורות במקום אחת. גם קישורי ה-‎/30 הם רשתות של area 2. עם
 הסיכום הם מוסתרים בתוך 10.10.32.0/20 — ובגלל זה מספרנו אותם 10.10.36.x ולא 10.10.4.x.
+</details>
+
+### תרגיל ב — שוברים virtual link אחד ⭐⭐
+- 🎯 **המשימה:** להוכיח שבניין C שורד אובדן של אחד משני מתגי ה-B-DIST.
+- 📁 **מתחילים מ:** ה-`step09.pkt` שלכם — קודם **File → Save**.
+- 👣 **צעדים:**
+  1. מ-PC-HFA-RND-01 הפעילו `ping -t 10.10.1.10`.
+  2. מחקו את **SWL3-HFA-B-DIST1** (כלי ה-Delete).
+  3. הסתכלו על הפינג. ב-C-DIST1: ‏`show ip ospf virtual-links`.
+  4. ‏**File → Open** לקובץ `step09.pkt` ששמרתם (ענו **No** לשמירה).
+- ✅ **גמרתם כש**אתם יודעים להסביר למה הפינג חזר, ואילו virtual links עדיין למעלה.
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+כמה פינגים הולכים לאיבוד, ואז הם ממשיכים: ה-virtual links אל ‎`10.10.5.22` ‏(B-DIST2) עדיין
+למעלה, ולכן ל-area 3 עדיין יש דרך ל-area 0. בגלל זה בנינו את כל 4 הצירופים (B1↔C1, ‏B1↔C2,
+‏B2↔C1, ‏B2↔C2) ולא רק אחד.
 </details>
 
 ---
@@ -1405,7 +1641,14 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
 
-השלב הזה הוא כבר "עשו בעצמכם" על הדוגמה. בפרויקט שלכם:
+- [ ] פותחים את `my-project/step08.pkt` ‏←‏ **Save As** ‏`my-project/step09.pkt`
+- [ ] קודם כותבים טבלאות משלכם, כמו 1.5: קישורים, ‏loopbacks, ‏VLANים, מי ה"ראשי"
+- [ ] כותבים שני בלוקי ניהול משלכם, כמו 1.6, עם רשימת האורחים שלכם
+- [ ] בונים, נותנים חשמל ומחברים את שאר הבניינים של המטה שלכם
+- [ ] מגדירים את הבניין שנוגע ב-core; בודקים אותו (כמו משימה 10ב)
+- [ ] מגדירים את הבניין שנוגע רק בבניין השני; **רואים את הבעיה**
+- [ ] מוסיפים את ה-virtual links; מעדכנים את ה-ACL של המכשירים הישנים; רושמים את החדשים ב-AAA
+- [ ] הבדיקות של משימה 18 עוברות בפרויקט שלכם
 
 <div dir="rtl">
 
@@ -1510,8 +1753,8 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 ## 👩‍🏫 הערות למורה
 - **שיעור 1:** משחק חזרה — התלמידים אומרים מאיזה שלב מגיע כל בלוק בהגדרות של B-DIST1 (הקשחה = 02,
   ‏VTP = 03, ‏STP/EtherChannel = 04, ‏SVIs/HSRP/DHCP = 05, …). אחר כך בונים ומחווטים את שני הבניינים.
-- **שיעור 2:** מגדירים את בניין B; בודקים את 4.7.
-- **שיעור 3:** מגדירים את בניין C; **עוצרים ב-5.6** ונותנים לכיתה לגלות את הבעיה. שואלים: "שכני
+- **שיעור 2:** מגדירים את בניין B; בודקים לפי משימה 10ב.
+- **שיעור 3:** מגדירים את בניין C; **עוצרים במשימה 14ב** ונותנים לכיתה לגלות את הבעיה. שואלים: "שכני
   ה-OSPF במצב FULL — אז למה ה-core לא רואה את area 3?" מובילים אותם לכלל "כל area חייב לגעת
   ב-area 0".
 - **שיעור 4:** ‏virtual links ‏←‏ בדיקות ‏←‏ ה-ACL הסופית ‏←‏ אתגר.

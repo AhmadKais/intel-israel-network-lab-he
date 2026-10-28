@@ -15,6 +15,20 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 03 ושומרים בשם שלב 04 (2 דקות)
+- [ ] **משימה 2** — שני כבלים חדשים בין DIST1 ל-DIST2 ‏(5 דקות)
+- [ ] **משימה 3** — ‏DIST1: ‏Rapid STP + בוס של ה-VLANים שלו (5 דקות)
+- [ ] **משימה 4** — ‏DIST1: ה-EtherChannel + ‏Root Guard ‏(10 דקות)
+- [ ] **משימה 5** — ‏DIST2: אותו דבר, בתמונת מראה (15 דקות)
+- [ ] **משימה 6** — ‏ACC1 ו-ACC2: ‏Rapid STP, ‏PortFast, ‏BPDU Guard ‏(10 דקות)
+- [ ] **משימה 7** — בודקים את ה-EtherChannel ואת הבוסים (10 דקות)
+- [ ] **משימה 8** — בדיקת שבירה 1: מנתקים קישור כלפי מעלה (10 דקות)
+- [ ] **משימה 9** — בדיקת שבירה 2: מנתקים כבל של ה-EtherChannel ‏(5 דקות)
+- [ ] **משימה 10** — בדיקת שבירה 3: מחברים מתג מתחזה (10 דקות)
+- [ ] **תרגיל** — ה-priority הנסתר
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 - ‏DIST1 ו-DIST2 מחוברים ב-**שני כבלים שמאוחדים לקישור לוגי אחד** (‏**EtherChannel** בשם
   `Port-channel1`).
@@ -31,8 +45,6 @@
            ACC1                     ╲      ╱                 ACC2
                                       ╲  ╱
 ```
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -115,41 +127,52 @@ VLAN 10 בזמן ש-DIST2 הוא הבוס של VLAN 20 ‏←‏ שני מתגי
 
 ---
 
-## חלק 2 — הכנה
+## משימה 1 — פותחים את שלב 03 ושומרים בשם שלב 04 (איך? ‏←‏ M1)
 ‏**File → Open** ‏←‏ `my-work/step03.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step04.pkt`.
+
+✅ בשורת הכותרת כתוב `step04.pkt`.
 
 ---
 
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-שני כבלים חדשים, שניהם **Copper Cross-Over** (מתג ↔ מתג):
+## משימה 2 — שני כבלים חדשים בין DIST1 ל-DIST2
+שניהם **Copper Cross-Over** (מתג ↔ מתג) (איך? ‏←‏ M5):
 
 <div dir="rtl">
 
-| לחצו קודם על | פורט | לחצו אחר כך על | פורט |
-|---|---|---|---|
-| ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/23** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/23** |
-| ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/24** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/24** |
+| ‎# | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|
+| ‎1 | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/23** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/23** |
+| ‎2 | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/24** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/24** |
 
 </div>
 
-אל תדאגו אם הם נשארים כתומים — מגדירים אותם עכשיו.
+✅ שני קווים מקווקווים בין DIST1 ל-DIST2, עם התוויות `Gi1/0/23` ו-`Gi1/0/24` בשני הקצוות.
+אל תדאגו אם הם נשארים כתומים — אנחנו מגדירים אותם עכשיו.
 
 ---
 
-## חלק 4 — מגדירים (הקלידו כל שורה)
+## משימה 3 — ‏DIST1: ‏Rapid STP + בוס של ה-VLANים שלו
+👉 **איפה:** ‏**SWL3-HFA-A-DIST1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ banner ‏←‏ `Password:`‎ ‏`Intel#Con` ‏←‏
+‏`enable` ‏←‏ `Intel#En4ble`. שורת הפקודה: `SWL3-HFA-A-DIST1#`‎ (איך? ‏←‏ M9).
 
-### 4.1 ‏SWL3-HFA-A-DIST1
-התחברו (console ‏`Intel#Con`, ‏enable ‏`Intel#En4ble`):
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-
-! ---------- Spanning Tree: rapid mode + choose the boss ----------
 spanning-tree mode rapid-pvst
 spanning-tree vlan 10,30,99,110 root primary
 spanning-tree vlan 20,120 root secondary
+```
+✅ אין הודעות שגיאה; שורת הפקודה עדיין `SWL3-HFA-A-DIST1(config)#`‎.\
+🔍 **בודקים עכשיו:** ‏`do show spanning-tree vlan 10` ‏←‏ קרוב לראש הפלט: `This bridge is the root`.
 
-! ---------- EtherChannel members: identical trunk settings + bundle 1 ----------
+---
+
+## משימה 4 — ‏DIST1: ה-EtherChannel + ‏Root Guard
+👉 **איפה:** עדיין DIST1, שורת הפקודה ‎`(config)#`‎.
+
+### 4א — שני כבלי החברים: הגדרות trunk זהות + צרור 1
+⌨️ מקלידים:
+```
 interface range gi1/0/23 - 24
  description Po1 member to SWL3-HFA-A-DIST2
  switchport mode trunk
@@ -159,8 +182,12 @@ interface range gi1/0/23 - 24
  channel-group 1 mode active
  no shutdown
  exit
+```
+✅ אחרי `channel-group 1 mode active` מופיע `Creating a port-channel interface Port-channel 1`.
 
-! ---------- the logical link that the bundle creates ----------
+### 4ב — הקישור הלוגי שהצרור יוצר
+⌨️ מקלידים:
+```
 interface port-channel 1
  description EtherChannel to SWL3-HFA-A-DIST2
  switchport mode trunk
@@ -168,28 +195,47 @@ interface port-channel 1
  switchport trunk allowed vlan 10,20,30,99,110,120,998
  switchport nonegotiate
  exit
+```
 
-! ---------- Root Guard on the ports facing the access switches ----------
+### 4ג — ‏Root Guard בפורטים שפונים למתגי ה-access
+⌨️ מקלידים:
+```
 interface range gi1/0/1 - 2
  spanning-tree guard root
  end
 copy running-config startup-config
 ```
-ההערות בבלוק אומרות: ‏Spanning Tree — מצב מהיר + בחירת הבוס; חברי ה-EtherChannel — הגדרות
-trunk זהות + איחוד מספר 1; הקישור הלוגי שהאיחוד יוצר; ‏Root Guard בפורטים שפונים למתגי ה-access.
+✅ ‏‎`[OK]`‎. הצרור עוד לא עלה — ל-DIST2 עדיין חסר החצי שלו (משימה 5).
 
-אחרי `channel-group 1 mode active` תראו `Creating a port-channel interface Port-channel 1` — מצוין.
+---
 
-### 4.2 ‏SWL3-HFA-A-DIST2
-אותו מבנה, אבל DIST2 הוא הבוס של VLAN 20 ו-120:
+## משימה 5 — ‏DIST2: אותו דבר, בתמונת מראה
+👉 **איפה:** ‏**SWL3-HFA-A-DIST2** ‏←‏ CLI ‏←‏ נכנסים עם הסיסמאות ‏←‏ `SWL3-HFA-A-DIST2#`‎.
+
+‏DIST2 הוא הבוס של VLAN 20 ו-120, וסגן בשאר — ההפך מ-DIST1.
+
+<div dir="rtl">
+
+| מה | ב-DIST1 (משימות 3–4) | ב-DIST2 (כאן) |
+|---|---|---|
+| ‎‏`root primary` | ‎‏10,30,99,110 | ‎**‏20,120** |
+| ‎‏`root secondary` | ‎‏20,120 | ‎**‏10,30,99,110** |
+| ‏description של החברים / ה-port-channel | ‎‏‎`... to SWL3-HFA-A-DIST2` | ‎**‏‎`... to SWL3-HFA-A-DIST1`** |
+
+</div>
+
+### 5א — ‏STP
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-
 spanning-tree mode rapid-pvst
 spanning-tree vlan 20,120 root primary
 spanning-tree vlan 10,30,99,110 root secondary
+```
 
+### 5ב — ‏EtherChannel ו-Root Guard
+⌨️ מקלידים:
+```
 interface range gi1/0/23 - 24
  description Po1 member to SWL3-HFA-A-DIST1
  switchport mode trunk
@@ -213,10 +259,22 @@ interface range gi1/0/1 - 2
  end
 copy running-config startup-config
 ```
+לחצו **Fast Forward Time** ‏2–3 פעמים (M18).
 
-### 4.3 ‏SW-HFA-A-ACC1
+✅ מופיעות הודעות כמו ‎`%LINK-5-CHANGED: Interface Port-channel1, changed state to up`, ושני
+הכבלים בין DIST1 ל-DIST2 נהיים ירוקים.\
+🔍 **בודקים עכשיו:** ‏`show etherchannel summary` ‏←‏ שורה ‎`1  Po1(SU)  LACP  Gig1/0/23(P) Gig1/0/24(P)`‎.\
+❌ ‏`Po1(SD)`‎ ‏←‏ ראו "אם משהו לא עובד" (השורה הראשונה).
+
+---
+
+## משימה 6 — ‏ACC1 ו-ACC2: ‏Rapid STP, ‏PortFast, ‏BPDU Guard
+
+### 6א — ‏SW-HFA-A-ACC1
+👉 **איפה:** ‏ACC1 ‏←‏ CLI ‏←‏ נכנסים עם הסיסמאות ‏←‏ `SW-HFA-A-ACC1#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 spanning-tree mode rapid-pvst
 
@@ -227,15 +285,14 @@ interface range fa0/1 - 22
  end
 copy running-config startup-config
 ```
-ההערה אומרת: פורטים למכשירי קצה (מחשבים, מדפסת, מחשב המנהל): PortFast + BPDU Guard.
-
-‏PT מדפיס אזהרה ארוכה:
-‎`%Warning: portfast should only be enabled on ports connected to a single host...`‎
+✅ ‏PT מדפיס הודעה ארוכה ‎`%Warning: portfast should only be enabled on ports connected to a single host...`‎
 — זו תזכורת, לא שגיאה. כאן זה נכון.
 
-### 4.4 ‏SW-HFA-A-ACC2
+### 6ב — ‏SW-HFA-A-ACC2
+👉 **איפה:** ‏ACC2 ‏←‏ CLI ‏←‏ נכנסים עם הסיסמאות ‏←‏ `SW-HFA-A-ACC2#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 spanning-tree mode rapid-pvst
 
@@ -246,11 +303,9 @@ interface range fa0/1 - 23
  end
 copy running-config startup-config
 ```
-ההערה אומרת: מחשבים, מדפסת ושני הפורטים של נקודות הגישה (מבחינת STP נקודת גישה היא מכשיר קצה).
-
 לחצו **Fast Forward Time** כמה פעמים.
 
-### 4.5 מה הפקודות החדשות אומרות
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -269,13 +324,12 @@ copy running-config startup-config
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 7 — בודקים את ה-EtherChannel ואת הבוסים
 
-### 5.1 ה-EtherChannel
-ב-**DIST1**:
-```
-show etherchannel summary
-```
+### 7א — ה-EtherChannel
+👉 ב-**DIST1** (שורת פקודה ‎`#`‎): ‏`show etherchannel summary`
+
+✅ אמורים לראות:
 ```
 Flags:  D - down        P - bundled in port-channel
         S - Layer2      U - in use
@@ -284,22 +338,26 @@ Group  Port-channel  Protocol    Ports
 ------+-------------+-----------+--------------------------------
 1      Po1(SU)           LACP   Gig1/0/23(P) Gig1/0/24(P)
 ```
-✅ ‏`Po1(SU)`‎ = שכבה 2, **בשימוש**. שני הפורטים ‎`(P)`‎ = באיחוד.
-אם אתם רואים ‎`(SD)`‎, או ‎`(I)`‎/‎`(s)`‎ ליד הפורטים, ראו את טבלת "אם משהו לא עובד".
+‏`Po1(SU)`‎ = שכבה 2, **בשימוש**. שני הפורטים ‎`(P)`‎ = בתוך הצרור.\
+❌ ‏‎`(SD)`‎ או ‎`(I)`‎/‎`(s)`‎ ליד הפורטים ‏←‏ ראו את טבלת התקלות.
 
-### 5.2 מי הבוס?
-ב-**DIST1**: `show spanning-tree vlan 10`
+### 7ב — מי הבוס?
+👉 ב-**DIST1**: ‏`show spanning-tree vlan 10`
+
+✅ אמורים לראות:
 ```
 VLAN0010
   Spanning tree enabled protocol rstp
   Root ID    Priority    24586
              Address     000A.F3C4.1101
-             This bridge is the root            <- ✅ DIST1 is boss of VLAN 10
+             This bridge is the root            <- DIST1 is boss of VLAN 10
 ```
-(ה-‏✅ אומר: DIST1 הוא הבוס של VLAN 10. כתובת ה-MAC אצלכם תהיה שונה.)
-ב-**DIST2**: `show spanning-tree vlan 20` ‏←‏ `This bridge is the root` ✅
+👉 ב-**DIST2**: ‏`show spanning-tree vlan 20` ‏←‏ ✅ ‏`This bridge is the root`.
 
-ב-**ACC1**: `show spanning-tree vlan 10`
+### 7ג — המבט ממתג access
+👉 ב-**ACC1**: ‏`show spanning-tree vlan 10`
+
+✅ אמורים לראות (מספרי ה-Cost אצלכם יכולים להיות שונים):
 ```
 Interface        Role Sts Cost      Prio.Nbr Type
 ---------------- ---- --- --------- -------- -----------
@@ -307,32 +365,50 @@ Gi0/1            Root FWD 4         128.25   P2p        <- road to the boss (DIS
 Gi0/2            Altn BLK 4         128.26   P2p        <- backup road, blocked
 Fa0/1            Desg FWD 19        128.1    P2p Edge   <- "Edge" = PortFast
 ```
-‏Gi0/1 = הדרך אל הבוס (DIST1); ‏Gi0/2 = דרך הגיבוי, חסומה; ‏`Edge` = ‏PortFast.
+👉 עכשיו `show spanning-tree vlan 20` ב-ACC1.\
+✅ הפעם **Gi0/2** (לכיוון DIST2) הוא פורט ה-Root. זו חלוקת העומס: ‏VLAN 10 עולה דרך DIST1,
+‏VLAN 20 דרך DIST2.
 
-עכשיו `show spanning-tree vlan 20` ב-ACC1 ‏←‏ הפעם **Gi0/2** (לכיוון DIST2) הוא ה-Root port.
-זו חלוקת העומס: VLAN 10 עולה דרך DIST1, ו-VLAN 20 דרך DIST2.
+👉 ‏`show spanning-tree summary` ‏←‏ ✅ ‏`Switch is in rapid-pvst mode`.
 
-‏`show spanning-tree summary` ‏←‏ `Switch is in rapid-pvst mode` ✅
+---
 
-### 5.3 שוברים דברים בכוונה (הדרך הכי טובה ללמוד)
-**בדיקה 1 — יתירות**
-1. ‏PC-HFA-ENG-01 ‏←‏ Command Prompt ‏←‏ `ping -t 10.10.16.103` (ping רציף).
-2. לחצו על הכלי **Delete** ‏(X) ‏←‏ לחצו על הכבל **ACC1 Gi0/1 ↔ DIST1**.
-3. הסתכלו על ה-ping: 1–2 שורות timeout, ואז שוב תשובות — התעבורה עברה לדרך של Gi0/2.
-4. לחצו **Ctrl+C** ב-Command Prompt כדי לעצור. החזירו את הכבל (Cross-Over,
-   ‏ACC1 Gi0/1 ‏←‏ DIST1 Gi1/0/1).
+## משימה 8 — בדיקת שבירה 1: מנתקים קישור כלפי מעלה
+🧠 **למה:** להוכיח שהיתירות באמת עובדת. הדרך הכי טובה ללמוד היא לשבור דברים בכוונה.
 
-**בדיקה 2 — ה-EtherChannel שורד כבל קרוע**
-1. מחקו את אחד משני הכבלים DIST1 ↔ DIST2.
-2. ‏`show etherchannel summary` ‏←‏ ‏Po1 עדיין ‎`(SU)`‎ עם חבר אחד.
-3. החזירו את הכבל (אותם פורטים) ‏←‏ אחרי רגע שני החברים שוב ‎`(P)`‎.
+1. לחצו על **PC-HFA-ENG-01** ‏←‏ Command Prompt ‏←‏ `ping -t 10.10.16.103` (פינג שלא נעצר).
+   השאירו את החלון פתוח.
+2. בסרגל הכלים: לחצו על כלי ה-**Delete** ‏(X) ‏←‏ לחצו על הכבל **ACC1 Gi0/1 ↔ DIST1** ‏(M7).
+3. הסתכלו על חלון הפינג.
 
-**בדיקה 3 — BPDU Guard תופס מתג מתחזה**
+✅ ‏1–2 ‏`Request timed out`, ואז שוב `Reply from` — התעבורה עברה לדרך של Gi0/2.
+
+4. לחצו בתוך ה-Command Prompt ולחצו **Ctrl+C** כדי לעצור את הפינג.
+5. החזירו את הכבל: **Copper Cross-Over**, ‏ACC1 ‏**Gi0/1** ‏←‏ DIST1 ‏**Gi1/0/1**.
+
+---
+
+## משימה 9 — בדיקת שבירה 2: מנתקים כבל של ה-EtherChannel
+1. מחקו אחד משני הכבלים בין DIST1 ל-DIST2 ‏(M7).
+2. ב-DIST1: ‏`show etherchannel summary`.\
+   ✅ ‏Po1 עדיין ‎`(SU)`‎, עכשיו עם חבר אחד.
+3. החזירו את הכבל (Cross-Over, אותם פורטים כמו במשימה 2) ‏←‏ Fast Forward Time.
+4. שוב `show etherchannel summary`.\
+   ✅ שני החברים שוב ‎`(P)`‎.
+
+---
+
+## משימה 10 — בדיקת שבירה 3: מחברים מתג מתחזה
 1. גררו **2960** חדש ליד ACC1 (השאירו לו את השם `Switch…`‎).
-2. חברו אותו ב-**Copper Cross-Over**: המתג החדש **Fa0/1** ‏←‏ ‏ACC1 **Fa0/9**.
-3. הסתכלו ב-CLI של ACC1: ‎`%SPANTREE-2-BLOCK_BPDUGUARD: Received BPDU on port Fa0/9 with BPDU Guard enabled. Disabling port.`‎
-4. ‏`show interfaces status` ‏←‏ ליד Fa0/9 כתוב `err-disabled`. נורית הקישור אדומה.
-5. מחקו את המתג המתחזה. החזירו את הפורט לפעולה:
+2. חברו אותו ב-**Copper Cross-Over**: המתג החדש **Fa0/1** ‏←‏ ACC1 ‏**Fa0/9**.
+3. הסתכלו על ה-CLI של ACC1.
+
+✅ ‏‎`%SPANTREE-2-BLOCK_BPDUGUARD: Received BPDU on port Fa0/9 with BPDU Guard enabled. Disabling port.`‎
+
+4. ב-ACC1: ‏`show interfaces status`.\
+   ✅ ‏Fa0/9 מופיע `err-disabled`. הנקודה על הכבל הזה אדומה.
+5. מחקו את המתג המתחזה (M7).
+6. מחזירים את הפורט לעבודה ב-ACC1:
 ```
 configure terminal
 interface fa0/9
@@ -340,16 +416,14 @@ interface fa0/9
  no shutdown
  end
 ```
+7. שמרו את כל 4 המתגים (`copy running-config startup-config`) ‏←‏ **File → Save**.
 
 ---
 
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים ‏←‏ **File → Save**.
-
 ## נקודת ביקורת
-- [ ] ‏`show etherchannel summary` ‏←‏ `Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2
-- [ ] ‏DIST1 הוא root של 10/30/99/110, ‏DIST2 של 20/120
-- [ ] פורטי ה-access מציגים `Edge` ‏(PortFast) ב-`show spanning-tree`
+- [ ] ‏`show etherchannel summary` ‏←‏ ‏`Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2
+- [ ] ‏DIST1 הוא ה-root של 10/30/99/110, ‏DIST2 של 20/120
+- [ ] פורטי ה-access מופיעים כ-`Edge` ‏(PortFast) ב-`show spanning-tree`
 - [ ] עשיתם את 3 בדיקות השבירה
 
 ## אם משהו לא עובד
@@ -358,7 +432,7 @@ interface fa0/9
 
 | בעיה | פתרון |
 |---|---|
-| ‏`Po1(SD)`‎ או פורטים ‎`(s)`‎ / ‎`(I)`‎ | שני הכבלים מוגדרים אחרת, או שהמתג השני עוד לא הוגדר. ב**שני** המתגים: `interface range gi1/0/23 - 24` ‏←‏ `no channel-group 1` ‏←‏ `exit` ‏←‏ `no interface port-channel 1`, ואז הקלידו שוב את חלק ה-EtherChannel של 4.1/4.2 |
+| ‏`Po1(SD)`‎ או פורטים ‎`(s)`‎ / ‎`(I)`‎ | שני הכבלים מוגדרים אחרת, או שהמתג השני עוד לא הוגדר. ב**שני** המתגים: `interface range gi1/0/23 - 24` ‏←‏ `no channel-group 1` ‏←‏ `exit` ‏←‏ `no interface port-channel 1`, ואז הקלידו שוב את משימה 4 / 5ב |
 | מתג אחד משתמש ב-`active` והשני ב-`desirable` | ערבוב של LACP ו-PAgP — השתמשו ב-`active` בשניהם |
 | המתג הלא נכון הוא ה-root | בדקו `show run \| include spanning-tree vlan` — אולי הקלדתם `primary` בשני המתגים עבור אותו VLAN |
 | המחשבים ב-ACC1 מאבדים קישוריות אחרי Root Guard | ‏`show spanning-tree vlan 10` ב-DIST1 — הפורט למתג ה-access חסום על ידי Root Guard כי למתג access יש priority נמוך יותר מ-DIST1/2. הסירו כל `spanning-tree vlan ... priority` ממתגי ה-access |
@@ -366,11 +440,28 @@ interface fa0/9
 
 </div>
 
-## אתגר
-‏`spanning-tree vlan 10 root primary` הוא קיצור דרך. הריצו `show run | include priority`
-ב-DIST1: איזה priority הוא קבע בפועל? למה המספר הזה הוא כפולה של 4096?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגיל — ה-priority הנסתר ⭐⭐
+- 🎯 **המשימה:** ‏`spanning-tree vlan 10 root primary` הוא קיצור דרך. גלו איזה **מספר** הוא קבע
+  בפועל, והסבירו למה המספר הזה הוא כפולה של 4096.
+- 📁 **מתחילים מ:** ה-`step04.pkt` שלכם.
+- 👣 **צעדים:**
+  1. ב-DIST1 הריצו `show run | include priority`.
+  2. רשמו את ה-priority של VLAN 10 ושל VLAN 20.
+  3. הריצו `show spanning-tree vlan 10` והסתכלו על **Bridge ID ‏←‏ Priority**. למה הוא לא בדיוק
+     המספר מצעד 2?
+- ✅ **גמרתם כש**יש לכם את שני המספרים והסבר של משפט אחד להבדל.
+
+<details dir="rtl"><summary>💡 רמז 1</summary>
+
+החסירו את המספר מצעד 2 מהמספר מצעד 3. מה יצא? זה מזכיר לכם משהו?
+</details>
+<details dir="rtl"><summary>💡 רמז 2</summary>
+
+לשדה ה-priority יש 16 ביטים; ‏12 מהם נושאים משהו אחר. ‏2 בחזקת 12 = ?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 ‏`spanning-tree vlan 10 priority 24576` ‏(secondary = 28672). לשדה ה-priority יש 16 ביטים,
 אבל 12 הביטים האחרונים משמשים להעברת מספר ה-VLAN ("extended system ID"), ולכן ה-priority עצמו
@@ -384,6 +475,13 @@ interface fa0/9
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step03.pkt` ‏←‏ **Save As** ‏`my-project/step04.pkt`
+- [ ] שני כבלי Cross-Over בין מתגי ה-distribution שלכם
+- [ ] ‏Rapid-PVST בכל מתג; ‏root primary/secondary לפי טבלת ה-VLANים **שלכם**
+- [ ] ‏EtherChannel (הפרוטוקול שחלק ה בתוכנית נותן לאתר הזה) בשני מתגי ה-distribution
+- [ ] ‏Root Guard בקישורים כלפי מטה של ה-distribution; ‏PortFast + BPDU Guard בכל פורט של מכשיר קצה
+- [ ] הבדיקות של משימה 7 ו-3 בדיקות השבירה עוברות בפרויקט שלכם
 
 <div dir="rtl">
 
@@ -565,7 +663,7 @@ Guard בפורטים שפונים למטה לשכבת ה-access.
 ## 👩‍🏫 הערות למורה
 - **שיעור 1 (90 דקות):** ציירו לולאה על הלוח ו"העבירו broadcast" סביבה עד שהכיתה רואה את
   הסערה; בחירת STP כמו בחירת קפטן; פורטים root/designated/blocked; חלוקת עומס ב-PVST ‏←‏
-  התלמידים מגדירים STP בכל 4 המתגים ‏←‏ בדיקה 5.2.
+  התלמידים מגדירים STP בכל 4 המתגים ‏←‏ משימה 7.
 - **שיעור 2 (90 דקות):** ‏EtherChannel (שני נתיבים = כביש אחד), ‏LACP מול PAgP ‏←‏ כבלים +
   הגדרות ‏←‏ PortFast/BPDU Guard/Root Guard ‏←‏ 3 בדיקות השבירה (תלמידים אוהבים את בדיקה 3).
 - **שאלות נפוצות של תלמידים**

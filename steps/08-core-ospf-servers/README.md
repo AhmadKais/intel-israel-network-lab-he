@@ -15,6 +15,30 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — ה-core**
+- [ ] **משימה 1** — פותחים את שלב 07 ושומרים בשם שלב 08 (2 דקות)
+- [ ] **משימה 2** — מציבים את 2 מתגי ה-core (עם חשמל), את מתג השרתים ו-2 שרתים (10 דקות)
+- [ ] **משימה 3** — מחברים הכול בכבלים לפורטים המדויקים (15 דקות)
+- [ ] **משימה 4** — ‏CORE1: הקשחה, ניתוב, ‏VLANים, ‏Loopback0 ‏(10 דקות)
+- [ ] **משימה 5** — ‏CORE1: קישורים מנותבים, פורט השרתים, שער השרתים (15 דקות)
+- [ ] **משימה 6** — ‏CORE1: ‏OSPF + SSH ‏(10 דקות)
+- [ ] **משימה 7** — ‏CORE2: אותו דבר, עם הערכים שלו (25 דקות)
+
+**שיעור 2 — אזורי OSPF**
+- [ ] **משימה 8** — ‏DIST1: קישורים כלפי מעלה + OSPF areas 0 ו-1 ‏(15 דקות)
+- [ ] **משימה 9** — ‏DIST2: אותו דבר, עם הערכים שלו (10 דקות)
+- [ ] **משימה 10** — בודקים OSPF: שכנים, נתיב הסיכום, פינגים (15 דקות)
+
+**שיעור 3 — שרתים, ‏AAA, ‏Syslog**
+- [ ] **משימה 11** — ‏SW-HFA-SRV: מתג השרתים (15 דקות)
+- [ ] **משימה 12** — שני השרתים: כתובות ושירותים (10 דקות)
+- [ ] **משימה 13** — ממלאים את שרת ה-AAA ‏(15 דקות)
+- [ ] **משימה 14** — ‏AAA + Syslog בכל 7 המתגים (25 דקות)
+- [ ] **משימה 15** — בודקים את ה-AAA, את הגיבוי שלו, ואת ה-Syslog ‏(10 דקות)
+- [ ] **תרגילים** א, ב ו-ג
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 - שני מתגי **core** — עמוד השדרה של המטה בחיפה.
 - בניין A מחובר ל-core בקישורים **מנותבים** (לא trunks).
@@ -38,8 +62,6 @@
 ```
 (בחלק העליון: חוות השרתים — VLAN 100 = ‏10.10.1.0/24, ‏OSPF area 0 בין שני מתגי ה-core. בחלק
 התחתון: ‏DIST1 ו-DIST2 של בניין A הם ABRים בין area 0 ל-area 1.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -111,62 +133,8 @@
 עשית?). עם `aaa new-model` + שרת **TACACS+**, כל מתג שואל את שרת ה-AAA "האם שם המשתמש/הסיסמה
 האלה תקינים?". המשתמש המקומי נשאר כ**גיבוי** אם השרת לא זמין. (דרישה 20.10.)
 
----
-
-## חלק 2 — הכנה
-‏**File → Open** ‏←‏ `my-work/step07.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step08.pkt`.
-
----
-
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-
-### 3.1 מכשירים חדשים
-
-<div dir="rtl">
-
-| איפה מוצאים אותו | דגם | ‎Display Name |
-|---|---|---|
-| ‎Network Devices → Switches | ‎**3650-24PS** | ‎`SWL3-HFA-CORE1` |
-| ‎Network Devices → Switches | ‎**3650-24PS** | ‎`SWL3-HFA-CORE2` |
-| ‎Network Devices → Switches | ‎**2960** | ‎`SW-HFA-SRV` |
-| ‎End Devices → End Devices | ‎**Server** | ‎`SRV-HFA-SYSLOG` |
-| ‎End Devices → End Devices | ‎**Server** | ‎`SRV-HFA-AAA` |
-
-</div>
-
-מקמו את מתגי ה-core באזור **"HAIFA HQ - CORE"** למעלה, ואת מתג השרתים והשרתים לידם.
-
-⚠️ **ספקי כוח:** ‏CORE1 ו-CORE2 ‏←‏ לשונית **Physical** ‏←‏ גררו **AC-POWER-SUPPLY** לחריץ הריק
-(בדיוק כמו בשלב 03, סעיף 3.2).
-
-### 3.2 כבלים
-מתג ↔ מתג = **Copper Cross-Over**. שרת ↔ מתג = **Copper Straight-Through**.
-
-<div dir="rtl">
-
-| ‎# | לחצו קודם על | פורט | לחצו אחר כך על | פורט |
-|---|---|---|---|---|
-| ‎1 | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/1/1** | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/1** |
-| ‎2 | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/1/2** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/1** |
-| ‎3 | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/1/1** | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/2** |
-| ‎4 | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/1/2** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/2** |
-| ‎5 | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/23** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/23** |
-| ‎6 | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/24** | ‎SW-HFA-SRV | ‎**GigabitEthernet0/1** |
-| ‎7 | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/24** | ‎SW-HFA-SRV | ‎**GigabitEthernet0/2** |
-| ‎8 | ‎SRV-HFA-SYSLOG | ‎FastEthernet0 | ‎SW-HFA-SRV | ‎**FastEthernet0/1** |
-| ‎9 | ‎SRV-HFA-AAA | ‎FastEthernet0 | ‎SW-HFA-SRV | ‎**FastEthernet0/2** |
-
-</div>
-
-<div dir="rtl">
-
-> הפורטים `Gi1/1/x` של ה-3650 הם פורטי ה-**uplink** (בצד ימין של רשימת הפורטים). אם PT לא מקבל
-> עליהם כבל נחושת, בגרסה שלכם הם פורטי סיב — השתמשו במקום זה בכבל **Fiber** הכתום. כל השאר נשאר
-> אותו דבר.
-
-</div>
-
-### 3.3 תוכנית הכתובות של השלב הזה
+### 1.10 תוכנית הכתובות של השלב הזה
+השאירו את הטבלה הזו פתוחה — כל משימה לוקחת ממנה את המספרים.
 
 <div dir="rtl">
 
@@ -204,14 +172,75 @@
 
 ---
 
-## חלק 4 — מגדירים
+## משימה 1 — פותחים את שלב 07 ושומרים בשם שלב 08 (איך? ‏←‏ M1)
+‏**File → Open** ‏←‏ `my-work/step07.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step08.pkt`.
 
-### 4.1 ‏SWL3-HFA-CORE1 — הגדרה מלאה
-לחצו על CORE1 ‏←‏ **CLI** ‏←‏ Enter.
+---
+
+## משימה 2 — מציבים את 2 מתגי ה-core (עם חשמל), את מתג השרתים ו-2 שרתים
+
+### 2א — מציבים ונותנים שמות (איך? ‏←‏ M2, ‏M4)
+
+<div dir="rtl">
+
+| איפה מוצאים | דגם | ‎Display Name | איפה שמים |
+|---|---|---|---|
+| ‎Network Devices → Switches | ‎**3650-24PS** | ‎`SWL3-HFA-CORE1` | באזור **"HAIFA HQ - CORE"** למעלה, מעל DIST1 |
+| ‎Network Devices → Switches | ‎**3650-24PS** | ‎`SWL3-HFA-CORE2` | ליד CORE1, מעל DIST2 |
+| ‎Network Devices → Switches | ‎**2960** | ‎`SW-HFA-SRV` | בין שני מתגי ה-core ומעליהם |
+| ‎End Devices → End Devices | ‎**Server** | ‎`SRV-HFA-SYSLOG` | ליד SW-HFA-SRV |
+| ‎End Devices → End Devices | ‎**Server** | ‎`SRV-HFA-AAA` | ליד SW-HFA-SRV |
+
+</div>
+
+### 2ב — ספקי כוח (⚠️ אל תדלגו — איך? ‏←‏ M8)
+‏CORE1 ו-CORE2 ‏←‏ לשונית **Physical** ‏←‏ גוררים **AC-POWER-SUPPLY** לחריץ הריק ‏←‏ סוגרים.
+(בדיוק כמו בשלב 03, משימה 2ב.)
+
+✅ בשני מתגי ה-core דולקות נורות ירוקות בלשונית Physical.
+
+---
+
+## משימה 3 — מחברים הכול בכבלים לפורטים המדויקים (איך? ‏←‏ M5)
+מתג ↔ מתג = **Copper Cross-Over**. שרת ↔ מתג = **Copper Straight-Through**.
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/1/1** | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/1** |
+| ‎2 | ‎Cross-Over | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/1/2** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/1** |
+| ‎3 | ‎Cross-Over | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/1/1** | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/2** |
+| ‎4 | ‎Cross-Over | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/1/2** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/2** |
+| ‎5 | ‎Cross-Over | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/23** | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/23** |
+| ‎6 | ‎Cross-Over | ‎SWL3-HFA-CORE1 | ‎**GigabitEthernet1/0/24** | ‎SW-HFA-SRV | ‎**GigabitEthernet0/1** |
+| ‎7 | ‎Cross-Over | ‎SWL3-HFA-CORE2 | ‎**GigabitEthernet1/0/24** | ‎SW-HFA-SRV | ‎**GigabitEthernet0/2** |
+| ‎8 | ‎Straight-Through | ‎SRV-HFA-SYSLOG | ‎FastEthernet0 | ‎SW-HFA-SRV | ‎**FastEthernet0/1** |
+| ‎9 | ‎Straight-Through | ‎SRV-HFA-AAA | ‎FastEthernet0 | ‎SW-HFA-SRV | ‎**FastEthernet0/2** |
+
+</div>
+
+<div dir="rtl">
+
+> פורטי ה-`Gi1/1/x` של ה-3650 הם פורטי ה-**uplink** (קרוב ל**סוף** רשימת הפורטים). אם PT
+> לא מקבל עליהם כבל נחושת, אצלכם הם פורטי סיב — השתמשו בכבל ה-**Fiber** הכתום. כל השאר נשאר
+> אותו דבר.
+
+</div>
+
+✅ תשעה כבלים חדשים. בדקו כל תווית מול הטבלה (M6). חלק מהנקודות נשארות כתומות/אדומות עד
+שהפורטים מוגדרים — זה תקין עכשיו.
+
+---
+
+## משימה 4 — ‏CORE1: הקשחה, ניתוב, ‏VLANים, ‏Loopback0
+👉 **איפה:** ‏**SWL3-HFA-CORE1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎ ‏(M9).
+
+### 4א — הקשחה
+⌨️ מקלידים:
 ```
 enable
 configure terminal
-! ---------- hardening ----------
 hostname SWL3-HFA-CORE1
 no ip domain-lookup
 enable secret Intel#En4ble
@@ -219,8 +248,13 @@ service password-encryption
 banner motd #
 *  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
 #
+```
 
-! ---------- this switch routes; it keeps its own VLAN list ----------
+### 4ב — ניתוב פועל, רשימת VLANים משלו, ‏Loopback0
+ה-core לא מצטרף לדומיין ה-VTP של בניין — הוא שומר על VLANים משלו (`transparent`).
+
+⌨️ מקלידים:
+```
 ip routing
 vtp mode transparent
 spanning-tree mode rapid-pvst
@@ -230,11 +264,24 @@ vlan 999
  name PARKING
  exit
 
-! ---------- Loopback0 = stable router-ID ----------
+! Loopback0 = stable router-ID
 interface loopback 0
  ip address 10.10.5.1 255.255.255.255
+ exit
+```
+🔍 **בודקים עכשיו:** ‏`do show ip interface brief` ‏←‏ השורה האחרונה היא `Loopback0  10.10.5.1  YES manual up up`.
 
-! ---------- routed links to building A (area 0, MD5) ----------
+---
+
+## משימה 5 — ‏CORE1: קישורים מנותבים, פורט השרתים, שער השרתים
+👉 **איפה:** ‏CORE1, שורת הפקודה `SWL3-HFA-CORE1(config)#`‎.
+
+### 5א — קישורים מנותבים לבניין A ול-CORE2 (area 0, ‏MD5)
+לכל קישור מנותב יש אותן 5 שורות; רק ה-description והכתובת משתנים.
+‏`no switchport` **חייב** לבוא לפני `ip address`.
+
+⌨️ מקלידים:
+```
 interface gi1/0/1
  description to SWL3-HFA-A-DIST1 Gi1/1/1
  no switchport
@@ -249,8 +296,6 @@ interface gi1/0/2
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  no shutdown
-
-! ---------- routed link to CORE2 ----------
 interface gi1/0/23
  description to SWL3-HFA-CORE2 Gi1/0/23
  no switchport
@@ -258,22 +303,26 @@ interface gi1/0/23
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  no shutdown
+```
+❌ ‏‎`% Invalid input` על `ip address` ‏←‏ דילגתם על `no switchport` בממשק הזה.
 
-! ---------- to the server switch (VLAN 100) ----------
+### 5ב — הפורט למתג השרתים, פורטים שלא בשימוש, שער השרתים
+⌨️ מקלידים:
+```
 interface gi1/0/24
  description to SW-HFA-SRV Gi0/1
  switchport mode access
  switchport access vlan 100
  no shutdown
 
-! ---------- unused ports (Gi1/0/3-4 are used in step 09) ----------
+! unused ports (Gi1/0/3-4 are used in step 09)
 interface range gi1/0/3 - 22
  description UNUSED
  switchport mode access
  switchport access vlan 999
  shutdown
 
-! ---------- gateway for the servers (HSRP, CORE1 = active) ----------
+! gateway for the servers (HSRP, CORE1 = active)
 interface vlan 100
  description GW SERVERS
  ip address 10.10.1.2 255.255.255.0
@@ -283,8 +332,19 @@ interface vlan 100
  standby 100 preempt
  no shutdown
  exit
+```
+🔍 **בודקים עכשיו:** ‏`do show ip interface brief` ‏←‏ ‏`GigabitEthernet1/0/1` ‏‎`10.10.4.2`,
+‏`Gi1/0/2` ‏‎`10.10.4.10`, ‏`Gi1/0/23` ‏‎`10.10.4.49`, ‏`Vlan100` ‏‎`10.10.1.2`, ‏`Loopback0` ‏‎`10.10.5.1`.
+(הסטטוס יכול להיות `down` בקישורים שהצד השני שלהם עוד לא מוגדר — בסדר בינתיים.)
 
-! ---------- OSPF ----------
+---
+
+## משימה 6 — ‏CORE1: ‏OSPF + SSH
+👉 **איפה:** ‏CORE1, שורת הפקודה `SWL3-HFA-CORE1(config)#`‎.
+
+### 6א — ‏OSPF
+⌨️ מקלידים:
+```
 router ospf 1
  router-id 10.10.5.1
  passive-interface default
@@ -293,18 +353,26 @@ router ospf 1
  no passive-interface gi1/0/23
  network 10.10.0.0 0.0.15.255 area 0
  exit
+```
+✅ בתוך `router ospf 1` שורת הפקודה הייתה ‎`(config-router)#`‎.
 
-! ---------- SSH management (same as step 07) ----------
+<div dir="rtl">
+
+> **מה פירוש `network 10.10.0.0 0.0.15.255 area 0`?** "כל ממשק שהכתובת שלו בתוך
+> ‎10.10.0.0/20 מצטרף ל-OSPF area 0." השורה **האחת** הזו תופסת את קישורי ה-‎/30 ‏(10.10.4.x),
+> את Loopback0 ‏(10.10.5.x) ואת VLAN 100 ‏(10.10.1.x) — זה הרווח מכך שתכננו בלוק אחד לכל area
+> בשלב 01. ה-‎`0.0.15.255` הוא wildcard (כמו ב-ACL, שלב 07) של ‎/20.
+
+</div>
+
+### 6ב — ניהול ב-SSH (אותו דבר כמו בשלב 07)
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-ההערות בבלוק אומרות: הקשחה; המתג הזה מנתב ושומר רשימת VLANים משלו; ‏Loopback0 = ‏router-ID
-יציב; קישורים מנותבים לבניין A ‏(area 0, ‏MD5); קישור מנותב ל-CORE2; למתג השרתים (VLAN 100);
-פורטים שלא בשימוש (Gi1/0/3-4 ישמשו בשלב 09); השער של השרתים (HSRP, ‏CORE1 = ‏active); ‏OSPF;
-ניהול SSH (כמו בשלב 07).
-
-ענו **‎`1024`** לשאלה על ה-modulus, ואז המשיכו:
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 ip ssh time-out 60
@@ -324,23 +392,37 @@ line console 0
  end
 copy running-config startup-config
 ```
+✅ ‏‎`[OK]`‎.
 
 <div dir="rtl">
 
-> כמו בשלב 07: אם מתג דוחה את `login block-for ...`‎, דלגו על השורה הזו באותו מתג.
+> כמו בשלב 07: אם מתג דוחה את `login block-for ...`‎, דלגו על השורה הזו במתג הזה.
 
 </div>
+
+---
+
+## משימה 7 — ‏CORE2: אותו דבר, עם הערכים שלו
+👉 **איפה:** ‏**SWL3-HFA-CORE2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+ההבדלים **היחידים** מ-CORE1:
 
 <div dir="rtl">
 
-> **מה המשמעות של `network 10.10.0.0 0.0.15.255 area 0`?** "כל ממשק שהכתובת שלו נמצאת בתוך
-> ‏10.10.0.0/20 מצטרף ל-OSPF area 0." השורה **האחת** הזו תופסת את קישורי ה-‎/30 ‏(10.10.4.x), את
-> Loopback0 ‏(10.10.5.x) ואת VLAN 100 ‏(10.10.1.x) — התמורה על כך שתכננו בלוק אחד לכל area
-> בשלב 01. ה-‎`0.0.15.255` הוא wildcard (כמו ב-ACL, שלב 07) עבור ‎/20.
+| | ‎CORE1 | ‎**CORE2** |
+|---|---|---|
+| ‎hostname | ‎SWL3-HFA-CORE1 | ‎**SWL3-HFA-CORE2** |
+| ‎Loopback0 / router-id | ‎10.10.5.1 | ‎**10.10.5.2** |
+| ‎Gi1/0/1 | ‏10.10.4.2 (ל-DIST1 Gi1/1/1) | **10.10.4.6** (ל-DIST1 Gi1/1/2) |
+| ‎Gi1/0/2 | ‏10.10.4.10 (ל-DIST2 Gi1/1/1) | **10.10.4.14** (ל-DIST2 Gi1/1/2) |
+| ‎Gi1/0/23 | ‎10.10.4.49 | ‎**10.10.4.50** |
+| ‎Gi1/0/24 | ל-SW-HFA-SRV Gi0/1 | ל-SW-HFA-SRV **Gi0/2** |
+| ‎Vlan100 | ‎‏10.10.1.2, ‏priority 110 | ‎**‏10.10.1.3, ‏priority 90** |
 
 </div>
 
-### 4.2 ‏SWL3-HFA-CORE2 — הגדרה מלאה
+### 7א — הקשחה, ניתוב, ‏VLANים, ‏Loopback0
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -359,10 +441,14 @@ vlan 100
 vlan 999
  name PARKING
  exit
-
 interface loopback 0
  ip address 10.10.5.2 255.255.255.255
+ exit
+```
 
+### 7ב — קישורים, פורט השרתים, שער השרתים
+⌨️ מקלידים:
+```
 interface gi1/0/1
  description to SWL3-HFA-A-DIST1 Gi1/1/2
  no switchport
@@ -394,7 +480,6 @@ interface range gi1/0/3 - 22
  switchport mode access
  switchport access vlan 999
  shutdown
-
 interface vlan 100
  description GW SERVERS
  ip address 10.10.1.3 255.255.255.0
@@ -404,7 +489,11 @@ interface vlan 100
  standby 100 preempt
  no shutdown
  exit
+```
 
+### 7ג — ‏OSPF ו-SSH
+⌨️ מקלידים:
+```
 router ospf 1
  router-id 10.10.5.2
  passive-interface default
@@ -413,12 +502,11 @@ router ospf 1
  no passive-interface gi1/0/23
  network 10.10.0.0 0.0.15.255 area 0
  exit
-
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(ענו ‎`1024` לשאלה על ה-modulus)
+‏←‏ **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 ip ssh time-out 60
@@ -438,15 +526,27 @@ line console 0
  end
 copy running-config startup-config
 ```
+לחצו **Fast Forward Time** כמה פעמים (M18).
 
-### 4.3 ‏SWL3-HFA-A-DIST1 — מוסיפים קישורים כלפי מעלה + OSPF
-ב-DIST1 כבר יש את כל מה שמשלבים 03–07. הוסיפו (התחברו עם `admin` / `Intel#Adm1n`):
+✅ ב-CORE2 מופיע ‎`%OSPF-5-ADJCHG: Process 1, Nbr 10.10.5.1 on GigabitEthernet1/0/23 from LOADING to FULL`
+— **שני מתגי ה-core הם שכני OSPF**.\
+🔍 **בודקים עכשיו:** ‏`show ip ospf neighbor` ‏←‏ שורה אחת, ‏‎`10.10.5.1`, מצב `FULL`.\
+❌ אין שכן ‏←‏ השוו את מפתח ה-MD5 על Gi1/0/23 בשני מתגי ה-core ‏(`show running-config interface gi1/0/23`).
+
+---
+
+## משימה 8 — ‏DIST1: קישורים כלפי מעלה + OSPF areas 0 ו-1
+👉 **איפה:** ‏**SWL3-HFA-A-DIST1** ‏←‏ CLI ‏←‏ נכנסים (`admin` / `Intel#Adm1n` מאז שלב 07) ‏←‏
+‏`SWL3-HFA-A-DIST1#`‎.
+
+ב-DIST1 כבר יש את כל מה שמשלבים 03–07. אנחנו **מוסיפים** לו.
+
+### 8א — ‏Loopback0 ושני הקישורים כלפי מעלה
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 interface loopback 0
  ip address 10.10.5.11 255.255.255.255
-
 interface gi1/1/1
  description to SWL3-HFA-CORE1 Gi1/0/1
  no switchport
@@ -461,13 +561,20 @@ interface gi1/1/2
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  no shutdown
+```
 
-! DIST1 and DIST2 also become OSPF neighbours inside area 1, over VLAN 99
+### 8ב — ‏DIST1 ו-DIST2 הם גם שכנים בתוך area 1, דרך VLAN 99
+⌨️ מקלידים:
+```
 interface vlan 99
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  exit
+```
 
+### 8ג — ‏OSPF עם שני areas והסיכום
+⌨️ מקלידים:
+```
 router ospf 1
  router-id 10.10.5.11
  passive-interface default
@@ -483,16 +590,31 @@ router ospf 1
  end
 copy running-config startup-config
 ```
-ההערות אומרות: ‏DIST1 ו-DIST2 הופכים גם לשכני OSPF בתוך area 1, דרך VLAN 99; הקישורים כלפי
-מעלה + ה-loopback ‏←‏ ‏area 0; ה-VLANים של בניין A ‏←‏ ‏area 1; לפרסם את בניין A כנתיב **אחד**.
+לחצו **Fast Forward Time**.
 
-### 4.4 ‏SWL3-HFA-A-DIST2 — מוסיפים קישורים כלפי מעלה + OSPF
+✅ הודעות ‎`%OSPF-5-ADJCHG: ... Nbr 10.10.5.1 ... to FULL` ו-‎`... Nbr 10.10.5.2 ... to FULL`.\
+🔍 **בודקים עכשיו:** ‏`show ip ospf neighbor` ‏←‏ ‏CORE1 ‏(‎`10.10.5.1`) ו-CORE2 ‏(‎`10.10.5.2`), שניהם `FULL`.
+
+---
+
+## משימה 9 — ‏DIST2: אותו דבר, עם הערכים שלו
+👉 **איפה:** ‏**SWL3-HFA-A-DIST2** ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SWL3-HFA-A-DIST2#`‎.
+
+<div dir="rtl">
+
+| מה | ב-DIST1 | ב-DIST2 |
+|---|---|---|
+| ‎‏Loopback0 / router-id | ‎‏10.10.5.11 | ‎**‏10.10.5.12** |
+| ‏Gi1/1/1 (ל-CORE1) | ‏10.10.4.1 (ל-Gi1/0/1) | **‏10.10.4.9** (ל-Gi1/0/2) |
+| ‏Gi1/1/2 (ל-CORE2) | ‏10.10.4.5 (ל-Gi1/0/1) | **‏10.10.4.13** (ל-Gi1/0/2) |
+
+</div>
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 interface loopback 0
  ip address 10.10.5.12 255.255.255.255
-
 interface gi1/1/1
  description to SWL3-HFA-CORE1 Gi1/0/2
  no switchport
@@ -507,12 +629,10 @@ interface gi1/1/2
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  no shutdown
-
 interface vlan 99
  ip ospf message-digest-key 1 md5 Intel#Ospf
  ip ospf authentication message-digest
  exit
-
 router ospf 1
  router-id 10.10.5.12
  passive-interface default
@@ -525,161 +645,11 @@ router ospf 1
  end
 copy running-config startup-config
 ```
-לחצו **Fast Forward Time** כמה פעמים. במתגים תראו הודעות כמו
-‎`%OSPF-5-ADJCHG: Process 1, Nbr 10.10.5.1 on GigabitEthernet1/1/1 from LOADING to FULL` —
-השכנים מצאו זה את זה.
+לחצו **Fast Forward Time** כמה פעמים.
 
-### 4.5 ‏SW-HFA-SRV — הגדרה מלאה
-```
-enable
-configure terminal
-hostname SW-HFA-SRV
-no ip domain-lookup
-enable secret Intel#En4ble
-service password-encryption
-banner motd #
-*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
-#
-vtp mode transparent
-spanning-tree mode rapid-pvst
-vlan 100
- name SERVERS
- exit
+✅ הודעות ‎`%OSPF-5-ADJCHG`: השכנים CORE1, ‏CORE2 ו-DIST1 מגיעים ל-`FULL`.
 
-interface range gi0/1 - 2
- description uplinks to CORE1 / CORE2
- switchport mode access
- switchport access vlan 100
-interface range fa0/1 - 23
- description servers
- switchport mode access
- switchport access vlan 100
- spanning-tree portfast
- spanning-tree bpduguard enable
-interface fa0/24
- description to ASA-HFA-FW1 inside (step 11)
- switchport mode access
- switchport access vlan 100
-
-interface vlan 100
- description MANAGEMENT
- ip address 10.10.1.5 255.255.255.0
- no shutdown
- exit
-ip default-gateway 10.10.1.1
-
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
-```
-(ענו ‎`1024` לשאלה על ה-modulus)
-```
-ip ssh version 2
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.10.19.0 0.0.0.255
- deny any log
- exit
-line vty 0 15
- transport input ssh
- login local
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login local
- end
-copy running-config startup-config
-```
-
-### 4.6 השרתים — הגדרות IP (לחיצה אחרי לחיצה)
-לכל שרת: לחיצה ‏←‏ **Desktop** ‏←‏ **IP Configuration** ‏←‏ **Static**:
-
-<div dir="rtl">
-
-| שרת | ‎IPv4 Address | ‎Subnet Mask | ‎Default Gateway | ‎DNS Server |
-|---|---|---|---|---|
-| ‎SRV-HFA-SYSLOG | ‎10.10.1.10 | ‎255.255.255.0 | ‎10.10.1.1 | ‎10.10.200.11 |
-| ‎SRV-HFA-AAA | ‎10.10.1.11 | ‎255.255.255.0 | ‎10.10.1.1 | ‎10.10.200.11 |
-
-</div>
-
-**כבו את השירותים שהשרת לא צריך** (שרת צריך לעשות עבודה אחת): לחצו על השרת ‏←‏ לשונית
-**Services** ‏←‏ עבור **HTTP**, ‏**DHCP**, ‏**DNS**, ‏**EMAIL**, ‏**FTP**, ‏**NTP** ‏←‏ העבירו כל אחד
-ל-**Off** (ב-HTTP: כבו גם את HTTP וגם את HTTPS).
-
-**‏SRV-HFA-SYSLOG:** ‏**Services** ‏←‏ **SYSLOG** ‏←‏ **On**.
-
-**‏SRV-HFA-AAA:** ‏**Services** ‏←‏ **AAA**:
-1. ‏**Service: On**.
-2. ‏**Network Configuration** — הוסיפו שורה לכל מכשיר רשת שבטבלה למטה. בכל שורה מלאו *Client Name*,
-   *Client IP*, *Secret* = `Intel#Tac`, *ServerType* = **Tacacs** ‏←‏ לחצו **Add**.
-3. ‏**User Setup** — *Username* `admin`, *Password* `Intel#Adm1n` ‏←‏ **Add**.
-
-המכשירים שמוסיפים ב-Network Configuration:
-
-<div dir="rtl">
-
-| ‎Client Name | ‎Client IP |
-|---|---|
-| ‎SW-HFA-A-ACC1 | ‎10.10.19.11 |
-| ‎SW-HFA-A-ACC2 | ‎10.10.19.12 |
-| ‎SWL3-HFA-A-DIST1 | ‎10.10.5.11 |
-| ‎SWL3-HFA-A-DIST2 | ‎10.10.5.12 |
-| ‎SWL3-HFA-CORE1 | ‎10.10.5.1 |
-| ‎SWL3-HFA-CORE2 | ‎10.10.5.2 |
-| ‎SW-HFA-SRV | ‎10.10.1.5 |
-
-</div>
-
-<div dir="rtl">
-
-> למה כתובות ה-client האלה? שרת ה-AAA עונה רק למכשירים שהוא מכיר **לפי כתובת ה-IP של המקור
-> בבקשה שלהם**. מתגי ה-access שולחים מהכתובת שלהם ב-VLAN 99. מתגי שכבה 3 היו שולחים מהקישור
-> כלפי מעלה שהם משתמשים בו באותו רגע — ולכן אנחנו אומרים להם להשתמש תמיד ב-Loopback0 (הסעיף הבא).
-
-</div>
-
-### 4.7 ‏AAA + Syslog בכל מכשיר בחיפה
-הקלידו את הבלוק הזה **בכל 7 המכשירים**: ‏ACC1, ‏ACC2, ‏DIST1, ‏DIST2, ‏CORE1, ‏CORE2, ‏SW-HFA-SRV.
-```
-enable
-configure terminal
-! ---------- Syslog ----------
-service timestamps log datetime msec
-logging trap informational
-logging host 10.10.1.10
-
-! ---------- AAA: ask the TACACS+ server, local user as backup ----------
-aaa new-model
-tacacs-server host 10.10.1.11 key Intel#Tac
-aaa authentication login default group tacacs+ local
-line vty 0 15
- login authentication default
-line console 0
- login authentication default
- end
-copy running-config startup-config
-```
-ההערות אומרות: ‏Syslog; ‏AAA — שואלים את שרת ה-TACACS+, והמשתמש המקומי הוא הגיבוי.
-
-**רק ב-4 מתגי שכבה 3** ‏(DIST1, ‏DIST2, ‏CORE1, ‏CORE2) הוסיפו:
-```
-configure terminal
-ip tacacs source-interface loopback 0
-end
-copy running-config startup-config
-```
-
-<div dir="rtl">
-
-> תחביר ישן של PT: אם `logging host` נדחה, הקלידו `logging 10.10.1.10`.
-> אם `ip tacacs source-interface` נדחה, רשמו בשרת ה-AAA את מתגי שכבה 3 לפי הכתובות שמהן הם
-> שולחים. ל-DIST1 ול-DIST2 יש שני קישורים שווים כלפי מעלה, ולכן הוסיפו **את שתיהן** לכל אחד:
-> ‏DIST1 ‏10.10.4.1 ו-10.10.4.5, ‏DIST2 ‏10.10.4.9 ו-10.10.4.13, ‏CORE1 ‏10.10.1.2, ‏CORE2 ‏10.10.1.3.
-
-</div>
-
-### 4.8 מה הפקודות החדשות אומרות
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -704,23 +674,27 @@ copy running-config startup-config
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 10 — בודקים OSPF: שכנים, נתיב הסיכום, פינגים
 
-### 5.1 שכני OSPF
-ב-**CORE1**: `show ip ospf neighbor`
+### 10א — שכנים
+👉 ב-**CORE1**: ‏`show ip ospf neighbor`
+
+✅ אמורים לראות:
 ```
 Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.10.5.11        1   FULL/DR         00:00:35    10.10.4.1       GigabitEthernet1/0/1
 10.10.5.12        1   FULL/DR         00:00:36    10.10.4.9       GigabitEthernet1/0/2
 10.10.5.2         1   FULL/BDR        00:00:33    10.10.4.50      GigabitEthernet1/0/23
 ```
-✅ שלושה שכנים, כולם **FULL**. (‏DR/BDR הם תפקידים בקישורים משותפים — בינתיים התעלמו מהם. איזה
-מתג הוא ה-DR תלוי באיזה מתג עלה ראשון, ולכן התוויות DR/BDR אצלכם יכולות להיות שונות.)
+שלושה שכנים, כולם **FULL**. ‏(DR/BDR הם תפקידים בקישורים משותפים — התעלמו מהם בינתיים. מי
+יהיה DR תלוי במי עלה ראשון, ולכן התוויות DR/BDR אצלכם יכולות להיות שונות.)
 
-ב-**DIST1**: `show ip ospf neighbor` ‏←‏ ‏CORE1, ‏CORE2 **וגם** DIST2 (דרך Vlan99).
+👉 ב-**DIST1**: ‏`show ip ospf neighbor` ‏←‏ ✅ ‏CORE1, ‏CORE2 **וגם** DIST2 (דרך Vlan99).
 
-### 5.2 טבלת הניתוב
-ב-**CORE1**: `show ip route ospf`
+### 10ב — נתיב הסיכום
+👉 ב-**CORE1**: ‏`show ip route ospf`
+
+✅ אמורים לראות:
 ```
      10.0.0.0/8 is variably subnetted, ...
 O IA    10.10.16.0/20 [110/2] via 10.10.4.1, GigabitEthernet1/0/1
@@ -728,40 +702,255 @@ O IA    10.10.16.0/20 [110/2] via 10.10.4.1, GigabitEthernet1/0/1
 O       10.10.5.11/32 [110/2] via 10.10.4.1, ...
 ...
 ```
-✅ ‏**O IA** = נתיב OSPF מ**אזור אחר** ‏(Inter-Area). סיכום **אחד** לכל בניין A, שאפשר להגיע
-אליו בשתי **דרכים** (DIST1 ו-DIST2) — חלוקת עומס.
+‏**O IA** = נתיב OSPF מ-**area אחר** ‏(Inter-Area). נתיב סיכום **אחד** לכל בניין A, שאפשר
+להגיע אליו בשתי **דרכים** ‏(DIST1 ו-DIST2) — חלוקת עומס.
 
-ב-**DIST1**: `show ip ospf interface` ‏←‏ בכל ממשק הסתכלו על השורה `Area`: ‏Gi1/1/1, ‏Gi1/1/2
-ו-Loopback0 נמצאים ב-**area 0**; ה-VLANים נמצאים ב-**area 1**.
+👉 ב-**DIST1**: ‏`show ip ospf interface` ‏←‏ בכל ממשק הסתכלו על שורת ה-`Area`.\
+✅ ‏Gi1/1/1, ‏Gi1/1/2 ו-Loopback0 נמצאים ב-**area 0**; ה-VLANים ב-**area 1**.
 
-### 5.3 בדיקות ping
+### 10ג — פינגים (איך? ‏←‏ M17)
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | צפוי |
-|---|---|---|
-| מחשב ENG | ‎`ping 10.10.1.10` | ✅ משתמש ‏←‏ DIST ‏←‏ core ‏←‏ שרת |
-| מחשב ENG | ‎`tracert 10.10.1.10` | ‎`10.10.16.2` ‏←‏ ‎`10.10.4.2` (או ‎`.6`) ‏←‏ ‎`10.10.1.10` |
-| ‎PC-HFA-ADMIN-01 | ‎`ssh -l admin 10.10.5.1` | ✅ התחברות ל-CORE1 — נבדקת על ידי שרת ה-AAA |
+| ‎# | מאיפה | מקלידים | צפוי |
+|---|---|---|---|
+| ‎1 | מחשב ENG | ‎`ping 10.10.1.1` | ✅ השער של השרתים, דרך ה-core |
+| ‎2 | מחשב ENG | ‎`tracert 10.10.1.1` | ‏‎`10.10.16.2` ‏←‏ ‎`10.10.4.2` (או ‎`.6`) ‏←‏ ‎`10.10.1.x` |
+| ‎3 | ‎PC-HFA-ADMIN-01 | ‎`ssh -l admin 10.10.5.1` | ✅ התחברות ל-CORE1 (בינתיים משתמש מקומי) |
 
 </div>
 
-### 5.4 ‏AAA ו-Syslog
-1. **בדיקת הגיבוי של AAA:** כבו את SRV-HFA-AAA ‏(Physical ‏←‏ כפתור ההפעלה). התחברו שוב ב-SSH
-   ממחשב המנהל ‏←‏ עדיין עובד עם `admin` / `Intel#Adm1n` (הגיבוי המקומי). הדליקו אותו שוב.
-2. **‏Syslog:** ב-ACC1 הקלידו `configure terminal` ‏←‏ `interface fa0/24` ‏←‏ `no shutdown` ‏←‏
-   `shutdown` ‏←‏ `end`. עכשיו לחצו על **SRV-HFA-SYSLOG** ‏←‏ **Services** ‏←‏ **SYSLOG**: ההודעות
-   מ-ACC1 מופיעות ברשימה, עם שעה וכתובת IP של המקור. ✅
+### 10ד — רואים את הממשקים הפסיביים (מצב Simulation — איך? ‏←‏ M21)
+‏**Simulation** ‏←‏ **Show All/None** ‏←‏ **Edit Filters** ‏←‏ סמנו רק **OSPF** ‏←‏ סגרו.
+לחצו **Capture / Forward** כמה פעמים.
 
-### 5.5 רואים את הממשקים הפסיביים (מצב Simulation)
-‏**Simulation** ‏←‏ **Show All/None** כדי לבטל את הסינונים ‏←‏ **Edit Filters** ‏←‏ סמנו רק **OSPF**.
-לחצו **Capture / Forward** כמה פעמים: מעטפות ה-Hello עוברות רק על הקישורים המנותבים ועל VLAN 99
-— **אף פעם** לא לכיוון המחשבים. חזרו ל-**Realtime**.
+✅ מעטפות ה-Hello עוברות רק בקישורים המנותבים וב-VLAN 99 — **אף פעם** לא לכיוון המחשבים.
+
+חזרו ל-**Realtime**. ‏**File → Save**.
 
 ---
 
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל מתג ‏←‏ **File → Save**.
+## משימה 11 — ‏SW-HFA-SRV: מתג השרתים
+👉 **איפה:** ‏**SW-HFA-SRV** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+### 11א — הקשחה ו-VLAN 100
+⌨️ מקלידים:
+```
+enable
+configure terminal
+hostname SW-HFA-SRV
+no ip domain-lookup
+enable secret Intel#En4ble
+service password-encryption
+banner motd #
+*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
+#
+vtp mode transparent
+spanning-tree mode rapid-pvst
+vlan 100
+ name SERVERS
+ exit
+```
+
+### 11ב — פורטים וכתובת ניהול
+⌨️ מקלידים:
+```
+interface range gi0/1 - 2
+ description uplinks to CORE1 / CORE2
+ switchport mode access
+ switchport access vlan 100
+interface range fa0/1 - 23
+ description servers
+ switchport mode access
+ switchport access vlan 100
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface fa0/24
+ description to ASA-HFA-FW1 inside (step 11)
+ switchport mode access
+ switchport access vlan 100
+interface vlan 100
+ description MANAGEMENT
+ ip address 10.10.1.5 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 10.10.1.1
+```
+
+### 11ג — ‏SSH
+⌨️ מקלידים:
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ deny any log
+ exit
+line vty 0 15
+ transport input ssh
+ login local
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login local
+ end
+copy running-config startup-config
+```
+🔍 **בודקים עכשיו:** ‏`ping 10.10.1.1` ‏←‏ ✅ יש תשובות (שער ה-HSRP במתגי ה-core).
+
+---
+
+## משימה 12 — שני השרתים: כתובות ושירותים
+
+### 12א — כתובות (איך? ‏←‏ M14)
+לכל שרת: לחיצה ‏←‏ **Desktop** ‏←‏ **IP Configuration** ‏←‏ **Static**:
+
+<div dir="rtl">
+
+| שרת | ‎IPv4 Address | ‎Subnet Mask | ‎Default Gateway | ‎DNS Server |
+|---|---|---|---|---|
+| ‎SRV-HFA-SYSLOG | ‎10.10.1.10 | ‎255.255.255.0 | ‎10.10.1.1 | ‎10.10.200.11 |
+| ‎SRV-HFA-AAA | ‎10.10.1.11 | ‎255.255.255.0 | ‎10.10.1.1 | ‎10.10.200.11 |
+
+</div>
+
+### 12ב — תפקיד אחד לכל שרת (איך? ‏←‏ M20)
+ב**כל** שרת ‏←‏ לשונית **Services** ‏←‏ עבור **HTTP**, ‏**DHCP**, ‏**DNS**, ‏**EMAIL**, ‏**FTP**, ‏**NTP**
+‏←‏ העבירו כל אחד ל-**Off** ‏(ב-HTTP: כבו גם את HTTP וגם את HTTPS).
+
+אחר כך:
+- ‏**SRV-HFA-SYSLOG:** ‏**Services** ‏←‏ **SYSLOG** ‏←‏ **On**.
+
+✅ ממחשב ENG: ‏`ping 10.10.1.10` ו-`ping 10.10.1.11` ‏←‏ שניהם עונים.
+
+---
+
+## משימה 13 — ממלאים את שרת ה-AAA
+👉 **איפה:** לחצו על **SRV-HFA-AAA** ‏←‏ לשונית **Services** ‏←‏ **AAA** (ברשימה משמאל).
+
+1. ‏**Service:** לחצו **On**.
+2. ‏**Network Configuration** (החלק העליון) — מוסיפים שורה לכל מכשיר רשת. לכל שורה בטבלה
+   שלמטה:
+   1. לחצו ב-**Client Name**, הקלידו את השם.
+   2. לחצו ב-**Client IP**, הקלידו את ה-IP.
+   3. ‏**Secret**: ‏`Intel#Tac`
+   4. ‏**ServerType**: בחרו **Tacacs**.
+   5. לחצו **Add**. השורה מופיעה ברשימה שמתחת.
+
+   | Client Name | Client IP |
+   |---|---|
+   | SW-HFA-A-ACC1 | 10.10.19.11 |
+   | SW-HFA-A-ACC2 | 10.10.19.12 |
+   | SWL3-HFA-A-DIST1 | 10.10.5.11 |
+   | SWL3-HFA-A-DIST2 | 10.10.5.12 |
+   | SWL3-HFA-CORE1 | 10.10.5.1 |
+   | SWL3-HFA-CORE2 | 10.10.5.2 |
+   | SW-HFA-SRV | 10.10.1.5 |
+
+3. ‏**User Setup** (החלק התחתון) — ‏**Username** ‏`admin`, ‏**Password** ‏`Intel#Adm1n` ‏←‏ **Add**.
+
+✅ ברשימת ה-clients יש 7 שורות; ברשימת המשתמשים יש `admin`.\
+❌ בשורה יש שגיאת כתיב ‏←‏ לחצו עליה ברשימה ‏←‏ **Remove** ‏←‏ הוסיפו אותה שוב.
+
+<div dir="rtl">
+
+> למה דווקא כתובות ה-client האלה? שרת ה-AAA עונה רק למכשירים שהוא מכיר **לפי כתובת המקור של
+> הבקשה שלהם**. מתגי ה-access שולחים מהכתובת שלהם ב-VLAN 99. מתגי שכבה 3 היו שולחים מאיזה
+> קישור כלפי מעלה שהם משתמשים בו — ולכן אנחנו אומרים להם לשלוח תמיד מ-Loopback0 (משימה 14ב).
+
+</div>
+
+---
+
+## משימה 14 — ‏AAA + Syslog בכל 7 המתגים
+
+### 14א — הבלוק לכל מתג
+הקלידו את הבלוק הזה ב**כל 7**. התחברו לכל אחד עם `admin` / `Intel#Adm1n`.
+
+⌨️ מקלידים:
+```
+configure terminal
+! ---------- Syslog ----------
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+
+! ---------- AAA: ask the TACACS+ server, local user as backup ----------
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ login authentication default
+line console 0
+ login authentication default
+ end
+copy running-config startup-config
+```
+
+<div dir="rtl">
+
+> תחביר ישן של PT: אם `logging host` נדחה, הקלידו `logging 10.10.1.10`.
+
+</div>
+
+סמנו כל מתג כשהוא מראה ‎`[OK]`‎:
+- [ ] ‏SW-HFA-A-ACC1
+- [ ] ‏SW-HFA-A-ACC2
+- [ ] ‏SWL3-HFA-A-DIST1
+- [ ] ‏SWL3-HFA-A-DIST2
+- [ ] ‏SWL3-HFA-CORE1
+- [ ] ‏SWL3-HFA-CORE2
+- [ ] ‏SW-HFA-SRV
+
+### 14ב — רק 4 מתגי שכבה 3: מדברים עם ה-AAA מ-Loopback0
+ב-**DIST1, ‏DIST2, ‏CORE1, ‏CORE2**:
+
+⌨️ מקלידים:
+```
+configure terminal
+ip tacacs source-interface loopback 0
+end
+copy running-config startup-config
+```
+(‏`ip tacacs source-interface loopback 0` = "כשאתה פונה לשרת ה-AAA, שלח מ-Loopback0".)
+
+<div dir="rtl">
+
+> אם `ip tacacs source-interface` נדחה, רשמו את מתגי שכבה 3 בשרת ה-AAA לפי הכתובות שהם שולחים
+> מהן במקום זה. ל-DIST1 ול-DIST2 יש שני קישורים כלפי מעלה שווים, אז הוסיפו **את שניהם** לכל אחד:
+> ‏DIST1 ‏10.10.4.1 ו-10.10.4.5, ‏DIST2 ‏10.10.4.9 ו-10.10.4.13, ‏CORE1 ‏10.10.1.2, ‏CORE2 ‏10.10.1.3.
+
+</div>
+
+---
+
+## משימה 15 — בודקים את ה-AAA, את הגיבוי שלו, ואת ה-Syslog
+
+### 15א — התחברות דרך AAA
+מ-**PC-HFA-ADMIN-01**: ‏`ssh -l admin 10.10.5.1` ‏←‏ `Intel#Adm1n`.\
+✅ מגיעים ל-`SWL3-HFA-CORE1#`‎ — הפעם הסיסמה נבדקה על ידי שרת ה-AAA.
+
+### 15ב — הגיבוי עובד
+1. לחצו על **SRV-HFA-AAA** ‏←‏ לשונית **Physical** ‏←‏ לחצו על **כפתור ההפעלה** שלו (הנורה כבית).
+2. התחברו שוב ב-SSH ממחשב המנהל ל-‎`10.10.5.1`.\
+   ✅ עדיין עובד עם `admin` / `Intel#Adm1n` — המתג השתמש במשתמש המקומי שלו (גיבוי). (זה עשוי
+   לקחת כמה שניות יותר, בזמן שהמתג מחכה לשרת המת.)
+3. הדליקו שוב את שרת ה-AAA.
+
+### 15ג — ‏Syslog
+1. ב-**ACC1**: ‏`configure terminal` ‏←‏ `interface fa0/24` ‏←‏ `no shutdown` ‏←‏ `shutdown` ‏←‏ `end`.
+2. לחצו על **SRV-HFA-SYSLOG** ‏←‏ **Services** ‏←‏ **SYSLOG**.\
+   ✅ ההודעות מ-ACC1 מופיעות ברשימה, עם שעה וכתובת מקור.
+
+📸 צלמו מסך של רשימת ה-Syslog לספר שלכם. אחר כך **File → Save**.
+
+---
 
 ## נקודת ביקורת
 - [ ] ל-CORE1 יש 3 שכני OSPF במצב FULL
@@ -780,21 +969,67 @@ O       10.10.5.11/32 [110/2] via 10.10.4.1, ...
 | השכנים אף פעם לא מגיעים ל-FULL (תקועים ב-INIT/EXSTART) או שאין שכנים בכלל | שגיאת כתיב במפתח ה-MD5 בצד אחד; או שצד אחד עדיין פסיבי; או שה-IP בצד הלא נכון של ה-‎/30 ‏(`show ip interface brief`) |
 | ‏`show ip ospf neighbor` ריק ב-DIST2 ‏←‏ DIST1 | ‏VLAN 99 לא נמצא ב-`no passive-interface`, או שאין MD5 על Vlan99 |
 | ה-core לא רואה את ‎`10.10.16.0/20` | חסר `network 10.10.16.0 0.0.15.255 area 1` במתגי ה-DIST |
-| ‏SSH תמיד משתמש במשתמש המקומי (ה-AAA לא בשימוש) | ה-Client IP בשרת ה-AAA לא תואם לכתובת המקור של הבקשה. בדקו את ההערה בסעיפים 4.6/4.7 |
+| ‏SSH תמיד משתמש במשתמש המקומי (ה-AAA לא בשימוש) | ה-Client IP בשרת ה-AAA לא תואם לכתובת המקור של הבקשה. ראו את ההערה במשימה 14ב |
 | שרת ה-Syslog לא מציג כלום | שירות ה-SYSLOG בשרת כבוי, או כתובת `logging host` שגויה, או שהמכשיר לא מצליח ping ל-10.10.1.10 |
 
 </div>
 
-## אתגר
-קודם **File → Save**. אחר כך גרמו ל-CORE1 ליפול לגמרי על ידי מחיקתו (הכלי **Delete** ‏←‏ לחצו על
-CORE1). הוכיחו — עם `ping -t` ממחשב ENG לשרת ה-Syslog ועם `show ip route` ב-DIST1 — שהמטה שורד.
-מה קורה לשער של השרתים 10.10.1.1? בסוף **File → Open** לקובץ ששמרתם כדי להחזיר את CORE1.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — "הורגים" מתג core ⭐⭐
+- 🎯 **המשימה:** להוכיח שהמטה בחיפה שורד אובדן מוחלט של CORE1.
+- 📁 **מתחילים מ:** ה-`step08.pkt` שלכם — קודם **File → Save** (תצטרכו אותו בחזרה).
+- 👣 **צעדים:**
+  1. ממחשב ENG הפעילו `ping -t 10.10.1.10` (שרת ה-Syslog).
+  2. מחקו את CORE1 (כלי ה-Delete ‏←‏ לחצו על CORE1).
+  3. הסתכלו על הפינג. אחר כך ב-DIST1 הריצו `show ip route ospf` וב-CORE2 ‏`show standby brief`.
+  4. ‏**File → Open** לקובץ `step08.pkt` ששמרתם כדי להחזיר את CORE1 (ענו **No** על "save changes").
+- ✅ **גמרתם כש**אתם יודעים להסביר מה קרה (א) לפינג, (ב) לנתיבים של DIST1, (ג) לשער של
+  השרתים 10.10.1.1.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+לפני: כמה דרכים היו ל-DIST1 אל ‎`10.10.1.0/24`? איזה core היה HSRP Active עבור VLAN 100?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 שני הנתיבים השווים של DIST1 הופכים לאחד (דרך CORE2); כמה פינגים הולכים לאיבוד בזמן ש-OSPF מבחין
 בשכן שמת. ‏CORE2 הופך ל-HSRP **Active** עבור VLAN 100, ולכן השער של השרתים 10.10.1.1 ממשיך
 לעבוד. (אילו CORE1 רק היה מאותחל, ה-`preempt` היה מחזיר לו את VLAN 100 כשהוא חוזר.)
+</details>
+
+### תרגיל ב — המפתח הלא נכון ⭐⭐
+- 🎯 **המשימה:** לראות מה מפתח MD5 שגוי עושה לשכן OSPF.
+- 📁 **מתחילים מ:** ה-`step08.pkt` שלכם (‏Save As ‏`step08-exB.pkt`).
+- 👣 **צעדים:**
+  1. ב-CORE2: ‏`interface gi1/0/23` ‏←‏ `no ip ospf message-digest-key 1 md5 Intel#Ospf` ‏←‏
+     ‏`ip ospf message-digest-key 1 md5 WRONG` ‏←‏ `end`.
+  2. לחצו Fast Forward Time לזמן מה (ה-dead timer הוא 40 שניות).
+  3. ב-CORE1: ‏`show ip ospf neighbor`. האם CORE2 עדיין שם?
+  4. החזירו את המפתח הנכון.
+- ✅ **גמרתם כש**ראיתם את השכן נעלם וחוזר, ואתם יודעים לומר למה זה מגן על הרשת.
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+אחרי זמן ה-dead ‏CORE2 ‏(‎`10.10.5.2`) נעלם מרשימת השכנים של CORE1: המפתחות לא תואמים, ולכן
+הודעות ה-Hello נדחות. אותו דבר קורה ללפטופ של תוקף שמנסה להזריק נתיבים מזויפים בלי המפתח
+(דרישה 22.18). כשהמפתח הנכון חוזר, השכן חוזר ל-FULL.
+</details>
+
+### תרגיל ג — קוראים את טבלת הניתוב ⭐
+- 🎯 **המשימה:** ב-DIST1, למצוא את הנתיב ל-VLAN השרתים ולהסביר כל חלק בשורה.
+- 👣 **צעדים:** ב-DIST1 הריצו `show ip route 10.10.1.0`, ואז `show ip route ospf`.
+- ✅ **גמרתם כש**אתם יודעים להסביר את `O`, את ‎`[110/2]`‎, את `via 10.10.4.2`, ולמה יש שתי
+  שורות `via`.
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+‏`O` = נלמד ב-OSPF בתוך אותו area ‏(area 0 — ‏DIST1 נמצא ב-area 0 בקישורים כלפי מעלה שלו).
+‏‎`110` = ה-administrative distance של OSPF (כמה הנתב סומך על OSPF), ‏‎`2` = ה-cost (סכום עלויות
+הקישורים). ‏`via 10.10.4.2` = הקפיצה הבאה (CORE1). שתי שורות `via` = שתי דרכים בעלות שווה
+‏(CORE1 ו-CORE2) — התעבורה מתחלקת ביניהן.
 </details>
 
 ---
@@ -803,6 +1038,14 @@ CORE1). הוכיחו — עם `ping -t` ממחשב ENG לשרת ה-Syslog ועם
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step07.pkt` ‏←‏ **Save As** ‏`my-project/step08.pkt`
+- [ ] קודם כותבים טבלת קישורים + loopbacks משלכם (כמו 1.10) מתוך בלוק ה-area 0 שלכם
+- [ ] שני מתגי core עם חשמל, מתג שרתים, שרתי Syslog + AAA, מחוברים בכבלים
+- [ ] ‏Cores: הקשחה, ניתוב, קישורים מנותבים עם MD5, שער ל-VLAN השרתים, ‏OSPF area 0, ‏SSH
+- [ ] ‏Distribution: קישורים כלפי מעלה, ‏OSPF area 0 + ה-area של הבניין שלכם, סיכום
+- [ ] שרתים + שרת AAA ממולא; ‏AAA + Syslog בכל מתג
+- [ ] הבדיקות של משימות 10 ו-15 עוברות
 
 <div dir="rtl">
 
@@ -1030,9 +1273,9 @@ Loopback0).
 - **שיעור 1 (90 דקות):** המודל התלת-שכבתי וקישורים מנותבים ‏←‏ ניתוב סטטי מול דינמי ‏←‏ OSPF
   במילים פשוטות (שכנים, מפה, דרך קצרה) ‏←‏ בנייה וחיווט ‏←‏ הגדרת CORE1/CORE2.
 - **שיעור 2 (90 דקות):** ‏areas ו-ABRים (ההשוואה למדינה/עיר) ‏←‏ סיכום נתיבים ‏←‏ קישורי ה-DIST
-  כלפי מעלה + OSPF ‏←‏ בדיקות 5.1–5.3 ‏←‏ ממשקים פסיביים במצב Simulation.
+  כלפי מעלה + OSPF ‏←‏ משימה 10 ‏←‏ ממשקים פסיביים במצב Simulation.
 - **שיעור 3 (90 דקות):** ‏Syslog ו-AAA (שומר אחד לכל הדלתות) ‏←‏ הגדרת השרתים ‏←‏ בלוק ה-AAA בכל 7
-  המכשירים ‏←‏ בדיקות 5.4 ‏←‏ אתגר.
+  המכשירים ‏←‏ משימה 15 ‏←‏ תרגילים.
 - **שאלות נפוצות של תלמידים**
   - *"למה המחשבים לא מריצים OSPF?"* — רק נתבים צריכים את המפה. מחשבים פשוט משתמשים בשער שלהם.
   - *"מה זה `O IA`?"* — נתיב שנלמד מאזור אחר. ‏`O` לבד = אותו אזור.

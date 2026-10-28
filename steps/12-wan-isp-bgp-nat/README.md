@@ -15,6 +15,30 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — בונים, ו-ISP-A**
+- [ ] **משימה 1** — פותחים את שלב 11, שומרים בשם שלב 12, מציירים את אזור ה-INTERNET ‏(3 דקות)
+- [ ] **משימה 2** — מציבים את מכשירי ה-WAN ‏(10 דקות)
+- [ ] **משימה 3** — מחברים את ה-WAN בכבלים (20 דקות)
+- [ ] **משימה 4** — ‏ISP-A: ‏R-ISPA-BR ו-R-ISPA-PE ‏(20 דקות)
+
+**שיעור 2 — ‏ISP-B, ‏ISP-C ו-BGP**
+- [ ] **משימה 5** — ‏ISP-B: ‏R-ISPB-BR ו-R-ISPB-PE ‏(15 דקות)
+- [ ] **משימה 6** — ‏ISP-C: ‏R-ISPC-BR ו-R-ISPC-PE ‏(15 דקות)
+- [ ] **משימה 7** — בודקים BGP וקוראים את טבלת ה-BGP ‏(15 דקות)
+- [ ] **משימה 8** — שרתי האינטרנט והמחשב הביתי (15 דקות)
+
+**שיעור 3 — חיפה באינטרנט**
+- [ ] **משימה 9** — ‏R-HFA-EDGE: קישור ה-WAN וניתוב (10 דקות)
+- [ ] **משימה 10** — ‏R-HFA-EDGE: ‏PAT כדי שהעובדים יוכלו לגלוש (10 דקות)
+- [ ] **משימה 11** — ‏R-HFA-EDGE: ‏static NAT + חורים ב-ASA, כדי שהאינטרנט יראה את האתר שלנו (15 דקות)
+
+**שיעור 4 — קו הגיבוי**
+- [ ] **משימה 12** — מודם ה-DSL והענן (15 דקות)
+- [ ] **משימה 13** — בדיקות יתירות (15 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 **אינטרנט** קטן: שלושה ספקים (ISPs) שמחליפים ביניהם נתיבים עם **BGP**, וכל אחד מריץ **OSPF**
 בפנים. חיפה מחוברת: העובדים גולשים באינטרנט (**PAT**), האינטרנט יכול לפתוח את האתר של אינטל
@@ -32,8 +56,6 @@
 (שלושה ספקים: ‏AS 100, ‏AS 200, ‏AS 300. בכל ספק נתב BR ונתב PE עם OSPF ביניהם, וה-BRs מחוברים
 ב-eBGP במשולש. ‏R-HFA-EDGE (חיפה) מחובר ל-ISP-A, ובקו גיבוי דרך מודם DSL וענן ל-ISP-B. ירושלים
 (שלב 13) מתחברת ל-ISP-B, וקריית גת (שלב 14) ומשתמשים ביתיים ל-ISP-C.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -110,60 +132,8 @@
 distance): ‏`ip route 0.0.0.0 0.0.0.0 200.2.9.1 10`. לנתיב הרגיל יש distance 1; לזה יש 10, ולכן הוא
 **נשאר מוסתר** כל עוד הראשי עובד, ומופיע אוטומטית אם הראשי נעלם.
 
----
-
-## חלק 2 — הכנה
-‏**File → Open** ‏←‏ `my-work/step11.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step12.pkt`.
-ציירו בצד ימין אזור גדול בצורת ענן (אליפסה) עם התווית `INTERNET / WAN`.
-
----
-
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-
-### 3.1 מכשירים
-
-<div dir="rtl">
-
-| איפה | דגם | ‎‏Display Name |
-|---|---|---|
-| ‎Network Devices → Routers | ‎**2911** ×6 | ‎`R-ISPA-BR`, `R-ISPA-PE`, `R-ISPB-BR`, `R-ISPB-PE`, `R-ISPC-BR`, `R-ISPC-PE` |
-| ‎Network Devices → Switches | ‎**2960** ×2 | ‎`SW-ISPA-NET`, `SW-ISPC-HOME` |
-| ‎End Devices | ‎**Server** ×3 | ‎`SRV-ISP-DNS`, `SRV-ISP-WEB1`, `SRV-ISP-WEB2` |
-| ‎End Devices | ‎**PC** | ‎`PC-HOME-01` |
-| ‎Network Devices → **WAN Emulation** | ‎**DSL-Modem** | ‎`DSL-HFA` |
-| ‎Network Devices → **WAN Emulation** | ‎**Cloud** | ‎`CLOUD-DSL` |
-
-</div>
-
-### 3.2 כבלים
-נתב ↔ נתב = **Cross-Over**. נתב/שרת/מחשב ↔ מתג = **Straight-Through**.
-
-<div dir="rtl">
-
-| ‎# | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט | כבל |
-|---|---|---|---|---|---|
-| ‎1 | ‎R-ISPA-BR | ‎Gi0/0 | ‎R-ISPA-PE | ‎Gi0/0 | ‎Cross-Over |
-| ‎2 | ‎R-ISPB-BR | ‎Gi0/0 | ‎R-ISPB-PE | ‎Gi0/0 | ‎Cross-Over |
-| ‎3 | ‎R-ISPC-BR | ‎Gi0/0 | ‎R-ISPC-PE | ‎Gi0/0 | ‎Cross-Over |
-| ‎4 | ‎R-ISPA-BR | ‎Gi0/1 | ‎R-ISPB-BR | ‎Gi0/1 | ‎Cross-Over |
-| ‎5 | ‎R-ISPA-BR | ‎Gi0/2 | ‎R-ISPC-BR | ‎Gi0/1 | ‎Cross-Over |
-| ‎6 | ‎R-ISPB-BR | ‎Gi0/2 | ‎R-ISPC-BR | ‎Gi0/2 | ‎Cross-Over |
-| ‎7 | ‎R-ISPA-PE | ‎Gi0/1 | ‎**R-HFA-EDGE** | ‎**Gi0/1** | ‎Cross-Over |
-| ‎8 | ‎R-ISPA-PE | ‎Gi0/2 | ‎SW-ISPA-NET | ‎Gi0/1 | ‎Straight |
-| ‎9 | ‎SRV-ISP-DNS / WEB1 / WEB2 | ‎Fa0 | ‎SW-ISPA-NET | ‎Fa0/1 / Fa0/2 / Fa0/3 | ‎Straight |
-| ‎10 | ‎R-ISPC-PE | ‎Gi0/2 | ‎SW-ISPC-HOME | ‎Gi0/1 | ‎Straight |
-| ‎11 | ‎PC-HOME-01 | ‎Fa0 | ‎SW-ISPC-HOME | ‎Fa0/1 | ‎Straight |
-| ‎12 | ‎R-HFA-EDGE | ‎**Gi0/2** | ‎DSL-HFA | ‎**Port 1** (Ethernet) | ‎Straight |
-| ‎13 | ‎DSL-HFA | **Port 0** (טלפון) | ‎CLOUD-DSL | ‎**Modem4** | **Phone** (ב-Connections) |
-| ‎14 | ‎CLOUD-DSL | ‎**Ethernet6** | ‎R-ISPB-PE | ‎**Gi0/2** | ‎Straight |
-
-</div>
-
-### 3.3 מגדירים את הענן
-‏CLOUD-DSL ‏←‏ הלשונית **Config** ‏←‏ ברשימה משמאל **DSL** ‏←‏ *From Port* ‏**Modem4**, *To Port*
-‏**Ethernet6** ‏←‏ **Add**. עכשיו הענן מעביר את כל מה שמגיע מהמודם לנתב של ISP-B.
-
-### 3.4 תוכנית הכתובות של ה-WAN
+### 1.7 תוכנית הכתובות של ה-WAN
+השאירו את הטבלה הזו פתוחה — כל משימה לוקחת ממנה את המספרים.
 
 <div dir="rtl">
 
@@ -179,19 +149,78 @@ distance): ‏`ip route 0.0.0.0 0.0.0.0 200.2.9.1 10`. לנתיב הרגיל י�
 
 </div>
 
+### 1.8 לפני שמקלידים בנתב חדש כלשהו
+- נתב חדש שואל `Would you like to enter the initial configuration dialog? [yes/no]:`‎ ‏←‏ הקלידו
+  **`no`**, ‏Enter, ואז שוב Enter ‏←‏ `Router>`‎.
+- פורטים של נתב מתחילים **כבויים** — כל בלוק של ממשק נגמר ב-`no shutdown`.
+- נתבי הספקים שייכים ל"חברות אחרות", ולכן הם מקבלים רק את הבסיס: שם, ‏secret, ‏banner (משרד
+  החינוך רוצה banner על **כל** הנתבים).
+
 ---
 
-## חלק 4 — מגדירים
+## משימה 1 — פותחים את שלב 11 ושומרים בשם שלב 12 (איך? ‏←‏ M1)
+‏**File → Open** ‏←‏ `my-work/step11.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step12.pkt`.
+ציירו אליפסה גדולה מימין עם התווית `INTERNET / WAN` ‏(M19 — בחרו בכלי ה-**Ellipse** במקום המלבן).
+
+---
+
+## משימה 2 — מציבים את מכשירי ה-WAN (איך? ‏←‏ M2, ‏M4)
 
 <div dir="rtl">
 
-> בכל נתב חדש: עונים **`no`** ל-"initial configuration dialog".
-> נתבי הספקים שייכים ל"חברות אחרות", ולכן הם מקבלים רק את הבסיס: שם, ‏secret, ‏banner (משרד החינוך
-> רוצה banner על **כל** הנתבים).
+| איפה בסרגל המכשירים | דגם | ‎Display Name |
+|---|---|---|
+| ‎Network Devices → Routers | ‎**2911** ×6 | ‎`R-ISPA-BR`, `R-ISPA-PE`, `R-ISPB-BR`, `R-ISPB-PE`, `R-ISPC-BR`, `R-ISPC-PE` |
+| ‎Network Devices → Switches | ‎**2960** ×2 | ‎`SW-ISPA-NET`, `SW-ISPC-HOME` |
+| ‎End Devices | ‎**Server** ×3 | ‎`SRV-ISP-DNS`, `SRV-ISP-WEB1`, `SRV-ISP-WEB2` |
+| ‎End Devices | ‎**PC** | ‎`PC-HOME-01` |
+| ‎Network Devices → **WAN Emulation** | ‎**DSL-Modem** | ‎`DSL-HFA` |
+| ‎Network Devices → **WAN Emulation** | ‎**Cloud** | ‎`CLOUD-DSL` |
 
 </div>
 
-### 4.1 ‏R-ISPA-BR ‏(AS 100)
+💡 סדרו אותם כמו בשרטוט למעלה: ‏ISP-A משמאל, ‏ISP-B באמצע, ‏ISP-C מימין. שרטוט מסודר חוסך
+טעויות חיווט.
+
+✅ ‏14 מכשירים חדשים, לכולם שמות.
+
+---
+
+## משימה 3 — מחברים את ה-WAN בכבלים (איך? ‏←‏ M5)
+נתב ↔ נתב = **Cross-Over**. נתב/שרת/מחשב ↔ מתג = **Straight-Through**.
+את שורות 12–14 (‏DSL) משאירים למשימה 12.
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎R-ISPA-BR | ‎Gi0/0 | ‎R-ISPA-PE | ‎Gi0/0 |
+| ‎2 | ‎Cross-Over | ‎R-ISPB-BR | ‎Gi0/0 | ‎R-ISPB-PE | ‎Gi0/0 |
+| ‎3 | ‎Cross-Over | ‎R-ISPC-BR | ‎Gi0/0 | ‎R-ISPC-PE | ‎Gi0/0 |
+| ‎4 | ‎Cross-Over | ‎R-ISPA-BR | ‎Gi0/1 | ‎R-ISPB-BR | ‎Gi0/1 |
+| ‎5 | ‎Cross-Over | ‎R-ISPA-BR | ‎Gi0/2 | ‎R-ISPC-BR | ‎Gi0/1 |
+| ‎6 | ‎Cross-Over | ‎R-ISPB-BR | ‎Gi0/2 | ‎R-ISPC-BR | ‎Gi0/2 |
+| ‎7 | ‎Cross-Over | ‎R-ISPA-PE | ‎Gi0/1 | ‎**R-HFA-EDGE** | ‎**Gi0/1** |
+| ‎8 | ‎Straight | ‎R-ISPA-PE | ‎Gi0/2 | ‎SW-ISPA-NET | ‎Gi0/1 |
+| ‎9a | ‎Straight | ‎SRV-ISP-DNS | ‎Fa0 | ‎SW-ISPA-NET | ‎Fa0/1 |
+| ‎9b | ‎Straight | ‎SRV-ISP-WEB1 | ‎Fa0 | ‎SW-ISPA-NET | ‎Fa0/2 |
+| ‎9c | ‎Straight | ‎SRV-ISP-WEB2 | ‎Fa0 | ‎SW-ISPA-NET | ‎Fa0/3 |
+| ‎10 | ‎Straight | ‎R-ISPC-PE | ‎Gi0/2 | ‎SW-ISPC-HOME | ‎Gi0/1 |
+| ‎11 | ‎Straight | ‎PC-HOME-01 | ‎Fa0 | ‎SW-ISPC-HOME | ‎Fa0/1 |
+
+</div>
+
+✅ ‏13 כבלים. הקצוות בצד הנתבים **אדומים** — זה תקין, פורטים של נתב כבויים עד שמגדירים אותם.
+בדקו כל תווית (M6).
+
+---
+
+## משימה 4 — ‏ISP-A: ‏R-ISPA-BR ו-R-ISPA-PE
+
+### 4א — ‏R-ISPA-BR: בסיס וממשקים
+👉 **איפה:** ‏**R-ISPA-BR** ‏←‏ CLI ‏←‏ `no` לשאלה ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -215,16 +244,19 @@ interface gi0/2
  ip address 200.0.13.1 255.255.255.252
  no shutdown
  exit
-! placeholder so BGP can announce our /16
+```
+🔍 **בודקים עכשיו:** ‏`do show ip interface brief` ‏←‏ ‏Gi0/0, ‏Gi0/1, ‏Gi0/2 עם הכתובות שלהם.
+(‏Gi0/1 ו-Gi0/2 נשארים `down` עד שמגדירים את הספקים האחרים — זה בסדר.)
+
+### 4ב — ‏R-ISPA-BR: ‏OSPF בפנים ו-BGP בחוץ
+⌨️ מקלידים:
+```
 ip route 200.1.0.0 255.255.0.0 null0
-! OSPF inside AS 100
 router ospf 10
  router-id 1.1.1.1
  network 200.1.0.0 0.0.0.3 area 0
- ! tell the PE: "send me what you don't know"
  default-information originate always
  exit
-! BGP with the other providers
 router bgp 100
  bgp router-id 1.1.1.1
  neighbor 200.0.12.2 remote-as 200
@@ -233,10 +265,23 @@ router bgp 100
  end
 copy running-config startup-config
 ```
-ההערות אומרות: שומר מקום כדי ש-BGP יוכל לפרסם את ה-‎/16 שלנו; ‏OSPF בתוך AS 100; אומרים ל-PE: "שלח
-אליי את מה שאתה לא מכיר"; ‏BGP עם הספקים האחרים.
 
-### 4.2 ‏R-ISPA-PE
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip route 200.1.0.0 255.255.0.0 null0` | נתיב "שומר מקום", כדי שהבלוק יהיה קיים בטבלה |
+| ‎`default-information originate always` | "ספר לשכני ה-OSPF שלי: שלחו אליי תעבורה לא מוכרת" |
+| ‎`router bgp 100` | "הפעל BGP; אני AS 100" |
+| ‎`neighbor 200.0.12.2 remote-as 200` | "הנתב ב-200.0.12.2 נמצא ב-AS 200 — היו שותפי BGP" |
+| ‎`network 200.1.0.0 mask 255.255.0.0` | "פרסם את הבלוק שלי לעולם" |
+
+</div>
+
+### 4ג — ‏R-ISPA-PE
+👉 **איפה:** ‏**R-ISPA-PE** ‏←‏ CLI ‏←‏ `no` ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -260,7 +305,6 @@ interface gi0/2
  ip address 200.1.100.1 255.255.255.0
  no shutdown
  exit
-! Intel Haifa's public static-NAT block is behind the customer's router
 ip route 200.1.10.0 255.255.255.248 200.1.1.2
 router ospf 10
  router-id 1.1.1.2
@@ -273,9 +317,31 @@ router ospf 10
  end
 copy running-config startup-config
 ```
-ההערה אומרת: בלוק ה-static NAT הציבורי של אינטל חיפה נמצא מאחורי הנתב של הלקוח.
 
-### 4.3 ‏R-ISPB-BR ‏(AS 200)
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip route 200.1.10.0 255.255.255.248 200.1.1.2` | "בלוק ה-static NAT הציבורי של אינטל חיפה נמצא מאחורי הנתב של הלקוח" |
+| ‎`redistribute static subnets` | "שתף את הנתיבים הסטטיים שלי (בלוקי הלקוחות) בתוך OSPF" |
+
+</div>
+
+לחצו **Fast Forward Time**.
+
+✅ ‏‎`%OSPF-5-ADJCHG: Process 10, Nbr 1.1.1.1 ... from LOADING to FULL`.\
+🔍 **בודקים עכשיו:** ב-R-ISPA-PE ‏`ping 200.1.0.1` ‏←‏ ‎`!!!!!`‎; ‏`show ip route` ‏←‏ `O*E2 0.0.0.0/0`
+(נתיב ברירת המחדל מה-BR).
+
+---
+
+## משימה 5 — ‏ISP-B: ‏R-ISPB-BR ו-R-ISPB-PE
+אותו דפוס כמו ISP-A. ההבדלים: ‏AS **‏200**, בלוק **200.2.0.0/16**, ‏router-IDs **‏2.2.2.x**.
+
+### 5א — ‏R-ISPB-BR
+👉 **איפה:** ‏**R-ISPB-BR** ‏←‏ CLI ‏←‏ `no` ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -313,8 +379,14 @@ router bgp 200
  end
 copy running-config startup-config
 ```
+לחצו **Fast Forward Time** כמה פעמים.
 
-### 4.4 ‏R-ISPB-PE
+✅ ‏‎`%BGP-5-ADJCHANGE: neighbor 200.0.12.1 Up` — **שותפות ה-BGP הראשונה** שלכם (ISP-A ↔ ISP-B).
+
+### 5ב — ‏R-ISPB-PE
+👉 **איפה:** ‏**R-ISPB-PE** ‏←‏ CLI ‏←‏ `no` ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -338,7 +410,6 @@ interface gi0/2
  ip address 200.2.9.1 255.255.255.252
  no shutdown
  exit
-! Jerusalem's dynamic-NAT pool (step 13)
 ip route 200.2.10.0 255.255.255.248 200.2.1.2
 router ospf 10
  router-id 2.2.2.2
@@ -351,9 +422,23 @@ router ospf 10
  end
 copy running-config startup-config
 ```
-ההערה אומרת: מאגר ה-dynamic NAT של ירושלים (שלב 13).
 
-### 4.5 ‏R-ISPC-BR ‏(AS 300)
+<div dir="rtl">
+
+> ‏`ip route 200.2.10.0 ...`‎ מצביע על מאגר ה-dynamic NAT של ירושלים (שלב 13). ‏Gi0/1 ו-Gi0/2
+> נשארים down עד שלב 12 (‏DSL) ושלב 13 — זה בסדר.
+
+</div>
+
+---
+
+## משימה 6 — ‏ISP-C: ‏R-ISPC-BR ו-R-ISPC-PE
+‏AS **‏300**, בלוק **200.3.0.0/16**, ‏router-IDs **‏3.3.0.x**.
+
+### 6א — ‏R-ISPC-BR
+👉 **איפה:** ‏**R-ISPC-BR** ‏←‏ CLI ‏←‏ `no` ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -392,7 +477,10 @@ router bgp 300
 copy running-config startup-config
 ```
 
-### 4.6 ‏R-ISPC-PE ‏(dual-stack: ‏IPv4 + ‏IPv6 לכיוון הלקוחות שלו)
+### 6ב — ‏R-ISPC-PE (‏dual-stack: ‏IPv4 + ‏IPv6 לכיוון הלקוחות שלו)
+👉 **איפה:** ‏**R-ISPC-PE** ‏←‏ CLI ‏←‏ `no` ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -431,12 +519,62 @@ router ospf 10
 copy running-config startup-config
 ```
 
-### 4.7 שרתי האינטרנט והמחשב הביתי
-**הגדרות IP** ‏(Desktop ‏←‏ IP Configuration ‏←‏ Static):
+<div dir="rtl">
+
+> שורות ה-IPv6 מכינות את ISP-C לקריית גת בשלב 14. הקלידו אותן עכשיו; תשתמשו בהן בהמשך.
+
+</div>
+
+לחצו **Fast Forward Time** כמה פעמים (‏BGP איטי בהתחלה).
+
+---
+
+## משימה 7 — בודקים BGP וקוראים את טבלת ה-BGP
+👉 **איפה:** ‏**R-ISPA-BR** (שורת הפקודה `R-ISPA-BR#`‎).
+
+### 7א — האם השותפים מדברים?
+⌨️ ‏`show ip bgp summary`
+```
+Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+200.0.12.2      4   200      10      10        4    0    0 00:02:10        2
+200.0.13.2      4   300      10      10        4    0    0 00:02:05        2
+```
+✅ ה**עמודה האחרונה היא מספר** ‏←‏ השותפות פעילה.\
+❌ ‏`Active` או `Idle` = לא פעילה ‏←‏ קודם עשו ping לכתובת של השכן. אם הפינג נכשל: בעיה בכבל או
+בממשק. אם הפינג עובד: ‏IP של `neighbor` או מספר AS שגויים.
+
+עשו אותו דבר ב-**R-ISPB-BR** וב-**R-ISPC-BR**. סמנו (2 מספרים בכל אחד):
+- [ ] ‏ISPA-BR
+- [ ] ‏ISPB-BR
+- [ ] ‏ISPC-BR
+
+### 7ב — קוראים את טבלת ה-BGP
+⌨️ ‏`show ip bgp`
+```
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 200.1.0.0/16     0.0.0.0                  0         32768 i
+*> 200.2.0.0/16     200.0.12.2               0             0 200 i
+*  200.3.0.0/16     200.0.12.2                             0 200 300 i
+*>                  200.0.13.2               0             0 300 i
+```
+איך קוראים אותה:
+- ‏‎`*>`‎ = הדרך ה**טובה ביותר** (זו שבשימוש).
+- ‏`Path` = רשימת ה-ASים שבדרך. ‏`i` בסוף = "הגיע מתוך ה-AS הזה".
+- ל-‎`200.3.0.0` יש **שתי** דרכים: ישירה (‎`300`) ודרך ISP-B ‏(‎`200 300`). הקצרה מנצחת; הארוכה היא
+  הגיבוי.
+
+📝 במחברת: "כדי להגיע ל-ISP-C, ‏ISP-A הולך ______; אם הקישור הזה נשבר הוא הולך ______."
+
+---
+
+## משימה 8 — שרתי האינטרנט והמחשב הביתי
+
+### 8א — הגדרות IP (איך? ‏←‏ M14)
+‏Desktop ‏←‏ IP Configuration ‏←‏ **Static**:
 
 <div dir="rtl">
 
-| מכשיר | ‎‏IP | מסיכה | שער | ‎‏DNS |
+| מכשיר | ‎IP | ‎Mask | ‎Gateway | ‎DNS |
 |---|---|---|---|---|
 | ‎SRV-ISP-DNS | ‎200.1.100.10 | ‎255.255.255.0 | ‎200.1.100.1 | ‎200.1.100.10 |
 | ‎SRV-ISP-WEB1 | ‎200.1.100.11 | ‎255.255.255.0 | ‎200.1.100.1 | ‎200.1.100.10 |
@@ -445,148 +583,227 @@ copy running-config startup-config
 
 </div>
 
-- **‏SRV-ISP-DNS** ‏←‏ Services ‏←‏ DNS **On** ‏←‏ רשומות A:
-  ‏`www.isp-web1.com → 200.1.100.11`, ‏`www.isp-web2.com → 200.1.100.12`,
-  **`www.intel.lab → 200.1.10.3`** (הכתובת ה**ציבורית** של האתר שלנו!). שאר השירותים Off.
-- **‏SRV-ISP-WEB1** ‏←‏ Services ‏←‏ HTTP ‏←‏ ערכו את `index.html` ‏←‏ ‎`<h1>ISP Web Server 1</h1>`‎ ‏←‏ Save.
-- **‏SRV-ISP-WEB2** ‏←‏ אותו דבר עם ‎`<h1>ISP Web Server 2</h1>`‎.
-- ‏`SW-ISPA-NET` ו-`SW-ISPC-HOME`: רק משנים את השם — לא צריך להגדיר אותם.
+### 8ב — שירותים (איך? ‏←‏ M20)
+- ‏**SRV-ISP-DNS** ‏←‏ Services ‏←‏ DNS **On** ‏←‏ מוסיפים רשומות A:
 
-### 4.8 ‏R-HFA-EDGE — צד ה-WAN, ‏NAT וגיבוי ה-DSL
-התחברו (`admin` / `Intel#Adm1n`):
+  | Name | Address |
+  |---|---|
+  | `www.isp-web1.com` | 200.1.100.11 |
+  | `www.isp-web2.com` | 200.1.100.12 |
+  | `www.intel.lab` | **‏200.1.10.3** ‏←‏ הכתובת ה**ציבורית** של האתר שלנו! |
+
+  את שאר השירותים מעבירים ל-**Off**.
+- ‏**SRV-ISP-WEB1** ‏←‏ Services ‏←‏ HTTP ‏←‏ `index.html` ‏←‏ **(edit)** ‏←‏ ‎`<h1>ISP Web Server 1</h1>`‎ ‏←‏ **Save**.
+- ‏**SRV-ISP-WEB2** ‏←‏ אותו דבר עם ‎`<h1>ISP Web Server 2</h1>`‎.
+- ‏`SW-ISPA-NET` ו-`SW-ISPC-HOME`: רק שמות — לא צריך הגדרות.
+
+🔍 **בודקים עכשיו:** ‏PC-HOME-01 ‏←‏ **Web Browser** ‏←‏ `http://www.isp-web1.com` ‏←‏ **Go** ‏←‏
+‏"ISP Web Server 1". ✅ האינטרנט עובד **דרך 3 ASים** (המחשב הביתי ב-AS 300, השרת ב-AS 100).
+
+❌ **אם זה נכשל:** ‏`ping 200.1.100.11` מ-PC-HOME-01. הפינג נכשל ‏←‏ ‏BGP (משימה 7). הפינג עובד אבל
+השם נכשל ‏←‏ רשומת ה-DNS או הגדרת ה-DNS של המחשב.
+
+---
+
+## משימה 9 — ‏R-HFA-EDGE: קישור ה-WAN וניתוב
+👉 **איפה:** ‏**R-HFA-EDGE** ‏←‏ CLI ‏←‏ נכנסים (`admin` / `Intel#Adm1n`) ‏←‏ `R-HFA-EDGE#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-interface gi0/0
- ip nat inside
 interface gi0/1
  description PRIMARY to R-ISPA-PE
  ip address 200.1.1.2 255.255.255.252
- ip nat outside
- no shutdown
-interface gi0/2
- description BACKUP via DSL to R-ISPB-PE
- ip address 200.2.9.2 255.255.255.252
- ip nat outside
  no shutdown
  exit
-
-! ---------- static routing toward the WAN (req. 22.17) ----------
 ip route 0.0.0.0 0.0.0.0 200.1.1.1
-! floating static = backup (distance 10)
-ip route 0.0.0.0 0.0.0.0 200.2.9.1 10
+```
+🔍 **בודקים עכשיו:** ‏`do ping 200.1.100.11` ‏←‏ ‎`!!!!!`‎ — נתב הקצה עצמו מגיע לאינטרנט.
 
-! ---------- PAT: all of HQ browses as 200.1.1.2 ----------
+אבל נסו ממחשב **Engineering**: ‏`ping 200.1.100.11` ‏←‏ ❌ ‏timed out.\
+🧠 **למה?** החבילה יוצאת עם כתובת מקור ‎`10.10.16.x` — כתובת פרטית. לאינטרנט אין נתיב חזרה
+ל-10.x. צריך NAT.
+
+---
+
+## משימה 10 — ‏R-HFA-EDGE: ‏PAT כדי שהעובדים יוכלו לגלוש
+👉 **איפה:** ‏R-HFA-EDGE, שורת הפקודה `R-HFA-EDGE(config)#`‎.
+
+### 10א — מסמנים את הצד הפנימי ואת הצד החיצוני
+⌨️ מקלידים:
+```
+interface gi0/0
+ ip nat inside
+interface gi0/1
+ ip nat outside
+ exit
+```
+
+### 10ב — מי מתורגם, ולמה
+⌨️ מקלידים:
+```
 ip access-list extended NAT-HFA
  remark --- remote-access VPN users are NOT translated (step 15) ---
  deny ip 10.10.0.0 0.0.255.255 172.16.250.0 0.0.0.255
  permit ip 10.10.0.0 0.0.255.255 any
  exit
 ip nat inside source list NAT-HFA interface gi0/1 overload
+```
 
-! ---------- static NAT: publish the web server and NTP ----------
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip nat inside` / `ip nat outside` | איזה צד של הנתב פרטי / ציבורי |
+| ‎`ip nat inside source list NAT-HFA interface gi0/1 overload` | "תרגם את כל מי שברשימה לכתובת של Gi0/1, בעזרת פורטים" = **PAT** |
+
+</div>
+
+🔍 **בודקים עכשיו:**
+1. ממחשב ENG: ‏`ping 200.1.100.11` ‏←‏ ✅ עכשיו יש תשובות.
+2. ב-R-HFA-EDGE: ‏`do show ip nat translations` ‏←‏ שורה כמו
+   ‏`icmp 200.1.1.2:5   10.10.16.11:5   200.1.100.11:5 ...`‎ — הכתובת הפנימית מימין, הכתובת
+   הציבורית המשותפת משמאל.
+3. מחשב ENG ‏←‏ Web Browser ‏←‏ `http://www.isp-web1.com` ‏←‏ ✅.
+
+---
+
+## משימה 11 — ‏Static NAT + חורים ב-ASA: האינטרנט רואה את האתר שלנו
+🧠 **למה:** ‏PAT מאפשר רק **לנו** להתחיל שיחות. מבקר באינטרנט לא יכול להתחיל שיחה אל
+10.10.200.13 — ולכן נותנים לשרת ה-web כתובת ציבורית קבועה.
+
+### 11א — ב-R-HFA-EDGE
+⌨️ מקלידים:
+```
 ip nat inside source static 10.10.200.13 200.1.10.3
 ip nat inside source static udp 10.10.200.14 123 200.1.10.4 123
  end
 copy running-config startup-config
 ```
-ההערות אומרות: ניתוב סטטי לכיוון ה-WAN (דרישה 22.17); ‏floating static = גיבוי (distance 10);
-‏PAT — כל המטה גולש בתור 200.1.1.2; משתמשי VPN בגישה מרחוק **לא** מתורגמים (שלב 15); ‏static NAT —
-מפרסמים את שרת ה-web ואת ה-NTP.
 
-### 4.9 ‏ASA — פותחים את החורים לאתר ול-NTP
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip nat inside source static 10.10.200.13 200.1.10.3` | "השרת הזה הוא תמיד הכתובת הציבורית הזו" = **static NAT** |
+| ‎`... static udp 10.10.200.14 123 200.1.10.4 123` | מפרסמים רק את פורט 123 ‏(NTP) של שרת ה-NTP |
+
+</div>
+
+### 11ב — ב-ASA-HFA-FW1: פותחים את החורים
+👉 **איפה:** ‏ASA ‏←‏ `enable` ‏←‏ סיסמה `Intel#En4ble` ‏←‏ `ASA-HFA-FW1#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 access-list OUTSIDE_IN extended permit tcp any host 10.10.200.13 eq www
 access-list OUTSIDE_IN extended permit udp any host 10.10.200.14 eq ntp
 end
 write memory
 ```
-(ה-ASA רואה את כתובת השרת ה**אמיתית** — נתב הקצה כבר תרגם אותה בחזרה.)
 
-### 4.10 מה הפקודות החדשות אומרות
+<div dir="rtl">
+
+> ה-ASA רואה את הכתובת ה**אמיתית** של השרת — נתב הקצה כבר תרגם אותה בחזרה.
+
+</div>
+
+🔍 **בודקים עכשיו:**
+
+<div dir="rtl">
+
+| מאיפה | עושים | צפוי |
+|---|---|---|
+| ‎PC-HOME-01 | ‎‏Web Browser ‏←‏ `http://www.intel.lab` | ✅ ‏"Intel Israel - Intranet" — דרך 200.1.10.3 |
+| ‎PC-HOME-01 | ‎`ping 10.10.16.1` | ❌ כתובות פרטיות לא קיימות באינטרנט |
+| ‎LT-HFA-GUEST-01 | ‎‏Web Browser ‏←‏ `http://www.isp-web2.com` | ✅ לאורחים יש עכשיו אינטרנט (שלב 10) |
+| ‎R-HFA-EDGE | ‎`show ip nat translations` | שורות PAT + שתי השורות הסטטיות (‎`200.1.10.3`, ‏‎`200.1.10.4`) |
+
+</div>
+
+❌ **אם המחשב הביתי לא מקבל דף:** בדקו בסדר הזה: רשומת ה-DNS של הספק (‎`200.1.10.3`);
+‏`ip route 200.1.10.0 ...`‎ + ‏`redistribute static subnets` ב-R-ISPA-PE; שורת ה-`www` ב-ASA.
+
+---
+
+## משימה 12 — מודם ה-DSL והענן
+🧠 **למה:** קו שני דרך ספק **אחר**. אם הקישור של ISP-A מת, לחיפה עדיין יש דרך החוצה.
+
+### 12א — כבלים (זהירות: כבל הטלפון!)
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎12 | ‎Straight | ‎R-HFA-EDGE | ‎**Gi0/2** | ‎DSL-HFA | ‎**Port 1** (Ethernet) |
+| ‎13 | **Phone** (הקו השחור הדק ב-Connections) | ‎DSL-HFA | ‎**Port 0** | ‎CLOUD-DSL | ‎**Modem4** |
+| ‎14 | ‎Straight | ‎CLOUD-DSL | ‎**Ethernet6** | ‎R-ISPB-PE | ‎**Gi0/2** |
+
+</div>
+
+### 12ב — אומרים לענן לחבר את המודם ל-ISP-B
+👉 ‏CLOUD-DSL ‏←‏ לשונית **Config** ‏←‏ ברשימה משמאל **DSL** ‏←‏ *From Port* ‏**Modem4**, *To Port*
+‏**Ethernet6** ‏←‏ **Add**.
+
+✅ בטבלה מופיעה שורה `Modem4 ↔ Ethernet6`.
+
+### 12ג — נתב הקצה: ממשק הגיבוי וה-floating static route
+👉 **איפה:** ‏R-HFA-EDGE ‏←‏ `configure terminal`.
+
+⌨️ מקלידים:
+```
+interface gi0/2
+ description BACKUP via DSL to R-ISPB-PE
+ ip address 200.2.9.2 255.255.255.252
+ ip nat outside
+ no shutdown
+ exit
+ip route 0.0.0.0 0.0.0.0 200.2.9.1 10
+ end
+copy running-config startup-config
+```
 
 <div dir="rtl">
 
 | פקודה | בשפה פשוטה |
 |---|---|
-| ‎`router bgp 100` | "הפעל BGP; אני AS 100" |
-| ‎`neighbor 200.0.12.2 remote-as 200` | "הנתב בכתובת 200.0.12.2 נמצא ב-AS 200 — היו שותפי BGP" |
-| ‎`network 200.1.0.0 mask 255.255.0.0` | "פרסם את הבלוק שלי לעולם" |
-| ‎`ip route 200.1.0.0 255.255.0.0 null0` | נתיב שומר מקום, כדי שהבלוק יהיה קיים בטבלה |
-| ‎`default-information originate always` | "אמור לשכני ה-OSPF שלי: שלחו אליי תעבורה לא מוכרת" |
-| ‎`redistribute static subnets` | "שתף בתוך OSPF את הנתיבים הסטטיים שלי (בלוקים של לקוחות)" |
-| ‎`ip nat inside` / `ip nat outside` | איזה צד של הנתב פרטי / ציבורי |
-| ‎`ip nat inside source list NAT-HFA interface gi0/1 overload` | "תרגם את כל מי שברשימה לכתובת של Gi0/1, בעזרת פורטים" = **PAT** |
-| ‎`ip nat inside source static 10.10.200.13 200.1.10.3` | "השרת הזה הוא תמיד הכתובת הציבורית הזו" = **static NAT** |
-| ‎`ip route 0.0.0.0 0.0.0.0 200.2.9.1 10` | נתיב ברירת מחדל לגיבוי (floating static) |
+| ‎`ip route 0.0.0.0 0.0.0.0 200.2.9.1 10` | נתיב ברירת מחדל לגיבוי (floating static, ‏distance 10) |
 
 </div>
+
+🔍 **בודקים עכשיו:**
+1. ‏`ping 200.2.9.1` ‏←‏ ‎`!!!!!`‎ (קו ה-DSL עובד).
+2. ‏`show ip route static` ‏←‏ **רק** `S* 0.0.0.0/0 [1/0] via 200.1.1.1` — הגיבוי מוסתר. זה נכון:
+   הוא מחכה.
+
+❌ **אם קישור ה-DSL אדום:** המיפוי בענן (12ב) חסר, או שכבל הטלפון בפורט הלא נכון של המודם.
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 13 — בדיקות יתירות
 
-### 5.1 ‏BGP
-לחצו כמה פעמים על **Fast Forward Time** ‏(BGP עולה לאט). על **R-ISPA-BR**:
-```
-show ip bgp summary
-Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
-200.0.12.2      4   200      10      10        4    0    0 00:02:10        2
-200.0.13.2      4   300      10      10        4    0    0 00:02:05        2
-```
-✅ בעמודה האחרונה יש **מספר** ‏←‏ השותפות פעילה. (‏`Active` או `Idle` = לא פעילה.)
-```
-show ip bgp
-   Network          Next Hop            Metric LocPrf Weight Path
-*> 200.1.0.0/16     0.0.0.0                  0         32768 i
-*> 200.2.0.0/16     200.0.12.2               0             0 200 i
-*  200.3.0.0/16     200.0.12.2                             0 200 300 i
-*>                  200.0.13.2               0             0 300 i
-```
-‏‎`*>`‎ = הנתיב הטוב ביותר. העמודה `Path` היא רשימת ה-ASים בדרך. ל-200.3.0.0 יש שני נתיבים: ישיר (300)
-ודרך ISP-B ‏(200 300) — הגיבוי.
+### 13א — המשולש של BGP
+1. ב-**R-ISPA-BR**: ‏`configure terminal` ‏←‏ `interface gi0/2` ‏←‏ `shutdown` ‏←‏ `end`.
+2. ‏Fast Forward Time (בערך דקה). ‏`show ip bgp` ‏←‏ ל-200.3.0.0/16 יש עכשיו רק ‎`200 300`.
+3. ‏PC-HOME-01 ‏←‏ Web Browser ‏←‏ `http://www.intel.lab` ‏←‏ עדיין ✅ (הדרך הארוכה).
+4. מחזירים: `configure terminal` ‏←‏ `interface gi0/2` ‏←‏ `no shutdown` ‏←‏ `end`.
 
-על **R-ISPA-PE**: ‏`show ip route` ‏←‏ `O*E2 0.0.0.0/0` (מה-BR) ו-`S 200.1.10.0/29 via 200.1.1.2`.
-
-### 5.2 אינטרנט מחיפה
+### 13ב — גיבוי ה-DSL
+1. ב-R-HFA-EDGE: ‏`ping 200.2.0.1 repeat 1000` (עוצרים אחר כך עם **Ctrl+Shift+6**).
+2. שוברים את הקו הראשי: `configure terminal` ‏←‏ `interface gi0/1` ‏←‏ `shutdown` ‏←‏ `end`.
+3. ‏`show ip route static` ‏←‏ `S* 0.0.0.0/0 [10/0] via 200.2.9.1` — הגיבוי השתלט, דרך המודם.
+4. ‏`configure terminal` ‏←‏ `interface gi0/1` ‏←‏ `no shutdown` ‏←‏ `end` ‏←‏ הקו הראשי חוזר
+   (‎`[1/0] via 200.1.1.1`).
 
 <div dir="rtl">
 
-| מאיפה | עושים | מה אמור לקרות |
-|---|---|---|
-| מחשב ENG | בדפדפן: Web Browser ‏←‏ `http://www.isp-web1.com` | ‎✅ "ISP Web Server 1" |
-| מחשב ENG | ‎`ping 200.1.100.12` | ‎✅ |
-| ‎LT-HFA-GUEST-01 | בדפדפן: Web Browser ‏←‏ `http://www.isp-web2.com` | ✅ לאורחים יש אינטרנט |
-| ‎R-HFA-EDGE | ‎`show ip nat translations` | שורות כמו `icmp 200.1.1.2:5 10.10.16.11:5 …`‎ ‏(PAT) + שתי השורות הסטטיות |
+> מגבלה: ה-PAT קשור ל-Gi0/1, ולכן ה**משתמשים** לא גולשים דרך ה-DSL — ראו תרגיל ב.
 
 </div>
 
-### 5.3 האינטרנט מגיע לאתר של אינטל
-
-<div dir="rtl">
-
-| מאיפה | עושים | מה אמור לקרות |
-|---|---|---|
-| ‎PC-HOME-01 | בדפדפן: Web Browser ‏←‏ `http://www.intel.lab` | ✅ "Intel Israel - Intranet" — דרך 200.1.10.3 |
-| ‎PC-HOME-01 | ‎`ping 10.10.16.1` | ❌ כתובות פרטיות לא קיימות באינטרנט |
-
-</div>
-
-### 5.4 בדיקות יתירות
-1. **משולש ה-BGP:** כבו את הקישור ISPA-BR ↔ ISPC-BR (ב-R-ISPA-BR: ‏`interface gi0/2` ‏←‏ `shutdown`).
-   אחרי דקה (Fast Forward), ‏`show ip bgp` ‏←‏ ל-200.3.0.0/16 יש עכשיו רק ‎`200 300`. ‏PC-HOME-01 עדיין
-   פותח את www.intel.lab ✅. ‏`no shutdown` בחזרה.
-2. **גיבוי ה-DSL:** ב-R-HFA-EDGE ‏`ping 200.2.0.1 repeat 1000` (עוצרים עם Ctrl+Shift+6), ותוך כדי כבו
-   את Gi0/1. ‏`show ip route` ‏←‏ `S* 0.0.0.0/0 [10/0] via 200.2.9.1` — הגיבוי השתלט דרך המודם.
-   ‏`no shutdown` ל-Gi0/1 ‏←‏ הראשי חוזר.
-   (מגבלה: ה-PAT קשור ל-Gi0/1, ולכן ה**משתמשים** לא גולשים דרך ה-DSL — ראו את האתגר.)
+💾 ‏`copy running-config startup-config` בכל הנתבים, ‏`write memory` ב-ASA ‏←‏ **File → Save**.
 
 ---
-
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל הנתבים, ‏`write memory` ב-ASA ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏6 שותפויות BGP פעילות (2 לכל BR)
@@ -605,15 +822,49 @@ show ip bgp
 | בלוק חסר ב-`show ip bgp` | ה-`network ... mask` לא תואם **בדיוק** לנתיב — בדקו את נתיב ה-null0 ואת המסיכה |
 | חיפה לא גולשת אבל נתב הקצה כן | חסר `ip nat inside` על Gi0/0, או שה-ACL של ה-NAT לא תופסת את 10.10.x |
 | המחשב הביתי לא פותח את www.intel.lab | רשומת ה-DNS של הספק (חייבת להיות 200.1.10.3); ‏`ip route 200.1.10.0 ...`‎ + ‏`redistribute static subnets` ב-R-ISPA-PE; שורת ה-ACL ל-www ב-ASA |
-| קישור ה-DSL אדום | חסר המיפוי של ה-DSL בענן (3.3), או שכבל הטלפון בפורט הלא נכון של המודם |
+| קישור ה-DSL אדום | חסר המיפוי של ה-DSL בענן (משימה 12ב), או שכבל הטלפון בפורט הלא נכון של המודם |
+| קישור של נתב אדום אחרי ההגדרה | חסר `no shutdown`, או שהשתמשתם ב-Straight-Through בין שני נתבים (חייב להיות Cross-Over) |
 
 </div>
 
-## אתגר
-גרמו גם ל**משתמשים** לשרוד נפילה של הקישור הראשי, על ידי הוספת כלל PAT שני ל-Gi0/2.
-רמז: שני כללי `ip nat inside source list` עם אותה ACL מתנגשים — השתמשו ב-**route-maps**.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — מספר AS שגוי ⭐⭐
+- 🎯 **המשימה:** לראות איך נראית שגיאת כתיב ב-BGP ולמצוא אותה רק עם פקודות `show`.
+- 📁 **מתחילים מ:** ‏`step12.pkt` ‏←‏ **Save As** ‏`step12-exA.pkt`.
+- 👣 **צעדים:**
+  1. ב-R-ISPB-BR: ‏`configure terminal` ‏←‏ `router bgp 200` ‏←‏ `no neighbor 200.0.23.2 remote-as 300`
+     ‏←‏ `neighbor 200.0.23.2 remote-as 333` ‏←‏ `end`.
+  2. ‏Fast Forward Time. ב-R-ISPB-BR: ‏`show ip bgp summary`. ב-R-ISPC-BR: אותו דבר.
+  3. תקנו בחזרה.
+- ✅ **גמרתם כש**אתם יודעים לומר איזו עמודה הראתה את הבעיה ואיזו הודעה הופיעה.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+הסתכלו על העמודה האחרונה של `show ip bgp summary` ועל ההודעות ב-console ‏(‎`%BGP-3-NOTIFICATION`).
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+השכן נשאר ב-`Active`/`Idle` במקום מספר. ‏R-ISPC-BR אומר שהוא AS 300, ‏R-ISPB-BR מצפה ל-333 ‏←‏ השיחה
+נדחית ("bad remote AS"). שני הצדדים חייבים להסכים על **ה-IP וה-AS**. המשולש עדיין עובד דרך ISP-A,
+ולכן האינטרנט לא נשבר — זו יתירות.
+</details>
+
+### תרגיל ב — גם המשתמשים גולשים דרך ה-DSL ⭐⭐⭐
+- 🎯 **המשימה:** לגרום גם ל**משתמשים** לשרוד נפילה של הקישור הראשי, על ידי הוספת כלל PAT שני
+  ל-Gi0/2.
+- 📁 **מתחילים מ:** ‏`step12.pkt` ‏←‏ **Save As** ‏`step12-exB.pkt`.
+- 👣 **צעדים:** כבו את Gi0/1, נסו לגלוש ממחשב (נכשל). מצאו דרך שיהיו שני כללי PAT.
+- ✅ **גמרתם כש**כש-Gi0/1 כבוי, מחשב ENG פותח את `http://www.isp-web1.com` — או שכתבתם בספר למה PT סירב.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+שני כללי `ip nat inside source list` עם אותה ACL מתנגשים — השתמשו ב-**route-maps** שתופסות את
+ה-ACL **וגם** את ממשק היציאה.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 <div dir="ltr">
 
@@ -641,6 +892,14 @@ ip nat inside source route-map NAT-BACKUP interface gi0/2 overload
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step11.pkt` ‏←‏ **Save As** ‏`my-project/step12.pkt`
+- [ ] קודם כותבים את טבלת כתובות ה-WAN שלכם (כמו 1.7) עם מספרי ה-AS והבלוקים שלכם
+- [ ] מציבים ומחברים את 6 נתבי הספקים, השרתים והמחשב הביתי
+- [ ] מגדירים את 3 הספקים; כל שותפויות ה-BGP מראות מספר
+- [ ] שרתי אינטרנט + DNS (עם הכתובת ה**ציבורית** של האתר שלכם)
+- [ ] נתב הקצה: קישור WAN, נתיב ברירת מחדל, ‏PAT, ‏static NAT; חורים ב-ASA
+- [ ] גיבוי DSL + floating static; שתי בדיקות היתירות
 
 <div dir="rtl">
 
@@ -780,7 +1039,7 @@ static route הוא נתיב גיבוי עם administrative distance גבוה י
 - **שיעור 1:** האינטרנט כרשת של ASים; ‏BGP מול OSPF (כבישים בינלאומיים מול כבישי עיר); בנייה
   וחיווט (14 כבלים!) ‏←‏ הגדרת ISP-A.
 - **שיעור 2:** ‏ISP-B ו-ISP-C ‏←‏ בדיקות BGP (‏`show ip bgp`, קריאת ה-AS path) ‏←‏ בדיקת משולש ה-BGP.
-- **שיעור 3:** סוגי NAT עם ההשוואה למרכזיה ‏←‏ NAT בנתב הקצה ‏←‏ החורים ב-ASA ‏←‏ בדיקות 5.2–5.3.
+- **שיעור 3:** סוגי NAT עם ההשוואה למרכזיה ‏←‏ NAT בנתב הקצה ‏←‏ החורים ב-ASA ‏←‏ בדיקות משימות 10–11.
 - **שיעור 4:** מודם DSL + ענן + ‏floating static ‏←‏ בדיקת הגיבוי ‏←‏ אתגר.
 - **מראים NAT במצב Simulation:** ‏ping ממחשב ל-200.1.100.11, לוחצים על החבילה לפני ואחרי R-HFA-EDGE —
   כתובת המקור משתנה מ-10.10.16.x ל-200.1.1.2.

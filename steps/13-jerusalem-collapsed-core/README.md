@@ -15,6 +15,33 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — בונים**
+- [ ] **משימה 1** — פותחים את שלב 12, שומרים בשם שלב 13, מציירים את הסניף (3 דקות)
+- [ ] **משימה 2** — מציבים את המכשירים (עם 2 ספקי כוח!) (15 דקות)
+- [ ] **משימה 3** — מחברים את ציוד הרשת בכבלים (15 דקות)
+- [ ] **משימה 4** — מחברים את מכשירי הקצה בכבלים (15 דקות)
+
+**שיעור 2 — ה-collapsed core**
+- [ ] **משימה 5** — ‏CC1, חלק 1: הקשחה, ‏VTP, ‏VLANים, ‏STP, ‏PAgP, ‏trunks ‏(15 דקות)
+- [ ] **משימה 6** — ‏CC1, חלק 2: שערים + ‏DHCP relay ‏(15 דקות)
+- [ ] **משימה 7** — ‏CC1, חלק 3: ‏EIGRP וניהול (15 דקות)
+- [ ] **משימה 8** — ‏CC2: תמונת המראה של CC1 ‏(30 דקות)
+
+**שיעור 3 — ‏access, שרתים, ‏DHCP**
+- [ ] **משימה 9** — שלושת מתגי הקומות (30 דקות)
+- [ ] **משימה 10** — ‏SW-JLM-SRV ‏(10 דקות)
+- [ ] **משימה 11** — שלושת השרתים (שרת ה-DHCP לחיצה אחרי לחיצה) (20 דקות)
+- [ ] **משימה 12** — מכשירי קצה + בודקים DHCP דרך ה-relay ‏(10 דקות)
+
+**שיעור 4 — נתב הקצה**
+- [ ] **משימה 13** — ‏R-JLM-EDGE, חלק 1: ממשקים ו-EIGRP ‏(15 דקות)
+- [ ] **משימה 14** — ‏R-JLM-EDGE, חלק 2: ‏dynamic NAT ‏(10 דקות)
+- [ ] **משימה 15** — ‏R-JLM-EDGE, חלק 3: חומת אש CBAC וניהול (15 דקות)
+- [ ] **משימה 16** — בדיקות סופיות + המגבלה של dynamic NAT ‏(15 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 הסניף השני, בנוי **אחרת** מחיפה (משרד החינוך אוסר להעתיק סניף אחד לסניף אחר):
 
@@ -44,8 +71,6 @@
 (‏R-JLM-EDGE מחובר ל-ISP-B ומריץ EIGRP, נתיב ברירת מחדל סטטי, ‏dynamic NAT ו-CBAC. מתחתיו שני מתגי
 ה-collapsed core ‏CC1 ו-CC2, מחוברים ב-Po1 ‏(PAgP). לכל מתג access — שלוש הקומות ומתג השרתים — יש
 כבל לשני ה-CCs.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -140,52 +165,73 @@
 
 ---
 
-## חלק 2 — הכנה
+## משימה 1 — פותחים את שלב 12 ושומרים בשם שלב 13 (איך? ‏←‏ M1, ‏M19)
 ‏**File → Open** ‏←‏ `my-work/step12.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step13.pkt`.
-ציירו מלבן עם התווית `JERUSALEM BRANCH`, ובתוכו שלושה מלבנים קטנים `FLOOR 1/2/3`.
+ציירו מלבן עם התווית `JERUSALEM BRANCH`, ובתוכו שלושה מלבנים קטנים: `FLOOR 1`, ‏`FLOOR 2`, ‏`FLOOR 3`.
 
 ---
 
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-
-### 3.1 מכשירים
+## משימה 2 — מציבים את המכשירים (איך? ‏←‏ M2, ‏M3, ‏M4, ‏M8)
 
 <div dir="rtl">
 
-| דגם | ‎‏Display Name |
+| דגם | ‎Display Name |
 |---|---|
 | ‎2911 | ‎`R-JLM-EDGE` |
-| ‎‏3650-24PS (+ **AC-POWER-SUPPLY**!) | ‎`SWL3-JLM-CC1`, `SWL3-JLM-CC2` |
+| ‎3650-24PS | ‎`SWL3-JLM-CC1`, `SWL3-JLM-CC2` |
 | ‎2960 | ‎`SW-JLM-F1-ACC1`, `SW-JLM-F2-ACC1`, `SW-JLM-F3-ACC1`, `SW-JLM-SRV` |
-| ‎‏Server ×3 | ‎`SRV-JLM-DHCP`, `SRV-JLM-SYSLOG`, `SRV-JLM-AAA` |
-| ‎‏PC ×13 | ‎`PC-JLM-SAL-01/02`, `PC-JLM-LOG-01/02`, `PC-JLM-PRD-01/02`, `PC-JLM-QA-01/02`, `PC-JLM-SEC-01/02`, `PC-JLM-ADM-01/02`, `PC-JLM-ADMIN-01` |
-| ‎‏Printer ×3 | ‎`PRN-JLM-F1-01`, `PRN-JLM-F2-01`, `PRN-JLM-F3-01` |
+| ‎Server ×3 | ‎`SRV-JLM-DHCP`, `SRV-JLM-SYSLOG`, `SRV-JLM-AAA` |
+| ‎PC ×13 | ‎`PC-JLM-SAL-01/02`, `PC-JLM-LOG-01/02`, `PC-JLM-PRD-01/02`, `PC-JLM-QA-01/02`, `PC-JLM-SEC-01/02`, `PC-JLM-ADM-01/02`, `PC-JLM-ADMIN-01` |
+| ‎Printer ×3 | ‎`PRN-JLM-F1-01`, `PRN-JLM-F2-01`, `PRN-JLM-F3-01` |
 
 </div>
 
-### 3.2 כבלים — ציוד רשת
+⚠️ **ספקי כוח** בשני מתגי ה-3650 ‏(Physical ‏←‏ גוררים **AC-POWER-SUPPLY** לחריץ — M8):
+- [ ] ‏CC1
+- [ ] ‏CC2
 
 <div dir="rtl">
 
-| לוחצים קודם על | פורט | לוחצים אחר כך על | פורט | כבל |
-|---|---|---|---|---|
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/1 | ‎SW-JLM-F1-ACC1 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-JLM-CC2 | ‎Gi1/0/1 | ‎SW-JLM-F1-ACC1 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/2 | ‎SW-JLM-F2-ACC1 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-JLM-CC2 | ‎Gi1/0/2 | ‎SW-JLM-F2-ACC1 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/3 | ‎SW-JLM-F3-ACC1 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-JLM-CC2 | ‎Gi1/0/3 | ‎SW-JLM-F3-ACC1 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/4 | ‎SW-JLM-SRV | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-JLM-CC2 | ‎Gi1/0/4 | ‎SW-JLM-SRV | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/23 | ‎SWL3-JLM-CC2 | ‎Gi1/0/23 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/0/24 | ‎SWL3-JLM-CC2 | ‎Gi1/0/24 | ‎Cross-Over |
-| ‎SWL3-JLM-CC1 | ‎Gi1/1/1 | ‎R-JLM-EDGE | ‎Gi0/0 | ‎Straight-Through |
-| ‎SWL3-JLM-CC2 | ‎Gi1/1/1 | ‎R-JLM-EDGE | ‎Gi0/2 | ‎Straight-Through |
-| ‎R-JLM-EDGE | ‎Gi0/1 | ‎R-ISPB-PE | ‎Gi0/1 | ‎Cross-Over |
+> ‏`PC-JLM-ADM-01/02` = מחלקת **המנהלה** ‏(VLAN 46). ‏`PC-JLM-ADMIN-01` = המחשב של **מנהל
+> הרשת** ‏(VLAN 99). תפקידים שונים — אל תבלבלו בין השמות.
 
 </div>
 
-### 3.3 כבלים — מכשירי קצה (כולם Straight-Through)
+---
+
+## משימה 3 — מחברים את ציוד הרשת בכבלים (איך? ‏←‏ M5)
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/1 | ‎SW-JLM-F1-ACC1 | ‎Gi0/1 |
+| ‎2 | ‎Cross-Over | ‎SWL3-JLM-CC2 | ‎Gi1/0/1 | ‎SW-JLM-F1-ACC1 | ‎Gi0/2 |
+| ‎3 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/2 | ‎SW-JLM-F2-ACC1 | ‎Gi0/1 |
+| ‎4 | ‎Cross-Over | ‎SWL3-JLM-CC2 | ‎Gi1/0/2 | ‎SW-JLM-F2-ACC1 | ‎Gi0/2 |
+| ‎5 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/3 | ‎SW-JLM-F3-ACC1 | ‎Gi0/1 |
+| ‎6 | ‎Cross-Over | ‎SWL3-JLM-CC2 | ‎Gi1/0/3 | ‎SW-JLM-F3-ACC1 | ‎Gi0/2 |
+| ‎7 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/4 | ‎SW-JLM-SRV | ‎Gi0/1 |
+| ‎8 | ‎Cross-Over | ‎SWL3-JLM-CC2 | ‎Gi1/0/4 | ‎SW-JLM-SRV | ‎Gi0/2 |
+| ‎9 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/23 | ‎SWL3-JLM-CC2 | ‎Gi1/0/23 |
+| ‎10 | ‎Cross-Over | ‎SWL3-JLM-CC1 | ‎Gi1/0/24 | ‎SWL3-JLM-CC2 | ‎Gi1/0/24 |
+| ‎11 | ‎Straight | ‎SWL3-JLM-CC1 | ‎**Gi1/1/1** | ‎R-JLM-EDGE | ‎**Gi0/0** |
+| ‎12 | ‎Straight | ‎SWL3-JLM-CC2 | ‎**Gi1/1/1** | ‎R-JLM-EDGE | ‎**Gi0/2** |
+| ‎13 | ‎Cross-Over | ‎R-JLM-EDGE | ‎Gi0/1 | ‎R-ISPB-PE | ‎Gi0/1 |
+
+</div>
+
+<div dir="rtl">
+
+> מתג ↔ נתב = ‏Straight (סוגי מכשירים שונים). נתב ↔ נתב = ‏Cross-Over.
+
+</div>
+
+✅ ‏13 כבלים, התוויות נבדקו (M6).
+
+---
+
+## משימה 4 — מחברים את מכשירי הקצה (כולם Straight-Through)
 
 <div dir="rtl">
 
@@ -205,21 +251,18 @@
 
 </div>
 
+✅ ‏19 כבלים. ‏**File → Save**.
+
 ---
 
-## חלק 4 — מגדירים
+## משימה 5 — ‏CC1, חלק 1: הקשחה, ‏VTP, ‏VLANים, ‏STP, ‏PAgP, ‏trunks
+👉 **איפה:** ‏**SWL3-JLM-CC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-<div dir="rtl">
-
-> ‏`crypto key generate rsa` ‏←‏ עונים **‎`1024`**. נתבים חדשים: עונים **`no`** לדיאלוג ההגדרה.
-
-</div>
-
-### 4.1 ‏SWL3-JLM-CC1 — הגדרה מלאה
+### 5א — הקשחה + שרת VTP + ‏VLANים
+⌨️ מקלידים:
 ```
 enable
 configure terminal
-! ===== hardening =====
 hostname SWL3-JLM-CC1
 no ip domain-lookup
 enable secret Intel#En4ble
@@ -227,7 +270,6 @@ service password-encryption
 banner motd #
 *  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
 #
-! ===== VTP server + VLANs =====
 vtp domain JLM
 vtp version 2
 vtp password Intel#Vtp
@@ -255,11 +297,17 @@ vlan 998
 vlan 999
  name PARKING
  exit
-! ===== Spanning Tree =====
+```
+🔍 **בודקים עכשיו:** ‏`do show vlan brief` ‏←‏ ‏11 VLANים עם השמות שלהם.
+
+### 5ב — ‏STP, ‏EtherChannel עם PAgP, ‏trunks, פורטים שלא בשימוש
+‏CC1 הוא הבוס של 41, ‏43, ‏45, ‏99, ‏100, ‏130, והסגן של 42, ‏44, ‏46.
+
+⌨️ מקלידים:
+```
 spanning-tree mode rapid-pvst
 spanning-tree vlan 41,43,45,99,100,130 root primary
 spanning-tree vlan 42,44,46 root secondary
-! ===== PAgP EtherChannel to CC2 =====
 interface range gi1/0/23 - 24
  description Po1 member to SWL3-JLM-CC2
  switchport mode trunk
@@ -274,7 +322,6 @@ interface port-channel 1
  switchport trunk native vlan 998
  switchport trunk allowed vlan 41-46,99,100,130,998
  switchport nonegotiate
-! ===== trunks to the 3 floors + server switch, with Root Guard =====
 interface range gi1/0/1 - 4
  description TRUNK to access switch
  switchport mode trunk
@@ -289,7 +336,27 @@ interface range gi1/0/5 - 22
  switchport access vlan 999
  shutdown
  exit
-! ===== routing + gateways (HSRP) + DHCP relay =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`channel-group 1 mode desirable` | הצטרף לצרור 1 עם **PAgP** (הפרוטוקול של Cisco) |
+
+</div>
+
+---
+
+## משימה 6 — ‏CC1, חלק 2: שערים + ‏DHCP relay
+👉 **איפה:** ‏CC1, שורת הפקודה `SWL3-JLM-CC1(config)#`‎.
+
+🧠 **למה:** כל VLAN של משתמשים מקבל: כתובת ‎`.2`, שורת `ip helper-address` (ה-relay לשרת
+ה-DHCP) ו-HSRP. עדיפות **110** איפה ש-CC1 ראשי (41, ‏43, ‏45, ‏99, ‏130), ‏**90** איפה שהוא סגן.
+
+### 6א — שש ה-VLANים של המחלקות
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 41
  description GW SALES
@@ -345,6 +412,19 @@ interface vlan 46
  standby 46 priority 90
  standby 46 preempt
  no shutdown
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip helper-address 10.20.1.10` | "העבר broadcasts של DHCP מה-VLAN הזה לשרת ה-DHCP" (relay) |
+
+</div>
+
+### 6ב — ‏MGMT ו-PRINTERS (בלי relay: שם הכתובות סטטיות)
+⌨️ מקלידים:
+```
 interface vlan 99
  description GW MGMT
  ip address 10.20.0.2 255.255.255.0
@@ -362,7 +442,17 @@ interface vlan 130
  standby 130 preempt
  no shutdown
  exit
-! ===== EIGRP authentication key =====
+```
+🔍 **בודקים עכשיו:** ‏`do show ip interface brief` ‏←‏ ‏Vlan41–46, ‏99, ‏130 עם כתובות ‎`.2`. (ייתכן
+שהם מופיעים `down` עד שמגדירים את מתגי ה-access — זה בסדר.)
+
+---
+
+## משימה 7 — ‏CC1, חלק 3: ‏EIGRP וניהול
+
+### 7א — מפתח ה-EIGRP, ‏VLAN 100 והקישור כלפי מעלה
+⌨️ מקלידים:
+```
 key chain EIGRP-KEYS
  key 1
   key-string Intel#Eigrp
@@ -378,7 +468,6 @@ interface vlan 100
  ip authentication mode eigrp 100 md5
  ip authentication key-chain eigrp 100 EIGRP-KEYS
  no shutdown
-! ===== loopback + routed uplink to the edge =====
 interface loopback 0
  ip address 10.20.5.1 255.255.255.255
 interface gi1/1/1
@@ -390,7 +479,27 @@ interface gi1/1/1
  ip summary-address eigrp 100 10.20.8.0 255.255.248.0
  no shutdown
  exit
-! ===== EIGRP =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`key chain EIGRP-KEYS` / `key 1` / `key-string ...`‎ | צרור מפתחות עם שם, שמחזיק את הסיסמה של EIGRP |
+| ‎`ip authentication mode eigrp 100 md5` + `key-chain ...`‎ | "השתמש במפתח הזה על הקישור הזה" |
+| ‎`ip summary-address eigrp 100 10.20.8.0 255.255.248.0` | "פרסם את 6 המחלקות כ-‎/21 אחד על הקישור הזה" |
+
+</div>
+
+<div dir="rtl">
+
+> ‏VLAN 100 הוא המקום שבו CC1 ו-CC2 נפגשים כשכני EIGRP, ולכן גם הוא מקבל את המפתח.
+
+</div>
+
+### 7ב — ‏EIGRP
+⌨️ מקלידים:
+```
 router eigrp 100
  eigrp router-id 10.20.5.1
  network 10.20.0.0 0.0.255.255
@@ -399,12 +508,26 @@ router eigrp 100
  no passive-interface vlan 100
  no auto-summary
  exit
-! ===== management =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`router eigrp 100` | הפעל EIGRP, מערכת אוטונומית 100 (חייב להתאים בכל הנתבים) |
+| ‎`network 10.20.0.0 0.0.255.255` | "כל ממשק ב-10.20.x.x מצטרף ל-EIGRP" |
+| ‎`no auto-summary` | "אל תקצר את הנתיבים שלי ל-10.0.0.0/8" |
+
+</div>
+
+### 7ג — ניהול
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 ip ssh time-out 60
@@ -419,7 +542,6 @@ ip access-list standard MGMT-ONLY
 service timestamps log datetime msec
 logging trap informational
 logging host 10.20.1.11
-! branch NTP server: syncs to Haifa's main NTP (works after the VPN, step 15)
 ntp server 10.10.200.14
 aaa new-model
 tacacs-server host 10.20.1.12 key Intel#Tac
@@ -436,18 +558,38 @@ line console 0
  end
 copy running-config startup-config
 ```
-ההערות אומרות: הקשחה; שרת VTP + ‏VLANים; ‏Spanning Tree; ‏EtherChannel עם PAgP ל-CC2; ‏trunks לשלוש
-הקומות ולמתג השרתים, עם Root Guard; ניתוב + שערים (HSRP) + ‏DHCP relay; מפתח האימות של EIGRP; ‏loopback
-+ קישור מנותב לנתב הקצה; ‏EIGRP; ניהול. ב-ACL: ניהול ירושלים + ‏IT של חיפה (דרך ה-VPN). שרת ה-NTP של
-הסניף מסתנכרן ל-NTP הראשי של חיפה (עובד אחרי ה-VPN, שלב 15).
 
 <div dir="rtl">
 
-> כמו בשלב 07: אם מתג דוחה את `login block-for ...`‎, דלגו על השורה הזו באותו מתג.
+> ‏`ntp server 10.10.200.14` — ‏CC1 הוא שרת ה-NTP של ה**סניף**: הוא מסתנכרן לשרת ה-NTP הראשי של
+> חיפה (עובד אחרי ה-VPN, שלב 15), וכל שאר המכשירים בירושלים מסתנכרנים ל-CC1 ‏(10.20.5.1).
 
 </div>
 
-### 4.2 ‏SWL3-JLM-CC2 — הגדרה מלאה
+✅ ‏‎`[OK]`‎.
+
+---
+
+## משימה 8 — ‏CC2: תמונת המראה של CC1
+👉 **איפה:** ‏**SWL3-JLM-CC2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+<div dir="rtl">
+
+| | ‎CC1 | ‎**CC2** |
+|---|---|---|
+| ‎hostname | ‎SWL3-JLM-CC1 | ‎**SWL3-JLM-CC2** |
+| ‎VTP | server + יוצר VLANים | **transparent ‏←‏ client, בלי פקודות `vlan`** |
+| ‎STP root primary / secondary | ‎41,43,45,99,100,130 / 42,44,46 | ‎**42,44,46 / 41,43,45,99,100,130** |
+| כתובות SVI | ‎.2 | **‎.3** |
+| עדיפות HSRP ‏110 ב- | ‎41, 43, 45, 99, 100, 130 | ‎**42, 44, 46** |
+| ‎Loopback / router-id | ‎10.20.5.1 | ‎**10.20.5.2** |
+| ‎Gi1/1/1 | 10.20.4.2 (אל Gi0/0 של EDGE) | **10.20.4.6 (אל Gi0/2 של EDGE)** |
+| שרת NTP | 10.10.200.14 (חיפה) | ‎**10.20.5.1 (CC1)** |
+
+</div>
+
+### 8א — הקשחה, ‏VTP client, ‏STP, ‏PAgP, ‏trunks
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -494,6 +636,13 @@ interface range gi1/0/5 - 22
  switchport access vlan 999
  shutdown
  exit
+```
+לחצו **Fast Forward Time**. 🔍 **בודקים עכשיו:** ‏`do show etherchannel summary` ‏←‏
+‏`Po1(SU)  PAgP  Gi1/0/23(P) Gi1/0/24(P)`‎; ‏`do show vlan brief` ‏←‏ ‏11 ה-VLANים הגיעו ב-VTP.
+
+### 8ב — שערים
+⌨️ מקלידים:
+```
 ip routing
 interface vlan 41
  description GW SALES
@@ -566,6 +715,11 @@ interface vlan 130
  standby 130 preempt
  no shutdown
  exit
+```
+
+### 8ג — ‏EIGRP
+⌨️ מקלידים:
+```
 key chain EIGRP-KEYS
  key 1
   key-string Intel#Eigrp
@@ -600,11 +754,18 @@ router eigrp 100
  no passive-interface vlan 100
  no auto-summary
  exit
+```
+✅ ‏‎`%DUAL-5-NBRCHANGE: EIGRP-IPv4 100: Neighbor 10.20.1.2 (Vlan100) is up` — ‏CC1 ו-CC2 הם
+שכני EIGRP.
+
+### 8ד — ניהול
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 ip ssh time-out 60
@@ -634,8 +795,28 @@ line console 0
  end
 copy running-config startup-config
 ```
+🔍 **בודקים עכשיו:** ‏`show standby brief` ‏←‏ ‏Active ב-42/44/46, ‏Standby בכל השאר.
 
-### 4.3 ‏SW-JLM-F1-ACC1 — הגדרה מלאה (מכירות + לוגיסטיקה + מחשב המנהל)
+---
+
+## משימה 9 — שלושת מתגי הקומות
+שלושתם עובדים לפי אותו מתכון (שלבים 02–06): ‏VTP client, ‏trunks עם snooping trust, פורטי משתמשים
+עם port-security, מדפסת, ניהול. רק ה-VLANים והכתובת משתנים:
+
+<div dir="rtl">
+
+| מתג | ‎Fa0/1–10 | ‎Fa0/11–20 | ‎Fa0/21 | ‎Fa0/22 | IP ניהול |
+|---|---|---|---|---|---|
+| ‎SW-JLM-F1-ACC1 | ‎41 SALES | ‎42 LOGISTICS | 130 מדפסת | **99 מחשב המנהל** | ‎10.20.0.11 |
+| ‎SW-JLM-F2-ACC1 | ‎43 PRODUCTION | ‎44 QA | 130 מדפסת | לא בשימוש | ‎10.20.0.12 |
+| ‎SW-JLM-F3-ACC1 | ‎45 SECURITY | ‎46 ADMIN | 130 מדפסת | לא בשימוש | ‎10.20.0.13 |
+
+</div>
+
+### 9א — ‏SW-JLM-F1-ACC1 (מכירות + לוגיסטיקה + מחשב המנהל)
+👉 **איפה:** ‏**SW-JLM-F1-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+⌨️ **הקשחה, ‏VTP, קישורים כלפי מעלה, פורטי משתמשים:**
 ```
 enable
 configure terminal
@@ -677,6 +858,9 @@ interface range fa0/1 - 20
  switchport port-security violation restrict
  ip dhcp snooping limit rate 10
  no cdp enable
+```
+⌨️ **מדפסת, מחשב המנהל, פורטים שלא בשימוש, snooping, כתובת ניהול:**
+```
 interface fa0/21
  description PRN-JLM-F1-01
  switchport mode access
@@ -714,11 +898,22 @@ interface vlan 99
  no shutdown
  exit
 ip default-gateway 10.20.0.1
+```
+
+<div dir="rtl">
+
+> ‏`no ip dhcp snooping information option` — **חייבת** להיות כאן, אחרת שרת ה-DHCP יתעלם
+> מהבקשות (המלכודת של option-82 משלב 06).
+
+</div>
+
+⌨️ **ניהול:**
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 ip ssh time-out 60
@@ -747,8 +942,12 @@ line console 0
  end
 copy running-config startup-config
 ```
+✅ ‏‎`[OK]`‎. 🔍 ‏`show vlan brief` ‏←‏ ‏Fa0/1–10 ב-41, ‏Fa0/11–20 ב-42, ‏Fa0/21 ב-130, ‏Fa0/22 ב-99.
 
-### 4.4 ‏SW-JLM-F2-ACC1 — הגדרה מלאה (ייצור + ‏QA)
+### 9ב — ‏SW-JLM-F2-ACC1 (ייצור + ‏QA)
+👉 **איפה:** ‏**SW-JLM-F2-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+⌨️ **הקשחה, ‏VTP, קישורים כלפי מעלה, פורטי משתמשים:**
 ```
 enable
 configure terminal
@@ -790,6 +989,9 @@ interface range fa0/1 - 20
  switchport port-security violation restrict
  ip dhcp snooping limit rate 10
  no cdp enable
+```
+⌨️ **מדפסת, פורטים שלא בשימוש, snooping, כתובת ניהול:**
+```
 interface fa0/21
  description PRN-JLM-F2-01
  switchport mode access
@@ -816,56 +1018,93 @@ interface vlan 99
  no shutdown
  exit
 ip default-gateway 10.20.0.1
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
+⌨️ **ניהול:** אותו בלוק כמו ב-9א (מ-`ip domain-name intel.lab` ועד
+`copy running-config startup-config`). ✅ ‏‎`[OK]`‎.
+
+### 9ג — ‏SW-JLM-F3-ACC1 (ביטחון + מנהלה)
+👉 **איפה:** ‏**SW-JLM-F3-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+⌨️ **הקשחה, ‏VTP, קישורים כלפי מעלה, פורטי משתמשים:**
 ```
-ip ssh version 2
-ip ssh time-out 60
-ip ssh authentication-retries 3
-login block-for 120 attempts 3 within 60
-ip access-list standard MGMT-ONLY
- permit 10.20.0.0 0.0.0.255
- permit 10.10.49.0 0.0.0.255
- deny any log
+enable
+configure terminal
+hostname SW-JLM-F3-ACC1
+no ip domain-lookup
+enable secret Intel#En4ble
+service password-encryption
+banner motd #
+*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
+#
+vtp mode transparent
+vtp domain JLM
+vtp version 2
+vtp password Intel#Vtp
+vtp mode client
+spanning-tree mode rapid-pvst
+interface range gi0/1 - 2
+ description TRUNK uplink to CC1 / CC2
+ switchport mode trunk
+ switchport trunk native vlan 998
+ switchport trunk allowed vlan 41-46,99,100,130,998
+ switchport nonegotiate
+ ip dhcp snooping trust
+ no shutdown
+interface range fa0/1 - 10
+ description SECURITY users
+ switchport mode access
+ switchport access vlan 45
+interface range fa0/11 - 20
+ description ADMIN users
+ switchport mode access
+ switchport access vlan 46
+interface range fa0/1 - 20
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ no cdp enable
+```
+⌨️ **מדפסת, פורטים שלא בשימוש, snooping, כתובת ניהול:**
+```
+interface fa0/21
+ description PRN-JLM-F3-01
+ switchport mode access
+ switchport access vlan 130
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ no cdp enable
+interface range fa0/22 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 999
+ shutdown
  exit
-service timestamps log datetime msec
-logging trap informational
-logging host 10.20.1.11
-ntp server 10.20.5.1
-aaa new-model
-tacacs-server host 10.20.1.12 key Intel#Tac
-aaa authentication login default group tacacs+ local
-line vty 0 15
- transport input ssh
- login authentication default
- access-class MGMT-ONLY in
- exec-timeout 5 0
-line console 0
- login authentication default
- logging synchronous
- end
-copy running-config startup-config
+ip dhcp snooping
+ip dhcp snooping vlan 41-46,99,130
+no ip dhcp snooping information option
+interface vlan 99
+ description MANAGEMENT
+ ip address 10.20.0.13 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 10.20.0.1
 ```
+⌨️ **ניהול:** אותו בלוק כמו ב-9א. ✅ ‏‎`[OK]`‎.
 
-### 4.5 ‏SW-JLM-F3-ACC1 — הגדרה מלאה (ביטחון + מנהלה)
-הקלידו שוב את **כל** הבלוק של 4.4, כשהשורות האלה שונות:
+---
 
-<div dir="rtl">
+## משימה 10 — ‏SW-JLM-SRV
+👉 **איפה:** ‏**SW-JLM-SRV** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-| השורה ב-4.4 | הופכת ל |
-|---|---|
-| ‎`hostname SW-JLM-F2-ACC1` | ‎`hostname SW-JLM-F3-ACC1` |
-| ‎`description PRODUCTION users` / `switchport access vlan 43` | ‎`description SECURITY users` / `switchport access vlan 45` |
-| ‎`description QA users` / `switchport access vlan 44` | ‎`description ADMIN users` / `switchport access vlan 46` |
-| ‎`description PRN-JLM-F2-01` | ‎`description PRN-JLM-F3-01` |
-| ‎`ip address 10.20.0.12 255.255.255.0` | ‎`ip address 10.20.0.13 255.255.255.0` |
-
-</div>
-
-### 4.6 ‏SW-JLM-SRV — הגדרה מלאה
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -910,7 +1149,7 @@ ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -942,7 +1181,125 @@ copy running-config startup-config
 
 </div>
 
-### 4.7 ‏R-JLM-EDGE — הגדרה מלאה
+---
+
+## משימה 11 — שלושת השרתים
+
+### 11א — הגדרות IP (איך? ‏←‏ M14)
+‏Desktop ‏←‏ IP Configuration ‏←‏ **Static**, לכולם mask ‏‎`255.255.255.0`, ‏gateway ‏‎`10.20.1.1`,
+‏DNS ‏‎`10.10.200.11`:
+
+<div dir="rtl">
+
+| שרת | ‎IP |
+|---|---|
+| ‎SRV-JLM-DHCP | ‎10.20.1.10 |
+| ‎SRV-JLM-SYSLOG | ‎10.20.1.11 |
+| ‎SRV-JLM-AAA | ‎10.20.1.12 |
+
+</div>
+
+בכל אחד: לשונית **Services** ‏←‏ מעבירים ל-**Off** כל שירות שהוא לא צריך (M20).\
+🔍 **בודקים עכשיו:** ‏SRV-JLM-DHCP ‏←‏ Command Prompt ‏←‏ `ping 10.20.1.1` ‏←‏ יש תשובות.
+
+### 11ב — ‏SRV-JLM-SYSLOG
+‏**Services ‏←‏ SYSLOG ‏←‏ On**.
+
+### 11ג — ‏SRV-JLM-AAA
+‏**Services ‏←‏ AAA ‏←‏ On**. ‏**Network Configuration** — לכל שורה: ‏Client Name, ‏Client IP,
+‏Secret ‏`Intel#Tac`, ‏ServerType **Tacacs** ‏←‏ **Add**:
+
+<div dir="rtl">
+
+| ‎Client Name | ‎Client IP |
+|---|---|
+| ‎SWL3-JLM-CC1 | ‎10.20.5.1 |
+| ‎SWL3-JLM-CC2 | ‎10.20.5.2 |
+| ‎R-JLM-EDGE | ‎10.20.5.10 |
+| ‎SW-JLM-F1-ACC1 | ‎10.20.0.11 |
+| ‎SW-JLM-F2-ACC1 | ‎10.20.0.12 |
+| ‎SW-JLM-F3-ACC1 | ‎10.20.0.13 |
+| ‎SW-JLM-SRV | ‎10.20.0.14 |
+
+</div>
+
+‏**User Setup:** ‏Username ‏`admin`, ‏Password ‏`Intel#Adm1n` ‏←‏ **Add**.
+
+### 11ד — ‏SRV-JLM-DHCP (לחיצה אחרי לחיצה)
+👉 ‏SRV-JLM-DHCP ‏←‏ לשונית **Services** ‏←‏ **DHCP** (ברשימה משמאל).
+1. לוחצים **On** (למעלה מימין).
+2. המאגר המובנה **serverPool** מסומן. משנים את השדות שלו לרשת של השרת עצמו:
+   ‏Default Gateway ‏‎`10.20.1.1`, ‏DNS Server ‏‎`10.10.200.11`, ‏Start IP Address ‏‎`10.20.1.100`,
+   ‏Subnet Mask ‏‎`255.255.255.0`, ‏Maximum Number of Users ‏‎`50` ‏←‏ לוחצים **Save**.
+3. עכשיו מוסיפים מאגר לכל מחלקה. ל**כל** שורה: מקלידים את ה-Pool Name ואת שאר השדות ‏←‏
+   לוחצים **Add** (לא Save!):
+
+<div dir="rtl">
+
+| ‎Pool Name | ‎Default Gateway | ‎DNS Server | ‎Start IP Address | ‎Subnet Mask | ‎Max Users |
+|---|---|---|---|---|---|
+| ‎JLM-SALES | ‎10.20.10.1 | ‎10.10.200.11 | ‎10.20.10.11 | ‎255.255.255.0 | ‎240 |
+| ‎JLM-LOGISTICS | ‎10.20.11.1 | ‎10.10.200.11 | ‎10.20.11.11 | ‎255.255.255.0 | ‎240 |
+| ‎JLM-PRODUCTION | ‎10.20.12.1 | ‎10.10.200.11 | ‎10.20.12.11 | ‎255.255.255.0 | ‎240 |
+| ‎JLM-QA | ‎10.20.13.1 | ‎10.10.200.11 | ‎10.20.13.11 | ‎255.255.255.0 | ‎240 |
+| ‎JLM-SECURITY | ‎10.20.14.1 | ‎10.10.200.11 | ‎10.20.14.11 | ‎255.255.255.0 | ‎240 |
+| ‎JLM-ADMIN | ‎10.20.15.1 | ‎10.10.200.11 | ‎10.20.15.11 | ‎255.255.255.0 | ‎240 |
+
+</div>
+
+✅ הטבלה למטה מציגה **7** מאגרים (serverPool + 6).
+
+❌ **לחצתם Save במקום Add?** דרסתם את המאגר המסומן. תקנו את השורה הזו ולחצו **Save**, ואז
+הוסיפו את המאגר החסר עם **Add**.
+
+<div dir="rtl">
+
+> **ה-Default Gateway הוא השדה הכי חשוב.** השרת בוחר מאגר לפי כתובת ה-relay (למשל 10.20.10.2) —
+> הוא משתמש במאגר שהשער שלו נמצא באותה רשת משנה.
+> שרת ה-DNS הוא של חיפה (10.10.200.11) — מגיעים אליו אחרי ה-VPN בשלב 15. עד אז, בודקים עם
+> כתובות IP.
+
+</div>
+
+---
+
+## משימה 12 — מכשירי קצה + בודקים DHCP דרך ה-relay
+
+### 12א — מכשירי קצה
+- כל 12 המחשבים של המחלקות ‏←‏ **DHCP** ‏(M16).
+- מדפסות (M15): ‏F1 ‏‎`10.20.2.11`, ‏F2 ‏‎`10.20.2.12`, ‏F3 ‏‎`10.20.2.13`, mask ‏‎`255.255.255.0`,
+  ‏gateway ‏‎`10.20.2.1`.
+- ‏PC-JLM-ADMIN-01 ‏←‏ **Static** ‏‎`10.20.0.100` / ‏‎`255.255.255.0` / gateway ‏‎`10.20.0.1`.
+
+### 12ב — בודקים
+
+<div dir="rtl">
+
+| ‎# | איפה | מקלידים | ✅ אמורים לראות |
+|---|---|---|---|
+| ‎1 | ‎PC-JLM-SAL-01 | ‎`ipconfig /all` | ‎`10.20.10.11` (או יותר), gateway ‏‎`10.20.10.1`, ‏DHCP server ‏‎`10.20.1.10` |
+| ‎2 | ‎PC-JLM-QA-01 | ‎`ipconfig` | ‎`10.20.13.x` |
+| ‎3 | ‎CC1 | ‎`show etherchannel summary` | ‎`Po1(SU)  PAgP  Gi1/0/23(P) Gi1/0/24(P)`‎ |
+| ‎4 | ‎CC1 | ‎`show standby brief` | ‏Active ב-41/43/45/99/100/130 |
+| ‎5 | ‎CC1 | ‎`show spanning-tree vlan 41` | ‎‏"This bridge is the root" |
+| ‎6 | ‎PC-JLM-SAL-01 | `ping 10.20.13.11` (מחשב QA) | יש תשובות — הניתוב בין VLANים עובד |
+
+</div>
+
+❌ **המחשבים מקבלים ‎`169.254.x.x`:** חסר `ip helper-address` על ה-SVI; קישורי ה-snooping כלפי
+מעלה לא מוגדרים trust; חסרה השורה `no ip dhcp snooping information option`; שגיאת כתיב במאגר
+בשרת.\
+❌ **כתובת מהמאגר הלא נכון:** ה-Default Gateway של המאגר לא תואם לשער של ה-VLAN.
+
+💾 ‏**File → Save**.
+
+---
+
+## משימה 13 — ‏R-JLM-EDGE, חלק 1: ממשקים ו-EIGRP
+👉 **איפה:** ‏**R-JLM-EDGE** ‏←‏ CLI ‏←‏ `no` לשאלה ‏←‏ `Router>`‎.
+
+### 13א — הקשחה, מפתח, ממשקים
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -953,13 +1310,11 @@ service password-encryption
 banner motd #
 *  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
 #
-! ===== EIGRP key =====
 key chain EIGRP-KEYS
  key 1
   key-string Intel#Eigrp
   exit
  exit
-! ===== interfaces =====
 interface loopback 0
  ip address 10.20.5.10 255.255.255.255
 interface gi0/0
@@ -982,7 +1337,11 @@ interface gi0/1
  ip nat outside
  no shutdown
  exit
-! ===== static default to the ISP, shared inside with EIGRP =====
+```
+
+### 13ב — נתיב ברירת מחדל סטטי לספק, ששותף פנימה עם EIGRP
+⌨️ מקלידים:
+```
 ip route 0.0.0.0 0.0.0.0 200.2.1.1
 router eigrp 100
  eigrp router-id 10.20.5.10
@@ -991,11 +1350,72 @@ router eigrp 100
  redistribute static
  no auto-summary
  exit
-! ===== dynamic NAT =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`network 10.20.4.0 0.0.0.7` | שני קישורי ה-‎/30 אל ה-CCים ‏(10.20.4.0–7) מצטרפים ל-EIGRP |
+| ‎`redistribute static` | "שתף עם EIGRP את הנתיבים הסטטיים שלי (ברירת המחדל לספק)" |
+
+</div>
+
+לחצו **Fast Forward Time**.
+
+🔍 **בודקים עכשיו:**
+```
+R-JLM-EDGE(config)# do show ip eigrp neighbors
+H   Address         Interface   Hold Uptime    SRTT   RTO   Q   Seq
+0   10.20.4.2       Gi0/0       12   00:01:10  ...
+1   10.20.4.6       Gi0/2       13   00:01:05  ...
+R-JLM-EDGE(config)# do show ip route eigrp
+D     10.20.8.0/21 [90/...] via 10.20.4.2, Gi0/0
+                   [90/...] via 10.20.4.6, Gi0/2     <- the summary, two paths
+D     10.20.0.0/24 ..., D 10.20.1.0/24 ..., D 10.20.2.0/24 ...
+```
+ובנוסף ב-**CC1**: ‏`show ip route | include 0.0.0.0` ‏←‏ `D*EX 0.0.0.0/0 [170/...] via 10.20.4.1`.
+‏`D` = נתיב EIGRP, ‏`EX` = חיצוני (הגיע מ-`redistribute`).
+
+❌ **אין שכנים:** שגיאת כתיב בשם ה-key-chain או ב-key-string; מספר ה-AS הוא לא ‎`100` באחד הצדדים.\
+❌ **שש רשתות ‎/24 נפרדות במקום ה-‎/21:** חסר `ip summary-address` על Gi1/1/1 של ה-CC.
+
+---
+
+## משימה 14 — ‏R-JLM-EDGE, חלק 2: ‏dynamic NAT
+⌨️ מקלידים:
+```
 ip nat pool JLM-POOL 200.2.10.1 200.2.10.6 netmask 255.255.255.248
 access-list 10 permit 10.20.0.0 0.0.255.255
 ip nat inside source list 10 pool JLM-POOL
-! ===== CBAC firewall =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip nat pool JLM-POOL 200.2.10.1 200.2.10.6 ...`‎ | המאגר של 6 הכתובות הציבוריות |
+| ‎`ip nat inside source list 10 pool JLM-POOL` | "תרגם את הכתובות של ירושלים בעזרת המאגר" = **dynamic NAT** |
+
+</div>
+
+<div dir="rtl">
+
+> השוו לחיפה: שם השורה נגמרת ב-`interface gi0/1 overload` ‏(PAT). כאן היא נגמרת
+> ב-`pool JLM-POOL` **בלי** `overload` — כתובת ציבורית אחת לכל מחשב.
+
+</div>
+
+🔍 **בודקים עכשיו:** ‏PC-JLM-SAL-01 ‏←‏ `ping 200.1.100.11` ‏←‏ יש תשובות. בנתב הקצה:
+‏`do show ip nat translations` ‏←‏ ‎`--- 200.2.10.1  10.20.10.11 ---`‎ — כתובת מהמאגר לכל מחשב.
+
+---
+
+## משימה 15 — ‏R-JLM-EDGE, חלק 3: חומת אש CBAC וניהול
+
+### 15א — ‏CBAC
+⌨️ מקלידים:
+```
 ip inspect name JLM-FW tcp
 ip inspect name JLM-FW udp
 ip inspect name JLM-FW icmp
@@ -1011,12 +1431,29 @@ interface gi0/1
  ip inspect JLM-FW out
  ip access-group WAN-IN in
  exit
-! ===== management =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip inspect name JLM-FW tcp` ‏(udp, ‏icmp) | "עקוב אחרי סוגי החיבורים היוצאים האלה" |
+| ‎`ip inspect JLM-FW out` | "…בתעבורה שיוצאת דרך הממשק הזה" |
+| ‎`ip access-group WAN-IN in` | "חסום כל מה שמגיע מהאינטרנט, חוץ מה-VPN ומתשובות של CBAC" |
+
+</div>
+
+🔍 **בודקים עכשיו:** ‏PC-JLM-SAL-01 ‏←‏ `ping 200.1.100.11` ‏←‏ **עדיין** יש תשובות (‏CBAC פתח את
+הדרך חזרה). ‏PC-HOME-01 ‏←‏ `ping 200.2.1.2` ‏←‏ ❌ חסום.
+
+### 15ב — ניהול
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -1042,151 +1479,39 @@ line console 0
  end
 copy running-config startup-config
 ```
-ההערות אומרות: מפתח EIGRP; ממשקים; נתיב ברירת מחדל סטטי לספק, שמשותף בפנים עם EIGRP; ‏dynamic NAT;
-חומת אש CBAC — ה-VPN מחיפה (שלב 15), וכל השאר רק כתעבורה חוזרת של CBAC; ניהול.
-
-### 4.8 שרתים (לחיצה אחרי לחיצה)
-**הגדרות IP** ‏(Desktop ‏←‏ IP Configuration ‏←‏ Static), כולם עם מסיכה ‎`255.255.255.0`, שער ‎`10.20.1.1`,
-‏DNS ‏‎`10.10.200.11`:
-
-<div dir="rtl">
-
-| שרת | ‎‏IP |
-|---|---|
-| ‎SRV-JLM-DHCP | ‎10.20.1.10 |
-| ‎SRV-JLM-SYSLOG | ‎10.20.1.11 |
-| ‎SRV-JLM-AAA | ‎10.20.1.12 |
-
-</div>
-
-כבו בכל שרת את כל השירותים שלא צריך (הלשונית Services).
-
-**‏SRV-JLM-SYSLOG** ‏←‏ Services ‏←‏ SYSLOG ‏←‏ **On**.
-
-**‏SRV-JLM-AAA** ‏←‏ Services ‏←‏ AAA ‏←‏ **On**. ‏Network Configuration ‏(secret `Intel#Tac`, סוג **Tacacs**):
-
-<div dir="rtl">
-
-| ‎‏Client Name | ‎‏Client IP |
-|---|---|
-| ‎SWL3-JLM-CC1 | ‎10.20.5.1 |
-| ‎SWL3-JLM-CC2 | ‎10.20.5.2 |
-| ‎R-JLM-EDGE | ‎10.20.5.10 |
-| ‎SW-JLM-F1-ACC1 | ‎10.20.0.11 |
-| ‎SW-JLM-F2-ACC1 | ‎10.20.0.12 |
-| ‎SW-JLM-F3-ACC1 | ‎10.20.0.13 |
-| ‎SW-JLM-SRV | ‎10.20.0.14 |
-
-</div>
-
-‏User Setup: ‏`admin` / `Intel#Adm1n`.
-
-**‏SRV-JLM-DHCP** ‏←‏ Services ‏←‏ **DHCP**:
-1. השירות **On**.
-2. המאגר המובנה **serverPool** מסומן. שנו אותו לרשת המשנה של השרת עצמו:
-   ‏Default Gateway ‏‎`10.20.1.1`, ‏DNS Server ‏‎`10.10.200.11`, ‏Start IP Address ‏‎`10.20.1.100`,
-   ‏Subnet Mask ‏‎`255.255.255.0`, ‏Maximum Number of Users ‏‎`50` ‏←‏ **Save**.
-3. הוסיפו מאגר אחד לכל מחלקה: הקלידו את השדות ‏←‏ **Add**:
-
-<div dir="rtl">
-
-| ‎‏Pool Name | ‎‏Default Gateway | ‎‏DNS Server | ‎‏Start IP Address | ‎‏Subnet Mask | ‎‏Max Users |
-|---|---|---|---|---|---|
-| ‎JLM-SALES | ‎10.20.10.1 | ‎10.10.200.11 | ‎10.20.10.11 | ‎255.255.255.0 | ‎240 |
-| ‎JLM-LOGISTICS | ‎10.20.11.1 | ‎10.10.200.11 | ‎10.20.11.11 | ‎255.255.255.0 | ‎240 |
-| ‎JLM-PRODUCTION | ‎10.20.12.1 | ‎10.10.200.11 | ‎10.20.12.11 | ‎255.255.255.0 | ‎240 |
-| ‎JLM-QA | ‎10.20.13.1 | ‎10.10.200.11 | ‎10.20.13.11 | ‎255.255.255.0 | ‎240 |
-| ‎JLM-SECURITY | ‎10.20.14.1 | ‎10.10.200.11 | ‎10.20.14.11 | ‎255.255.255.0 | ‎240 |
-| ‎JLM-ADMIN | ‎10.20.15.1 | ‎10.10.200.11 | ‎10.20.15.11 | ‎255.255.255.0 | ‎240 |
-
-</div>
-
-<div dir="rtl">
-
-> שרת ה-DNS הוא של חיפה (10.10.200.11) — נגיש אחרי ה-VPN בשלב 15. עד אז, בודקים עם כתובות IP.
-
-</div>
-
-### 4.9 מכשירי קצה
-- כל המחשבים של המחלקות ‏←‏ **DHCP**.
-- מדפסות (Config ‏←‏ FastEthernet0 + Settings): ‏F1 ‏‎`10.20.2.11`, ‏F2 ‏‎`10.20.2.12`, ‏F3 ‏‎`10.20.2.13`,
-  מסיכה ‎`255.255.255.0`, שער ‎`10.20.2.1`.
-- ‏PC-JLM-ADMIN-01 ‏←‏ סטטי ‎`10.20.0.100` / ‎`255.255.255.0` / שער ‎`10.20.0.1`.
-
-### 4.10 מה הפקודות החדשות אומרות
-
-<div dir="rtl">
-
-| פקודה | בשפה פשוטה |
-|---|---|
-| ‎`channel-group 1 mode desirable` | הצטרף לצרור 1 עם **PAgP** (הפרוטוקול של Cisco) |
-| ‎`ip helper-address 10.20.1.10` | "העבר broadcasts של DHCP מה-VLAN הזה לשרת ה-DHCP" (relay) |
-| ‎`key chain EIGRP-KEYS` / `key 1` / `key-string ...`‎ | צרור מפתחות עם שם, שמחזיק את הסיסמה של EIGRP |
-| ‎`ip authentication mode eigrp 100 md5` + `key-chain ...`‎ | "השתמש במפתח הזה על הקישור הזה" |
-| ‎`router eigrp 100` | הפעל EIGRP, מערכת אוטונומית 100 (חייב להתאים בכל הנתבים) |
-| ‎`network 10.20.0.0 0.0.255.255` | "כל ממשק ב-10.20.x.x מצטרף ל-EIGRP" |
-| ‎`no auto-summary` | "אל תקצר את הנתיבים שלי ל-10.0.0.0/8" |
-| ‎`ip summary-address eigrp 100 10.20.8.0 255.255.248.0` | "פרסם את 6 המחלקות כ-‎/21 אחד על הקישור הזה" |
-| ‎`redistribute static` | "שתף עם EIGRP את הנתיבים הסטטיים שלי (ברירת המחדל לספק)" |
-| ‎`ip nat pool JLM-POOL 200.2.10.1 200.2.10.6 ...`‎ | המאגר של 6 הכתובות הציבוריות |
-| ‎`ip nat inside source list 10 pool JLM-POOL` | "תרגם את הכתובות של ירושלים בעזרת המאגר" = **dynamic NAT** |
-| ‎`ip inspect name JLM-FW tcp` ‏(udp, ‏icmp) | "עקוב אחרי סוגי החיבורים היוצאים האלה" |
-| ‎`ip inspect JLM-FW out` | "…בתעבורה שיוצאת דרך הממשק הזה" |
-| ‎`ip access-group WAN-IN in` | "חסום כל מה שמגיע מהאינטרנט, חוץ מה-VPN ומתשובות של CBAC" |
-
-</div>
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 16 — בדיקות סופיות + המגבלה של dynamic NAT
 
-### 5.1 ‏EIGRP
-```
-R-JLM-EDGE# show ip eigrp neighbors
-IP-EIGRP neighbors for process 100
-H   Address         Interface   Hold Uptime    SRTT   RTO   Q   Seq
-0   10.20.4.2       Gi0/0       12   00:01:10  ...
-1   10.20.4.6       Gi0/2       13   00:01:05  ...
-R-JLM-EDGE# show ip route eigrp
-D     10.20.8.0/21 [90/...] via 10.20.4.2, Gi0/0
-                   [90/...] via 10.20.4.6, Gi0/2     <- the summary, two paths
-D     10.20.0.0/24 ..., D 10.20.1.0/24 ..., D 10.20.2.0/24 ...
-SWL3-JLM-CC1# show ip route | include 0.0.0.0
-D*EX  0.0.0.0/0 [170/...] via 10.20.4.1              <- the default from the edge
-```
-‏`D` = נתיב EIGRP, ‏`EX` = חיצוני (הגיע מ-`redistribute`). (ב-EDGE: הסיכום, בשני נתיבים. ב-CC1: ברירת
-המחדל מנתב הקצה.)
-
-### 5.2 מיתוג
-- ‏CC1: ‏`show etherchannel summary` ‏←‏ `Po1(SU)  PAgP  Gi1/0/23(P) Gi1/0/24(P)`‎
-- ‏CC1: ‏`show standby brief` ‏←‏ ‏Active עבור 41/43/45/99/100/130
-- ‏CC1: ‏`show spanning-tree vlan 41` ‏←‏ "This bridge is the root"
-
-### 5.3 ‏DHCP דרך ה-relay
-כל מחשב של מחלקה ‏←‏ `ipconfig` ‏←‏ כתובת מ-‎`.11` ומעלה, שער ‎`.1`, שרת DHCP ‏‎`10.20.1.10`.
-
-### 5.4 אינטרנט, ‏dynamic NAT ו-CBAC
+### 16א — בדיקות
 
 <div dir="rtl">
 
-| מאיפה | עושים | מה אמור לקרות |
-|---|---|---|
-| ‎PC-JLM-SAL-01 | ‎`ping 200.1.100.11` | ‎✅ |
-| ‎PC-JLM-SAL-01 | ‎`tracert 200.1.100.11` | ‎10.20.10.2 → 10.20.4.1 → 200.2.1.1 → … |
-| ‎R-JLM-EDGE | ‎`show ip nat translations` | ‏‎`--- 200.2.10.1  10.20.10.11 ---`‎ — כתובת אחת מהמאגר לכל מחשב |
-| ‎R-JLM-EDGE | ‎`show ip inspect sessions` | שיחות בזמן שמחשב עושה ping / גולש |
-| ‎PC-HOME-01 | ‎`ping 200.2.1.2` | ❌ ‏CBAC זורק תעבורה שלא התבקשה |
+| ‎# | מאיפה | עושים | צפוי |
+|---|---|---|---|
+| ‎1 | ‎PC-JLM-SAL-01 | ‎`ping 200.1.100.11` | ‎✅ |
+| ‎2 | ‎PC-JLM-SAL-01 | ‎`tracert 200.1.100.11` | ‎10.20.10.2 → 10.20.4.1 → 200.2.1.1 → … |
+| ‎3 | ‎R-JLM-EDGE | ‎`show ip nat translations` | כתובת מהמאגר לכל מחשב |
+| ‎4 | ‎R-JLM-EDGE | `show ip inspect sessions` (בזמן שמחשב עושה ping) | מופיעים sessions |
+| ‎5 | ‎PC-HOME-01 | ‎`ping 200.2.1.2` | ❌ ‏CBAC זורק תעבורה שלא ביקשנו |
+| ‎6 | ‎PC-JLM-ADMIN-01 | ‎`ssh -l admin 10.20.0.12` | ‎✅ ‏`SW-JLM-F2-ACC1#`‎ |
 
 </div>
 
-**בדיקת המגבלה של dynamic NAT:** גרמו ל-7 מחשבים שונים לעשות ping ל-200.1.100.11 באותו זמן. השביעי
-נכשל. ‏`show ip nat statistics` מראה שכל 6 הכתובות במאגר בשימוש. (מנקים עם `clear ip nat translation *`‎.)
-כתבו את התצפית הזו בספר הפרויקט.
+### 16ב — המגבלה של dynamic NAT
+1. ב-R-JLM-EDGE: ‏`clear ip nat translation *`‎.
+2. פותחים **7 מחשבים שונים** של מחלקות. בכל אחד מפעילים `ping -t 200.1.100.11` (אחד אחרי השני,
+   ומשאירים אותם רצים).
+3. המחשב ה-**7**: ‏`Request timed out`.
+4. ב-R-JLM-EDGE: ‏`show ip nat statistics` ‏←‏ כל 6 הכתובות של המאגר בשימוש.
+5. עוצרים את הפינגים (Ctrl+C) ומריצים `clear ip nat translation *`‎.
+
+📝 כתבו את התצפית הזו בספר — זו הסיבה שרוב החברות משתמשות ב-PAT.
+
+💾 ‏`copy running-config startup-config` בכל מכשיר ‏←‏ **File → Save**.
 
 ---
-
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל מכשיר ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏EIGRP: לנתב הקצה יש 2 שכנים, והסיכום ‎`/21` מגיע דרך שניהם
@@ -1205,21 +1530,53 @@ D*EX  0.0.0.0/0 [170/...] via 10.20.4.1              <- the default from the edg
 | המחשבים מקבלים ‎`169.254.x.x` | חסר `ip helper-address` על ה-SVI; קישורי ה-snooping כלפי מעלה לא מוגדרים trust; חסרה שורת option-82; שגיאת כתיב במאגר בשרת |
 | המחשבים מקבלים כתובת מהמאגר הלא נכון | ה-*Default Gateway* של המאגר לא תואם לשער של ה-VLAN — השרת מתאים מאגרים לפי כתובת ה-relay |
 | ‏`ip summary-address` נדחה | הוא שייך לקישור המנותב Gi1/1/1, לא ל-SVI |
-| אין אינטרנט מירושלים | הנתיב של ISP-B ל-200.2.10.0/29 (שלב 12, ‏4.4); ‏NAT inside/outside; המאגר נגמר |
+| אין אינטרנט מירושלים | הנתיב של ISP-B ל-200.2.10.0/29 (שלב 12, משימה 5ב); ‏NAT inside/outside; המאגר נגמר |
+| ל-3650 כל הקישורים אדומים | חסר לו ספק כוח (משימה 2) |
 
 </div>
 
-## אתגר
-קודם **File → Save**. אחר כך דמו CC1 מת על ידי מחיקתו (הכלי **Delete** ‏←‏ לחצו על CC1). מה עדיין
-עובד, ולמה: ‏DHCP למחשב של מכירות, גלישה ממחשב QA, ‏SSH מ-PC-JLM-ADMIN-01 ל-SW-JLM-F2-ACC1? בסוף
-**File → Open** לקובץ ששמרתם כדי להחזיר את CC1.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — ‏CC1 מת ⭐⭐
+- 🎯 **המשימה:** לגלות מה שורד כשמתג collapsed-core אחד נופל.
+- 📁 **מתחילים מ:** ‏`step13.pkt` שלכם — קודם **File → Save**.
+- 👣 **צעדים:**
+  1. מוחקים את **SWL3-JLM-CC1** (הכלי **Delete** ‏←‏ לוחצים על CC1).
+  2. ‏Fast Forward Time כמה פעמים.
+  3. בודקים: (א) במחשב מכירות `ipconfig /release` ואז `ipconfig /renew`; (ב) במחשב QA
+     ‏`ping 200.1.100.11`; (ג) ב-PC-JLM-ADMIN-01 ‏`ssh -l admin 10.20.0.12`.
+  4. ‏**File → Open** לקובץ ששמרתם (עונים **No** לשמירה) כדי להחזיר את CC1.
+- ✅ **גמרתם כש**אתם יודעים איזה מ-(א), (ב), (ג) עובד ו**למה**, ומצאתם את השירות היחיד שנפגע.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+אילו תפקידים עשה CC1 ש-CC2 עושה גם כן? הסתכלו על שורות ה-NTP של שאר המכשירים.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 שלושתם. ‏CC2 משתלט על HSRP בכל ה-VLANים (‏‎`.1` נשאר חי), ‏CC2 גם מעביר DHCP (ה-helper מוגדר בשניהם),
 ‏STP מעביר את התעבורה לקישורים של CC2, ונתב הקצה עדיין מגיע ל-10.20.8.0/21 דרך CC2. רק NTP נפגע (CC1
 היה שרת ה-NTP של הסניף) — נקודת כשל יחידה שכדאי לדון בה בספר הפרויקט (פתרון: ‏`ntp server 10.20.5.2`
 כשרת שני בכל מקום, כש-CC2 גם מסתנכרן לחיפה).
+</details>
+
+### תרגיל ב — שוכחים את ה-relay ⭐
+- 🎯 **המשימה:** להוכיח ש-DHCP בין VLANים צריך `ip helper-address`.
+- 📁 **מתחילים מ:** ‏`step13.pkt` ‏←‏ **Save As** ‏`step13-exB.pkt`.
+- 👣 **צעדים:**
+  1. ב-**CC1 וגם ב-CC2**: ‏`configure terminal` ‏←‏ `interface vlan 44` ‏←‏
+     ‏`no ip helper-address 10.20.1.10` ‏←‏ `end`.
+  2. ‏PC-JLM-QA-01 ‏←‏ `ipconfig /release` ‏←‏ `ipconfig /renew`.
+  3. עוברים למצב **Simulation** ‏(M21), מסננים **DHCP**, מחדשים שוב ומסתכלים איפה החבילה נעצרת.
+- ✅ **גמרתם כש**אתם יודעים לומר איפה ה-Discover נעצר ולמה.
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+המחשב מקבל ‎`169.254.x.x`. ה-Discover הוא broadcast — הוא מגיע ל-SVI של VLAN 44 ונעצר שם, כי
+נתבים (ומתגי שכבה 3) אף פעם לא מעבירים broadcasts. בלי ה-helper, אף אחד לא הופך אותו ל-unicast
+אל 10.20.1.10.
 </details>
 
 ---
@@ -1230,6 +1587,14 @@ D*EX  0.0.0.0/0 [170/...] via 10.20.4.1              <- the default from the edg
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
 
 זה **הסניף השני** של הדוגמה. בנו את האתר השני **שלכם** מתוך חלקים ג–ה בתוכנית:
+
+- [ ] פותחים את `my-project/step12.pkt` ‏←‏ **Save As** ‏`my-project/step13.pkt`
+- [ ] קודם כותבים את טבלת הכתובות (כמו 1.7)
+- [ ] מציבים (ספקי כוח!) ומחברים את האתר
+- [ ] שני מתגי ה-collapsed core; בודקים PAgP, ‏HSRP, שכני EIGRP
+- [ ] מתגי ה-access, מתג השרתים, השרתים (מאגרי DHCP!)
+- [ ] המחשבים מקבלים כתובות דרך ה-relay
+- [ ] נתב הקצה: ‏EIGRP + סיכום, ‏dynamic NAT, ‏CBAC; טבלת הבדיקות של משימה 16
 
 <div dir="rtl">
 

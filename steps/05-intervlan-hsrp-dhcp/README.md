@@ -15,6 +15,20 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 04 ושומרים בשם שלב 05 (2 דקות)
+- [ ] **משימה 2** — ‏DIST1: מדליקים ניתוב + השער הראשון (VLAN 10) ‏(10 דקות)
+- [ ] **משימה 3** — ‏DIST1: חמשת השערים האחרים (15 דקות)
+- [ ] **משימה 4** — ‏DIST2: שישה השערים, בתמונת מראה (20 דקות)
+- [ ] **משימה 5** — בודקים HSRP ובודקים ניתוב בין VLANים עם כתובות קבועות (10 דקות)
+- [ ] **משימה 6** — ‏DHCP ב-DIST1 ‏(15 דקות)
+- [ ] **משימה 7** — ‏DHCP ב-DIST2 ‏(10 דקות)
+- [ ] **משימה 8** — כתובת ניהול במתגי ה-access ‏(10 דקות)
+- [ ] **משימה 9** — מעבירים את מחשבי המשתמשים ל-DHCP ובודקים (15 דקות)
+- [ ] **משימה 10** — בדיקת כשל: "הורגים" שער וממשיכים לעשות פינג (15 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 - שני מתגי ה-distribution עובדים גם כ**נתבים**: המחלקות סוף סוף יכולות לדבר זו עם זו.
 - לכל VLAN יש כתובת שער (‎`.1`) ש**ממשיכה לעבוד גם אם אחד ממתגי ה-distribution מת** ‏(HSRP).
@@ -28,8 +42,6 @@
 ```
 (השער של VLAN 10 הוא ‎`10.10.16.1` — כתובת וירטואלית ששני המתגים חולקים. ‏DIST1 ‏(‎`.2`) הוא
 ה-Active ומחלק בכתובות ‎`.11–.130`; ‏DIST2 ‏(‎`.3`) הוא ה-Standby ומחלק ‎`.131–.254`.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -117,21 +129,21 @@ DIST1 הוא גם ה-HSRP Active של VLAN 10. כך מסגרת ממחשב עול
 
 ---
 
-## חלק 2 — הכנה
+## משימה 1 — פותחים את שלב 04 ושומרים בשם שלב 05 (איך? ‏←‏ M1)
 ‏**File → Open** ‏←‏ `my-work/step04.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step05.pkt`.
 
----
-
-## חלק 3 — בונים
-אין מה לבנות — בשלב הזה אין מכשירים או כבלים חדשים. הכול קורה ב-CLI.
+אין מה לבנות בשלב הזה — אין מכשירים חדשים ואין כבלים חדשים. הכול קורה ב-CLI.
 
 ---
 
-## חלק 4 — מגדירים (הקלידו כל שורה)
+## משימה 2 — ‏DIST1: מדליקים ניתוב + השער הראשון (VLAN 10)
+🧠 **למה:** עושים **VLAN אחד** קודם ובודקים אותו. אם הוא עובד, חמשת האחרים הם אותו דפוס.
 
-### 4.1 ‏SWL3-HFA-A-DIST1 — ניתוב + שערים (Active עבור 10, ‏30, ‏99, ‏110)
+👉 **איפה:** ‏**SWL3-HFA-A-DIST1** ‏←‏ CLI ‏←‏ נכנסים (`Intel#Con`, ‏`enable`, ‏`Intel#En4ble`) ‏←‏
+‏`SWL3-HFA-A-DIST1#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 ! switch the router brain on
 ip routing
@@ -144,6 +156,27 @@ interface vlan 10
  standby 10 priority 110
  standby 10 preempt
  no shutdown
+ end
+```
+לחצו **Fast Forward Time** ‏(M18).
+
+✅ מופיע ‎`%LINK-5-CHANGED: Interface Vlan10, changed state to up`, וכמה שניות אחר כך
+‏‎`%HSRP-6-STATECHANGE: Vlan10 Grp 10 state Standby -> Active`.\
+🔍 **בודקים עכשיו:** ‏`show standby brief` ‏←‏ שורה אחת: `Vl10  10  110 P Active  local  unknown  10.10.16.1`.
+(ב-`Standby` כתוב `unknown` כי DIST2 עוד לא הוגדר — נכון.)\
+❌ ה-SVI נשאר `down` ‏←‏ ‏VLAN 10 חייב להתקיים ולעבור ב-trunk: ‏`show vlan brief`.
+
+---
+
+## משימה 3 — ‏DIST1: חמשת השערים האחרים
+👉 **איפה:** ‏DIST1, שורת הפקודה `SWL3-HFA-A-DIST1#`‎.
+
+אותו דפוס כמו במשימה 2. **שימו לב ל-priority:** ‏110 איפה ש-DIST1 הוא Active ‏(30, ‏99, ‏110),
+‏**90** איפה ש-DIST2 יהיה Active ‏(20, ‏120) — ראו את הטבלה בסעיף 1.3.
+
+⌨️ מקלידים:
+```
+configure terminal
 interface vlan 20
  description GW FINANCE
  ip address 10.10.17.2 255.255.255.0
@@ -184,61 +217,31 @@ interface vlan 120
  standby 120 priority 90
  standby 120 preempt
  no shutdown
- exit
-```
-ההערה אומרת: מדליקים את "המוח" של הנתב.
-תראו הודעות כמו ‎`%HSRP-6-STATECHANGE: Vlan10 Grp 10 state Standby -> Active`.
-
-‏DHCP ב-DIST1 — הוא מחלק ‎`.11 – .130`, ולכן מחריג את ‎`.1 – .10` ואת ‎`.131 – .254`:
-```
-ip dhcp excluded-address 10.10.16.1 10.10.16.10
-ip dhcp excluded-address 10.10.16.131 10.10.16.254
-ip dhcp excluded-address 10.10.17.1 10.10.17.10
-ip dhcp excluded-address 10.10.17.131 10.10.17.254
-ip dhcp excluded-address 10.10.20.1 10.10.20.10
-ip dhcp excluded-address 10.10.20.131 10.10.20.254
-ip dhcp excluded-address 10.10.21.1 10.10.21.10
-ip dhcp excluded-address 10.10.21.131 10.10.21.254
-
-ip dhcp pool HFA-ENGINEERING
- network 10.10.16.0 255.255.255.0
- default-router 10.10.16.1
- dns-server 10.10.200.11
- domain-name intel.lab
-ip dhcp pool HFA-FINANCE
- network 10.10.17.0 255.255.255.0
- default-router 10.10.17.1
- dns-server 10.10.200.11
- domain-name intel.lab
-ip dhcp pool HFA-WIFI-EMP
- network 10.10.20.0 255.255.255.0
- default-router 10.10.20.1
- dns-server 10.10.200.11
- domain-name intel.lab
-ip dhcp pool HFA-WIFI-GUEST
- network 10.10.21.0 255.255.255.0
- default-router 10.10.21.1
- dns-server 200.1.100.10
  end
 copy running-config startup-config
 ```
+🔍 **בודקים עכשיו:** ‏`show ip interface brief` ‏←‏ בתחתית: ‏Vlan10, ‏20, ‏30, ‏99, ‏110, ‏120 עם
+הכתובות ‎`10.10.16.2` … ‎`10.10.21.2`, כולם `up up`.
+
+---
+
+## משימה 4 — ‏DIST2: שישה השערים, בתמונת מראה
+👉 **איפה:** ‏**SWL3-HFA-A-DIST2** ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SWL3-HFA-A-DIST2#`‎.
+
+ההבדלים מ-DIST1:
 
 <div dir="rtl">
 
-> האורחים מקבלים את ה-DNS של **ספק האינטרנט** ‏(200.1.100.10), אף פעם לא את ה-DNS הפנימי שלנו.
-> שני שרתי ה-DNS נבנים מאוחר יותר (שלבים 11–12) — עד אז שמות לא יתורגמו לכתובות; כתובות IP עובדות.
+| מה | ב-DIST1 | ב-DIST2 |
+|---|---|---|
+| הספרה האחרונה בכתובת | ‎`.2` | **‎`.3`** |
+| ‏priority עבור 20 ו-120 | ‎‏90 | ‎**‏110** |
+| ‏priority עבור 10, ‏30, ‏99, ‏110 | ‎‏110 | ‎**‏90** |
 
 </div>
 
-<div dir="rtl">
-
-> אין מאגר ל-VLAN 30 (מדפסות) ול-VLAN 99 (ניהול): למכשירים האלה יש כתובות **קבועות**.
-
-</div>
-
-### 4.2 ‏SWL3-HFA-A-DIST2 — ניתוב + שערים (Active עבור 20, ‏120)
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 ip routing
 
@@ -290,10 +293,129 @@ interface vlan 120
  standby 120 priority 110
  standby 120 preempt
  no shutdown
- exit
+ end
+copy running-config startup-config
 ```
-‏DHCP ב-DIST2 — הוא מחלק ‎`.131 – .254`, ולכן מחריג את ‎`.1 – .130`:
+לחצו **Fast Forward Time** ‏2–3 פעמים.
+
+✅ הודעות ‎`%HSRP-6-STATECHANGE`: ‏Vl20 ו-Vl120 נהיים **Active**, השאר **Standby**.
+
+---
+
+## משימה 5 — בודקים HSRP ובודקים ניתוב בין VLANים
+
+### 5א — ‏HSRP
+👉 ב-**DIST1**: ‏`show standby brief`
+
+✅ אמורים לראות:
 ```
+                     P indicates configured to preempt.
+Interface   Grp  Pri P State    Active          Standby         Virtual IP
+Vl10        10   110 P Active   local           10.10.16.3      10.10.16.1
+Vl20        20   90  P Standby  10.10.17.3      local           10.10.17.1
+Vl30        30   110 P Active   local           10.10.18.3      10.10.18.1
+Vl99        99   110 P Active   local           10.10.19.3      10.10.19.1
+Vl110       110  110 P Active   local           10.10.20.3      10.10.20.1
+Vl120       120  90  P Standby  10.10.21.3      local           10.10.21.1
+```
+‏Active עבור 10/30/99/110, ‏Standby עבור 20/120. ב-DIST2 אותה פקודה מראה את ההפך.
+
+❌ שני המתגים אומרים **Active** עבור אותה קבוצה ‏←‏ ה-`standby version` שונה, או שה-VLAN לא
+עובר ביניהם (בדקו את רשימת המותרים של Po1 משלב 04).
+
+### 5ב — טבלת הניתוב
+👉 ב-**DIST1**: ‏`show ip route`
+
+✅ אמורים לראות שורות כמו:
+```
+C    10.10.16.0/24 is directly connected, Vlan10
+C    10.10.17.0/24 is directly connected, Vlan20
+...
+```
+‏`C` = ‏**C**onnected (מחובר ישירות): המתג מכיר כל VLAN כי יש לו דלת (SVI) בכל אחד.
+
+### 5ג — הפינג הראשון בין VLANים
+למחשבי המשתמשים עדיין יש כתובות קבועות **בלי שער**. תנו לשניים מהם שער לבדיקה הזו
+(איך? ‏←‏ M14):
+- ‏**PC-HFA-ENG-01**: ‏Default Gateway ‏‎`10.10.16.1`
+- ‏**PC-HFA-FIN-01**: ‏Default Gateway ‏‎`10.10.17.1`
+
+אחר כך מ-PC-HFA-ENG-01 ‏←‏ Command Prompt ‏←‏ `ping 10.10.17.101`.
+
+✅ יש תשובות — **‏Engineering סוף סוף מדבר עם Finance!** (הראשונה או השנייה עלולות להיכשל — ARP.)\
+❌ כל מחשב מגיע לשער שלו (`ping 10.10.16.1`) אבל לא ל-VLAN השני ‏←‏ חסר `ip routing` במתג.
+
+---
+
+## משימה 6 — ‏DHCP ב-DIST1
+👉 **איפה:** ‏DIST1, שורת הפקודה `SWL3-HFA-A-DIST1#`‎.
+
+‏DIST1 מחלק ‎`.11 – .130`, ולכן הוא מחריג את ‎`.1 – .10` ואת ‎`.131 – .254`.
+
+### 6א — כתובות מוחרגות
+⌨️ מקלידים:
+```
+configure terminal
+ip dhcp excluded-address 10.10.16.1 10.10.16.10
+ip dhcp excluded-address 10.10.16.131 10.10.16.254
+ip dhcp excluded-address 10.10.17.1 10.10.17.10
+ip dhcp excluded-address 10.10.17.131 10.10.17.254
+ip dhcp excluded-address 10.10.20.1 10.10.20.10
+ip dhcp excluded-address 10.10.20.131 10.10.20.254
+ip dhcp excluded-address 10.10.21.1 10.10.21.10
+ip dhcp excluded-address 10.10.21.131 10.10.21.254
+```
+
+### 6ב — המאגרים (pools)
+⌨️ מקלידים:
+```
+ip dhcp pool HFA-ENGINEERING
+ network 10.10.16.0 255.255.255.0
+ default-router 10.10.16.1
+ dns-server 10.10.200.11
+ domain-name intel.lab
+ip dhcp pool HFA-FINANCE
+ network 10.10.17.0 255.255.255.0
+ default-router 10.10.17.1
+ dns-server 10.10.200.11
+ domain-name intel.lab
+ip dhcp pool HFA-WIFI-EMP
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.1
+ dns-server 10.10.200.11
+ domain-name intel.lab
+ip dhcp pool HFA-WIFI-GUEST
+ network 10.10.21.0 255.255.255.0
+ default-router 10.10.21.1
+ dns-server 200.1.100.10
+ end
+copy running-config startup-config
+```
+✅ אחרי `ip dhcp pool …`‎ שורת הפקודה היא ‎`(dhcp-config)#`‎. בסוף ‎`[OK]`‎.
+
+<div dir="rtl">
+
+> אורחים מקבלים את ה-DNS של **ספק האינטרנט** ‏(200.1.100.10), אף פעם לא את הפנימי שלנו.
+> שני שרתי ה-DNS נבנים בהמשך (שלבים 11–12) — עד אז שמות לא יתורגמו; כתובות IP עובדות.
+
+</div>
+
+<div dir="rtl">
+
+> אין מאגר ל-VLAN 30 (מדפסות) ול-VLAN 99 (ניהול): המכשירים האלה מקבלים כתובות **קבועות**.
+
+</div>
+
+---
+
+## משימה 7 — ‏DHCP ב-DIST2
+👉 **איפה:** ‏DIST2, שורת הפקודה `SWL3-HFA-A-DIST2#`‎.
+
+‏DIST2 מחלק ‎`.131 – .254`, ולכן הוא מחריג את ‎`.1 – .130`. המאגרים **זהים** לאלה של DIST1.
+
+⌨️ מקלידים:
+```
+configure terminal
 ip dhcp excluded-address 10.10.16.1 10.10.16.130
 ip dhcp excluded-address 10.10.17.1 10.10.17.130
 ip dhcp excluded-address 10.10.20.1 10.10.20.130
@@ -321,14 +443,19 @@ ip dhcp pool HFA-WIFI-GUEST
  end
 copy running-config startup-config
 ```
+✅ ‏‎`[OK]`‎.
 
-### 4.3 מתגי ה-access — כתובת ניהול
-מתגי ה-access הם מתגי שכבה 2: הם לא מנתבים. אבל אנחנו רוצים להגיע אליהם דרך הרשת (SSH
+---
+
+## משימה 8 — כתובת ניהול במתגי ה-access
+🧠 **למה:** מתגי access הם שכבה 2: הם לא מנתבים. אבל אנחנו רוצים להגיע אליהם דרך הרשת (SSH
 בשלב 07), ולכן כל אחד מקבל כתובת IP **אחת** ב-VLAN הניהול 99, ושער (כמו מחשב).
 
-**‏SW-HFA-A-ACC1:**
+### 8א — ‏SW-HFA-A-ACC1
+👉 ‏ACC1 ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SW-HFA-A-ACC1#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 interface vlan 99
  description MANAGEMENT
@@ -339,17 +466,26 @@ ip default-gateway 10.10.19.1
 end
 copy running-config startup-config
 ```
-**‏SW-HFA-A-ACC2:** אותו דבר, עם `ip address 10.10.19.12 255.255.255.0`.
 
-### 4.4 המחשבים ‏←‏ DHCP
-בכל **מחשב משתמש** ‏(ENG-01/02/03, ‏FIN-01/02/03): לחיצה ‏←‏ **Desktop** ‏←‏ **IP Configuration**
-‏←‏ בחרו **DHCP**. אחרי כמה שניות תראו `DHCP request successful` והשדות מתמלאים לבד. (אם אתם
-רואים `DHCP failed. APIPA is being used`, לחצו **Fast Forward Time** ולחצו שוב על **DHCP**.)
+### 8ב — ‏SW-HFA-A-ACC2
+👉 ‏ACC2 ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SW-HFA-A-ACC2#`‎. אותו דבר, עם **‎`.12`**:
 
-נשארים **סטטיים**: המדפסת (10.10.18.10, שער 10.10.18.1) ומחשב המנהל (10.10.19.100, שער
-10.10.19.1).
+⌨️ מקלידים:
+```
+configure terminal
+interface vlan 99
+ description MANAGEMENT
+ ip address 10.10.19.12 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 10.10.19.1
+end
+copy running-config startup-config
+```
+🔍 **בודקים עכשיו:** ‏PC-HFA-ADMIN-01 ‏←‏ Command Prompt ‏←‏ `ping 10.10.19.11` ו-`ping 10.10.19.12`.\
+✅ שניהם עונים.
 
-### 4.5 מה הפקודות החדשות אומרות
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -371,36 +507,25 @@ copy running-config startup-config
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 9 — מעבירים את מחשבי המשתמשים ל-DHCP ובודקים
 
-### 5.1 ‏HSRP
-ב-**DIST1**: `show standby brief`
-```
-                     P indicates configured to preempt.
-Interface   Grp  Pri P State    Active          Standby         Virtual IP
-Vl10        10   110 P Active   local           10.10.16.3      10.10.16.1
-Vl20        20   90  P Standby  10.10.17.3      local           10.10.17.1
-Vl30        30   110 P Active   local           10.10.18.3      10.10.18.1
-Vl99        99   110 P Active   local           10.10.19.3      10.10.19.1
-Vl110       110  110 P Active   local           10.10.20.3      10.10.20.1
-Vl120       120  90  P Standby  10.10.21.3      local           10.10.21.1
-```
-✅ ‏Active עבור 10/30/99/110, ‏Standby עבור 20/120. ‏DIST2 מציג את ההפך.
+### 9א — ‏DHCP בששת מחשבי המשתמשים (איך? ‏←‏ M16)
+**לכל אחד** מ-PC-HFA-ENG-01, ‏ENG-02, ‏ENG-03, ‏FIN-01, ‏FIN-02, ‏FIN-03:
+1. לחצו עליו ‏←‏ **Desktop** ‏←‏ **IP Configuration**.
+2. בחרו **DHCP** למעלה.
+3. חכו ל-`DHCP request successful`.
 
-### 5.2 טבלת הניתוב
-ב-**DIST1**: `show ip route`
-```
-C    10.10.16.0/24 is directly connected, Vlan10
-C    10.10.17.0/24 is directly connected, Vlan20
-...
-```
-‏`C` = ‏**C**onnected (מחובר ישירות): המתג מכיר כל VLAN כי יש לו דלת (SVI) בכל אחד.
+✅ השדות מתמלאים לבד: כתובת ‎`.11`–‎`.254`, מסיכה ‎`255.255.255.0`, שער ‎`.1` של ה-VLAN שלו,
+‏DNS ‏‎`10.10.200.11`.\
+❌ ‏`DHCP failed. APIPA is being used` ‏←‏ לחצו **Fast Forward Time**, לחצו **Static** ואז שוב **DHCP**.
 
-### 5.3 ‏DHCP
-ב-**DIST1**: `show ip dhcp binding` ‏←‏ כתובות בין ‎.11 ל-‎.130 עם כתובות ה-MAC של המחשבים.
-ב-**DIST2**: `show ip dhcp binding` ‏←‏ אולי כמה כתובות ‎.131 ומעלה (מי שענה ראשון).
+נשארים **קבועים**: המדפסת (10.10.18.10, שער 10.10.18.1) ומחשב המנהל (10.10.19.100, שער 10.10.19.1).
 
-במחשב ‏←‏ Command Prompt ‏←‏ `ipconfig /all`:
+### 9ב — בודקים את ההקצאות
+👉 ב-**DIST1**: ‏`show ip dhcp binding` ‏←‏ ✅ כתובות בין ‎.11 ל-‎.130 עם כתובות ה-MAC של המחשבים.\
+👉 ב-**DIST2**: ‏`show ip dhcp binding` ‏←‏ אולי כמה כתובות ‎.131+ (מי שענה ראשון).
+
+👉 במחשב ‏←‏ Command Prompt ‏←‏ `ipconfig /all` ‏←‏ ✅ למשל:
 ```
    IPv4 Address......: 10.10.16.11
    Subnet Mask.......: 255.255.255.0
@@ -409,35 +534,42 @@ C    10.10.17.0/24 is directly connected, Vlan20
    DNS Servers.......: 10.10.200.11
 ```
 
-### 5.4 בדיקות ping
+### 9ג — פינגים
+רשמו את הכתובת שכל מחשב קיבל (העבירו את העכבר מעליו). אחר כך (איך? ‏←‏ M17):
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | צפוי |
-|---|---|---|
-| מחשב ENG | ‎`ping 10.10.16.1` | ✅ השער שלו |
-| מחשב ENG | ‏`ping` לכתובת של מחשב FIN | ✅ **הניתוב בין VLANים עובד!** |
-| מחשב ENG | ‏`ping 10.10.18.10` (מדפסת) | ‎✅ |
-| מחשב ENG | ‏`tracert` למחשב FIN | הקפיצה הראשונה ‎`10.10.16.2` ‏(DIST1 — ה-Active של VLAN 10) |
-| ‎PC-HFA-ADMIN-01 | ‏`ping 10.10.19.11` ו-‎`10.10.19.12` | ✅ כתובות הניהול של מתגי ה-access |
+| ‎# | מאיפה | מקלידים | צפוי |
+|---|---|---|---|
+| ‎1 | מחשב ENG | ‎`ping 10.10.16.1` | ✅ השער שלו |
+| ‎2 | מחשב ENG | ‏`ping` לכתובת של מחשב FIN | ✅ **ניתוב בין VLANים עובד!** |
+| ‎3 | מחשב ENG | `ping 10.10.18.10` (המדפסת) | ‎✅ |
+| ‎4 | מחשב ENG | ‏`tracert` למחשב FIN | הקפיצה הראשונה ‎`10.10.16.2` ‏(DIST1 — ה-Active של VLAN 10) |
+| ‎5 | ‎PC-HFA-ADMIN-01 | `ping 10.10.19.11` ו-‎`10.10.19.12` | ✅ כתובות הניהול של מתגי ה-access |
 
 </div>
 
-### 5.5 בדיקת כשל — HSRP בפעולה
-נגרום לשער של DIST1 ב-VLAN 10 ליפול, ונראה איך DIST2 נכנס במקומו.
-1. ב-**מחשב ENG**: `ping -t` ל-**מחשב FIN** (ping רציף).
-2. ב-**DIST1**, כבו את הדלת שלו ל-VLAN 10:
+✅ כל החמש כצפוי.
+
+---
+
+## משימה 10 — בדיקת כשל: "הורגים" שער וממשיכים לעשות פינג
+🧠 **למה:** להוכיח ש-HSRP וחלוקת טווח ה-DHCP באמת מגינים על המשתמשים.
+
+1. ב**מחשב ENG**: ‏`ping -t` לכתובת של **מחשב FIN** (פינג רציף). השאירו אותו רץ.
+2. ב-**DIST1**, סגרו את הדלת שלו ל-VLAN 10:
 ```
 configure terminal
 interface vlan 10
  shutdown
  end
 ```
-3. הסתכלו על ה-ping: כמה שורות timeout (עד 10 שניות — זמן ה-hold של HSRP), ואז התשובות
-   ממשיכות — ‏DIST2 לקח את ה-‎`.1`.
-4. ב-**DIST2**: `show standby brief` ‏←‏ עכשיו הוא **Active** גם עבור קבוצה 10.
-5. ב**מחשב ENG** אחר ‏←‏ Command Prompt: `ipconfig /release`, ואז `ipconfig /renew` ‏←‏ תקבלו
-   כתובת **‎.131 ומעלה** — מ-DIST2, כי DIST1 לא שומע עכשיו את VLAN 10. ה-split scope עובד!
+3. הסתכלו על הפינג.\
+   ✅ כמה כישלונות (עד 10 שניות — זמן ה-hold של HSRP), ואז התשובות ממשיכות — ‏DIST2 לקח את ‎`.1`.
+4. ב-**DIST2**: ‏`show standby brief`.\
+   ✅ עכשיו הוא **Active** גם עבור קבוצה 10.
+5. ב**מחשב ENG אחר** ‏←‏ Command Prompt: ‏`ipconfig /release`, ואז `ipconfig /renew`.\
+   ✅ מקבלים כתובת **‎.131+** — מ-DIST2, כי DIST1 לא שומע עכשיו את VLAN 10. חלוקת הטווח עובדת!
 6. ב-**DIST1**, פתחו שוב את הדלת:
 ```
 configure terminal
@@ -445,19 +577,18 @@ interface vlan 10
  no shutdown
  end
 ```
-   אחרי כמה שניות `show standby brief` ב-DIST1 ‏←‏ שוב **Active** עבור קבוצה 10 — זה ה-**preempt**.
-7. עצרו את ה-ping עם **Ctrl+C**.
+7. חכו כמה שניות (Fast Forward Time), ואז ב-DIST1 ‏`show standby brief`.\
+   ✅ ‏DIST1 שוב **Active** עבור קבוצה 10 — זה ה-**preempt**.
+8. עצרו את הפינג עם **Ctrl+C**.
+9. שמרו את כל 4 המתגים (`copy running-config startup-config`) ‏←‏ **File → Save**.
 
 ---
 
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים ‏←‏ **File → Save**.
-
 ## נקודת ביקורת
 - [ ] ‏`show standby brief` נכון בשני מתגי ה-DIST
-- [ ] מחשבי המשתמשים מקבלים כתובות DHCP עם השער ‎`.1`
-- [ ] פינג הנדסה ↔ כספים עובד
-- [ ] בדיקת הכשל עברה (ה-ping שורד את נפילת השער של DIST1 ב-VLAN 10; ה-preempt מחזיר אותו)
+- [ ] מחשבי המשתמשים מקבלים כתובות DHCP עם שער ‎`.1`
+- [ ] פינג Engineering ↔ Finance עובד
+- [ ] בדיקת הכשל עברה (הפינג שורד את נפילת השער של VLAN 10 ב-DIST1; ה-preempt מחזיר אותו)
 
 ## אם משהו לא עובד
 
@@ -470,19 +601,55 @@ interface vlan 10
 | שני המתגים אומרים **Active** עבור אותה קבוצה | ה-`standby version` שונה, או שה-VLAN לא עובר ביניהם (בדקו את רשימת ה-VLANים המותרים ב-trunk של Po1) |
 | המחשבים מקבלים ‎`169.254.x.x` ‏(APIPA) | אין תשובת DHCP: שגיאת כתיב ב-`network` של המאגר, כל הכתובות מוחרגות, או שהפורט של המחשב ב-VLAN הלא נכון. לחצו Fast Forward Time ונסו שוב |
 | המחשב מקבל כתובת אבל בלי שער | חסר `default-router` במאגר |
+| שגיאת כתיב בכתובת הווירטואלית (למשל ‎`10.10.16.11`) | ב-SVI הזה: ‏`no standby 10 ip 10.10.16.11` ‏←‏ `standby 10 ip 10.10.16.1` |
 
 </div>
 
-## אתגר
-שאלה על חלוקת עומס: התעבורה של VLAN 10 עוברת דרך DIST1, ושל VLAN 20 דרך DIST2. דמיינו שהפכתם
-את DIST1 ל-HSRP Active עבור VLAN 20, **אבל** DIST2 נשאר ה-STP root של VLAN 20. שרטטו את הדרך
-שמחשב FIN שמחובר ל-ACC1 עובר כדי להגיע לשער שלו. למה היא גרועה יותר?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — הבוס הלא נכון ⭐⭐
+- 🎯 **המשימה:** להסביר למה ה-HSRP Active של VLAN צריך להיות אותו מתג כמו ה-STP root שלו.
+- 📁 **מתחילים מ:** דף (לא צריך Packet Tracer).
+- 👣 **צעדים:**
+  1. דמיינו ש-DIST1 הוא HSRP Active עבור VLAN 20, **אבל** DIST2 נשאר ה-STP root של VLAN 20.
+  2. שרטטו את ACC1, ‏DIST1, ‏DIST2 ואת Po1.
+  3. שרטטו את הדרך שמחשב FIN שמחובר ל-ACC1 עובר כדי להגיע לשער שלו. (זכרו משלב 04: ב-ACC1,
+     ‏VLAN 20 עולה דרך הפורט שפונה ל-STP root.)
+- ✅ **גמרתם כש**השרטוט מראה את הדרך, ואתם יודעים לומר במשפט אחד למה היא גרועה יותר.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+איזה קישור כלפי מעלה של ACC1 מעביר את VLAN 20? לאן המסגרת מגיעה? האם זה המתג שעונה ל-‎`.1`?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 מחשב ‏←‏ ACC1 ‏←‏ (STP מעביר לכיוון ה-root, ‏DIST2) ‏←‏ DIST2 ‏←‏ Po1 ‏←‏ DIST1 ‏(HSRP Active) ‏←‏ מנותב.
 המסגרת חוצה את ה-EtherChannel סתם: קפיצה מיותרת, והקישור בין מתגי ה-DIST נושא תעבורה שלא
 אמור לשאת. הכלל: **HSRP Active = STP root**, לכל VLAN.
+</details>
+
+### תרגיל ב — מי נתן לי את הכתובת הזו? ⭐⭐
+- 🎯 **המשימה:** להוכיח איזה מתג נתן לכל מחשב את הכתובת שלו.
+- 📁 **מתחילים מ:** ה-`step05.pkt` שלכם.
+- 👣 **צעדים:**
+  1. בכל מחשב משתמש הריצו `ipconfig /all` ורשמו את **IPv4 Address** ואת **DHCP Servers**.
+  2. ב-DIST1 וב-DIST2 הריצו `show ip dhcp binding`.
+  3. התאימו כל מחשב לשורה באחת משתי הטבלאות.
+- ✅ **גמרתם כש**יש לכם טבלה קטנה "מחשב ‏←‏ כתובת ‏←‏ שרת", וכל כתובת נמצאת בחצי הנכון
+  (‎.11–.130 מ-DIST1, ‏‎.131–.254 מ-DIST2).
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+‏`DHCP Servers` מראה ‎`.2` ‏(DIST1) או ‎`.3` ‏(DIST2) של ה-VLAN של המחשב עצמו. טבלת ההקצאות
+מראה את ה-MAC של המחשב — השוו אותו ל-`Physical Address` ב-`ipconfig /all`.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+כל מחשב שה-`DHCP Servers` שלו הוא ‎`10.10.x.2` קיבל כתובת ‎.11–.130 ומופיע בטבלת ההקצאות של
+DIST1; כל מחשב שקיבל שירות מ-‎`10.10.x.3` קיבל ‎.131+ ומופיע בטבלה של DIST2. אם מתג אחד ענה
+לכל המחשבים — זה בסדר, השני הוא הגיבוי (ראיתם אותו עובד במשימה 10).
 </details>
 
 ---
@@ -491,6 +658,13 @@ interface vlan 10
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step04.pkt` ‏←‏ **Save As** ‏`my-project/step05.pkt`
+- [ ] ‏`ip routing` + ‏SVI אחד עם HSRP בשני מתגי ה-distribution ‏←‏ `show standby brief` תקין
+- [ ] כל שאר ה-SVIs; ה-priorities לפי עמודת ה"ראשי" **שלכם**
+- [ ] חלוקת טווח DHCP בשני המתגים (או איפה שחלק ה בתוכנית שלכם שם את ה-DHCP)
+- [ ] כתובת ניהול + default gateway בכל מתג access
+- [ ] מחשבי המשתמשים על DHCP; הבדיקות של משימות 9 ו-10 עוברות
 
 <div dir="rtl">
 
@@ -572,7 +746,7 @@ interface vlan 10
 ‏Hello כל 3 שניות, ‏hold ‏10 שניות. אם ה-Standby לא שומע hello במשך 10 שניות, הוא הופך ל-Active,
 לוקח את ה-IP וה-MAC הווירטואליים, ונבחר Standby חדש. המחשבים ממשיכים עם אותו שער.
 
-**איפה מראים:** כבו את ה-SVI של ה-Active (`shutdown`) והריצו ping רציף ממחשב (בדיקה 5.5).
+**איפה מראים:** כבו את ה-SVI של ה-Active (`shutdown`) והריצו ping רציף ממחשב (משימה 10).
 </details>
 
 **6. ★2 כיצד נבחר ה-Active? איך קובעים איזה נתב יהיה ה-Active?**

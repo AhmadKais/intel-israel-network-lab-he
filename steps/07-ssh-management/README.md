@@ -15,6 +15,17 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 06, שומרים בשם שלב 07, בודקים את מחשב המנהל (5 דקות)
+- [ ] **משימה 2** — ‏ACC1: דומיין, משתמש, מפתחות הצפנה (10 דקות)
+- [ ] **משימה 3** — ‏ACC1: הגדרות SSH, רשימת האורחים, הדלתות מרחוק (10 דקות)
+- [ ] **משימה 4** — בודקים SSH ל-ACC1 לפני שממשיכים (5 דקות)
+- [ ] **משימה 5** — אותו דבר ב-ACC2, ‏DIST1, ‏DIST2 ‏(25 דקות)
+- [ ] **משימה 6** — בודקים SSH לכל ארבעת המתגים (10 דקות)
+- [ ] **משימה 7** — בודקים את הדחיות (10 דקות)
+- [ ] **תרגיל** — רואים למה Telnet מסוכן
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 אפשר לנהל כל מתג בבניין A **מרחוק**, אבל:
 - רק עם **SSH** (מוצפן) — אף פעם לא Telnet;
@@ -26,8 +37,6 @@
  PC-HFA-ENG-01   (10.10.16.x,  VLAN 10)   ──SSH──►  any switch   ❌ refused by the ACL
 ```
 (מחשב המנהל ב-VLAN 99 ‏←‏ SSH לכל מתג ✅. מחשב של הנדסה ב-VLAN 10 ‏←‏ נדחה על ידי ה-ACL ❌.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -103,88 +112,170 @@
 
 ---
 
-## חלק 2 — הכנה
-‏**File → Open** ‏←‏ `my-work/step06.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step07.pkt`.
+## משימה 1 — פותחים את שלב 06, שומרים בשם שלב 07, בודקים את מחשב המנהל
+1. ‏**File → Open** ‏←‏ `my-work/step06.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step07.pkt` ‏(M1).
+2. אין מה לבנות — מחשב המנהל (`PC-HFA-ADMIN-01`, ‏ACC1 ‏Fa0/22, ‏VLAN 99) מחכה מאז שלב 02.
+   לחצו עליו ‏←‏ **Desktop** ‏←‏ **IP Configuration** ובדקו: **Static**, ‏IP ‏‎`10.10.19.100`, מסיכה
+   ‏‎`255.255.255.0`, שער ‎`10.10.19.1`.
+3. ב-**Command Prompt** שלו ‏←‏ `ping 10.10.19.11`.
 
-## חלק 3 — בונים
-אין שום דבר חדש — מחשב המנהל (`PC-HFA-ADMIN-01`, ‏ACC1 Fa0/22, ‏VLAN 99, ‏10.10.19.100, שער
-10.10.19.1) מחכה מאז שלב 02. בדקו עכשיו את הגדרות ה-IP שלו.
+✅ יש תשובות. (אין תשובה ‏←‏ תקנו את זה קודם: ראו שלב 05 משימה 8.)
 
 ---
 
-## חלק 4 — מגדירים
+## משימה 2 — ‏ACC1: דומיין, משתמש, מפתחות הצפנה
+👉 **איפה:** ‏**SW-HFA-A-ACC1** ‏←‏ CLI ‏←‏ נכנסים (`Intel#Con`, ‏`enable`, ‏`Intel#En4ble`) ‏←‏
+‏`SW-HFA-A-ACC1#`‎.
 
-ההגדרות **זהות בכל 4 המתגים** של בניין A:
-`SW-HFA-A-ACC1`, `SW-HFA-A-ACC2`, `SWL3-HFA-A-DIST1`, `SWL3-HFA-A-DIST2`.
-הקלידו אותן בכל אחד מהם (4 פעמים = תדעו אותן בעל פה).
-
-### 4.1 הקלידו את זה בכל מתג
+### 2א — שם דומיין ומשתמש מנהל
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-
-! ---------- 1. names for the encryption key ----------
-! (the hostname is already set since step 02/03)
+! names for the encryption key (the hostname is already set since step 02)
 ip domain-name intel.lab
-
-! ---------- 2. a personal admin user ----------
+! a personal admin user with full rights
 username admin privilege 15 secret Intel#Adm1n
-
-! ---------- 3. the encryption keys ----------
-crypto key generate rsa
 ```
-ההערות אומרות: 1. שמות למפתח ההצפנה (ה-hostname כבר מוגדר משלב 02/03); 2. משתמש מנהל אישי;
-3. מפתחות ההצפנה.
 
-המתג שואל: `How many bits in the modulus [512]:`‎ ‏←‏ הקלידו **‎`1024`** ‏←‏ Enter.
-תראו ‎`[OK]`‎ ו-‎`%SSH-5-ENABLED: SSH 1.99 has been enabled`. המשיכו:
+### 2ב — מפתחות ההצפנה
+⌨️ מקלידים: `crypto key generate rsa` ‏←‏ **Enter**.
+
+המתג שואל: `How many bits in the modulus [512]:`‎ ‏←‏ הקלידו **‎`1024`** ‏←‏ **Enter**.
+
+✅ מופיע ‎`[OK]`‎ ו-‎`%SSH-5-ENABLED: SSH 1.99 has been enabled`.\
+❌ ‏‎`% Please define a domain-name first` ‏←‏ דילגתם על 2א. הקלידו `ip domain-name intel.lab`,
+ואז נסו שוב.
+
+---
+
+## משימה 3 — ‏ACC1: הגדרות SSH, רשימת האורחים, הדלתות מרחוק
+👉 **איפה:** ‏ACC1, שורת הפקודה `SW-HFA-A-ACC1(config)#`‎.
+
+### 3א — הגדרות SSH
+⌨️ מקלידים:
 ```
-! ---------- 4. SSH settings ----------
 ip ssh version 2
 ip ssh time-out 60
 ip ssh authentication-retries 3
 login block-for 120 attempts 3 within 60
+```
 
-! ---------- 5. the guest list: only the management network ----------
+<div dir="rtl">
+
+> אם `login block-for ...`‎ נותן ‎`% Invalid input`, דלגו על השורה הזו במתג הזה — כל השאר
+> עדיין עובד.
+
+</div>
+
+### 3ב — רשימת האורחים: רק רשת הניהול
+⌨️ מקלידים:
+```
 ip access-list standard MGMT-ONLY
  remark --- who may manage network devices ---
  permit 10.10.19.0 0.0.0.255
  deny any log
  exit
+```
+✅ אחרי השורה הראשונה שורת הפקודה היא ‎`(config-std-nacl)#`‎; אחרי `exit` — חזרה ל-‎`(config)#`‎.
 
-! ---------- 6. the remote doors: SSH only, usernames, guest list ----------
+### 3ג — הדלתות מרחוק: רק SSH, שמות משתמש, רשימת אורחים
+⌨️ מקלידים:
+```
 line vty 0 15
  transport input ssh
  login local
  access-class MGMT-ONLY in
  exec-timeout 5 0
  exit
+```
 
-! ---------- 7. the console also asks for the username ----------
+<div dir="rtl">
+
+> **הערה ל-PT:** אם `line vty 0 15` נדחה, הקלידו את אותן ארבע שורות תחת `line vty 0 4`,
+> ואז שוב תחת `line vty 5 15`.
+
+</div>
+
+### 3ד — גם ה-console מבקש שם משתמש
+⌨️ מקלידים:
+```
 line console 0
  login local
  end
 copy running-config startup-config
 ```
-ההערות אומרות: 4. הגדרות SSH; 5. רשימת האורחים: רק רשת הניהול; 6. הדלתות מרחוק: רק SSH, שמות
-משתמשים, רשימת אורחים; 7. גם ה-console מבקש שם משתמש.
+✅ ‏‎`[OK]`‎.
 
 <div dir="rtl">
 
-> **הערה על PT:** אם `line vty 0 15` נדחה, הגדירו `line vty 0 4`, ואז חזרו על אותן שורות תחת
-> `line vty 5 15`. אם מתג דוחה את `login block-for ...`‎ עם ‎`% Invalid input`, דלגו על השורה
-> הזו באותו מתג — כל השאר עדיין עובד.
+> מעכשיו ה-console מבקש **Username: admin** ו-**Password: Intel#Adm1n**. סיסמת ה-console
+> הישנה `Intel#Con` כבר לא בשימוש.
 
 </div>
 
-<div dir="rtl">
+---
 
-> אחרי `line console 0` ‏←‏ `login local`, ה-console מבקש **Username: admin** ו-**Password:
-> Intel#Adm1n**. סיסמת ה-console הישנה `Intel#Con` כבר לא בשימוש.
+## משימה 4 — בודקים SSH ל-ACC1 לפני שממשיכים
+🧠 **למה:** אם ACC1 עובד, אתם יודעים שהמתכון נכון. אחר כך מעתיקים אותו לשלושת האחרים.
 
-</div>
+1. לחצו על **PC-HFA-ADMIN-01** ‏←‏ **Desktop** ‏←‏ **Command Prompt** ‏(M17).
+2. הקלידו: `ssh -l admin 10.10.19.11` (ה-‎`-l` היא **L** קטנה = שם התחברות).
+3. ‏`Password:`‎ ‏←‏ `Intel#Adm1n` (שום דבר לא מופיע בזמן ההקלדה) ‏←‏ **Enter**.
 
-### 4.2 מה הפקודות החדשות אומרות
+✅ אתם בפנים:
+```
+*  Intel Israel - AUTHORIZED ACCESS ONLY ...
+SW-HFA-A-ACC1#
+```
+4. הקלידו `exit` כדי לצאת.
+
+❌ ‏‎`% Connection refused by remote host` ‏←‏ שם ה-ACL ב-`access-class` לא תואם ל-ACL (שגיאת
+כתיב = deny לכולם). ב-ACC1: ‏`show running-config` ‏←‏ השוו את החלק של `line vty` ל-`show access-lists`.\
+❌ ‏‎`% Connection timed out` ‏←‏ אין דרך ברשת. האם `ping 10.10.19.11` עובד?
+
+---
+
+## משימה 5 — אותו דבר ב-ACC2, ‏DIST1, ‏DIST2
+ההגדרות **זהות** בכל מתג בבניין A. עשו שוב את משימות 2 ו-3 בכל אחד משלושת המתגים שלמטה.
+(אחרי 4 פעמים תדעו את זה בעל פה.)
+
+לכל מתג: 👉 לחצו עליו ‏←‏ CLI ‏←‏ נכנסים (`Intel#Con` ‏←‏ `enable` ‏←‏ `Intel#En4ble`) ‏←‏ ואז מקלידים:
+
+⌨️ הבלוק המלא (משימות 2 + 3 ביחד):
+```
+configure terminal
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ remark --- who may manage network devices ---
+ permit 10.10.19.0 0.0.0.255
+ deny any log
+ exit
+line vty 0 15
+ transport input ssh
+ login local
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+ exit
+line console 0
+ login local
+ end
+copy running-config startup-config
+```
+סמנו כל מתג כשהוא מראה ‎`[OK]`‎:
+- [ ] ‏SW-HFA-A-ACC2
+- [ ] ‏SWL3-HFA-A-DIST1
+- [ ] ‏SWL3-HFA-A-DIST2
+
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -206,56 +297,49 @@ copy running-config startup-config
 
 ---
 
-## חלק 5 — בודקים את העבודה
-
-### 5.1 ‏SSH ממחשב המנהל
-1. לחצו על **PC-HFA-ADMIN-01** ‏←‏ **Desktop** ‏←‏ **Command Prompt**.
-2. הקלידו: `ssh -l admin 10.10.19.11` (ה-‎`-l` הוא האות **L** קטנה = שם ההתחברות).
-3. ‏`Password:`‎ ‏←‏ `Intel#Adm1n` (שום דבר לא מופיע בזמן ההקלדה).
-4. אתם בפנים:
-```
-*  Intel Israel - AUTHORIZED ACCESS ONLY ...
-SW-HFA-A-ACC1#
-```
-5. הקלידו `exit` כדי לצאת. חזרו על זה עם שאר המתגים:
+## משימה 6 — בודקים SSH לכל ארבעת המתגים
+מ-**PC-HFA-ADMIN-01** ‏←‏ Command Prompt, לכל שורה: ‏`ssh -l admin <IP>`‎ ‏←‏ `Intel#Adm1n`
+‏←‏ בודקים את שורת הפקודה ‏←‏ `exit`.
 
 <div dir="rtl">
 
-| מתג | כתובת ניהול |
-|---|---|
-| ‎SW-HFA-A-ACC1 | ‎10.10.19.11 |
-| ‎SW-HFA-A-ACC2 | ‎10.10.19.12 |
-| ‎SWL3-HFA-A-DIST1 | ‎10.10.19.2 |
-| ‎SWL3-HFA-A-DIST2 | ‎10.10.19.3 |
+| ‎# | מקלידים | ✅ אמורים להגיע ל- |
+|---|---|---|
+| ‎1 | ‎`ssh -l admin 10.10.19.11` | ‎`SW-HFA-A-ACC1#`‎ |
+| ‎2 | ‎`ssh -l admin 10.10.19.12` | ‎`SW-HFA-A-ACC2#`‎ |
+| ‎3 | ‎`ssh -l admin 10.10.19.2` | ‎`SWL3-HFA-A-DIST1#`‎ |
+| ‎4 | ‎`ssh -l admin 10.10.19.3` | ‎`SWL3-HFA-A-DIST2#`‎ |
 
 </div>
 
-### 5.2 הדחיות (הן מוכיחות שהאבטחה עובדת)
+📸 צלמו מסך של התחברות SSH מוצלחת אחת לספר שלכם (M22).
+
+---
+
+## משימה 7 — בודקים את הדחיות (הן מוכיחות שהאבטחה עובדת)
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | צפוי | למה |
-|---|---|---|---|
-| ‎PC-HFA-ADMIN-01 | ‎`telnet 10.10.19.11` | ‎❌ `Connection refused` | ‎`transport input ssh` |
-| מחשב ENG | ‎`ssh -l admin 10.10.19.11` | ‎❌ `Connection refused` | ה-ACL — המקור 10.10.16.x לא ברשימה |
-| מחשב ENG | `ssh -l admin 10.10.16.2` (הכתובת של DIST1 *ב-VLAN של המשתמשים*!) | ❌ נדחה | ה-ACL בודקת **מי דופק בדלת**, ולכן כל כתובת של המתג מוגנת |
-| ‎PC-HFA-ADMIN-01 | `ssh -l admin 10.10.19.11` עם סיסמה שגויה 3 פעמים מהר | חסום ל-120 שניות | ‎`login block-for` |
+| ‎# | מאיפה | מקלידים | צפוי | למה |
+|---|---|---|---|---|
+| ‎1 | ‎PC-HFA-ADMIN-01 | ‎`telnet 10.10.19.11` | ‎❌ ‏`Connection refused` | ‎‏`transport input ssh` |
+| ‎2 | מחשב ENG | ‎`ssh -l admin 10.10.19.11` | ‎❌ ‏`Connection refused` | ‏ACL — המקור 10.10.16.x לא ברשימה |
+| ‎3 | מחשב ENG | `ssh -l admin 10.10.16.2` (הכתובת של DIST1 *ב-VLAN של המשתמשים*!) | ❌ נדחה | ה-ACL בודקת **מי דופק בדלת**, ולכן כל כתובת של המתג מוגנת |
+| ‎4 | ‎PC-HFA-ADMIN-01 | `ssh -l admin 10.10.19.11` עם סיסמה שגויה 3 פעמים מהר | חסום ל-120 שניות | ‎‏`login block-for` |
 
 </div>
 
-### 5.3 במתג
+✅ כל הארבע נדחו כצפוי.
+
+👉 אחר כך ב-**ACC1** (נכנסים ב-console עם `admin` / `Intel#Adm1n`):
 ```
 show ip ssh                     -> SSH Enabled - version 2.0
 show access-lists MGMT-ONLY     -> the "deny any log" line shows (N match(es)) after the ENG PC tried
 show users                      -> who is connected right now (vty 0 admin ...)
 ```
-‏`show ip ssh` ‏←‏ ‏SSH פעיל, גרסה 2.0. ‏`show access-lists MGMT-ONLY` ‏←‏ אחרי שמחשב ENG ניסה,
-ליד השורה `deny any log` מופיע מספר ההתאמות (matches). ‏`show users` ‏←‏ מי מחובר עכשיו.
+לסיום: **File → Save**.
 
 ---
-
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏SSH עובד ממחשב המנהל לכל 4 המתגים עם `admin` / `Intel#Adm1n`
@@ -277,21 +361,36 @@ show users                      -> who is connected right now (vty 0 admin ...)
 
 </div>
 
-## אתגר — רואים למה Telnet מסוכן
-1. ב-ACC1 אפשרו Telnet **זמנית**: `line vty 0 15` ‏←‏ `transport input ssh telnet`.
-2. לחצו **Simulation** ‏←‏ **Show All/None** כדי לבטל את הסינונים ‏←‏ **Edit Filters** ‏←‏ סמנו רק
-   **Telnet** ו-**SSH**. סגרו את חלון הסינון.
-3. ממחשב PC-HFA-ADMIN-01: ‏`telnet 10.10.19.11`, הקלידו את שם המשתמש והסיסמה.
-4. לחצו על מעטפות ה-Telnet ‏←‏ הסתכלו על שכבת היישום (application layer). מה אתם רואים?
-5. עשו אותו דבר עם `ssh -l admin 10.10.19.11`. השוו.
-6. **הסירו שוב את Telnet:** `transport input ssh`. חזרו ל-**Realtime**.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגיל — רואים למה Telnet מסוכן ⭐⭐
+- 🎯 **המשימה:** ללכוד התחברות Telnet והתחברות SSH במצב Simulation, ולמצוא את הסיסמה.
+- 📁 **מתחילים מ:** ה-`step07.pkt` שלכם — קודם **Save As** ‏`step07-telnet.pkt`.
+- 👣 **צעדים:**
+  1. ב-ACC1 אפשרו Telnet **זמנית**: ‏`configure terminal` ‏←‏ `line vty 0 15` ‏←‏
+     ‏`transport input ssh telnet` ‏←‏ `end`.
+  2. לחצו **Simulation** ‏←‏ **Show All/None** כדי לבטל את הסינונים ‏←‏ **Edit Filters** ‏←‏ סמנו
+     רק **Telnet** ו-**SSH**. סגרו את חלון הסינון (M21).
+  3. מ-PC-HFA-ADMIN-01: ‏`telnet 10.10.19.11`, הקלידו את שם המשתמש והסיסמה. לחצו
+     **Capture / Forward** כדי להזיז את החבילות.
+  4. לחצו על מעטפות ה-Telnet ‏←‏ הסתכלו על שכבת היישום (השכבה העליונה). מה אתם רואים?
+  5. עשו אותו דבר עם `ssh -l admin 10.10.19.11`. השוו.
+  6. **הסירו שוב את Telnet:** ‏`line vty 0 15` ‏←‏ `transport input ssh`. חזרו ל-**Realtime**.
+- ✅ **גמרתם כש**מצאתם (או לא מצאתם) את הסיסמה בכל אחד, ואתם יודעים לומר במשפט אחד למה
+  הפרויקט אוסר Telnet.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+‏Telnet שולח **אות אחת בכל חבילה**. פתחו כמה מעטפות אחת אחרי השנייה.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 בחבילות ה-Telnet אפשר לקרוא את התווים שהקלדתם — כולל שם המשתמש והסיסמה, אות אחת בכל חבילה.
 בחבילות ה-SSH רואים רק נתונים מוצפנים. בגלל זה דרישה 13 מבקשת SSH, ובגלל זה Telnet אף פעם לא
 מותר ברשת שלנו.
 </details>
+
+לשלב 08 חזרו ל-`step07.pkt`.
 
 ---
 
@@ -299,6 +398,12 @@ show users                      -> who is connected right now (vty 0 admin ...)
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step06.pkt` ‏←‏ **Save As** ‏`my-project/step07.pkt`
+- [ ] בודקים את מחשב המנהל שלכם: כתובת קבועה, ב-VLAN הניהול שלכם, עושה פינג לכתובת ניהול של מתג
+- [ ] במתג הראשון: דומיין, משתמש, מפתחות, הגדרות SSH, ‏ACL, ‏VTY, ‏console ‏←‏ בודקים SSH
+- [ ] אותו דבר בכל שאר המתגים בבניין
+- [ ] הבדיקות של משימות 6 ו-7 עוברות בפרויקט שלכם
 
 <div dir="rtl">
 

@@ -15,6 +15,26 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — הרישיון והמנהרה**
+- [ ] **משימה 1** — פותחים את שלב 14 ושומרים בשם שלב 15 (2 דקות)
+- [ ] **משימה 2** — קודם רואים את הבעיה: ירושלים לא מגיעה לחיפה (5 דקות)
+- [ ] **משימה 3** — מפעילים את רישיון האבטחה בשני נתבי הקצה (15 דקות)
+- [ ] **משימה 4** — מנהרת ה-GRE בשני נתבי הקצה (15 דקות)
+
+**שיעור 2 — הצפנה**
+- [ ] **משימה 5** — ‏IPsec ב-R-HFA-EDGE ‏(15 דקות)
+- [ ] **משימה 6** — ‏IPsec ב-R-JLM-EDGE ‏(10 דקות)
+- [ ] **משימה 7** — מכניסים את ירושלים דרך ה-ASA + בודקים את ה-VPN בין האתרים (20 דקות)
+- [ ] **משימה 8** — רואים את ההצפנה במצב Simulation ‏(10 דקות)
+
+**שיעור 3 — העובד מהבית**
+- [ ] **משימה 9** — ‏R-HFA-EDGE כשרת VPN לגישה מרחוק (15 דקות)
+- [ ] **משימה 10** — לקוח ה-VPN של העובד מהבית (10 דקות)
+- [ ] **משימה 11** — בדיקות סופיות ושמירה (10 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 1. **חיפה ↔ ירושלים** מדברות עם הכתובות ה**פרטיות** שלהן דרך **מנהרה מוצפנת** שעוברת באינטרנט.
    המשתמשים בירושלים מגיעים לשרתי ה-DMZ של חיפה (DNS, דואר, ‏web, ‏NTP, ‏FTP, ‏AAA).
@@ -31,8 +51,6 @@
 (‏R-HFA-EDGE ‏(200.1.1.2) ו-R-JLM-EDGE ‏(200.2.1.2) מחוברים ב-Tunnel0 ‏172.16.12.1 ⇄ 172.16.12.2 — ‏GRE
 שמוצפן ב-IPsec. דרך ISP-A ו-ISP-B האינטרנט רואה רק ESP. בנוסף, PC-HOME-01 ‏(200.3.50.10) מתחבר לחיפה
 ב-VPN של גישה מרחוק ומקבל כתובת 172.16.250.x.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -78,48 +96,144 @@
 ### 1.6 רישיון האבטחה
 פקודות ההצפנה ב-Cisco 2911 צריכות את הרישיון **securityk9**. ב-PT מפעילים אותו עם פקודה אחת ואתחול.
 
+### 1.7 חוק המראות
+‏VPN בין אתרים = **שתי תמונות מראה**. כל מה שבצד של חיפה מצביע על הכתובת של ירושלים, ולהפך:
+
+<div dir="rtl">
+
+| | ‎R-HFA-EDGE | ‎R-JLM-EDGE |
+|---|---|---|
+| כתובת Tunnel0 | ‎172.16.12.**1** | ‎172.16.12.**2** |
+| ‎`tunnel destination` / `set peer` / `isakmp key ... address` | ‎**200.2.1.2** | ‎**200.1.1.2** |
+| ‎‏ACL ‏`permit gre host A host B` | ‎A = 200.1.1.2, B = 200.2.1.2 | ‎A = 200.2.1.2, B = 200.1.1.2 |
+| נתיב לתוך המנהרה | ‎`10.20.0.0/16 → 172.16.12.2` | ‎`10.10.0.0/16 → 172.16.12.1` |
+| ‏Policy, מפתח, ‏transform set | **זהים** | **זהים** |
+
+</div>
+
+<div dir="rtl">
+
+> אין מה להציב בשלב הזה — נתבי הקצה, ה-ASA ו-PC-HOME-01 כבר קיימים.
+
+</div>
+
 ---
 
-## חלק 2 — הכנה
+## משימה 1 — פותחים את שלב 14 ושומרים בשם שלב 15 (איך? ‏←‏ M1)
 ‏**File → Open** ‏←‏ `my-work/step14.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step15.pkt`.
 
-## חלק 3 — בונים
-אין מה להוסיף — נתבי הקצה, ה-ASA ו-PC-HOME-01 כבר קיימים.
+---
+
+## משימה 2 — קודם רואים את הבעיה
+👉 **איפה:** ‏**PC-JLM-SAL-01** ‏←‏ Desktop ‏←‏ Command Prompt.
+
+⌨️ מקלידים:
+```
+ping 10.10.16.1
+```
+✅ **אמורים לראות:** ‏`Request timed out` (או `Destination host unreachable`).
+
+🧠 **למה?** ‏10.10.16.1 היא כתובת **פרטית** של חיפה. החבילה מגיעה ל-R-JLM-EDGE, עוברת NAT ונשלחת
+לאינטרנט — ולאינטרנט אין נתיב ל-10.x. אחרי השלב הזה, אותו ping יעבוד.
 
 ---
 
-## חלק 4 — מגדירים
+## משימה 3 — מפעילים את רישיון האבטחה בשני נתבי הקצה
+עושים את זה ב-**R-HFA-EDGE**, ואז חוזרים על זה ב-**R-JLM-EDGE**.
 
-### 4.1 מפעילים את רישיון האבטחה — ב-R-HFA-EDGE **וגם** ב-R-JLM-EDGE
+👉 **איפה:** הנתב ‏←‏ CLI ‏←‏ נכנסים (`admin` / `Intel#Adm1n`) ‏←‏ `R-...#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 license boot module c2900 technology-package securityk9
 ```
-הנתב מציג טקסט של רישיון ושואל `ACCEPT? [yes/no]:`‎ ‏←‏ הקלידו **`yes`**.
+הנתב מציג טקסט של רישיון ושואל `ACCEPT? [yes/no]:`‎ ‏←‏ מקלידים **`yes`** ‏←‏ Enter.
+
+⌨️ מקלידים:
 ```
 end
 copy running-config startup-config
 reload
 ```
-לחצו **Enter** כדי לאשר את האתחול. חכו שהנתב יעלה (Fast Forward Time), והתחברו שוב.
-בדיקה: `show version` ‏←‏ בטבלת הרישיונות `securityk9` הוא **Permanent** / **Active**.
+לוחצים **Enter** כדי לאשר את האתחול. לוחצים **Fast Forward Time** עד שהנתב עולה, ונכנסים שוב.
 
-### 4.2 ‏R-HFA-EDGE — ‏site-to-site (הצד של חיפה)
+🔍 **בודקים עכשיו:** ‏`show version` ‏←‏ בטבלת הרישיונות למטה `securityk9` הוא
+‏**Permanent** / **Active** (או `RightToUse`).
+
+❌ **פקודות `crypto` עדיין עונות ‎`% Invalid input`:** דילגתם על האתחול.
+
+סמנו:
+- [ ] ‏R-HFA-EDGE
+- [ ] ‏R-JLM-EDGE
+
+---
+
+## משימה 4 — מנהרת ה-GRE בשני נתבי הקצה
+
+### 4א — ‏R-HFA-EDGE
+👉 **איפה:** ‏R-HFA-EDGE ‏←‏ `R-HFA-EDGE#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
-! ===== 1. the GRE tunnel =====
 interface tunnel 0
  description GRE to R-JLM-EDGE (encrypted by IPsec)
  ip address 172.16.12.1 255.255.255.252
  tunnel source gi0/1
  tunnel destination 200.2.1.2
  exit
-! Jerusalem's private block goes into the tunnel (a static route - req. 22.17)
 ip route 10.20.0.0 255.255.0.0 172.16.12.2
+ end
+copy running-config startup-config
+```
 
-! ===== 2. IPsec phase 1 =====
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`interface tunnel 0` + `tunnel source` / `tunnel destination` | כבל וירטואלי מהכתובת הציבורית שלי לשלהם |
+| ‎`ip route 10.20.0.0 255.255.0.0 172.16.12.2` | "הבלוק הפרטי של ירושלים נכנס למנהרה" (נתיב סטטי — דרישה 22.17) |
+
+</div>
+
+### 4ב — ‏R-JLM-EDGE (תמונת המראה)
+👉 **איפה:** ‏R-JLM-EDGE ‏←‏ `R-JLM-EDGE#`‎.
+
+⌨️ מקלידים:
+```
+configure terminal
+interface tunnel 0
+ description GRE to R-HFA-EDGE (encrypted by IPsec)
+ ip address 172.16.12.2 255.255.255.252
+ tunnel source gi0/1
+ tunnel destination 200.1.1.2
+ exit
+ip route 10.10.0.0 255.255.0.0 172.16.12.1
+ end
+copy running-config startup-config
+```
+🔍 **בודקים עכשיו:** ב-R-JLM-EDGE ‏`ping 172.16.12.1` ‏←‏ ‎`!!!!!`‎ — המנהרה עובדת (עדיין **לא**
+מוצפנת). ‏`show interfaces tunnel 0` ‏←‏ `Tunnel0 is up, line protocol is up`.
+
+<div dir="rtl">
+
+> ה-`redistribute static` משלב 13 נותן עכשיו גם את הנתיב ‎`10.10.0.0/16` ל-CC1/CC2 — כך שכל ירושלים
+> יודעת ש"חיפה נמצאת דרך נתב הקצה". ה-ACL של CBAC ‏`WAN-IN` כבר מכניסה GRE.
+
+</div>
+
+❌ **‏Tunnel0 למעלה אבל ה-ping נכשל:** ב-R-JLM-EDGE בדקו שב-`WAN-IN` יש את השורה `permit gre`
+(שלב 13, משימה 15א).
+
+---
+
+## משימה 5 — ‏IPsec ב-R-HFA-EDGE
+👉 **איפה:** ‏R-HFA-EDGE ‏←‏ `configure terminal`.
+
+### 5א — שלב 1: איך שני הנתבים סומכים זה על זה
+⌨️ מקלידים:
+```
 crypto isakmp policy 10
  encryption aes 256
  hash sha
@@ -127,10 +241,23 @@ crypto isakmp policy 10
  group 5
  lifetime 86400
  exit
-! the shared secret with Jerusalem; no-xauth = it's a router, don't ask it for a username
 crypto isakmp key Intel#S2S-Key address 200.2.1.2 no-xauth
+```
 
-! ===== 3. IPsec phase 2 =====
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`crypto isakmp policy 10` ‏(encryption/hash/authentication/group) | איך בודקים זה את זה בשלב 1 (חייב להתאים בשני הצדדים) |
+| ‎`crypto isakmp key KEY address PEER no-xauth` | הסוד המשותף עם העמית (peer) הזה; ‏`no-xauth` = זה נתב, אל תבקש ממנו שם משתמש |
+
+</div>
+
+✅ ייתכן שיופיע ‎`%CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON` — טוב.
+
+### 5ב — שלב 2: מה מצפינים ואיך
+⌨️ מקלידים:
+```
 crypto ipsec transform-set S2S-SET esp-aes 256 esp-sha-hmac
 ip access-list extended S2S-GRE
  remark --- encrypt the GRE packets between the two edges ---
@@ -141,30 +268,41 @@ crypto map VPN-MAP 10 ipsec-isakmp
  set transform-set S2S-SET
  match address S2S-GRE
  exit
-! ===== 4. apply on the internet interface =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`crypto ipsec transform-set ... esp-aes 256 esp-sha-hmac` | איך הנתונים מוצפנים (AES-256) ונבדקים (SHA) |
+| ‎`crypto map VPN-MAP 10 ipsec-isakmp` / `set peer` / `match address` | "הצפן תעבורה שמתאימה ל-ACL הזו, לכיוון העמית הזה" |
+
+</div>
+
+<div dir="rtl">
+
+> ‏PT עשוי להדפיס הודעה שמתחילה ב-‎`% NOTE: This new crypto map will remain disabled` — זה רגיל, מוסיפים את העמית ואת ה-ACL בשורות הבאות.
+
+</div>
+
+### 5ג — מדליקים את זה על ממשק האינטרנט
+⌨️ מקלידים:
+```
 interface gi0/1
  crypto map VPN-MAP
  end
 copy running-config startup-config
 ```
-ההערות אומרות: 1. מנהרת ה-GRE — הבלוק הפרטי של ירושלים נכנס למנהרה (נתיב סטטי — דרישה 22.17);
-2. ‏IPsec שלב 1 — הסוד המשותף עם ירושלים; ‏no-xauth = זה נתב, לא לבקש ממנו שם משתמש; 3. ‏IPsec שלב 2 —
-מצפינים את חבילות ה-GRE בין שני נתבי הקצה; 4. מחילים על ממשק האינטרנט.
 
-תראו ‎`%CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON` — טוב.
+---
 
-### 4.3 ‏R-JLM-EDGE — ‏site-to-site (תמונת המראה)
+## משימה 6 — ‏IPsec ב-R-JLM-EDGE
+👉 **איפה:** ‏R-JLM-EDGE ‏←‏ `configure terminal`.
+
+כמו משימה 5, בתמונת מראה (ראו טבלה 1.7): העמית הוא **200.1.1.2** וה-ACL הפוכה.
+
+⌨️ מקלידים:
 ```
-enable
-configure terminal
-interface tunnel 0
- description GRE to R-HFA-EDGE (encrypted by IPsec)
- ip address 172.16.12.2 255.255.255.252
- tunnel source gi0/1
- tunnel destination 200.1.1.2
- exit
-ip route 10.10.0.0 255.255.0.0 172.16.12.1
-
 crypto isakmp policy 10
  encryption aes 256
  hash sha
@@ -188,56 +326,134 @@ interface gi0/1
 copy running-config startup-config
 ```
 
-<div dir="rtl">
+---
 
-> ה-`redistribute static` משלב 13 נותן עכשיו גם את הנתיב ‎`10.10.0.0/16` ל-CC1/CC2 — כך כל ירושלים
-> יודעת ש"חיפה נמצאת דרך נתב הקצה". ה-ACL של CBAC ‏`WAN-IN` כבר מכניסה את ה-VPN.
+## משימה 7 — מכניסים את ירושלים דרך ה-ASA + בודקים את ה-VPN בין האתרים
 
-</div>
+### 7א — החור ב-ASA
+🧠 **למה:** החבילות של ירושלים יוצאות מהמנהרה ב-R-HFA-EDGE — בצד ה-**outside** של ה-ASA. ‏0 ‏←‏ 100
+חסום, אלא אם מתירים.
 
-### 4.4 ‏ASA — מכניסים את ירושלים
+👉 **איפה:** ‏ASA ‏←‏ `enable` ‏←‏ `Intel#En4ble`.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 access-list OUTSIDE_IN extended permit ip 10.20.0.0 255.255.0.0 10.10.0.0 255.255.0.0
 end
 write memory
 ```
-(‏10.10.0.0/16 כולל את ה-DMZ ‏10.10.200.0/24 — כך ירושלים מגיעה לרשת הפנימית **וגם** לשרתי ה-DMZ.)
+(‏10.10.0.0/16 כולל את ה-DMZ ‏10.10.200.0/24 — כך שירושלים מגיעה גם לרשת הפנימית **וגם** לשרתי
+ה-DMZ.)
 
-### 4.5 ‏R-HFA-EDGE — שרת VPN לגישה מרחוק
+### 7ב — גורמים למנהרה לעלות
+ההצפנה מתחילה רק כשתעבורה צריכה אותה. מ-**PC-JLM-SAL-01**: ‏`ping 10.10.16.1` — פינג אחד או שניים
+ראשונים יכולים להיכשל בזמן שהמנהרה נבנית, ואז מגיעות תשובות. ✅
+(זה ה-ping שנכשל במשימה 2!)
+
+### 7ג — בנתבים
+👉 **איפה:** ‏R-HFA-EDGE.
+
 ```
-enable
-configure terminal
-! ===== who may log in =====
+R-HFA-EDGE# show crypto isakmp sa
+dst             src             state          conn-id status
+200.2.1.2       200.1.1.2       QM_IDLE           1001 ACTIVE    <- phase 1 up with Jerusalem
+R-HFA-EDGE# show crypto ipsec sa
+    #pkts encaps: 57, #pkts encrypt: 57, ...        <- growing while you ping = encrypted
+    #pkts decaps: 57, #pkts decrypt: 57, ...
+R-HFA-EDGE# show ip route static                  <- S 10.20.0.0/16 via 172.16.12.2
+```
+ובנוסף ב-**CC1**: ‏`show ip route | include 10.10.0.0` ‏←‏ `D EX 10.10.0.0/16 via 10.20.4.1`.
+
+❌ **אין `QM_IDLE`:** השוו את שני בלוקי `crypto isakmp policy 10` ואת המפתחות אות אחרי אות
+(`show running-config | section crypto`).\
+❌ **יש `QM_IDLE` אבל ה-ping נכשל:** השורה ב-ASA ‏(7א) או הנתיבים הסטטיים (משימה 4).
+
+### 7ד — בדיקות
+
+<div dir="rtl">
+
+| ‎# | מאיפה | עושים | צפוי |
+|---|---|---|---|
+| ‎1 | ‎PC-JLM-SAL-01 | ‎`tracert 10.10.200.13` | 10.20.10.2 → 10.20.4.1 → **172.16.12.1** (המנהרה!) → … |
+| ‎2 | ‎PC-JLM-SAL-01 | ‎‏Web Browser ‏←‏ `http://www.intel.lab` | ✅ גם ה-DNS ‏10.10.200.11 נגיש עכשיו |
+| ‎3 | ‎PC-JLM-SAL-01 | ‎`nslookup ftp.intel.lab` | ‏10.10.200.15 (שירותי DMZ דרך VPN — דרישה 21) |
+| ‎4 | ‎SWL3-JLM-CC1 | `show ntp status` (אחרי Fast Forward) | מסונכרן ל-10.10.200.14 (דרישה 20.8) |
+| ‎5 | ‎PC-HFA-IT-01 | ‎`ssh -l admin 10.20.0.11` | ✅ ה-IT של המטה מנהל את ירושלים דרך ה-VPN |
+
+</div>
+
+---
+
+## משימה 8 — רואים את ההצפנה במצב Simulation (איך? ‏←‏ M21)
+1. לוחצים **Simulation** (למטה מימין) ‏←‏ **Edit Filters** ‏←‏ מסמנים **ICMP** (וגם ISAKMP/ESP אם יש).
+2. מ-PC-JLM-SAL-01 עושים ping למחשב בחיפה.
+3. לוחצים **Capture/Forward** צעד אחרי צעד. לוחצים על המעטפה של החבילה כשהיא על כבל **בין
+   הספקים**.
+4. מסתכלים על הכותרת החיצונית: ‎`200.2.1.2 → 200.1.1.2`, פרוטוקול **ESP**. הכתובות הפרטיות שבפנים
+   לא נראות לספקים. 🔒
+5. חוזרים ל-**Realtime**.
+
+📝 צלמו את זה לספר (M22).
+
+---
+
+## משימה 9 — ‏R-HFA-EDGE כשרת VPN לגישה מרחוק
+👉 **איפה:** ‏R-HFA-EDGE ‏←‏ `configure terminal`.
+
+### 9א — מי רשאי להתחבר, ואילו כתובות הוא מקבל
+⌨️ מקלידים:
+```
 aaa new-model
 aaa authentication login default group tacacs+ local
 aaa authentication login VPN-AUTH local
 aaa authorization network VPN-GROUP local
 username remote1 secret Intel#Remote1
-! ===== addresses for remote users =====
 ip local pool RA-POOL 172.16.250.10 172.16.250.100
-! ===== phase 1 for clients =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`aaa authentication login VPN-AUTH local` | משתמשי ה-VPN נבדקים מול המשתמשים המקומיים |
+| ‎`ip local pool RA-POOL ...`‎ | כתובות לחלק למשתמשים מרוחקים |
+
+</div>
+
+### 9ב — שלב 1 ללקוחות, והקבוצה שהמחשב מתחבר אליה
+⌨️ מקלידים:
+```
 crypto isakmp policy 20
  encryption aes 256
  hash sha
  authentication pre-share
  group 2
  exit
-! ===== the group the PC logs into =====
 crypto isakmp client configuration group HQ-RA
  key Intel#RA-Group
  dns 10.10.200.11
  domain intel.lab
  pool RA-POOL
  exit
-! ===== phase 2 for clients =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`crypto isakmp client configuration group HQ-RA` | הקבוצה שלקוח ה-VPN מתחבר אליה (מפתח, ‏DNS, מאגר) |
+
+</div>
+
+### 9ג — שלב 2 ללקוחות, מתווסף לאותו crypto map
+⌨️ מקלידים:
+```
 crypto ipsec transform-set RA-SET esp-aes 256 esp-sha-hmac
 crypto dynamic-map RA-DYN 10
  set transform-set RA-SET
  reverse-route
  exit
-! ===== add the clients to the same crypto map =====
 crypto map VPN-MAP client authentication list VPN-AUTH
 crypto map VPN-MAP isakmp authorization list VPN-GROUP
 crypto map VPN-MAP client configuration address respond
@@ -245,21 +461,42 @@ crypto map VPN-MAP 65535 ipsec-isakmp dynamic RA-DYN
  end
 copy running-config startup-config
 ```
-ההערות אומרות: מי רשאי להתחבר; כתובות למשתמשים מרוחקים; שלב 1 ללקוחות; הקבוצה שהמחשב מתחבר אליה;
-שלב 2 ללקוחות; מוסיפים את הלקוחות לאותו crypto map.
 
-וב-**ASA** — משתמשים מרוחקים רשאים להגיע למטה:
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`crypto dynamic-map` + ‎`... 65535 ipsec-isakmp dynamic` | תבנית ללקוחות שאת הכתובת שלהם לא יודעים מראש |
+| ‎`reverse-route` | מוסיף אוטומטית נתיב לכל לקוח שמתחבר |
+
+</div>
+
+<div dir="rtl">
+
+> מספר **65535** = נבדק **אחרון**. ירושלים (מספר 10) חייבת להיבדק קודם.
+
+</div>
+
+### 9ד — ה-ASA: משתמשים מרוחקים רשאים להגיע למטה
+👉 **איפה:** ‏ASA ‏←‏ `configure terminal`.
+
+⌨️ מקלידים:
 ```
-configure terminal
 access-list OUTSIDE_IN extended permit ip 172.16.250.0 255.255.255.0 10.10.0.0 255.255.0.0
 end
 write memory
 ```
-(רשימת ה-PAT ‏`NAT-HFA` משלב 12 כבר מדלגת על 172.16.250.0/24 — התכוננו לזה.)
+(רשימת ה-PAT ‏`NAT-HFA` משלב 12 כבר מדלגת על 172.16.250.0/24 — התכוננו לזה מראש.)
 
-### 4.6 לקוח ה-VPN של העובד מהבית (לחיצה אחרי לחיצה)
-1. לחצו על **PC-HOME-01** ‏←‏ **Desktop** ‏←‏ **VPN**.
-2. מלאו:
+🔍 **בודקים עכשיו:** ב-R-JLM-EDGE עושים שוב ping למחשב בחיפה ‏←‏ עדיין עובד. הוספת גישה מרחוק אסור
+שתשבור את ה-VPN בין האתרים.
+
+---
+
+## משימה 10 — לקוח ה-VPN של העובד מהבית
+👉 **איפה:** ‏**PC-HOME-01** ‏←‏ **Desktop** ‏←‏ **VPN**.
+
+1. ממלאים:
 
 <div dir="rtl">
 
@@ -273,81 +510,34 @@ write memory
 
 </div>
 
-3. לחצו **Connect** ‏←‏ אחרי רגע: **"VPN is connected"**.
-4. סגרו את חלון ה-VPN ‏←‏ Command Prompt ‏←‏ `ipconfig` ‏←‏ תראו כתובת נוספת ‎`172.16.250.x`.
+2. לוחצים **Connect**.
 
-### 4.7 מה הפקודות החדשות אומרות
+✅ **אמורים לראות:** אחרי רגע, **"VPN is connected"**.
 
-<div dir="rtl">
+3. סוגרים את חלון ה-VPN ‏←‏ **Command Prompt** ‏←‏ `ipconfig` ‏←‏ רואים כתובת נוספת
+   ‏‎`172.16.250.x` (כתובת המנהרה).
 
-| פקודה | בשפה פשוטה |
-|---|---|
-| ‎`license boot module ... securityk9` | פתיחת יכולות ההצפנה (צריך אתחול) |
-| ‎`interface tunnel 0` + `tunnel source` / `tunnel destination` | כבל וירטואלי מהכתובת הציבורית שלי לשלהם |
-| ‎`crypto isakmp policy 10` ‏(encryption/hash/authentication/group) | איך בודקים זה את זה בשלב 1 (חייב להתאים בשני הצדדים) |
-| ‎`crypto isakmp key KEY address PEER no-xauth` | הסוד המשותף עם העמית (peer) הזה, בלי לבקש שם משתמש |
-| ‎`crypto ipsec transform-set ... esp-aes 256 esp-sha-hmac` | איך הנתונים מוצפנים (AES-256) ונבדקים (SHA) |
-| ‎`crypto map VPN-MAP 10 ipsec-isakmp` / `set peer` / `match address` | "הצפן תעבורה שמתאימה ל-ACL הזו, לכיוון העמית הזה" |
-| `interface gi0/1` ואז `crypto map VPN-MAP` | הדלקת ההצפנה על ממשק האינטרנט |
-| ‎`ip local pool RA-POOL ...`‎ | כתובות לחלק למשתמשים מרוחקים |
-| ‎`crypto isakmp client configuration group HQ-RA` | הקבוצה שלקוח ה-VPN מתחבר אליה (מפתח, ‏DNS, מאגר) |
-| ‎`crypto dynamic-map` + ‎`... 65535 ipsec-isakmp dynamic` | תבנית ללקוחות שאת הכתובת שלהם לא יודעים מראש |
-| ‎`reverse-route` | מוסיף אוטומטית נתיב לכל לקוח שמתחבר |
-
-</div>
+❌ **‏"authentication failed":** שגיאת כתיב בשם / במפתח של הקבוצה או במשתמש / בסיסמה; או שחסרה
+השורה `aaa authorization network VPN-GROUP local`.
 
 ---
 
-## חלק 5 — בודקים את העבודה
-
-### 5.1 גורמים למנהרה לעלות
-המנהרה עולה רק כשתעבורה צריכה אותה. מ-**PC-JLM-SAL-01**: ‏`ping 10.10.16.1` — פינג אחד או שניים
-ראשונים יכולים להיכשל בזמן שהמנהרה נבנית, ואז מגיעות תשובות.
-
-### 5.2 בנתבים
-```
-R-HFA-EDGE# show crypto isakmp sa
-dst             src             state          conn-id status
-200.2.1.2       200.1.1.2       QM_IDLE           1001 ACTIVE    <- phase 1 up with Jerusalem
-200.1.1.2       200.3.50.10     QM_IDLE           1002 ACTIVE    <- the teleworker (when connected)
-R-HFA-EDGE# show crypto ipsec sa
-    #pkts encaps: 57, #pkts encrypt: 57, ...        <- growing while you ping = encrypted
-    #pkts decaps: 57, #pkts decrypt: 57, ...
-R-HFA-EDGE# show interfaces tunnel 0              <- Tunnel0 is up, line protocol is up
-R-HFA-EDGE# show ip route static                  <- S 10.20.0.0/16 via 172.16.12.2
-SWL3-JLM-CC1# show ip route | include 10.10.0.0  <- D EX 10.10.0.0/16 via 10.20.4.1
-```
-(שלב 1 פעיל מול ירושלים, והעובד מהבית (כשהוא מחובר); מוני ה-encaps/decaps גדלים בזמן ה-ping = מוצפן;
-‏Tunnel0 למעלה; הנתיב הסטטי 10.20.0.0/16 דרך 172.16.12.2; ב-CC1 ‏`D EX 10.10.0.0/16` דרך 10.20.4.1.)
-
-### 5.3 בדיקות
+## משימה 11 — בדיקות סופיות ושמירה
 
 <div dir="rtl">
 
-| מאיפה | עושים | מה אמור לקרות |
-|---|---|---|
-| ‎PC-JLM-SAL-01 | ‎`ping 10.10.16.1` | ✅ כתובת **פרטית** של חיפה — דרך ה-VPN |
-| ‎PC-JLM-SAL-01 | ‎`tracert 10.10.200.13` | 10.20.10.2 → 10.20.4.1 → **172.16.12.1** (המנהרה!) → … |
-| ‎PC-JLM-SAL-01 | בדפדפן: Web Browser ‏←‏ `http://www.intel.lab` | ✅ גם ה-DNS ‏10.10.200.11 נגיש עכשיו |
-| ‎PC-JLM-SAL-01 | ‎`nslookup ftp.intel.lab` | ‏10.10.200.15 (שירותי DMZ דרך VPN — דרישה 21) |
-| ‎SWL3-JLM-CC1 | ‎`show ntp status` | מסונכרן ל-10.10.200.14 (דרישה 20.8) |
-| ‎PC-HFA-IT-01 | ‎`ssh -l admin 10.20.0.11` | ✅ ה-IT של המטה מנהל את ירושלים דרך ה-VPN |
-| PC-HOME-01 (VPN מחובר) | `ping 10.10.1.10`, גלישה ל-`www.intel.lab` | ‎✅ |
-| PC-HOME-01 (VPN מנותק) | ‎`ping 10.10.1.10` | ‎❌ |
+| ‎# | מאיפה | עושים | צפוי |
+|---|---|---|---|
+| ‎1 | PC-HOME-01 ‏(VPN מחובר) | ‎`ping 10.10.1.10` | ‎✅ |
+| ‎2 | PC-HOME-01 ‏(VPN מחובר) | ‎‏Web Browser ‏←‏ `http://www.intel.lab` | ‎✅ |
+| ‎3 | ‎R-HFA-EDGE | ‎`show crypto isakmp sa` | שתי שורות `QM_IDLE`: ירושלים **וגם** ‎`200.3.50.10` (העובד מהבית) |
+| ‎4 | ‎PC-HOME-01 | ‏VPN ‏←‏ **Disconnect**, ואז `ping 10.10.1.10` | ‎❌ |
 
 </div>
 
-### 5.4 רואים את ההצפנה (מצב Simulation)
-1. ‏**Simulation** ‏←‏ **Edit Filters** ‏←‏ **ICMP** (וגם ISAKMP/ESP אם יש).
-2. מ-PC-JLM-SAL-01 עשו ping למחשב בחיפה. עקבו אחרי החבילה.
-3. לחצו עליה כשהיא על כבל **בין הספקים** ‏←‏ הכותרת החיצונית היא ‎`200.2.1.2 → 200.1.1.2`, פרוטוקול
-   **ESP**. הכתובות הפרטיות שבפנים לא נראות לספקים. 🔒
-4. חזרה ל-**Realtime**.
+💾 ‏`copy running-config startup-config` בשני נתבי הקצה, ‏`write memory` ב-ASA ‏←‏ **File → Save**.
 
 ---
-
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בשני נתבי הקצה, ‏`write memory` ב-ASA ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] ‏`QM_IDLE` מול ירושלים; מוני ה-encaps/decaps גדלים
@@ -361,7 +551,7 @@ SWL3-JLM-CC1# show ip route | include 10.10.0.0  <- D EX 10.10.0.0/16 via 10.20.
 
 | בעיה | פתרון |
 |---|---|
-| פקודות `crypto` לא קיימות | הרישיון לא פעיל — 4.1 ו-**reload** |
+| פקודות `crypto` לא קיימות | הרישיון לא פעיל — משימה 3 ו-**reload** |
 | שלב 1 אף פעם לא עולה (אין `QM_IDLE`) | אי-התאמה ב-policy (ההצפנה / ה-hash / ה-group חייבים להיות זהים בשני הצדדים) או מפתחות שונים |
 | המנהרה למעלה, הפינגים נכשלים | חסר הנתיב הסטטי לתוך המנהרה; חסרה ב-ASA שורת ה-ACL ל-10.20.0.0/16 |
 | ה-ACL של ירושלים חוסמת את ה-VPN | ‏WAN-IN חייבת להתיר isakmp, ‏esp **וגם** gre מ-200.1.1.2 |
@@ -371,15 +561,45 @@ SWL3-JLM-CC1# show ip route | include 10.10.0.0  <- D EX 10.10.0.0/16 via 10.20.
 
 </div>
 
-## אתגר
-לקריית גת אין VPN. בלי להוסיף אחד, באילו שירותי DMZ קריית גת עדיין יכולה להשתמש, ואיך?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — מפתח שגוי ⭐⭐
+- 🎯 **המשימה:** לראות איך נראית אי-התאמה במפתח המשותף.
+- 📁 **מתחילים מ:** ‏`step15.pkt` ‏←‏ **Save As** ‏`step15-exA.pkt`.
+- 👣 **צעדים:**
+  1. ב-R-JLM-EDGE: ‏`configure terminal` ‏←‏
+     ‏`no crypto isakmp key Intel#S2S-Key address 200.1.1.2` ‏←‏
+     ‏`crypto isakmp key WrongKey address 200.1.1.2 no-xauth` ‏←‏ `end` ‏←‏ `clear crypto isakmp`.
+  2. מ-PC-JLM-SAL-01: ‏`ping 10.10.16.1`.
+  3. ‏`show crypto isakmp sa` בשני נתבי הקצה.
+- ✅ **גמרתם כש**אתם יודעים לומר איזה שלב נכשל ואיך אתם יודעים.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+שלב 1 בודק זהות בעזרת המפתח. הסתכלו על העמודה `state`.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+הפינגים נכשלים. אין `QM_IDLE` — המצב נשאר משהו כמו `MM_NO_STATE` / ‏`MM_KEY_EXCH`, או שהשורה
+נעלמת. שלב 1 (בדיקת הזהות) נכשל כי המפתחות שונים, ולכן שלב 2 אף פעם לא מתחיל ושום דבר לא מוצפן.
+לשני הצדדים חייב להיות **אותו** מפתח.
+</details>
+
+### תרגיל ב — במה קריית גת עדיין יכולה להשתמש? ⭐⭐⭐
+- 🎯 **המשימה:** לקריית גת אין VPN. בלי להוסיף אחד, באילו שירותי DMZ קריית גת עדיין יכולה להשתמש,
+  ואיך?
+- 📁 **מתחילים מ:** ‏`step15.pkt` שלכם (לא משנים כלום).
+- 👣 **צעדים:** לכל שירות DMZ ‏(DNS, דואר, ‏web, ‏NTP, ‏FTP, ‏AAA) שואלים: האם הוא מפורסם באינטרנט
+  (שלב 12)? האם קריית גת יכולה להגיע אליו עם גרסת ה-IP שיש לה (שלב 14)? בודקים מה שאפשר.
+- ✅ **גמרתם כש**יש לכם טבלה של 6 שורות: שירות / כן או לא / למה.
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 רק במה שמפורסם באינטרנט **וגם** נגיש ב-IPv4 מקריית גת:
 - **‏NTP** — ל-DIST1 יש דרך IPv4 (קישור ה-legacy + ‏PAT) והוא מסתנכרן לכתובת הציבורית 200.1.10.4 ‏←‏
   דרישה 20.8 מתקיימת.
-- **‏Web** — רק מכשירי ה-IPv4 מדור קודם יכולים לפתוח את 200.1.10.3; משתמשי IPv6 לא (האתגר של שלב 14).
+- **‏Web** — רק מכשירי ה-IPv4 מדור קודם יכולים לפתוח את 200.1.10.3; משתמשי IPv6 לא (תרגיל א של שלב 14).
 - דואר / ‏DNS / ‏FTP / ‏AAA לא מפורסמים ‏←‏ לא. בגלל זה לקריית גת יש שרתי DNS, דואר, ‏syslog ו-AAA
   **משלה**. פתרון אמיתי יהיה מנהרה שלישית על IPv6 או DMZ ‏dual-stack — כתבו את הפשרה בספר הפרויקט.
 </details>
@@ -390,6 +610,13 @@ SWL3-JLM-CC1# show ip route | include 10.10.0.0  <- D EX 10.10.0.0/16 via 10.20.
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step14.pkt` ‏←‏ **Save As** ‏`my-project/step15.pkt`
+- [ ] ממלאים טבלת "מראות" משלכם כמו 1.7
+- [ ] רישיון + אתחול בשני נתבי הקצה
+- [ ] מנהרת GRE + נתיבים; ‏ping דרך המנהרה
+- [ ] ‏IPsec בשני הצדדים; חורים בחומת האש; ‏`QM_IDLE` ומונים שגדלים
+- [ ] שרת גישה מרחוק + לקוח ה-VPN של המחשב הביתי
 
 <div dir="rtl">
 
@@ -495,7 +722,7 @@ key), קבוצת Diffie-Hellman, ‏lifetime — מאמתים זה את זה ו�
 - **שיעור 1:** למה VPN (ההשוואה לקופסה המשוריינת), שלבי IPsec, ‏GRE, *למה GRE over IPsec* (הסיפור של
   ה-static NAT) ‏←‏ רישיון + אתחול בשני נתבי הקצה.
 - **שיעור 2:** הגדרת site-to-site ‏←‏ בדיקות ‏←‏ ההצפנה במצב Simulation על המקרן.
-- **שיעור 3:** גישה מרחוק ‏←‏ לקוח VPN ‏←‏ בדיקות ‏←‏ אתגר.
+- **שיעור 3:** גישה מרחוק ‏←‏ לקוח VPN ‏←‏ בדיקות ‏←‏ תרגילים.
 - **שאלות נפוצות של תלמידים**
   - *"למה הפינג הראשון הולך לאיבוד?"* — המנהרה נבנית לפי דרישה (שלב 1 + 2 לוקחים רגע).
   - *"למה מספר 65535 ל-dynamic map?"* — עמיתים מוגדרים (ירושלים, מספר 10) חייבים להיבדק קודם; התבנית

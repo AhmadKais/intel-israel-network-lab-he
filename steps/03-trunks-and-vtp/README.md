@@ -15,6 +15,20 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 02 ושומרים בשם שלב 03 (2 דקות)
+- [ ] **משימה 2** — מציבים את שני מתגי ה-3650 **ונותנים להם חשמל** (10 דקות)
+- [ ] **משימה 3** — מציבים את ACC2 ועוד שני מחשבים (5 דקות)
+- [ ] **משימה 4** — מחברים את הקישורים כלפי מעלה ואת המחשבים החדשים (10 דקות)
+- [ ] **משימה 5** — ‏DIST1: הקשחה + VTP server + ‏VLANים + trunks ‏(20 דקות)
+- [ ] **משימה 6** — ‏DIST2: הקשחה + VTP client + ‏trunks ‏(15 דקות)
+- [ ] **משימה 7** — ‏ACC1: מצטרף ל-VTP + קישורי trunk כלפי מעלה (10 דקות)
+- [ ] **משימה 8** — ‏ACC2: הכול (הוא חדש) (20 דקות)
+- [ ] **משימה 9** — בודקים VTP, ‏trunks ופינגים (15 דקות)
+- [ ] **משימה 10** — צופים ב-VTP בזמן אמת ורואים את התג (15 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 בניין A מקבל את שני מתגי ה-**distribution** שלו ומתג access שני. לכל מתג access יש **שני
 קישורי trunk כלפי מעלה** (אחד לכל מתג distribution). ה-VLANים נוצרים **פעם אחת** ב-DIST1
@@ -33,8 +47,6 @@
      ACC2 Gi0/1→DIST1 Gi1/0/2   ACC2 Gi0/2→DIST2 Gi1/0/2
 ```
 (הכבל בין DIST1 ל-DIST2 יגיע בשלב 04.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -120,64 +132,86 @@
 
 ---
 
-## חלק 2 — הכנה
-1. ‏**File → Open** ‏←‏ `my-work/step02.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step03.pkt`.
+## משימה 1 — פותחים את שלב 02 ושומרים בשם שלב 03 (איך? ‏←‏ M1)
+‏**File → Open** ‏←‏ `my-work/step02.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step03.pkt`.
+
+✅ בשורת הכותרת כתוב `step03.pkt`.
 
 ---
 
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
+## משימה 2 — מציבים את שני מתגי ה-3650 ונותנים להם חשמל
 
-### 3.1 מוסיפים את שני מתגי ה-3650
-1. ‏**Network Devices → Switches** ‏←‏ גררו **3650-24PS** לתוך בניין A, מעל ACC1.
+### 2א — מציבים ונותנים שמות (איך? ‏←‏ M2, ‏M4)
+1. ‏**Network Devices → Switches** ‏←‏ גררו **3650-24PS** לבניין A, **מעל** ‏ACC1.
 2. גררו **3650-24PS** שני לידו.
-3. שנו את השמות (**Config → Display Name**): `SWL3-HFA-A-DIST1` ו-`SWL3-HFA-A-DIST2`.
+3. שנו שמות (**Config → Display Name**): השמאלי `SWL3-HFA-A-DIST1`, הימני `SWL3-HFA-A-DIST2`.
 
-### 3.2 נותנים לכל 3650 ספק כוח (⚠️ אל תדלגו)
-לכל אחד משני ה-3650:
+### 2ב — מוסיפים ספק כוח (⚠️ אל תדלגו — איך? ‏←‏ M8)
+עשו את זה **לכל** 3650:
 1. לחצו על המתג ‏←‏ לשונית **Physical**.
-2. הגדילו את תמונת המכשיר (כפתור **Zoom In** באותו חלון). הסתכלו על הגב שלו: יש **חריץ
-   ריק לספק כוח**.
-3. ברשימת **MODULES** בצד שמאל, מצאו את **AC-POWER-SUPPLY**.
-4. **גררו** אותו אל החריץ הריק. תמונת המתג משתנה והנוריות שלו נדלקות.
+2. הגדילו את תמונת המכשיר (הכפתור **Zoom In** באותו חלון). הסתכלו על הגב: מימין יש
+   **חריץ ריק לספק כוח**.
+3. ברשימת **MODULES** משמאל לחצו על **AC-POWER-SUPPLY**. התמונה שלו מופיעה למטה.
+4. **גררו** את התמונה הזו אל החריץ הריק. תמונת המתג משתנה והנורות שלו נדלקות.
 5. סגרו את החלון.
-(אם המודול לא נכנס, ודאו שגררתם אותו בדיוק על החריץ הריק.)
 
-### 3.3 מוסיפים את מתג ה-access השני ו-2 מחשבים
-1. גררו **2960** ליד ACC1 ‏←‏ שנו את שמו ל-`SW-HFA-A-ACC2`.
-2. גררו 2 מחשבים מתחתיו ‏←‏ שנו את שמותיהם ל-`PC-HFA-ENG-03` ו-`PC-HFA-FIN-03`.
+✅ בשני ה-3650 דולקות נורות ירוקות בלשונית Physical.\
+❌ המודול לא נכנס ‏←‏ גררו אותו בדיוק על החריץ הריק (הגדילו עוד).
 
-### 3.4 כבלים — קישורים כלפי מעלה (מתג ↔ מתג = **Copper Cross-Over**)
+---
+
+## משימה 3 — מציבים את ACC2 ועוד שני מחשבים
+1. גררו **2960** ליד ACC1 ‏←‏ שנו את השם ל-`SW-HFA-A-ACC2`.
+2. גררו 2 מחשבים מתחתיו ‏←‏ שנו את השמות ל-`PC-HFA-ENG-03` ו-`PC-HFA-FIN-03`.
+
+✅ בבניין A יש עכשיו 4 מתגים ו-8 מכשירי קצה.
+
+---
+
+## משימה 4 — מחברים את הקישורים כלפי מעלה ואת המחשבים החדשים (איך? ‏←‏ M5)
+
+### 4א — קישורים כלפי מעלה: מתג ↔ מתג = **Copper Cross-Over** (קו מקווקו)
 
 <div dir="rtl">
 
-| לחצו קודם על | פורט | לחצו אחר כך על | פורט |
-|---|---|---|---|
-| ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/1** |
-| ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/1** |
-| ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/2** |
-| ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/2** |
+| ‎# | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|
+| ‎1 | ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/1** |
+| ‎2 | ‎SW-HFA-A-ACC1 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/1** |
+| ‎3 | ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/1** | ‎SWL3-HFA-A-DIST1 | ‎**GigabitEthernet1/0/2** |
+| ‎4 | ‎SW-HFA-A-ACC2 | ‎**GigabitEthernet0/2** | ‎SWL3-HFA-A-DIST2 | ‎**GigabitEthernet1/0/2** |
 
 </div>
 
-### 3.5 כבלים — מחשבים (Copper **Straight-Through**)
-
 <div dir="rtl">
 
-| מכשיר | פורט | פורט במתג |
-|---|---|---|
-| ‎PC-HFA-ENG-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 **Fa0/1** |
-| ‎PC-HFA-FIN-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 **Fa0/11** |
+> ב-3650 רשימת הפורטים ארוכה. ‏`GigabitEthernet1/0/1` נמצא קרוב לראש הרשימה; אל תבחרו
+> ‏`GigabitEthernet1/1/1` (זה פורט אחר, שמשמש בשלב 08).
 
 </div>
 
-לחצו **Fast Forward Time** כמה פעמים. רוב הנוריות הופכות לירוקות; **קישור אחד או יותר נשאר
-כתום** — זה Spanning Tree שחוסם את הלולאה (סעיף 1.7). נכון!
-
-### 3.6 כתובות המחשבים (Desktop ‏←‏ IP Configuration ‏←‏ Static)
+### 4ב — מחשבים: Copper **Straight-Through**
 
 <div dir="rtl">
 
-| מחשב | ‎IP | מסיכה |
+| ‎# | מכשיר | פורט | מתג | פורט |
+|---|---|---|---|---|
+| ‎5 | ‎PC-HFA-ENG-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/1** |
+| ‎6 | ‎PC-HFA-FIN-03 | ‎FastEthernet0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/11** |
+
+</div>
+
+לחצו **Fast Forward Time** כמה פעמים (M18).
+
+✅ רוב הנקודות נהיות ירוקות; **קישור אחד או יותר כלפי מעלה נשאר כתום** — זה Spanning Tree
+שחוסם את הלולאה (סעיף 1.7). נכון!\
+❌ נקודה על קישור כלפי מעלה אדומה ‏←‏ השתמשתם ב-Straight-Through. מחקו אותו (M7) וחברו ב-Cross-Over.
+
+### 4ג — כתובות המחשבים החדשים (איך? ‏←‏ M14)
+
+<div dir="rtl">
+
+| מחשב | ‎IP | ‎Mask |
 |---|---|---|
 | ‎PC-HFA-ENG-03 | ‎10.10.16.103 | ‎255.255.255.0 |
 | ‎PC-HFA-FIN-03 | ‎10.10.17.103 | ‎255.255.255.0 |
@@ -186,14 +220,15 @@
 
 ---
 
-## חלק 4 — מגדירים (הקלידו כל שורה; שורות שמתחילות ב-‎`!`‎ הן הערות)
+## משימה 5 — ‏DIST1: הקשחה + VTP server + ‏VLANים + trunks
+👉 **איפה:** לחצו על **SWL3-HFA-A-DIST1** ‏←‏ **CLI** ‏←‏ לחצו **Enter**. מופיע `Switch>`‎
+(אם הוא שואל על initial configuration dialog, הקלידו `no`) (איך? ‏←‏ M9).
 
-### 4.1 ‏SWL3-HFA-A-DIST1 — בסיס + VTP **server** + trunks
-לחצו עליו ‏←‏ **CLI** ‏←‏ לחצו Enter.
+### 5א — הקשחה (אותו בלוק שהקלדתם בשלב 02)
+⌨️ מקלידים:
 ```
 enable
 configure terminal
-! ---------- hardening (same as step 02) ----------
 hostname SWL3-HFA-A-DIST1
 no ip domain-lookup
 enable secret Intel#En4ble
@@ -207,14 +242,23 @@ line console 0
  logging synchronous
  exec-timeout 10 0
  exit
+```
+✅ שורת הפקודה היא `SWL3-HFA-A-DIST1(config)#`‎.
 
-! ---------- VTP: this switch is the head office of building A ----------
+### 5ב — ‏VTP: המתג הזה הוא המשרד הראשי של בניין A
+⌨️ מקלידים:
+```
 vtp domain HFA-A
 vtp version 2
 vtp password Intel#Vtp
 vtp mode server
+```
+✅ כל שורה עונה בהודעה כמו `Changing VTP domain name from NULL to HFA-A` או
+‏`Setting device to VTP Server mode`. (יש גרסאות שלא אומרות כלום — גם זה בסדר.)
 
-! ---------- the VLAN list (created only here) ----------
+### 5ג — רשימת ה-VLANים (נוצרת רק כאן)
+⌨️ מקלידים:
+```
 vlan 10
  name ENGINEERING
 vlan 20
@@ -232,8 +276,12 @@ vlan 998
 vlan 999
  name PARKING
  exit
+```
+🔍 **בודקים עכשיו:** ‏`do show vlan brief` ‏←‏ 8 ה-VLANים מופיעים עם השמות שלהם.
 
-! ---------- downlinks to ACC1 and ACC2 = trunks ----------
+### 5ד — הקישורים כלפי מטה ל-ACC1 ול-ACC2 = ‏trunks
+⌨️ מקלידים:
+```
 interface range gi1/0/1 - 2
  description TRUNK to access switch
  switchport mode trunk
@@ -241,8 +289,26 @@ interface range gi1/0/1 - 2
  switchport trunk allowed vlan 10,20,30,99,110,120,998
  switchport nonegotiate
  no shutdown
+```
 
-! ---------- unused ports -> parking + off ----------
+<div dir="rtl">
+
+> **הערה על ה-3650:** ה-3650 מדבר רק 802.1Q, ולכן הוא לא צריך (ולא מקבל) את הפקודה
+> ‏`switchport trunk encapsulation dot1q`. אם ה-PT שלכם דורש אותה, הקלידו אותה לפני
+> ‏`switchport mode trunk`.
+
+</div>
+
+<div dir="rtl">
+
+> ייתכן שתראו עכשיו הודעות ‎`%CDP-4-NATIVE_VLAN_MISMATCH`. זה תקין: במתגי ה-access עדיין
+> native VLAN 1. זה ייפסק אחרי משימות 7–8.
+
+</div>
+
+### 5ה — פורטים שלא בשימוש ‏←‏ "חניה" + כבוי
+⌨️ מקלידים:
+```
 interface range gi1/0/3 - 22
  description UNUSED
  switchport mode access
@@ -251,21 +317,18 @@ interface range gi1/0/3 - 22
  end
 copy running-config startup-config
 ```
-ההערות בבלוק אומרות: הקשחה (כמו בשלב 02); ‏VTP — המתג הזה הוא המשרד הראשי של בניין A;
-רשימת ה-VLANים (נוצרת רק כאן); הקישורים למטה ל-ACC1 ול-ACC2 = trunks; פורטים שלא בשימוש ‏←‏
-חניה + כיבוי.
+(בפורטים Gi1/0/23-24 לא נוגעים — הם משמשים בשלב 04.)
 
-(הפורטים Gi1/0/23-24 נשארים כמו שהם — משתמשים בהם בשלב 04.)
+✅ ‏‎`[OK]`‎ אחרי ה-copy (לחצו **Enter** ב-`Destination filename`).\
+🔍 **בודקים עכשיו:** ‏`show vtp status` ‏←‏ ‏`VTP Operating Mode : Server`, ‏`VTP Domain Name : HFA-A`.
 
-<div dir="rtl">
+---
 
-> **הערה על ה-3650:** ה-3650 מדבר רק 802.1Q, ולכן הוא לא צריך (ולא מקבל) את הפקודה
-> `switchport trunk encapsulation dot1q`. אם ה-Packet Tracer שלכם דורש אותה, הקלידו אותה לפני
-> `switchport mode trunk`.
+## משימה 6 — ‏DIST2: הקשחה + VTP client + ‏trunks
+👉 **איפה:** ‏**SWL3-HFA-A-DIST2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-</div>
-
-### 4.2 ‏SWL3-HFA-A-DIST2 — בסיס + VTP **client** + trunks
+### 6א — הקשחה
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -282,14 +345,22 @@ line console 0
  logging synchronous
  exec-timeout 10 0
  exit
+```
 
-! ---------- safe join: transparent first (revision -> 0), then client ----------
+### 6ב — הצטרפות בטוחה: קודם transparent (ה-revision ‏←‏ 0), ואז client
+⌨️ מקלידים:
+```
 vtp mode transparent
 vtp domain HFA-A
 vtp version 2
 vtp password Intel#Vtp
 vtp mode client
+```
+**אין כאן פקודות `vlan`** — ‏DIST2 מקבל את הרשימה מ-DIST1.
 
+### 6ג — ‏Trunks ופורטים שלא בשימוש
+⌨️ מקלידים:
+```
 interface range gi1/0/1 - 2
  description TRUNK to access switch
  switchport mode trunk
@@ -305,21 +376,26 @@ interface range gi1/0/3 - 22
  end
 copy running-config startup-config
 ```
-ההערה אומרת: הצטרפות בטוחה — קודם transparent ‏(revision ‏←‏ 0), ואז client.
-אין כאן פקודות `vlan` — ‏DIST2 מקבל את הרשימה מ-DIST1.
 
 <div dir="rtl">
 
-> ייתכן שתראו אזהרה כמו ‎`% Access VLAN does not exist` על `switchport access vlan 999`.
-> זה תקין: DIST2 עוד לא קיבל את רשימת ה-VLANים (היא מגיעה ברגע שקווי ה-trunk של מתגי ה-access
-> עולים, בסעיפים 4.3–4.4). ההגדרה נשמרת ומתחילה לעבוד כש-VLAN 999 מגיע.
+> ייתכן שתראו אזהרה כמו ‎`% Access VLAN does not exist` על `switchport access vlan 999`. זה
+> תקין: ‏DIST2 עוד לא קיבל את רשימת ה-VLANים (היא תגיע כשה-trunks של מתגי ה-access יעלו,
+> במשימות 7–8). ההגדרה נשמרת ומתחילה לעבוד כש-VLAN 999 מגיע.
 
 </div>
 
-### 4.3 ‏SW-HFA-A-ACC1 — מצטרף ל-VTP + קישורי trunk כלפי מעלה
-‏ACC1 הוגדר בשלב 02. התחברו (סיסמת console ‏`Intel#Con`, ‏enable ‏`Intel#En4ble`):
+✅ ‏‎`[OK]`‎. ‏`show vtp status` ‏←‏ ‏`VTP Operating Mode : Client`.
+
+---
+
+## משימה 7 — ‏ACC1: מצטרף ל-VTP + קישורי trunk כלפי מעלה
+👉 **איפה:** ‏**SW-HFA-A-ACC1** ‏←‏ CLI ‏←‏ **Enter**. ‏ACC1 אובטח בשלב 02, אז מופיעים ה-banner
+ו-`Password:`‎ ‏←‏ הקלידו `Intel#Con` ‏←‏ אחר כך `enable` ‏←‏ `Intel#En4ble`.\
+✅ שורת הפקודה: `SW-HFA-A-ACC1#`‎.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 ! ACC1 has revision > 0 from step 02 -> safe join
 vtp mode transparent
@@ -338,9 +414,16 @@ interface range gi0/1 - 2
  end
 copy running-config startup-config
 ```
-ההערה אומרת: ל-ACC1 יש revision גדול מ-0 משלב 02 ‏←‏ הצטרפות בטוחה.
+🔍 **בודקים עכשיו:** ‏`show interfaces trunk` ‏←‏ ‏`Gig0/1` ו-`Gig0/2` מופיעים, במצב `trunking`,
+‏native ‏‎`998`.
 
-### 4.4 ‏SW-HFA-A-ACC2 — הכול (הוא חדש)
+---
+
+## משימה 8 — ‏ACC2: הכול (הוא חדש)
+👉 **איפה:** ‏**SW-HFA-A-ACC2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
+
+### 8א — הקשחה
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -357,7 +440,11 @@ line console 0
  logging synchronous
  exec-timeout 10 0
  exit
+```
 
+### 8ב — ‏VTP וקישורי trunk כלפי מעלה
+⌨️ מקלידים:
+```
 vtp mode transparent
 vtp domain HFA-A
 vtp version 2
@@ -371,7 +458,13 @@ interface range gi0/1 - 2
  switchport trunk allowed vlan 10,20,30,99,110,120,998
  switchport nonegotiate
  no shutdown
+```
 
+### 8ג — פורטי access
+תוכנית הפורטים של ACC2: כמו של ACC1, חוץ מ-Fa0/22–23 ששמורים לשתי נקודות הגישה של ה-WiFi.
+
+⌨️ מקלידים:
+```
 interface range fa0/1 - 10
  description ENGINEERING users
  switchport mode access
@@ -400,9 +493,17 @@ interface fa0/24
  end
 copy running-config startup-config
 ```
-תוכנית הפורטים של ACC2: כמו ב-ACC1, חוץ מ-Fa0/22-23 ששמורים לשתי נקודות הגישה האלחוטיות.
 
-### 4.5 מה הפקודות החדשות אומרות
+<div dir="rtl">
+
+> אם `switchport access vlan …`‎ אומר שה-VLAN עוד לא קיים — חכו כמה שניות (Fast Forward Time)
+> עד ש-VTP יעביר את הרשימה; ההגדרה נשמרת בכל מקרה.
+
+</div>
+
+✅ ‏‎`[OK]`‎.
+
+### מה הפקודות החדשות אומרות
 
 <div dir="rtl">
 
@@ -421,14 +522,13 @@ copy running-config startup-config
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 9 — בודקים VTP, ‏trunks ופינגים
+קודם לחצו **Fast Forward Time** ‏2–3 פעמים.
 
-### 5.1 ‏VTP
-ב-**SW-HFA-A-ACC2**:
-```
-show vtp status
-```
-חפשו:
+### 9א — ‏VTP
+👉 ב-**SW-HFA-A-ACC2** (שורת פקודה ‎`#`‎) הקלידו `show vtp status`.
+
+✅ חפשו:
 ```
 VTP Version capable             : 1 to 2
 VTP version running             : 2
@@ -436,19 +536,15 @@ VTP Domain Name                 : HFA-A
 VTP Operating Mode              : Client
 Configuration Revision          : 16         <- your number may differ - it must be the SAME as on DIST1
 ```
-(המספר של ה-Configuration Revision אצלכם יכול להיות שונה — אבל הוא חייב להיות **זהה** לזה של DIST1.)
-הריצו `show vtp status` גם ב-DIST1: ה-**Configuration Revision** חייב להיות זהה.
+👉 הריצו `show vtp status` גם ב-**DIST1**: ה-**Configuration Revision** חייב להיות זהה.
 
-```
-show vlan brief
-```
-ב-ACC2 ‏←‏ כל 8 ה-VLANים נמצאים שם, למרות שאף פעם לא יצרתם אותם ב-ACC2. ✅ ‏VTP עובד.
+👉 ב-ACC2 הקלידו `show vlan brief`.\
+✅ כל 8 ה-VLANים שם, למרות שמעולם לא יצרתם אותם ב-ACC2. ‏VTP עובד.
 
-### 5.2 ‏Trunks
-ב-**SWL3-HFA-A-DIST1**:
-```
-show interfaces trunk
-```
+### 9ב — ‏Trunks
+👉 ב-**SWL3-HFA-A-DIST1** הקלידו `show interfaces trunk`.
+
+✅ אמורים לראות:
 ```
 Port        Mode         Encapsulation  Status        Native vlan
 Gig1/0/1    on           802.1q         trunking      998
@@ -458,45 +554,55 @@ Port        Vlans allowed on trunk
 Gig1/0/1    10,20,30,99,110,120,998
 ...
 ```
-✅ שני הפורטים במצב `trunking`, ‏native 998, ורשימת ה-VLANים המותרים שלנו.
+שני הפורטים `trunking`, ‏native 998, רשימת המותרים שלנו.
 
-### 5.3 ‏Ping דרך ה-trunk
+### 9ג — פינג דרך ה-trunk (איך? ‏←‏ M17)
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | צפוי | למה |
-|---|---|---|---|
-| ‏PC-HFA-ENG-01 (על ACC1) | ‏`ping 10.10.16.103` (ENG-03 על ACC2) | ‎✅ | ‏VLAN 10 עובר על ה-trunks דרך מתג distribution |
-| ‎PC-HFA-FIN-01 (ACC1) | ‏`ping 10.10.17.103` (FIN-03 על ACC2) | ‎✅ | גם VLAN 20 |
-| ‎PC-HFA-ENG-01 | ‎`ping 10.10.17.103` | ‎❌ | עדיין אין נתב |
+| ‎# | מאיפה | מקלידים | צפוי | למה |
+|---|---|---|---|---|
+| ‎1 | PC-HFA-ENG-01 (ב-ACC1) | `ping 10.10.16.103` (‏ENG-03 ב-ACC2) | ‎✅ | ‏VLAN 10 עובר ב-trunks דרך מתג distribution |
+| ‎2 | ‎PC-HFA-FIN-01 (‏ACC1) | `ping 10.10.17.103` (‏FIN-03 ב-ACC2) | ‎✅ | גם VLAN 20 |
+| ‎3 | ‎PC-HFA-ENG-01 | ‎`ping 10.10.17.103` | ‎❌ | עדיין אין נתב |
 
 </div>
 
-### 5.4 צופים ב-VTP בזמן אמת
-1. ב-**DIST1**: `configure terminal` ‏←‏ `vlan 50` ‏←‏ `name TEST` ‏←‏ `end`.
-2. ב-**ACC2**: `show vlan brief` ‏←‏ ‏VLAN 50 TEST מופיע תוך שניות.
-3. ב-DIST1: `configure terminal` ‏←‏ `no vlan 50` ‏←‏ `end`. בדקו שוב ב-ACC2 ‏←‏ נעלם.
-4. נסו ב-ACC2: `configure terminal` ‏←‏ `vlan 60` ‏←‏ תקבלו
-   `VTP VLAN configuration not allowed when device is in CLIENT mode.`‎ ✅
-
-### 5.5 רואים את התג (מצב Simulation)
-1. לחצו **Simulation** (ימין למטה). בחלונית לחצו **Show All/None** כדי לבטל את כל הסינונים,
-   ואז **Edit Filters** ‏←‏ בלשונית **IPv4** סמנו רק **ICMP**. סגרו את חלון הסינון.
-2. ‏**Add Simple PDU** (מעטפה) ‏←‏ לחצו על PC-HFA-ENG-01 ‏←‏ לחצו על PC-HFA-ENG-03.
-3. לחצו **Capture / Forward** עד שהמעטפה נמצאת על כבל של קישור כלפי מעלה. לחצו על המעטפה.
-4. ב-**Outbound PDU Details** רואים כותרת **802.1Q** עם `VLAN: 10`. על הכבל של המחשב עצמו
-   אין כותרת כזו. זו המדבקה!
-5. חזרו ל-**Realtime**.
+✅ ‏1 ו-2 עונים, 3 נכשל — הכול נכון.
 
 ---
 
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל 4 המתגים (עשיתם את זה למעלה), ואז **File → Save**.
+## משימה 10 — צופים ב-VTP בזמן אמת ורואים את התג
+
+### 10א — ‏VTP בזמן אמת
+1. ב-**DIST1**: ‏`configure terminal` ‏←‏ `vlan 50` ‏←‏ `name TEST` ‏←‏ `end`.
+2. ב-**ACC2**: ‏`show vlan brief`.\
+   ✅ ‏VLAN 50 TEST שם תוך שניות.
+3. ב-DIST1: ‏`configure terminal` ‏←‏ `no vlan 50` ‏←‏ `end`. בדקו שוב ב-ACC2.\
+   ✅ ‏VLAN 50 נעלם.
+4. נסו ב-ACC2: ‏`configure terminal` ‏←‏ `vlan 60`.\
+   ✅ מתקבל `VTP VLAN configuration not allowed when device is in CLIENT mode.`‎ הקלידו `end`.
+
+### 10ב — רואים את התג (מצב Simulation — איך? ‏←‏ M21)
+1. לחצו **Simulation** (למטה מימין). בחלונית לחצו **Show All/None** כדי לנקות את כל
+   המסננים, ואז **Edit Filters** ‏←‏ בלשונית **IPv4** סמנו רק **ICMP**. סגרו את חלון המסננים.
+2. ‏**Add Simple PDU** (מעטפה סגורה) ‏←‏ לחצו על PC-HFA-ENG-01 ‏←‏ לחצו על PC-HFA-ENG-03.
+3. לחצו **Capture / Forward** ‏(▶|) עד שהמעטפה נמצאת על כבל **קישור כלפי מעלה**. לחצו על המעטפה.
+4. ב-**Outbound PDU Details** רואים כותרת **802.1Q** עם `VLAN: 10`.
+5. עכשיו לחצו על מעטפה שנמצאת על כבל של **מחשב** — אין שם כותרת כזו.
+6. חזרו ל-**Realtime**.
+
+✅ מצאתם את תג ה-802.1Q על הקישור כלפי מעלה, ואין תג על הכבל של המחשב. זו המדבקה!
+
+### 10ג — שומרים
+כל 4 המתגים נשמרו עם `copy running-config startup-config`. עכשיו **File → Save**.
+
+---
 
 ## נקודת ביקורת
 - [ ] ל-DIST1 ול-DIST2 יש ספקי כוח והם דולקים
-- [ ] ‏`show vtp status` — אותו דומיין ואותו revision בכל 4 המתגים; DIST1 הוא server, השאר client
-- [ ] ‏`show interfaces trunk` — כל הקישורים כלפי מעלה במצב trunking, ‏native 998
+- [ ] ‏`show vtp status` — אותו דומיין ואותו revision בכל 4 המתגים; ‏DIST1 ‏server, השאר client
+- [ ] ‏`show interfaces trunk` — כל הקישורים כלפי מעלה `trunking`, ‏native 998
 - [ ] פינג ב-VLAN 10 וב-VLAN 20 עובד בין ACC1 ל-ACC2
 
 ## אם משהו לא עובד
@@ -505,7 +611,7 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 | בעיה | פתרון |
 |---|---|
-| ה-3650 חשוך, אין פורטים | חסר ספק כוח (3.2) |
+| ה-3650 חשוך, אין פורטים | חסר ספק כוח (משימה 2ב) |
 | נורית קישור כלפי מעלה אדומה | מתג ↔ מתג צריך **Cross-Over**. מחקו את הכבל וחברו מחדש |
 | ‏ACC2 לא לומד VLANים | ‏`show vtp status` בשני הצדדים: הדומיין, הסיסמה (`show vtp password`) והגרסה חייבים להתאים **בדיוק** (רגיש לאותיות גדולות/קטנות) |
 | הודעות ‎`%CDP-4-NATIVE_VLAN_MISMATCH` | בצד אחד של ה-trunk יש native 998 ובצד השני אין. תקנו את הצד החסר |
@@ -514,12 +620,31 @@ Gig1/0/1    10,20,30,99,110,120,998
 
 </div>
 
-## אתגר
-הריצו `show spanning-tree vlan 10` ב-ACC1. אחד משני הקישורים שלו כלפי מעלה הוא **BLK**
-(blocking — חסום). למה המתג חוסם כבל תקין לגמרי? איזה מתג הוא ה-**root bridge** כרגע, ולמה
-דווקא הוא?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — למה כבל אחד חסום? ⭐⭐
+- 🎯 **המשימה:** למצוא איזה קישור כלפי מעלה של ACC1 חסום, ולהסביר למה המתג חוסם כבל תקין
+  לגמרי. איזה מתג הוא ה-**root bridge** כרגע, ולמה דווקא הוא?
+- 📁 **מתחילים מ:** ה-`step03.pkt` שלכם.
+- 👣 **צעדים:**
+  1. ב-ACC1 הריצו `show spanning-tree vlan 10`.
+  2. בטבלה התחתונה, מצאו את הפורט שבעמודת **Sts** שלו כתוב `BLK`.
+  3. למעלה, מצאו את הבלוק **Root ID**: ה-**Address** שלו הוא ה-MAC של מתג ה-root.
+  4. בכל מתג הריצו `show version` (או העבירו את העכבר מעליו) כדי לגלות של מי ה-MAC הזה.
+- ✅ **גמרתם כש**אתם יודעים לומר מה הפורט החסום, מי מתג ה-root, ולהסביר את שניהם בשני משפטים.
+
+<details dir="rtl"><summary>💡 רמז 1</summary>
+
+ציירו את ארבעת המתגים ואת ארבעת הכבלים. עקבו אחרי מסלול שמתחיל ב-ACC1 ובדקו אם אפשר
+לחזור ל-ACC1.
+</details>
+<details dir="rtl"><summary>💡 רמז 2</summary>
+
+ה-root הוא המתג עם ה-**bridge ID הנמוך ביותר** = עדיפות, ואחר כך כתובת MAC. האם העדיפויות שונות?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 ‏ACC1 ‏←‏ DIST1 ‏←‏ ACC2 ‏←‏ DIST2 ‏←‏ ACC1 הוא **לולאה**. בלי Spanning Tree, הודעת broadcast הייתה
 מסתובבת לנצח ("סערת broadcast") ומשביתה את הרשת תוך שניות. ‏STP חוסם פורט אחד כדי לשבור את
@@ -531,12 +656,43 @@ Gig1/0/1    10,20,30,99,110,120,998
 ה-root בעצמנו.
 </details>
 
+### תרגיל ב — שוברים את ה-native VLAN ⭐⭐
+- 🎯 **המשימה:** לראות מה קורה כששני הקצוות של trunk לא מסכימים על ה-native VLAN, ואז לתקן.
+- 📁 **מתחילים מ:** ה-`step03.pkt` שלכם (קודם Save As ‏`step03-exB.pkt`).
+- 👣 **צעדים:**
+  1. ב-ACC2: ‏`configure terminal` ‏←‏ `interface gi0/1` ‏←‏ `switchport trunk native vlan 1` ‏←‏ `end`.
+  2. לחצו Fast Forward Time. הסתכלו כמה שניות על ה-CLI של ACC2 ושל DIST1.
+  3. קראו את ההודעה. אילו שני פורטים היא מזכירה?
+  4. תקנו כך ששני הקצוות יתאימו שוב.
+- ✅ **גמרתם כש**ראיתם את הודעת השגיאה, הסברתם אותה במשפט אחד, ואחרי התיקון
+  ‏`show interfaces trunk` ב-ACC2 מראה native ‏‎`998` בשני הקישורים כלפי מעלה.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+ההודעה מתחילה ב-‎`%CDP-4-NATIVE_VLAN_MISMATCH`. ‏CDP הוא הפרוטוקול שמספר לכל מתג על השכן
+שלו — הוא שם לב להבדל.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+‏‎`%CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on GigabitEthernet0/1 (1), with SWL3-HFA-A-DIST1 GigabitEthernet1/0/2 (998).`‎
+— קצה אחד שולח מסגרות בלי תג בתור VLAN 1, והקצה השני קורא אותן בתור VLAN 998: תעבורה הייתה
+דולפת בין VLANים. התיקון ב-ACC2: ‏`interface gi0/1` ‏←‏ `switchport trunk native vlan 998`.
+</details>
+
 ---
 
 ## 🛠 הפרויקט שלכם
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step02.pkt` ‏←‏ **Save As** ‏`my-project/step03.pkt`
+- [ ] מציבים את שני מתגי ה-distribution ‏3650 שלכם **עם ספקי כוח**, את מתג ה-access השני ואת המחשבים שלו
+- [ ] מחברים את הקישורים כלפי מעלה ב-**Cross-Over**, לפי התוכנית שלכם
+- [ ] ‏DIST1: הקשחה, ‏VTP **server**, ה-VLANים שלכם, ‏trunks, "חניה"
+- [ ] ‏DIST2: הקשחה, ‏VTP **client** (קודם transparent), ‏trunks, "חניה"
+- [ ] שני מתגי ה-access: ‏VTP client (קודם transparent), קישורי trunk כלפי מעלה
+- [ ] הבדיקות של משימה 9 עוברות בפרויקט שלכם
 
 <div dir="rtl">
 
@@ -639,8 +795,8 @@ VLAN ואת רשימת ה-VLANים המותרים שבחרתם.
   רשימת VLANים מותרים, DTP ‏←‏ בנייה: מתגי 3650 + ספקי כוח, חיווט עם סוגי הכבלים הנכונים ‏←‏
   הגדרת DIST1.
 - **שיעור 2 (90 דקות):** ‏VTP עם ההשוואה למשרד הראשי + הסיפור על מספר ה-revision ‏←‏ הגדרת
-  DIST2, ‏ACC1, ‏ACC2 ‏←‏ בדיקות 5.1–5.3 ‏←‏ הדגמת VTP בזמן אמת (5.4) ‏←‏ תיוג במצב Simulation
-  (5.5) על המקרן.
+  DIST2, ‏ACC1, ‏ACC2 ‏←‏ משימה 9 ‏←‏ הדגמת VTP בזמן אמת (משימה 10א) ‏←‏ תיוג במצב Simulation
+  (משימה 10ב) על המקרן.
 - **שאלות נפוצות של תלמידים**
   - *"למה המחשבים לא צריכים להבין תגים?"* — פורט ה-access מוסיף/מוריד את התג; המחשב רואה רק
     מסגרות רגילות.

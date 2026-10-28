@@ -15,6 +15,31 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+**שיעור 1 — יסודות IPv6 ובנייה**
+- [ ] **משימה 1** — חימום IPv6 על דף (15 דקות)
+- [ ] **משימה 2** — פותחים את שלב 13, שומרים בשם שלב 14, מציבים את המכשירים (15 דקות)
+- [ ] **משימה 3** — מחברים את הסניף בכבלים (15 דקות)
+- [ ] **משימה 4** — גורמים למתגים לדבר IPv6 (תבנית SDM) ‏(10 דקות)
+
+**שיעור 2 — מתגי ה-distribution**
+- [ ] **משימה 5** — ‏DIST1, חלק 1: הקשחה, ‏VLANים, ‏STP, ‏trunks ‏(10 דקות)
+- [ ] **משימה 6** — ‏DIST1, חלק 2: ‏DHCPv6, ‏OSPFv3, קישור כלפי מעלה, שערי המשתמשים (15 דקות)
+- [ ] **משימה 7** — ‏DIST1, חלק 3: ‏MGMT, שרתים, ‏VLAN מדור קודם, ניהול (10 דקות)
+- [ ] **משימה 8** — ‏DIST2: תמונת המראה של DIST1 ‏(25 דקות)
+
+**שיעור 3 — ‏access, נתב קצה, שרתים**
+- [ ] **משימה 9** — שלושת מתגי ה-access ‏(25 דקות)
+- [ ] **משימה 10** — ‏SW-KG-SRV ‏(5 דקות)
+- [ ] **משימה 11** — ‏R-KG-EDGE והנתיב אצל הספק (20 דקות)
+- [ ] **משימה 12** — שרתים ומכשירי קצה (IPv6 לחיצה אחרי לחיצה) (20 דקות)
+
+**שיעור 4 — בודקים**
+- [ ] **משימה 13** — בדיקות (15 דקות)
+- [ ] **משימה 14** — ‏failover של HSRPv6 ‏(10 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 הסניף השלישי מריץ **IPv6** לכל המשתמשים, השרתים והניהול: כתובות אוטומטיות (SLAAC + ‏stateless
 DHCPv6), ניתוב **OSPFv3**, ‏**HSRP ל-IPv6**. ‏VLAN ‏IPv4 קטן אחד "מדור קודם" (legacy) מגיע לאינטרנט דרך
@@ -32,8 +57,6 @@ DHCPv6), ניתוב **OSPFv3**, ‏**HSRP ל-IPv6**. ‏VLAN ‏IPv4 קטן אח
 (‏R-KG-EDGE מחובר ל-ISP-C ‏(dual-stack) ומריץ OSPFv3, נתיבי ברירת מחדל סטטיים ו-PAT ל-VLAN 199. מתחתיו
 ‏DIST1 ו-DIST2, מחוברים ב-trunk, עם OSPFv3 ‏area 0 ו-HSRPv6. לכל מתג access ולמתג השרתים יש כבל לשני
 מתגי ה-DIST.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -116,76 +139,7 @@ NAT. משרד החינוך דורש שסניף אחד יהיה כולו IPv6 (ד
 אחד "מדור קודם" למכשירים ישנים שמדברים רק IPv4 (קוראי כרטיסים, מצלמות). רק הוא משתמש ב-PAT כדי להגיע
 לאינטרנט. כל השאר IPv6. **אשרו את הפרשנות הזו עם המנחה שלכם.**
 
----
-
-## חלק 2 — הכנה
-‏**File → Open** ‏←‏ `my-work/step13.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step14.pkt`.
-ציירו מלבן עם התווית `KIRYAT GAT BRANCH (IPv6)`‎.
-
----
-
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
-
-### 3.1 מכשירים
-
-<div dir="rtl">
-
-| דגם | ‎‏Display Name |
-|---|---|
-| ‎2911 | ‎`R-KG-EDGE` |
-| ‎‏3650-24PS (+ **AC-POWER-SUPPLY**!) | ‎`SWL3-KG-DIST1`, `SWL3-KG-DIST2` |
-| ‎2960 | ‎`SW-KG-ACC1`, `SW-KG-ACC2`, `SW-KG-ACC3`, `SW-KG-SRV` |
-| ‎‏Server ×4 | ‎`SRV-KG-DNS`, `SRV-KG-MAIL`, `SRV-KG-SYSLOG`, `SRV-KG-AAA` |
-| ‎‏PC ×12 | ‎`PC-KG-FAB-01/02`, `PC-KG-QUA-01/02`, `PC-KG-MNT-01/02`, `PC-KG-SAF-01/02`, `PC-KG-PLN-01/02`, `PC-KG-TRN-01/02` |
-| ‎‏PC ×3 | ‎`PC-KG-ADMIN-01`, `PC-KG-LEGACY-01`, `PC-KG-LEGACY-02` |
-| ‎‏Printer ×2 | ‎`PRN-KG-ACC2-01`, `PRN-KG-ACC3-01` |
-| ‏Server ×1 (ברשת הביתית של ISP-C) | ‎`SRV-ISPC-WEB6` |
-
-</div>
-
-### 3.2 כבלים
-
-<div dir="rtl">
-
-| לוחצים קודם על | פורט | לוחצים אחר כך על | פורט | כבל |
-|---|---|---|---|---|
-| ‎SWL3-KG-DIST1 | ‎Gi1/0/1 | ‎SW-KG-ACC1 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-KG-DIST2 | ‎Gi1/0/1 | ‎SW-KG-ACC1 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-KG-DIST1 | ‎Gi1/0/2 | ‎SW-KG-ACC2 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-KG-DIST2 | ‎Gi1/0/2 | ‎SW-KG-ACC2 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-KG-DIST1 | ‎Gi1/0/3 | ‎SW-KG-ACC3 | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-KG-DIST2 | ‎Gi1/0/3 | ‎SW-KG-ACC3 | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-KG-DIST1 | ‎Gi1/0/4 | ‎SW-KG-SRV | ‎Gi0/1 | ‎Cross-Over |
-| ‎SWL3-KG-DIST2 | ‎Gi1/0/4 | ‎SW-KG-SRV | ‎Gi0/2 | ‎Cross-Over |
-| ‎SWL3-KG-DIST1 | ‎Gi1/0/24 | ‎SWL3-KG-DIST2 | ‎Gi1/0/24 | ‎Cross-Over |
-| ‎SWL3-KG-DIST1 | ‎Gi1/1/1 | ‎R-KG-EDGE | ‎Gi0/0 | ‎Straight-Through |
-| ‎SWL3-KG-DIST2 | ‎Gi1/1/1 | ‎R-KG-EDGE | ‎Gi0/2 | ‎Straight-Through |
-| ‎R-KG-EDGE | ‎Gi0/1 | ‎R-ISPC-PE | ‎Gi0/1 | ‎Cross-Over |
-| ‎SRV-ISPC-WEB6 | ‎Fa0 | ‎SW-ISPC-HOME | ‎Fa0/2 | ‎Straight-Through |
-
-</div>
-
-מכשירי קצה (Straight-Through):
-
-<div dir="rtl">
-
-| מכשיר | מתג | פורט |
-|---|---|---|
-| ‎PC-KG-FAB-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/1 / Fa0/2 |
-| ‎PC-KG-QUA-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/11 / Fa0/12 |
-| ‎PC-KG-LEGACY-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/21 / Fa0/22 |
-| ‎PC-KG-ADMIN-01 | ‎SW-KG-ACC1 | ‎Fa0/23 |
-| ‎PC-KG-MNT-01 / 02 | ‎SW-KG-ACC2 | ‎Fa0/1 / Fa0/2 |
-| ‎PC-KG-SAF-01 / 02 | ‎SW-KG-ACC2 | ‎Fa0/11 / Fa0/12 |
-| ‎PRN-KG-ACC2-01 | ‎SW-KG-ACC2 | ‎Fa0/21 |
-| ‎PC-KG-PLN-01 / 02 | ‎SW-KG-ACC3 | ‎Fa0/1 / Fa0/2 |
-| ‎PC-KG-TRN-01 / 02 | ‎SW-KG-ACC3 | ‎Fa0/11 / Fa0/12 |
-| ‎PRN-KG-ACC3-01 | ‎SW-KG-ACC3 | ‎Fa0/21 |
-| ‎SRV-KG-DNS / MAIL / SYSLOG / AAA | ‎SW-KG-SRV | ‎Fa0/1 / 2 / 3 / 4 |
-
-</div>
-
-### 3.3 כתובות הקישורים
+### 1.9 כתובות הקישורים
 
 <div dir="rtl">
 
@@ -208,14 +162,127 @@ NAT. משרד החינוך דורש שסניף אחד יהיה כולו IPv6 (ד
 
 </div>
 
+<div dir="rtl">
+
+> ⌨️ **מקלידים IPv6:** אותיות גדולות או קטנות — שתיהן עובדות (`FE80::1` = `fe80::1`). קראו כל
+> כתובת קבוצה אחרי קבוצה לפני שלוחצים Enter — ‏‎`:`‎ חסר הוא הטעות מספר 1 בשלב הזה.
+
+</div>
+
 ---
 
-## חלק 4 — מגדירים
+## משימה 1 — חימום IPv6 על דף
+קצרו את הכתובות האלה (התשובות מוסתרות):
 
-### 4.0 לפני שמתחילים — IPv6 במתגים
-נסו `configure terminal` ‏←‏ `ipv6 unicast-routing` במתג 3650, ו-`interface vlan 1` ‏←‏
-‏`ipv6 address 2001:DB8::1/64` במתג 2960. אם פקודה **נדחית**, הפעילו IPv6 בתבנית הזיכרון של המתג (פעם
-אחת לכל מתג), ואז אתחלו אותו:
+1. ‏‎`2001:0DB8:0030:0099:0000:0000:0000:0011`
+2. ‏‎`2001:0DB8:000C:0001:0000:0000:0000:0002`
+3. ‏`FE80:0000:0000:0000:0000:0000:0000:0001`
+
+<details dir="rtl"><summary>✔ תשובות</summary>
+
+1. ‏‎`2001:DB8:30:99::11`
+2. ‏‎`2001:DB8:C:1::2`
+3. ‏`FE80::1`
+</details>
+
+4. איזה VLAN זה ‎`2001:DB8:30:35::/64`? איזו מחלקה?
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+הקבוצה הרביעית היא ‎`35` ‏←‏ ‏VLAN 35, ‏PLANNING.
+</details>
+
+---
+
+## משימה 2 — פותחים את שלב 13, שומרים בשם שלב 14, מציבים את המכשירים (איך? ‏←‏ M1, ‏M2, ‏M4, ‏M8)
+‏**File → Open** ‏←‏ `my-work/step13.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step14.pkt`.
+ציירו מלבן עם התווית `KIRYAT GAT BRANCH (IPv6)`‎.
+
+<div dir="rtl">
+
+| דגם | ‎Display Name |
+|---|---|
+| ‎2911 | ‎`R-KG-EDGE` |
+| ‎3650-24PS | ‎`SWL3-KG-DIST1`, `SWL3-KG-DIST2` |
+| ‎2960 | ‎`SW-KG-ACC1`, `SW-KG-ACC2`, `SW-KG-ACC3`, `SW-KG-SRV` |
+| ‎Server ×4 | ‎`SRV-KG-DNS`, `SRV-KG-MAIL`, `SRV-KG-SYSLOG`, `SRV-KG-AAA` |
+| ‎PC ×12 | ‎`PC-KG-FAB-01/02`, `PC-KG-QUA-01/02`, `PC-KG-MNT-01/02`, `PC-KG-SAF-01/02`, `PC-KG-PLN-01/02`, `PC-KG-TRN-01/02` |
+| ‎PC ×3 | ‎`PC-KG-ADMIN-01`, `PC-KG-LEGACY-01`, `PC-KG-LEGACY-02` |
+| ‎Printer ×2 | ‎`PRN-KG-ACC2-01`, `PRN-KG-ACC3-01` |
+| Server ×1 — מציבים אותו ליד **SW-ISPC-HOME** (הרשת הביתית של ISP-C) | ‎`SRV-ISPC-WEB6` |
+
+</div>
+
+⚠️ ספקי כוח (M8):
+- [ ] ‏DIST1
+- [ ] ‏DIST2
+
+---
+
+## משימה 3 — מחברים את הסניף בכבלים (איך? ‏←‏ M5)
+
+### 3א — ציוד רשת
+
+<div dir="rtl">
+
+| ‎# | כבל | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|---|
+| ‎1 | ‎Cross-Over | ‎SWL3-KG-DIST1 | ‎Gi1/0/1 | ‎SW-KG-ACC1 | ‎Gi0/1 |
+| ‎2 | ‎Cross-Over | ‎SWL3-KG-DIST2 | ‎Gi1/0/1 | ‎SW-KG-ACC1 | ‎Gi0/2 |
+| ‎3 | ‎Cross-Over | ‎SWL3-KG-DIST1 | ‎Gi1/0/2 | ‎SW-KG-ACC2 | ‎Gi0/1 |
+| ‎4 | ‎Cross-Over | ‎SWL3-KG-DIST2 | ‎Gi1/0/2 | ‎SW-KG-ACC2 | ‎Gi0/2 |
+| ‎5 | ‎Cross-Over | ‎SWL3-KG-DIST1 | ‎Gi1/0/3 | ‎SW-KG-ACC3 | ‎Gi0/1 |
+| ‎6 | ‎Cross-Over | ‎SWL3-KG-DIST2 | ‎Gi1/0/3 | ‎SW-KG-ACC3 | ‎Gi0/2 |
+| ‎7 | ‎Cross-Over | ‎SWL3-KG-DIST1 | ‎Gi1/0/4 | ‎SW-KG-SRV | ‎Gi0/1 |
+| ‎8 | ‎Cross-Over | ‎SWL3-KG-DIST2 | ‎Gi1/0/4 | ‎SW-KG-SRV | ‎Gi0/2 |
+| ‎9 | ‎Cross-Over | ‎SWL3-KG-DIST1 | ‎Gi1/0/24 | ‎SWL3-KG-DIST2 | ‎Gi1/0/24 |
+| ‎10 | ‎Straight | ‎SWL3-KG-DIST1 | ‎Gi1/1/1 | ‎R-KG-EDGE | ‎Gi0/0 |
+| ‎11 | ‎Straight | ‎SWL3-KG-DIST2 | ‎Gi1/1/1 | ‎R-KG-EDGE | ‎Gi0/2 |
+| ‎12 | ‎Cross-Over | ‎R-KG-EDGE | ‎Gi0/1 | ‎R-ISPC-PE | ‎Gi0/1 |
+| ‎13 | ‎Straight | ‎SRV-ISPC-WEB6 | ‎Fa0 | ‎SW-ISPC-HOME | ‎Fa0/2 |
+
+</div>
+
+### 3ב — מכשירי קצה (כולם Straight-Through)
+
+<div dir="rtl">
+
+| מכשיר | מתג | פורט |
+|---|---|---|
+| ‎PC-KG-FAB-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/1 / Fa0/2 |
+| ‎PC-KG-QUA-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/11 / Fa0/12 |
+| ‎PC-KG-LEGACY-01 / 02 | ‎SW-KG-ACC1 | ‎Fa0/21 / Fa0/22 |
+| ‎PC-KG-ADMIN-01 | ‎SW-KG-ACC1 | ‎Fa0/23 |
+| ‎PC-KG-MNT-01 / 02 | ‎SW-KG-ACC2 | ‎Fa0/1 / Fa0/2 |
+| ‎PC-KG-SAF-01 / 02 | ‎SW-KG-ACC2 | ‎Fa0/11 / Fa0/12 |
+| ‎PRN-KG-ACC2-01 | ‎SW-KG-ACC2 | ‎Fa0/21 |
+| ‎PC-KG-PLN-01 / 02 | ‎SW-KG-ACC3 | ‎Fa0/1 / Fa0/2 |
+| ‎PC-KG-TRN-01 / 02 | ‎SW-KG-ACC3 | ‎Fa0/11 / Fa0/12 |
+| ‎PRN-KG-ACC3-01 | ‎SW-KG-ACC3 | ‎Fa0/21 |
+| ‎SRV-KG-DNS / MAIL / SYSLOG / AAA | ‎SW-KG-SRV | ‎Fa0/1 / 2 / 3 / 4 |
+
+</div>
+
+✅ ‏13 + 21 כבלים. ‏**File → Save**.
+
+---
+
+## משימה 4 — גורמים למתגים לדבר IPv6 (תבנית SDM)
+🧠 **למה:** חלק מהמתגים ב-PT מתחילים עם תבנית זיכרון ש**אין בה מקום ל-IPv6**. אז כל פקודת
+‏`ipv6 ...`‎ עונה ‎`% Invalid input`.
+
+### 4א — בודקים 3650 אחד ו-2960 אחד
+1. ‏**SWL3-KG-DIST1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `enable` ‏←‏ `configure terminal` ‏←‏ `ipv6 unicast-routing`.
+2. ‏**SW-KG-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `enable` ‏←‏ `configure terminal` ‏←‏ `interface vlan 1` ‏←‏
+   ‏`ipv6 address 2001:DB8::1/64`.
+
+✅ **שתיהן התקבלו?** ממשיכים. ב-SW-KG-ACC1 מוחקים את כתובת הבדיקה: `no ipv6 address 2001:DB8::1/64`
+‏←‏ `end`. מדלגים על 4ב.
+
+❌ **נדחו?** עושים את 4ב ב**כל** מתג של הסניף הזה (6 מתגים).
+
+### 4ב — משנים את התבנית (רק אם 4א נדחה), פעם אחת לכל מתג
+⌨️ מקלידים:
 ```
 configure terminal
 sdm prefer dual-ipv4-and-ipv6 default
@@ -223,14 +290,25 @@ end
 copy running-config startup-config
 reload
 ```
-(לחצו Enter כדי לאשר את האתחול. אם בדקתם עם `interface vlan 1`, מחקו אחר כך את כתובת הבדיקה:
-‏`no ipv6 address 2001:DB8::1/64`.)
+לוחצים **Enter** כדי לאשר את האתחול. מחכים שהמתג יעלה שוב (לוחצים Fast Forward Time).
+סמנו:
+- [ ] ‏DIST1
+- [ ] ‏DIST2
+- [ ] ‏ACC1
+- [ ] ‏ACC2
+- [ ] ‏ACC3
+- [ ] ‏SRV
 
-### 4.1 ‏SWL3-KG-DIST1 — הגדרה מלאה
+---
+
+## משימה 5 — ‏DIST1, חלק 1: הקשחה, ‏VLANים, ‏STP, ‏trunks
+👉 **איפה:** ‏**SWL3-KG-DIST1** ‏←‏ CLI ‏←‏ `Switch>`‎ (או `Switch(config)#`‎ אם הגעתם ממשימה 4 —
+קודם מקלידים `end`).
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
-! ===== hardening =====
 hostname SWL3-KG-DIST1
 no ip domain-lookup
 enable secret Intel#En4ble
@@ -238,10 +316,8 @@ service password-encryption
 banner motd #
 *  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
 #
-! ===== routing for both IP versions =====
 ip routing
 ipv6 unicast-routing
-! ===== VTP transparent: VLANs are created here, locally =====
 vtp mode transparent
 vlan 31
  name FAB-OPS
@@ -268,7 +344,6 @@ vlan 999
  exit
 spanning-tree mode rapid-pvst
 spanning-tree vlan 31-36,99,100,199 root primary
-! ===== trunks =====
 interface range gi1/0/1 - 4
  description TRUNK to access switch
  switchport mode trunk
@@ -290,16 +365,33 @@ interface range gi1/0/5 - 23
  switchport access vlan 999
  shutdown
  exit
-! ===== stateless DHCPv6: only DNS + domain =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ipv6 unicast-routing` | "נתב IPv6 ושלח Router Advertisements" |
+
+</div>
+
+🔍 **בודקים עכשיו:** ‏`do show vlan brief` ‏←‏ ‏11 VLANים.
+
+---
+
+## משימה 6 — ‏DIST1, חלק 2: ‏DHCPv6, ‏OSPFv3, קישור כלפי מעלה, שערי המשתמשים
+👉 **איפה:** ‏DIST1, שורת הפקודה `SWL3-KG-DIST1(config)#`‎.
+
+### 6א — מאגר stateless DHCPv6, תהליך OSPFv3, קישור כלפי מעלה
+⌨️ מקלידים:
+```
 ipv6 dhcp pool KG-STATELESS
  dns-server 2001:DB8:30:100::10
  domain-name intel.lab
  exit
-! ===== OSPFv3 process =====
 ipv6 router ospf 1
  router-id 3.3.3.2
  exit
-! ===== uplink to the edge (dual-stack) =====
 interface gi1/1/1
  description to R-KG-EDGE Gi0/0
  no switchport
@@ -307,7 +399,32 @@ interface gi1/1/1
  ipv6 address 2001:DB8:30:FF01::2/64
  ipv6 ospf 1 area 0
  no shutdown
-! ===== user VLAN gateways: IPv6 + RA flags + DHCPv6 + HSRPv6 =====
+ exit
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ipv6 dhcp pool KG-STATELESS` + `dns-server` | התוספות ש-stateless DHCPv6 מחלק |
+| ‎`ipv6 router ospf 1` / `router-id 3.3.3.2` | הפעל OSPFv3, עם המזהה הזה |
+| ‎`ipv6 address 2001:DB8:30:FF01::2/64` | כתובת ה-IPv6 של הממשק הזה |
+| ‎`ipv6 ospf 1 area 0` | "הממשק הזה מצטרף לתהליך OSPFv3 מספר 1, ‏area 0" |
+
+</div>
+
+<div dir="rtl">
+
+> לקישור כלפי מעלה יש גם כתובת IPv4 ‏(10.30.4.2) — רק בשביל ה-VLAN מדור קודם 199.
+
+</div>
+
+### 6ב — השערים של שש ה-VLANים של המשתמשים
+כל בלוק הוא אותן 9 שורות; רק **מספר ה-VLAN** משתנה (ב-4 מקומות: `vlan 31`, ‏‎`:31::2`,
+‏`standby 31` ×3).
+
+⌨️ מקלידים:
+```
 interface vlan 31
  description GW FAB-OPS
  ipv6 address 2001:DB8:30:31::2/64
@@ -374,7 +491,29 @@ interface vlan 36
  standby 36 priority 110
  standby 36 preempt
  no shutdown
-! ===== management and servers: static addresses, no DHCPv6 =====
+ exit
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ipv6 nd other-config-flag` | מדליק את ה-**O-flag** ב-RAs: "בקש מ-DHCPv6 את ה-DNS" |
+| ‎`ipv6 dhcp server KG-STATELESS` | "ענה לשאלות DHCPv6 ב-VLAN הזה" |
+| ‎`standby 31 ipv6 FE80::1` | ‏HSRP ל-IPv6: שער משותף FE80::1 |
+
+</div>
+
+❌ **‏`standby 31 ipv6 FE80::1` נדחה?** השתמשו במקום זה ב-`standby 31 ipv6 autoconfig`, וראו "אם משהו
+לא עובד".
+
+---
+
+## משימה 7 — ‏DIST1, חלק 3: ‏MGMT, שרתים, ‏VLAN מדור קודם, ניהול
+
+### 7א — ‏MGMT ו-SERVERS (שם הכתובות סטטיות, ולכן אין DHCPv6)
+⌨️ מקלידים:
+```
 interface vlan 99
  description GW MGMT
  ipv6 address 2001:DB8:30:99::2/64
@@ -393,25 +532,32 @@ interface vlan 100
  standby 100 priority 110
  standby 100 preempt
  no shutdown
-! ===== the legacy IPv4 VLAN (only on DIST1) =====
+```
+
+### 7ב — ה-VLAN מדור קודם של IPv4 (רק ב-DIST1) ו-OSPFv3 passive
+⌨️ מקלידים:
+```
 interface vlan 199
  description GW LEGACY-IPV4
  ip address 10.30.199.1 255.255.255.0
  no shutdown
  exit
 ip route 0.0.0.0 0.0.0.0 10.30.4.1
-! ===== OSPFv3: talk only on the uplink and the server VLAN =====
 ipv6 router ospf 1
  passive-interface default
  no passive-interface gi1/1/1
  no passive-interface vlan 100
  exit
-! ===== management =====
+```
+
+### 7ג — ניהול (רשימת אורחים ב-IPv6)
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -430,18 +576,52 @@ line console 0
  exit
 service timestamps log datetime msec
 logging host ipv6 2001:DB8:30:100::12
-! branch NTP: syncs to Haifa's public NTP (static NAT, step 12) over IPv4
 ntp server 200.1.10.4
  end
 copy running-config startup-config
 ```
-ההערות אומרות: הקשחה; ניתוב לשתי גרסאות ה-IP; ‏VTP ‏transparent — ה-VLANים נוצרים כאן, מקומית;
-‏trunks; ‏stateless DHCPv6 — רק DNS + דומיין; תהליך OSPFv3; קישור כלפי מעלה לנתב הקצה (dual-stack);
-שערים של VLANי המשתמשים: ‏IPv6 + דגלי RA + ‏DHCPv6 + ‏HSRPv6; ניהול ושרתים: כתובות קבועות, בלי DHCPv6;
-ה-VLAN של IPv4 מדור קודם (רק ב-DIST1); ‏OSPFv3 — מדברים רק על הקישור כלפי מעלה ועל VLAN השרתים; ניהול.
-‏NTP של הסניף מסתנכרן ל-NTP הציבורי של חיפה (static NAT, שלב 12) דרך IPv4.
 
-### 4.2 ‏SWL3-KG-DIST2 — הגדרה מלאה
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ipv6 access-class MGMT6 in` | רשימת האורחים של IPv6 לקווי ה-VTY |
+| ‎`ntp server 200.1.10.4` | ‏NTP של הסניף: מסתנכרן לשרת ה-NTP הציבורי של חיפה (static NAT, שלב 12) ב-IPv4 |
+
+</div>
+
+<div dir="rtl">
+
+> ‏`logging host ipv6 ...`‎ נדחה? נסו `logging 2001:DB8:30:100::12`.
+
+</div>
+
+🔍 **בודקים עכשיו:** ‏`show ipv6 interface brief` ‏←‏ ‏Vlan31–36, ‏99, ‏100, לכל אחד ‎`2001:DB8:30:x::2`
+(ושורת `FE80::`‎). ייתכן שהם `down` עד שמגדירים את מתגי ה-access.
+
+---
+
+## משימה 8 — ‏DIST2: תמונת המראה של DIST1
+👉 **איפה:** ‏**SWL3-KG-DIST2** ‏←‏ CLI.
+
+<div dir="rtl">
+
+| | ‎DIST1 | ‎**DIST2** |
+|---|---|---|
+| ‎hostname | ‎SWL3-KG-DIST1 | ‎**SWL3-KG-DIST2** |
+| ‎`ip routing` | כן (בשביל VLAN 199) | **לא** |
+| ‎STP | ‎root **primary** | ‎root **secondary** |
+| router-id של OSPFv3 | ‎3.3.3.2 | ‎**3.3.3.3** |
+| ‎Gi1/1/1 | ‎10.30.4.2 + 2001:DB8:30:FF01::2 | **רק 2001:DB8:30:FF02::2** |
+| כתובות SVI | ‎`::2` | **‎`::3`** |
+| עדיפות HSRP | ‎110 | ‎**90** |
+| ‏SVI של VLAN 199 + נתיב ברירת מחדל IPv4 | כן | **לא** |
+| שורת שרת NTP | כן | **לא** |
+
+</div>
+
+### 8א — הקשחה, ‏VLANים, ‏STP, ‏trunks
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -500,6 +680,11 @@ interface range gi1/0/5 - 23
  switchport access vlan 999
  shutdown
  exit
+```
+
+### 8ב — ‏DHCPv6, ‏OSPFv3, קישור כלפי מעלה
+⌨️ מקלידים:
+```
 ipv6 dhcp pool KG-STATELESS
  dns-server 2001:DB8:30:100::10
  domain-name intel.lab
@@ -513,6 +698,11 @@ interface gi1/1/1
  ipv6 address 2001:DB8:30:FF02::2/64
  ipv6 ospf 1 area 0
  no shutdown
+```
+
+### 8ג — שערים
+⌨️ מקלידים:
+```
 interface vlan 31
  description GW FAB-OPS
  ipv6 address 2001:DB8:30:31::3/64
@@ -603,11 +793,16 @@ ipv6 router ospf 1
  no passive-interface gi1/1/1
  no passive-interface vlan 100
  exit
+```
+
+### 8ד — ניהול
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -630,7 +825,25 @@ logging host ipv6 2001:DB8:30:100::12
 copy running-config startup-config
 ```
 
-### 4.3 ‏SW-KG-ACC1 — הגדרה מלאה (Fab-Ops, ‏Quality, ‏legacy, מחשב המנהל)
+---
+
+## משימה 9 — שלושת מתגי ה-access
+⚠️ ‏VTP הוא **transparent**: כל מתג access יוצר **רק את ה-VLANים שהוא משתמש בהם**.
+
+<div dir="rtl">
+
+| מתג | ה-VLANים שלו | ‎Fa0/1–10 | ‎Fa0/11–20 | ‎Fa0/21 | ‎Fa0/22 | ‎Fa0/23 | IPv6 ניהול |
+|---|---|---|---|---|---|---|---|
+| ‎SW-KG-ACC1 | ‎31, 32, 99, 199 | ‎31 | ‎32 | ‎199 legacy | ‎199 legacy | 99 מחשב המנהל | ‎::11 |
+| ‎SW-KG-ACC2 | ‎33, 34, 99 | ‎33 | ‎34 | 33 מדפסת | לא בשימוש | לא בשימוש | ‎::12 |
+| ‎SW-KG-ACC3 | ‎35, 36, 99 | ‎35 | ‎36 | 35 מדפסת | לא בשימוש | לא בשימוש | ‎::13 |
+
+</div>
+
+### 9א — ‏SW-KG-ACC1 (Fab-Ops, ‏Quality, ‏legacy, מחשב המנהל)
+👉 **איפה:** ‏**SW-KG-ACC1** ‏←‏ CLI.
+
+⌨️ **הקשחה, ‏VLANים, פורטים:**
 ```
 enable
 configure terminal
@@ -697,11 +910,14 @@ interface vlan 99
  ipv6 address 2001:DB8:30:99::11/64
  no shutdown
  exit
+```
+⌨️ **ניהול:**
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -727,12 +943,16 @@ copy running-config startup-config
 <div dir="rtl">
 
 > מתג שכבה 2 לומד את שער ה-IPv6 שלו מה-Router Advertisements — לא צריך שורת `default-gateway`.
-> ‏DHCP snooping הוא רק ל-IPv4, ולכן כאן פורטי ה-access מוגנים על ידי port-security, ‏BPDU Guard ו-VLAN
-> החניה. (מתגים אמיתיים מוסיפים **RA Guard** ו-**DHCPv6 Guard** — לא קיימים ב-PT. ציינו את זה בספר הפרויקט.)
+> ‏DHCP snooping הוא רק ל-IPv4, ולכן כאן פורטי ה-access מוגנים על ידי port-security, ‏BPDU Guard
+> וה-VLAN של החניה. (מתגים אמיתיים מוסיפים **RA Guard** ו-**DHCPv6 Guard** — לא קיים ב-PT. ציינו
+> את זה בספר.)
 
 </div>
 
-### 4.4 ‏SW-KG-ACC2 — הגדרה מלאה (Maintenance, ‏Safety, מדפסת)
+### 9ב — ‏SW-KG-ACC2 (Maintenance, ‏Safety, מדפסת)
+👉 **איפה:** ‏**SW-KG-ACC2** ‏←‏ CLI.
+
+⌨️ **הקשחה, ‏VLANים, פורטים:**
 ```
 enable
 configure terminal
@@ -793,51 +1013,85 @@ interface vlan 99
  ipv6 address 2001:DB8:30:99::12/64
  no shutdown
  exit
-ip domain-name intel.lab
-username admin privilege 15 secret Intel#Adm1n
-crypto key generate rsa
 ```
-(‎`1024`)
+⌨️ **ניהול:** אותו בלוק כמו ב-9א (מ-`ip domain-name intel.lab` ועד
+`copy running-config startup-config`).
+
+### 9ג — ‏SW-KG-ACC3 (Planning, ‏Training, מדפסת)
+👉 **איפה:** ‏**SW-KG-ACC3** ‏←‏ CLI.
+
+⌨️ **הקשחה, ‏VLANים, פורטים:**
 ```
-ip ssh version 2
-login block-for 120 attempts 3 within 60
-ipv6 access-list MGMT6
- permit ipv6 2001:DB8:30:99::/64 any
- deny ipv6 any any log
+enable
+configure terminal
+hostname SW-KG-ACC3
+no ip domain-lookup
+enable secret Intel#En4ble
+service password-encryption
+banner motd #
+*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
+#
+vtp mode transparent
+vlan 35
+ name PLANNING
+vlan 36
+ name TRAINING
+vlan 99
+ name MGMT
+vlan 998
+ name NATIVE
+vlan 999
+ name PARKING
  exit
-line vty 0 15
- transport input ssh
- login local
- ipv6 access-class MGMT6 in
- exec-timeout 5 0
-line console 0
- login local
- logging synchronous
+spanning-tree mode rapid-pvst
+interface range gi0/1 - 2
+ description TRUNK uplink to DIST1 / DIST2
+ switchport mode trunk
+ switchport trunk native vlan 998
+ switchport trunk allowed vlan 31-36,99,100,199,998
+ switchport nonegotiate
+ no shutdown
+interface range fa0/1 - 10
+ description PLANNING users
+ switchport mode access
+ switchport access vlan 35
+interface range fa0/11 - 20
+ description TRAINING users
+ switchport mode access
+ switchport access vlan 36
+interface fa0/21
+ description PRN-KG-ACC3-01
+ switchport mode access
+ switchport access vlan 35
+interface range fa0/1 - 21
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ no cdp enable
+interface range fa0/22 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+interface vlan 99
+ description MANAGEMENT
+ ipv6 address 2001:DB8:30:99::13/64
+ no shutdown
  exit
-service timestamps log datetime msec
-logging host ipv6 2001:DB8:30:100::12
- end
-copy running-config startup-config
 ```
+⌨️ **ניהול:** אותו בלוק כמו ב-9א.
 
-### 4.5 ‏SW-KG-ACC3 — הגדרה מלאה (Planning, ‏Training, מדפסת)
-הקלידו שוב את כל הבלוק של 4.4, כשהשורות האלה שונות:
+🔍 **בודקים עכשיו (בכל אחד):** ‏`show vlan brief` ‏←‏ הפורטים נמצאים ב-VLANים של הטבלה למעלה.
 
-<div dir="rtl">
+---
 
-| השורה ב-4.4 | הופכת ל |
-|---|---|
-| ‎`hostname SW-KG-ACC2` | ‎`hostname SW-KG-ACC3` |
-| ‎`vlan 33` / `name MAINTENANCE` | ‎`vlan 35` / `name PLANNING` |
-| ‎`vlan 34` / `name SAFETY` | ‎`vlan 36` / `name TRAINING` |
-| ‎`description MAINTENANCE users` / `switchport access vlan 33` | ‎`description PLANNING users` / `switchport access vlan 35` |
-| ‎`description SAFETY users` / `switchport access vlan 34` | ‎`description TRAINING users` / `switchport access vlan 36` |
-| ‎`description PRN-KG-ACC2-01` / `switchport access vlan 33` | ‎`description PRN-KG-ACC3-01` / `switchport access vlan 35` |
-| ‎`ipv6 address 2001:DB8:30:99::12/64` | ‎`ipv6 address 2001:DB8:30:99::13/64` |
+## משימה 10 — ‏SW-KG-SRV
+👉 **איפה:** ‏**SW-KG-SRV** ‏←‏ CLI.
 
-</div>
-
-### 4.6 ‏SW-KG-SRV — הגדרה מלאה
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -886,7 +1140,7 @@ ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -907,7 +1161,14 @@ logging host ipv6 2001:DB8:30:100::12
 copy running-config startup-config
 ```
 
-### 4.7 ‏R-KG-EDGE — הגדרה מלאה
+---
+
+## משימה 11 — ‏R-KG-EDGE והנתיב אצל הספק
+
+### 11א — ‏R-KG-EDGE: ממשקים ו-OSPFv3
+👉 **איפה:** ‏**R-KG-EDGE** ‏←‏ CLI ‏←‏ `no` לשאלה ‏←‏ `Router>`‎.
+
+⌨️ מקלידים:
 ```
 enable
 configure terminal
@@ -941,19 +1202,36 @@ interface gi0/1
  ipv6 address 2001:DB8:C:1::2/64
  no shutdown
  exit
-! ===== static toward the WAN, both IP versions =====
+```
+לחצו **Fast Forward Time**.\
+🔍 **בודקים עכשיו:** ‏`do show ipv6 ospf neighbor` ‏←‏ ‎`3.3.3.2` ו-‎`3.3.3.3`, שניהם `FULL`.
+
+### 11ב — נתיבים סטטיים לכיוון ה-WAN, בשתי גרסאות ה-IP
+⌨️ מקלידים:
+```
 ipv6 route ::/0 2001:DB8:C:1::1
 ip route 0.0.0.0 0.0.0.0 200.3.1.1
 ip route 10.30.199.0 255.255.255.0 10.30.4.2
-! ===== tell the DIST switches about the IPv6 default route =====
 ipv6 router ospf 1
  default-information originate
  exit
-! ===== PAT (overload) for the legacy VLAN + DIST1's NTP =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ipv6 route ::/0 2001:DB8:C:1::1` | נתיב ברירת מחדל ב-IPv6 ‏(‎`::/0` = הכול) |
+| ‎`ip route 10.30.199.0 ... 10.30.4.2` | ה-VLAN מדור קודם נמצא מאחורי DIST1 |
+
+</div>
+
+### 11ג — ‏PAT ל-VLAN מדור קודם, ומסנן IPv6 נכנס
+⌨️ מקלידים:
+```
 access-list 1 permit 10.30.199.0 0.0.0.255
 access-list 1 permit 10.30.4.0 0.0.0.3
 ip nat inside source list 1 interface gi0/1 overload
-! ===== inbound IPv6 filter =====
 ipv6 access-list WAN6-IN
  remark --- ICMPv6 is required by IPv6 itself (neighbour discovery) ---
  permit icmp any any
@@ -965,12 +1243,25 @@ ipv6 access-list WAN6-IN
 interface gi0/1
  ipv6 traffic-filter WAN6-IN in
  exit
-! ===== management =====
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip nat inside source list 1 interface gi0/1 overload` | ‏**PAT** — כל המכשירים מדור קודם (וה-NTP של DIST1) חולקים את 200.3.1.2 |
+| ‎`ipv6 traffic-filter WAN6-IN in` | מפעיל ACL של IPv6 על ממשק |
+
+</div>
+
+### 11ד — ניהול
+⌨️ מקלידים:
+```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
 crypto key generate rsa
 ```
-(‎`1024`)
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
 ```
 ip ssh version 2
 login block-for 120 attempts 3 within 60
@@ -991,126 +1282,130 @@ logging host ipv6 2001:DB8:30:100::12
  end
 copy running-config startup-config
 ```
-ההערות אומרות: ניתוב סטטי לכיוון ה-WAN, בשתי גרסאות ה-IP; מספרים למתגי ה-DIST על נתיב ברירת המחדל של
-IPv6; ‏PAT ‏(overload) ל-VLAN מדור קודם + ל-NTP של DIST1; מסנן IPv6 נכנס — ‏ICMPv6 נדרש על ידי IPv6 עצמו
-(גילוי שכנים), ותשובות משרתי web ו-DNS; ניהול.
 
-### 4.8 ‏R-ISPC-PE — מנתבים את בלוק ה-IPv6 של קריית גת
+### 11ה — ‏R-ISPC-PE: מנתבים את בלוק ה-IPv6 של קריית גת
+👉 **איפה:** ‏**R-ISPC-PE** ‏←‏ CLI ‏←‏ `enable` ‏←‏ סיסמה `Intel#En4ble`.
+
+⌨️ מקלידים:
 ```
-enable
 configure terminal
 ipv6 route 2001:DB8:30::/48 2001:DB8:C:1::2
 end
 copy running-config startup-config
 ```
 
-### 4.9 שרתים ומכשירי קצה (לחיצה אחרי לחיצה)
-**הגדרות IPv6 בשרת או במחשב:** ‏Desktop ‏←‏ **IP Configuration** ‏←‏ החלק **IPv6 Configuration**.
+<div dir="rtl">
+
+> אין NAT ל-IPv6: הספק פשוט מנתב את כל ה-‎/48 לנתב הקצה שלנו.
+
+</div>
+
+---
+
+## משימה 12 — שרתים ומכשירי קצה (IPv6 לחיצה אחרי לחיצה)
+
+### 12א — איפה נמצאות הגדרות ה-IPv6
+שרת או מחשב ‏←‏ **Desktop** ‏←‏ **IP Configuration**. בחלון יש שני חלקים: **IPv4** למעלה,
+ו-**IPv6 Configuration** מתחתיו. במכשירים שהם IPv6 בלבד, משאירים את שדות ה-**IPv4** **ריקים**.
 
 <div dir="rtl">
 
-| מכשיר | הגדרת IPv6 | כתובת | שער | ‏DNS של IPv6 |
+| מכשיר | הגדרת IPv6 | ‎IPv6 Address / prefix | ‎IPv6 Gateway | ‎IPv6 DNS Server |
 |---|---|---|---|---|
 | ‎SRV-KG-DNS | ‎Static | ‎2001:DB8:30:100::10 / 64 | ‎FE80::1 | ‎2001:DB8:30:100::10 |
 | ‎SRV-KG-MAIL | ‎Static | ‎2001:DB8:30:100::11 / 64 | ‎FE80::1 | ‎2001:DB8:30:100::10 |
 | ‎SRV-KG-SYSLOG | ‎Static | ‎2001:DB8:30:100::12 / 64 | ‎FE80::1 | ‎2001:DB8:30:100::10 |
 | ‎SRV-KG-AAA | ‎Static | ‎2001:DB8:30:100::13 / 64 | ‎FE80::1 | ‎2001:DB8:30:100::10 |
 | ‎PC-KG-ADMIN-01 | ‎Static | ‎2001:DB8:30:99::100 / 64 | ‎FE80::1 | ‎2001:DB8:30:100::10 |
-| כל 12 המחשבים של המחלקות | ‎**Automatic** | ‏(SLAAC ממלא) | | |
 | ‎SRV-ISPC-WEB6 | ‎Static | ‎2001:DB8:C:50::80 / 64 | ‎FE80::1 | ‎— |
+| כל 12 המחשבים של המחלקות | לוחצים **Automatic** | ‏(SLAAC ממלא) | | |
 
 </div>
 
-במכשירים שהם IPv6 בלבד, השאירו את שדות ה-**IPv4** ריקים.
+<div dir="rtl">
 
-**מחשבי legacy ‏(IPv4 בלבד):** ‏PC-KG-LEGACY-01 ‏‎`10.30.199.10`, ‏PC-KG-LEGACY-02 ‏‎`10.30.199.11`, מסיכה
-‎`255.255.255.0`, שער ‎`10.30.199.1`, ‏DNS ‏‎`200.1.100.10`.
+> בתיבה IPv6 Address מקלידים רק את הכתובת; ה-‎`64` נכנס לתיבה הקטנה שאחרי ה-‎`/`‎.
 
-**מדפסות:** ‏Config ‏←‏ FastEthernet0 ‏←‏ IPv6 ‏←‏ **Automatic** ‏(SLAAC).
+</div>
 
-**שירותים:**
-- **‏SRV-KG-DNS** ‏←‏ DNS **On** ‏←‏ רשומות מסוג **AAAA Record**:
+### 12ב — מחשבים מדור קודם ומדפסות
+- **מחשבים מדור קודם (IPv4 בלבד):** ‏PC-KG-LEGACY-01 ‏‎`10.30.199.10`, ‏PC-KG-LEGACY-02 ‏‎`10.30.199.11`,
+  mask ‏‎`255.255.255.0`, ‏gateway ‏‎`10.30.199.1`, ‏DNS ‏‎`200.1.100.10`.
+- **מדפסות:** ‏Config ‏←‏ FastEthernet0 ‏←‏ IPv6 ‏←‏ **Automatic** ‏(SLAAC).
+
+### 12ג — שירותים
+- ‏**SRV-KG-DNS** ‏←‏ DNS **On** ‏←‏ רשומות מסוג **AAAA Record** (לא A!):
   ‏`mail.kg.intel.lab → 2001:DB8:30:100::11`, ‏`www6.isp-web.com → 2001:DB8:C:50::80`.
-- **‏SRV-KG-MAIL** ‏←‏ EMAIL ‏←‏ דומיין `kg.intel.lab` ‏←‏ Set (המשתמשים בשלב 16).
-- **‏SRV-KG-SYSLOG** ‏←‏ SYSLOG **On**.
-- **‏SRV-KG-AAA** ‏←‏ AAA **On** (ראו את ההערה למטה).
-- **‏SRV-ISPC-WEB6** ‏←‏ HTTP ‏←‏ ערכו את `index.html` ‏←‏ ‎`<h1>IPv6 works!</h1>`‎ ‏←‏ Save.
-- כבו בכל שרת את השירותים שלא צריך.
+- ‏**SRV-KG-MAIL** ‏←‏ EMAIL ‏←‏ דומיין `kg.intel.lab` ‏←‏ Set (המשתמשים בשלב 16).
+- ‏**SRV-KG-SYSLOG** ‏←‏ SYSLOG **On**.
+- ‏**SRV-KG-AAA** ‏←‏ AAA **On** (ראו את ההערה למטה).
+- ‏**SRV-ISPC-WEB6** ‏←‏ HTTP ‏←‏ עורכים את `index.html` ‏←‏ ‎`<h1>IPv6 works!</h1>`‎ ‏←‏ Save.
+- בכל שרת מכבים את השירותים שלא צריך.
 
 <div dir="rtl">
 
 > **‏AAA על IPv6 ב-Packet Tracer.** התמיכה של PT ב-TACACS+/RADIUS על IPv6 מוגבלת, ולכן המכשירים של
-> קריית גת למעלה משתמשים במסד המשתמשים ה**מקומי** (`login local`). שרת ה-AAA קיים בסניף (דרישה 20.10).
-> אם גרסת ה-PT שלכם מקבלת את זה, נסו במתג:
+> קריית גת למעלה משתמשים במסד המשתמשים ה**מקומי** (`login local`). שרת ה-AAA קיים בסניף (דרישה
+> 20.10). אם גרסת ה-PT שלכם מקבלת את זה, נסו במתג:
 > ‏`aaa new-model` ‏←‏ `tacacs server KG-AAA` ‏←‏ `address ipv6 2001:DB8:30:100::13` ‏←‏ `key Intel#Tac`
-> ‏←‏ `exit` ‏←‏ `aaa authentication login default group tacacs+ local`, ורשמו את המתג ב-SRV-KG-AAA לפי
-> כתובת ה-IPv6 שלו. כתבו בספר הפרויקט איזו דרך עבדה.
->
-> אותו דבר לגבי `logging host ipv6 ...`‎: אם הפקודה נדחית, נסו `logging 2001:DB8:30:100::12`.
+> ‏←‏ `exit` ‏←‏ `aaa authentication login default group tacacs+ local`, ורשמו את המתג
+> ב-SRV-KG-AAA לפי כתובת ה-IPv6 שלו. כתבו בספר איזו דרך עבדה.
 
 </div>
 
-### 4.10 מה הפקודות החדשות אומרות
+🔍 **בודקים עכשיו:** ‏PC-KG-FAB-01 ‏←‏ Command Prompt ‏←‏ `ipconfig /all` ‏←‏ כתובת IPv6
+‏‎`2001:DB8:30:31:…`‎, ‏gateway ‏`FE80::1`, ‏DNS ‏‎`2001:DB8:30:100::10`.
+
+❌ **יש רק כתובת `FE80::`‎:** לחצו שוב **Automatic**; בדקו שה-SVI של VLAN 31 למעלה ב-DIST1
+(`show ipv6 interface brief`).
+
+---
+
+## משימה 13 — בדיקות
+
+### 13א — במתגים ובנתב הקצה
 
 <div dir="rtl">
 
-| פקודה | בשפה פשוטה |
-|---|---|
-| ‎`ipv6 unicast-routing` | "נתב IPv6 ושלח Router Advertisements" |
-| ‎`ipv6 address 2001:DB8:30:31::2/64` | כתובת ה-IPv6 של הממשק הזה |
-| ‎`ipv6 ospf 1 area 0` | "הממשק הזה מצטרף לתהליך OSPFv3 מספר 1, ‏area 0" |
-| ‎`ipv6 router ospf 1` / `router-id 3.3.3.2` | הפעל OSPFv3, עם המזהה הזה |
-| ‎`ipv6 nd other-config-flag` | הדלק את ה-**O-flag** ב-RAs: "בקשו מ-DHCPv6 את ה-DNS" |
-| ‎`ipv6 dhcp pool KG-STATELESS` + `dns-server` | התוספות ש-stateless DHCPv6 מחלק |
-| ‎`ipv6 dhcp server KG-STATELESS` | "ענה לשאלות DHCPv6 ב-VLAN הזה" |
-| ‎`standby 31 ipv6 FE80::1` | ‏HSRP ל-IPv6: שער משותף FE80::1 |
-| ‎`ipv6 route ::/0 2001:DB8:C:1::1` | נתיב ברירת מחדל של IPv6 (‏‎`::/0` = הכול) |
-| ‎`ip nat inside source list 1 interface gi0/1 overload` | **‏PAT** — כל המכשירים מדור קודם חולקים את 200.3.1.2 |
-| ‎`ipv6 traffic-filter WAN6-IN in` | מחילים ACL של IPv6 על ממשק |
-| ‎`ipv6 access-class MGMT6 in` | רשימת האורחים של IPv6 לקווי ה-VTY |
+| ‎# | איפה | מקלידים | ✅ אמורים לראות |
+|---|---|---|---|
+| ‎1 | ‎DIST1 | ‎`show ipv6 interface brief` | כל VLAN למעלה עם ה-‎`2001:DB8:30:x::2` שלו |
+| ‎2 | ‎DIST1 | ‎`show standby brief` | `Vl31 31 110 P Active local FE80::... FE80::1` (ושאר ה-VLANים) |
+| ‎3 | ‎DIST1 | ‎`show ipv6 ospf neighbor` | ‏3.3.3.1 (נתב הקצה) ו-3.3.3.3 ‏(DIST2) במצב FULL |
+| ‎4 | ‎DIST2 | ‎`show ipv6 route` | `OE2 ::/0 [110/1] via FE80::..., GigabitEthernet1/1/1` — ברירת המחדל מנתב הקצה |
+| ‎5 | ‎R-KG-EDGE | `show ip nat translations` (אחרי בדיקה 5 למטה) | ‎`200.3.1.2:port  10.30.199.10:port` |
+
+</div>
+
+### 13ב — ממכשירי הקצה
+
+<div dir="rtl">
+
+| ‎# | מאיפה | עושים | צפוי |
+|---|---|---|---|
+| ‎1 | ‎PC-KG-FAB-01 | ‎`ping 2001:DB8:30:36::2` | ✅ ניתוב בין VLANים ב-IPv6 |
+| ‎2 | ‎PC-KG-FAB-01 | ‎`ping 2001:DB8:30:100::10` | ✅ שרת ה-DNS |
+| ‎3 | ‎PC-KG-FAB-01 | ‎‏Web Browser ‏←‏ `http://www6.isp-web.com` | ‎✅ ‏"IPv6 works!" |
+| ‎4 | ‎PC-KG-FAB-01 | ‎`ssh -l admin 2001:DB8:30:99::11` | ❌ נדחה (MGMT6) |
+| ‎5 | ‎PC-KG-LEGACY-01 | ‎`ping 200.1.100.11` | ✅ דרך PAT |
+| ‎6 | ‎PC-KG-ADMIN-01 | ‎`ssh -l admin 2001:DB8:30:99::11` | ‎✅ |
+| ‎7 | ‎SWL3-KG-DIST1 | ‎`show ntp status` | מסונכרן ל-200.1.10.4 (אחרי Fast Forward) |
 
 </div>
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 14 — ‏failover של HSRPv6
+1. קודם **File → Save**.
+2. ‏PC-KG-FAB-01 ‏←‏ Command Prompt ‏←‏ `ping -t 2001:DB8:30:100::10`.
+3. מוחקים את **SWL3-KG-DIST1** (הכלי **Delete**).
+4. מסתכלים: כמה תשובות הולכות לאיבוד, ואז הפינגים ממשיכים. ב-DIST2: ‏`show standby brief` ‏←‏
+   ‏**Active** עבור `FE80::1`.
+5. ‏**File → Open** לקובץ ששמרתם (עונים **No** לשמירה) כדי להחזיר את DIST1.
 
-```
-SWL3-KG-DIST1# show ipv6 interface brief         <- every VLAN up with its 2001:DB8:30:x::2
-SWL3-KG-DIST1# show standby brief
-Vl31   31  110 P Active   local   FE80::...   FE80::1
-SWL3-KG-DIST1# show ipv6 ospf neighbor           <- 3.3.3.1 (edge) and 3.3.3.3 (DIST2) FULL
-SWL3-KG-DIST2# show ipv6 route
-OE2 ::/0 [110/1] via FE80::..., GigabitEthernet1/1/1   <- default from the edge
-R-KG-EDGE#     show ip nat translations          <- 200.3.1.2:port  10.30.199.10:port
-```
-(‏`show ipv6 interface brief` ‏←‏ כל VLAN למעלה עם ה-‎2001:DB8:30:x::2 שלו; ‏`show ipv6 ospf neighbor` ‏←‏
-‏3.3.3.1 (נתב הקצה) ו-3.3.3.3 ‏(DIST2) במצב FULL; ב-DIST2 ‏`OE2 ::/0` = ברירת המחדל מנתב הקצה; בנתב הקצה
-‏`show ip nat translations` ‏←‏ ‏200.3.1.2:port מול 10.30.199.10:port.)
-
-<div dir="rtl">
-
-| מאיפה | עושים | מה אמור לקרות |
-|---|---|---|
-| ‎PC-KG-FAB-01 | ב-Command Prompt: `ipconfig /all` | ‏IPv6 ‏‎`2001:DB8:30:31:…`‎, שער `FE80::1`, ‏DNS ‏‎`2001:DB8:30:100::10` |
-| ‎PC-KG-FAB-01 | ‎`ping 2001:DB8:30:36::2` | ✅ ניתוב בין VLANים ב-IPv6 |
-| ‎PC-KG-FAB-01 | ‎`ping 2001:DB8:30:100::10` | ✅ שרת ה-DNS |
-| ‎PC-KG-FAB-01 | בדפדפן: Web Browser ‏←‏ `http://www6.isp-web.com` | ‎✅ "IPv6 works!" |
-| ‎PC-KG-LEGACY-01 | ‎`ping 200.1.100.11` | ✅ דרך PAT |
-| ‎PC-KG-ADMIN-01 | ‎`ssh -l admin 2001:DB8:30:99::11` | ‎✅ |
-| ‎PC-KG-FAB-01 | ‎`ssh -l admin 2001:DB8:30:99::11` | ❌ נדחה (MGMT6) |
-| ‎SWL3-KG-DIST1 | ‎`show ntp status` | מסונכרן ל-200.1.10.4 (אחרי Fast Forward) |
-
-</div>
-
-**בדיקת מעבר (failover) של HSRPv6:** קודם **File → Save**. אחר כך `ping -t 2001:DB8:30:100::10` ממחשב,
-ודמו DIST1 מת על ידי מחיקתו (הכלי **Delete** ‏←‏ לחצו על DIST1) ‏←‏ ‏DIST2 הופך ל-Active עבור `FE80::1`,
-והפינגים ממשיכים. בסוף **File → Open** לקובץ ששמרתם כדי להחזיר את DIST1.
+💾 ‏`copy running-config startup-config` בכל מקום ‏←‏ **File → Save**.
 
 ---
-
-## חלק 6 — שומרים
-‏`copy running-config startup-config` בכל מקום ‏←‏ **File → Save**.
 
 ## נקודת ביקורת
 - [ ] המחשבים מקבלים כתובות IPv6 אוטומטית, עם שער FE80::1 ושרת DNS
@@ -1125,7 +1420,7 @@ R-KG-EDGE#     show ip nat translations          <- 200.3.1.2:port  10.30.199.10
 
 | בעיה | פתרון |
 |---|---|
-| פקודות `ipv6 ...`‎ נדחות במתג | חלק 4.0 — ‏`sdm prefer dual-ipv4-and-ipv6 default` + ‏reload |
+| פקודות `ipv6 ...`‎ נדחות במתג | משימה 4ב — ‏`sdm prefer dual-ipv4-and-ipv6 default` + ‏reload |
 | ‏OSPFv3 לא מתחיל | אין `router-id` תחת `ipv6 router ospf 1` |
 | המחשבים מקבלים רק כתובת `FE80::`‎ | חסר `ipv6 unicast-routing` ‏←‏ אין RAs; או שה-SVI של ה-VLAN למטה |
 | למחשבים אין DNS | חסר `ipv6 nd other-config-flag` / ‏`ipv6 dhcp server`; או הקלידו את ה-DNS ידנית |
@@ -1133,20 +1428,52 @@ R-KG-EDGE#     show ip nat translations          <- 200.3.1.2:port  10.30.199.10
 | ‏HSRP ל-IPv6 לא נתמך בכלל | ל-IPv6 יש יתירות שער משלו: שני מתגי ה-DIST שולחים RAs והמחשבים לומדים שני שערים. כתבו את זה בספר הפרויקט |
 | כל ה-IPv6 מת אחרי ה-ACL בנתב הקצה | חסרה השורה `permit icmp any any` ‏(IPv6 צריך ICMPv6) |
 | למחשב legacy אין אינטרנט | ‏`ip route 10.30.199.0 ...`‎ בנתב הקצה, ‏`ip route 0.0.0.0 ... 10.30.4.1` ב-DIST1, ‏NAT inside/outside |
+| הפורטים של VLAN אחד מתים במתג access | ‏VTP הוא transparent — ה-VLAN הזה לא נוצר **במתג הזה** |
 
 </div>
 
-## אתגר
-למה מחשב בקריית גת לא מצליח לפתוח את `http://www.intel.lab` (האתר של חיפה), למרות שיש לו אינטרנט?
-הציעו שני פתרונות מהעולם האמיתי.
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — למה אין את האתר של חיפה? ⭐⭐
+- 🎯 **המשימה:** למחשב בקריית גת יש אינטרנט, אבל הוא לא מצליח לפתוח את `http://www.intel.lab`
+  (האתר של חיפה). גלו למה והציעו שני פתרונות מהעולם האמיתי.
+- 📁 **מתחילים מ:** ‏`step14.pkt` שלכם (לא משנים כלום).
+- 👣 **צעדים:**
+  1. ‏PC-KG-FAB-01 ‏←‏ Web Browser ‏←‏ `http://www.intel.lab`.
+  2. ‏`ipconfig /all` במחשב — אילו גרסאות IP יש לו?
+  3. אילו כתובות יש ל-`www.intel.lab` (שלב 11, שלב 12)?
+- ✅ **גמרתם כש**כתבתם את הסיבה במשפט אחד ושני פתרונות.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+האם טלפון שמדבר רק עברית יכול להתקשר למישהו שמדבר רק אנגלית בלי מתורגמן?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 ל-`www.intel.lab` יש רק כתובת **IPv4** ‏(200.1.10.3 ציבורית / 10.10.200.13 פרטית), והמחשבים בקריית גת
 מדברים **רק IPv6**. מחשב שהוא IPv6 בלבד לא יכול לדבר עם שרת שהוא IPv4 בלבד בלי מתרגם. פתרונות
 אמיתיים: (1) **NAT64 + ‏DNS64** בנתב הקצה של קריית גת; (2) להפוך את ה-DMZ של חיפה ל-**dual-stack**
 (כתובת IPv6 + רשומת AAAA לשרת ה-web); (3) ‏reverse proxy. ‏PT לא תומך ב-NAT64 — תעדו את זה כפשרה
 תכנונית שנובעת מהדרישה "סניף אחד כולו IPv6".
+</details>
+
+### תרגיל ב — מורידים את ה-O-flag ⭐
+- 🎯 **המשימה:** לראות מה `ipv6 nd other-config-flag` באמת נותן למחשב.
+- 📁 **מתחילים מ:** ‏`step14.pkt` ‏←‏ **Save As** ‏`step14-exB.pkt`.
+- 👣 **צעדים:**
+  1. ב-**DIST1 וגם ב-DIST2**: ‏`configure terminal` ‏←‏ `interface vlan 32` ‏←‏
+     ‏`no ipv6 nd other-config-flag` ‏←‏ `end`.
+  2. ‏PC-KG-QUA-01 ‏←‏ IP Configuration ‏←‏ IPv6 ‏←‏ לוחצים **Static**, ואז שוב **Automatic**.
+  3. ‏`ipconfig /all`.
+- ✅ **גמרתם כש**אתם יודעים לומר מה עוד יש למחשב ומה הוא איבד.
+
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+המחשב עדיין מקבל כתובת IPv6 ושער (SLAAC, מה-RA) — אבל **אין לו שרת DNS**. בלי ה-O-flag המחשב אף
+פעם לא מבקש מ-DHCPv6 את התוספות, ולכן שמות כמו `www6.isp-web.com` מפסיקים לעבוד, ו-ping לפי כתובת
+עדיין עובד.
 </details>
 
 ---
@@ -1157,6 +1484,14 @@ R-KG-EDGE#     show ip nat translations          <- 200.3.1.2:port  10.30.199.10
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
 
 זה **סניף ה-IPv6** של הדוגמה. בנו את האתר השלישי **שלכם** מתוך חלקים ג–ה בתוכנית:
+
+- [ ] פותחים את `my-project/step13.pkt` ‏←‏ **Save As** ‏`my-project/step14.pkt`
+- [ ] קודם כותבים את טבלאות ה-IPv6 שלכם (כמו 1.3 ו-1.9)
+- [ ] מציבים (ספקי כוח!), מחברים, בודקים את תבנית ה-SDM
+- [ ] שני מתגי ה-DIST: ‏VLANים, ‏OSPFv3, שערים עם HSRPv6, ‏stateless DHCPv6
+- [ ] מתגי ה-access (כל אחד יוצר את ה-VLANים שלו!), מתג השרתים
+- [ ] נתב הקצה: ‏OSPFv3, ברירות מחדל סטטיות, ‏PAT ל-VLAN מדור קודם, מסנן IPv6; נתיב אצל הספק
+- [ ] שרתים, מחשבים על Automatic; הבדיקות של משימה 13; ‏failover
 
 <div dir="rtl">
 
@@ -1260,7 +1595,7 @@ link-local לשכנים, ועדיין צריך router-ID של 32 ביט שמוג
 - **שיעור 2:** ‏SLAAC + ‏stateless DHCPv6 (הראו את ה-RA ואת ה-DHCPv6 במצב Simulation, מסננים **ICMPv6**
   ו-**DHCPv6**), ‏OSPFv3, ‏HSRPv6 ‏←‏ ‏DIST1 ו-DIST2 (בזוגות: אחד מקליד את DIST1, השני את DIST2).
 - **שיעור 3:** מתגי ה-access, מתג השרתים, נתב הקצה, השרתים.
-- **שיעור 4:** בדיקות, ‏failover, ה-VLAN מדור קודם ו-PAT, הדיון באתגר (דו-קיום של IPv4 ו-IPv6).
+- **שיעור 4:** בדיקות, ‏failover, ה-VLAN מדור קודם ו-PAT, הדיון בתרגיל א (דו-קיום של IPv4 ו-IPv6).
 - **שאלות נפוצות של תלמידים**
   - *"איפה מסיכת הרשת?"* — ה-‎`/64` הוא המסיכה. ב-IPv6 תמיד כותבים את אורך ה-prefix.
   - *"למה FE80::1 כשער ולא 2001:…::1?"* — נתבים מפרסמים את עצמם בכתובות link-local; היא אף פעם לא

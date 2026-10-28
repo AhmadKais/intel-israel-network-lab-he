@@ -15,6 +15,19 @@
 
 </div>
 
+## 🗺 המשימות שלכם בשלב הזה
+- [ ] **משימה 1** — פותחים את שלב 09 ושומרים בשם שלב 10 (2 דקות)
+- [ ] **משימה 2** — מציבים ומחברים את שתי נקודות הגישה (5 דקות)
+- [ ] **משימה 3** — מציבים 3 מחשבים ניידים ונותנים להם כרטיס WiFi ‏(15 דקות)
+- [ ] **משימה 4** — מגדירים את נקודת הגישה של העובדים: INTEL-CORP ‏(5 דקות)
+- [ ] **משימה 5** — מגדירים את נקודת הגישה של האורחים: INTEL-GUEST ‏(5 דקות)
+- [ ] **משימה 6** — מחברים את המחשבים הניידים (10 דקות)
+- [ ] **משימה 7** — בודקים **לפני** ה-ACL: רואים את הסכנה (5 דקות)
+- [ ] **משימה 8** — ה-ACL לבידוד אורחים ב-A-DIST1 וב-A-DIST2 ‏(15 דקות)
+- [ ] **משימה 9** — בודקים שוב ושומרים (10 דקות)
+- [ ] **תרגילים** א ו-ב
+- [ ] **🛠 הפרויקט שלכם**
+
 ## מה יהיה לכם בסוף השלב
 בבניין A יש שתי רשתות WiFi:
 - **‏INTEL-CORP** לעובדים ‏←‏ גישה מלאה, כמו מחשב מחובר בכבל;
@@ -26,8 +39,6 @@
 ```
 (‏ACC2 פורט Fa0/22 ‏(VLAN 110) ‏←‏ נקודת הגישה של העובדים "INTEL-CORP" ‏←‏ המחשבים הניידים של העובדים.
 פורט Fa0/23 ‏(VLAN 120) ‏←‏ נקודת הגישה של האורחים "INTEL-GUEST" ‏←‏ המחשב הנייד של האורח.)
-
----
 
 ## חלק 1 — קודם מבינים (בשפה פשוטה)
 
@@ -84,45 +95,72 @@
 
 ---
 
-## חלק 2 — הכנה
-**File → Open** ‏←‏ `my-work/step09.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step10.pkt`.
+## משימה 1 — פותחים את שלב 09 ושומרים בשם שלב 10 (איך? ‏←‏ M1)
+‏**File → Open** ‏←‏ `my-work/step09.pkt` ‏←‏ **File → Save As** ‏←‏ `my-work/step10.pkt`.
 
 ---
 
-## חלק 3 — בונים (לחיצה אחרי לחיצה)
+## משימה 2 — מציבים ומחברים את שתי נקודות הגישה
+🧠 **למה:** כל AP = ‏SSID אחד = ‏VLAN אחד.
 
-### 3.1 נקודות הגישה
-1. ‏**Network Devices → Wireless Devices** ‏←‏ גררו **AccessPoint-PT** ליד ACC2.
-   שנו את השם ל-`AP-HFA-A-EMP`.
-2. גררו **AccessPoint-PT** שני ‏←‏ שנו את השם ל-`AP-HFA-A-GUEST`.
-3. חווטו עם **Copper Straight-Through**:
+👣 **צעדים:**
+1. בסרגל המכשירים למטה לחצו **Network Devices** (סמל הנתב) ‏←‏ **Wireless Devices**.
+2. גררו **AccessPoint-PT** ליד SW-HFA-A-ACC2. שנו את שמו ל-`AP-HFA-A-EMP` ‏(M4).
+3. גררו **AccessPoint-PT** שני ‏←‏ שנו את השם ל-`AP-HFA-A-GUEST`.
+4. חברו ב-**Copper Straight-Through** ‏(M5):
 
 <div dir="rtl">
 
-| ‎‏AP | פורט ב-AP | מתג | פורט במתג |
-|---|---|---|---|
-| ‎AP-HFA-A-EMP | ‎Port 0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/22** |
-| ‎AP-HFA-A-GUEST | ‎Port 0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/23** |
+| ‎# | לוחצים קודם על | פורט | לוחצים אחר כך על | פורט |
+|---|---|---|---|---|
+| ‎1 | ‎AP-HFA-A-EMP | ‎Port 0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/22** |
+| ‎2 | ‎AP-HFA-A-GUEST | ‎Port 0 | ‎SW-HFA-A-ACC2 | ‎**Fa0/23** |
 
 </div>
 
-### 3.2 המחשבים הניידים — וכרטיס ה-WiFi שלהם
-1. ‏**End Devices → End Devices** ‏←‏ גררו 3 סמלי **Laptop** ליד נקודות הגישה.
-2. שנו שמות: `LT-HFA-EMP-01`, `LT-HFA-EMP-02`, `LT-HFA-GUEST-01`.
-3. מחשב נייד מגיע עם כרטיס **קווי**. לכל מחשב נייד:
-   1. לחצו עליו ‏←‏ הלשונית **Physical**.
-   2. לחצו על **כפתור ההפעלה** של המחשב (בתמונה) ‏←‏ הוא נכבה.
-   3. גררו את המודול הקיים (**PT-LAPTOP-NM-1CFE**, בצד המחשב) **החוצה** לרשימת MODULES משמאל.
-   4. מתוך MODULES, גררו **WPC300N** (כרטיס אלחוטי) לחריץ הריק.
-   5. לחצו שוב על **כפתור ההפעלה** ‏←‏ הוא נדלק.
-   6. סגרו את החלון.
+✅ **אמורים לראות:** שני כבלים; אחרי כמה שניות שני הקצוות ירוקים (Fast Forward Time עוזר).
+
+❌ **אם פורט אדום בצד של המתג:** ייתכן ש-Fa0/22–23 עדיין כבויים. התחברו ל-ACC2 ‏←‏
+‏`configure terminal` ‏←‏ `interface range fa0/22 - 23` ‏←‏ `no shutdown` ‏←‏ `end`.
+
+🔍 **בודקים עכשיו:** ב-ACC2 ‏`show vlan brief` ‏←‏ ‏Fa0/22 ב-VLAN **‏110**, ‏Fa0/23 ב-VLAN **‏120**.
 
 ---
 
-## חלק 4 — מגדירים
+## משימה 3 — מציבים 3 מחשבים ניידים ונותנים להם כרטיס WiFi
+🧠 **למה:** למחשב נייד חדש ב-Packet Tracer יש רק כרטיס **חוטי**. הוא לא רואה שום WiFi עד
+שמחליפים את הכרטיס.
 
-### 4.1 ‏AP-HFA-A-EMP
-לחצו עליו ‏←‏ הלשונית **Config** ‏←‏ ברשימה משמאל לחצו על **Port 1** (הצד האלחוטי):
+### 3א — מציבים את המחשבים הניידים
+1. ‏**End Devices** ‏←‏ **End Devices** ‏←‏ גררו 3 סמלי **Laptop** ליד נקודות הגישה.
+2. שנו שמות: `LT-HFA-EMP-01`, ‏`LT-HFA-EMP-02`, ‏`LT-HFA-GUEST-01`.
+
+### 3ב — מחליפים את הכרטיס (עושים את זה ב**כל אחד** מ-3 המחשבים הניידים — תמונות מלאות ב-M8)
+1. לחצו על המחשב הנייד ‏←‏ לשונית **Physical**.
+2. לחצו על **כפתור ההפעלה** של המחשב הנייד (בתמונה) ‏←‏ הנורה הירוקה כבית.
+3. גררו את המודול הקיים (**PT-LAPTOP-NM-1CFE**, בחריץ שבצד המחשב) **החוצה** — שחררו אותו
+   על רשימת **MODULES** משמאל.
+4. מתוך MODULES, גררו את **WPC300N** לחריץ הריק.
+5. לחצו שוב על **כפתור ההפעלה** ‏←‏ דולק.
+6. סגרו את החלון.
+
+סמנו:
+- [ ] ‏EMP-01
+- [ ] ‏EMP-02
+- [ ] ‏GUEST-01
+
+✅ **אמורים לראות:** בלשונית **Config** של המחשב הנייד, ברשימה משמאל מופיע עכשיו **Wireless0**
+(ואין FastEthernet0).
+
+❌ **אם מופיע "Cannot add a module when the device is powered on":** דילגתם על צעד 2.
+
+---
+
+## משימה 4 — מגדירים את נקודת הגישה של העובדים: INTEL-CORP
+👉 **איפה:** לחצו על **AP-HFA-A-EMP** ‏←‏ לשונית **Config** ‏←‏ ברשימה משמאל לחצו **Port 1**
+‏(Port 1 = צד הרדיו; ‏Port 0 = הכבל).
+
+⌨️ ממלאים:
 
 <div dir="rtl">
 
@@ -130,51 +168,142 @@
 |---|---|
 | ‎SSID | ‎`INTEL-CORP` |
 | ‎2.4 GHz Channel | ‎`1` |
-| ‎Authentication | ‎**WPA2-PSK** |
+| ‎Authentication | לחצו **WPA2-PSK** |
 | ‎PSK Pass Phrase | ‎`IntelCorp#2026` |
 | ‎Encryption Type | ‎**AES** |
 
 </div>
 
-### 4.2 ‏AP-HFA-A-GUEST
-‏**Config → Port 1**:
+סגרו את החלון (PT שומר את השדות תוך כדי הקלדה).
+
+🔍 **בודקים עכשיו:** פתחו שוב את ה-AP ‏←‏ Port 1 ‏←‏ הערכים עדיין שם.
+
+---
+
+## משימה 5 — מגדירים את נקודת הגישה של האורחים: INTEL-GUEST
+👉 **איפה:** ‏**AP-HFA-A-GUEST** ‏←‏ **Config** ‏←‏ **Port 1**.
 
 <div dir="rtl">
 
 | שדה | ערך |
 |---|---|
 | ‎SSID | ‎`INTEL-GUEST` |
-| ‎2.4 GHz Channel | ‎`6` (ערוץ אחר = אין הפרעה ל-AP השני) |
+| ‎2.4 GHz Channel | ‏‎`6` (ערוץ אחר = אין הפרעה עם ה-AP השני) |
 | ‎Authentication | ‎**WPA2-PSK** |
 | ‎PSK Pass Phrase | ‎`WelcomeGuest2026` |
 | ‎Encryption Type | ‎**AES** |
 
 </div>
 
-### 4.3 המחשבים הניידים
-עבור **LT-HFA-EMP-01** ו-**LT-HFA-EMP-02**: לחצו ‏←‏ הלשונית **Config** ‏←‏ **Wireless0** (ברשימה משמאל):
-
 <div dir="rtl">
 
-| שדה | ערך |
-|---|---|
-| ‎SSID | ‎`INTEL-CORP` |
-| ‎Authentication | ‎**WPA2-PSK** |
-| ‎PSK Pass Phrase | ‎`IntelCorp#2026` |
-| ‎Encryption Type | ‎**AES** |
-| ‎IP Configuration | ‎**DHCP** |
+> ⚠️ ‏SSIDs ומפתחות **רגישים לאותיות גדולות/קטנות**. ‏`intel-guest` ≠ ‏`INTEL-GUEST`.
 
 </div>
 
-עבור **LT-HFA-GUEST-01**: אותו דבר עם SSID ‏`INTEL-GUEST` והמפתח `WelcomeGuest2026`.
+---
 
-על משטח העבודה תראו קווי "רדיו" מקווקווים בין כל מחשב נייד ל-AP שלו. ✅
-(דרך אחרת: **Desktop → PC Wireless** ‏←‏ הלשונית **Connect** ‏←‏ בוחרים את הרשת ‏←‏ **Connect**.)
+## משימה 6 — מחברים את המחשבים הניידים
+👉 **איפה:** לחצו על המחשב הנייד ‏←‏ לשונית **Config** ‏←‏ **Wireless0** (ברשימה משמאל).
 
-### 4.4 ‏ACL לבידוד אורחים — על SWL3-HFA-A-DIST1 **וגם** SWL3-HFA-A-DIST2
-הקלידו ב**שניהם** (התחברו עם `admin` / `Intel#Adm1n`):
+<div dir="rtl">
+
+| שדה | LT-HFA-EMP-01 ו-LT-HFA-EMP-02 | ‎LT-HFA-GUEST-01 |
+|---|---|---|
+| ‎SSID | ‎`INTEL-CORP` | ‎`INTEL-GUEST` |
+| ‎Authentication | ‎**WPA2-PSK** | ‎**WPA2-PSK** |
+| ‎PSK Pass Phrase | ‎`IntelCorp#2026` | ‎`WelcomeGuest2026` |
+| ‎Encryption Type | ‎**AES** | ‎**AES** |
+| ‎IP Configuration | ‎**DHCP** | ‎**DHCP** |
+
+</div>
+
+לחצו **Fast Forward Time** ‏(M18) פעמיים.
+
+✅ **אמורים לראות:** קו "רדיו" מקווקו בין כל מחשב נייד ל-AP שלו.
+
+❌ **אם אין קו מקווקו:** השוו את ה-SSID, המפתח וההצפנה, אות אחרי אות, מול ה-AP — הם חייבים
+להתאים **בדיוק**.
+(דרך אחרת להתחבר: מחשב נייד ‏←‏ **Desktop → PC Wireless** ‏←‏ לשונית **Connect** ‏←‏ בוחרים את
+הרשת ‏←‏ **Connect** ‏←‏ מקלידים את המפתח.)
+
+🔍 **בודקים עכשיו:** כל מחשב נייד ‏←‏ **Desktop → Command Prompt** ‏←‏ `ipconfig`:
+- המחשבים של העובדים ‏←‏ ‎`10.10.20.x`, שער ‎`10.10.20.1`
+- המחשב של האורח ‏←‏ ‎`10.10.21.x`, שער ‎`10.10.21.1`
+
+❌ **אם ‎`169.254.x.x`:** המחשב הנייד לא קיבל DHCP. חכו, ואז `ipconfig /renew`. עדיין לא? ראו
+"אם משהו לא עובד" למטה.
+
+---
+
+## משימה 7 — בודקים **לפני** ה-ACL: רואים את הסכנה
+👉 **איפה:** ‏**LT-HFA-GUEST-01** ‏←‏ Desktop ‏←‏ Command Prompt.
+
+⌨️ מקלידים:
 ```
-enable
+ping 10.10.1.10
+```
+✅ **אמורים לראות:** ‏**Reply from 10.10.1.10** — מבקר בלובי מגיע לשרת ה-Syslog שלנו. נסו גם
+פינג למחשב Engineering ‏←‏ גם הוא עונה.
+
+🧠 זו הסכנה. כתבו במחברת: "לפני ה-ACL, אורח יכול היה להגיע ל-______". עכשיו סוגרים את הדלת.
+
+---
+
+## משימה 8 — ה-ACL לבידוד אורחים ב-A-DIST1 וב-A-DIST2
+🧠 **למה בשניהם?** ‏A-DIST2 הוא ה-HSRP **Active** של VLAN 120 — תעבורת האורחים נכנסת דרכו היום.
+גם A-DIST1 צריך אותה, ליום ש-A-DIST2 נופל.
+
+### 8א — ב-SWL3-HFA-A-DIST2
+👉 **איפה:** ‏A-DIST2 ‏←‏ CLI ‏←‏ נכנסים `admin` / `Intel#Adm1n` ‏←‏ `SWL3-HFA-A-DIST2#`‎.
+
+⌨️ מקלידים — קודם את הרשימה:
+```
+configure terminal
+ip access-list extended GUEST-IN
+ remark --- DHCP requests to the gateway ---
+ permit udp any any eq bootps
+ remark --- DNS only to the ISP resolver ---
+ permit udp any host 200.1.100.10 eq domain
+ remark --- nothing internal (all private ranges) ---
+ deny ip any 10.0.0.0 0.255.255.255
+ deny ip any 172.16.0.0 0.15.255.255
+ deny ip any 192.168.0.0 0.0.255.255
+ remark --- everything else = the internet ---
+ permit ip any any
+ exit
+```
+🔍 **בודקים עכשיו:** ‏`do show access-lists GUEST-IN` ‏←‏ ‏6 שורות ממוספרות (10, ‏20, ‏30…) בסדר הזה:
+‏bootps, ‏domain, שלוש שורות deny, ‏permit ip any any.
+
+❌ **אם שורה במקום הלא נכון:** ‏`no ip access-list extended GUEST-IN` והקלידו את כל הרשימה שוב.
+
+⌨️ אחר כך מחילים אותה על השער של VLAN האורחים, **in**:
+```
+interface vlan 120
+ ip access-group GUEST-IN in
+ end
+copy running-config startup-config
+```
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`ip access-list extended GUEST-IN` | רשימת כללים מפורטת (מקור + יעד + פרוטוקול) בשם GUEST-IN |
+| ‎`permit udp any any eq bootps` | "התר בקשות DHCP" (‏bootps = פורט שרת ה-DHCP, ‏67) |
+| ‎`permit udp any host 200.1.100.10 eq domain` | "התר DNS ‏(פורט 53) רק לשרת האחד הזה" |
+| ‎`deny ip any 10.0.0.0 0.255.255.255` | "חסום כל דבר שהולך לכתובת 10.x כלשהי" |
+| ‎`permit ip any any` | "התר את השאר" (בלעדיה ה-deny הבלתי נראה בסוף היה חוסם גם את האינטרנט) |
+| ‎`ip access-group GUEST-IN in` | "בדוק עם הרשימה הזו חבילות ש**נכנסות** מ-VLAN האורחים" |
+
+</div>
+
+### 8ב — ב-SWL3-HFA-A-DIST1
+👉 **איפה:** ‏A-DIST1 ‏←‏ CLI ‏←‏ נכנסים ‏←‏ `SWL3-HFA-A-DIST1#`‎.
+
+⌨️ מקלידים את **אותם שני בלוקים** (בדיוק כמו ב-8א):
+```
 configure terminal
 ip access-list extended GUEST-IN
  remark --- DHCP requests to the gateway ---
@@ -193,60 +322,38 @@ interface vlan 120
  end
 copy running-config startup-config
 ```
-ההערות (remark) אומרות: בקשות DHCP לשער; ‏DNS רק לשרת ה-DNS של הספק; שום דבר פנימי (כל הטווחים
-הפרטיים); כל השאר = האינטרנט.
-
-### 4.5 מה הפקודות החדשות אומרות
-
-<div dir="rtl">
-
-| פקודה | בשפה פשוטה |
-|---|---|
-| ‎`ip access-list extended GUEST-IN` | רשימת כללים מפורטת (מקור + יעד + פרוטוקול) בשם GUEST-IN |
-| ‎`permit udp any any eq bootps` | "התר בקשות DHCP" (‏bootps = פורט שרת ה-DHCP, ‏67) |
-| ‎`permit udp any host 200.1.100.10 eq domain` | "התר DNS ‏(פורט 53) רק לשרת האחד הזה" |
-| ‎`deny ip any 10.0.0.0 0.255.255.255` | "חסום כל דבר שהולך לכתובת 10.x כלשהי" |
-| ‎`permit ip any any` | "התר את השאר" (בלעדיה ה-deny הבלתי נראה בסוף היה חוסם גם את האינטרנט) |
-| ‎`ip access-group GUEST-IN in` | "בדוק עם הרשימה הזו חבילות ש**נכנסות** מ-VLAN האורחים" |
-
-</div>
-
-<div dir="rtl">
-
-> למה על **שני** מתגי ה-DIST? ‏DIST2 הוא ה-HSRP **Active** של VLAN 120 — תעבורת האורחים נכנסת
-> דרכו. גם DIST1 צריך את ה-ACL, למקרה ש-DIST2 נופל.
-
-</div>
+🔍 **בודקים עכשיו:** ‏`show running-config interface vlan 120` ‏←‏ השורה
+‏`ip access-group GUEST-IN in` נמצאת שם.
 
 ---
 
-## חלק 5 — בודקים את העבודה
+## משימה 9 — בודקים שוב ושומרים
 
 <div dir="rtl">
 
-| מאיפה | מקלידים | מה אמור לקרות |
-|---|---|---|
-| ‎LT-HFA-EMP-01 | ‎`ipconfig` | ‏‎`10.10.20.x`, שער ‎`10.10.20.1` |
-| ‎LT-HFA-EMP-01 | ‎`ping 10.10.1.10` | ✅ עובדים מגיעים לשרתים |
-| ‎LT-HFA-EMP-01 | `ping` למחשב הנדסה | ‎✅ |
-| ‎LT-HFA-GUEST-01 | ‎`ipconfig /all` | ‎‏‎`10.10.21.x`, ‏DNS ‏‎`200.1.100.10` |
-| ‎LT-HFA-GUEST-01 | ‎`ping 10.10.1.10` | ❌ חסום |
-| ‎LT-HFA-GUEST-01 | `ping` למחשב הנדסה | ❌ חסום |
-| ‎LT-HFA-GUEST-01 | ‎`ping 200.1.100.11` | ✅ **אחרי שלב 12** (האינטרנט עוד לא קיים) |
+| ‎# | מאיפה | מקלידים | צפוי |
+|---|---|---|---|
+| ‎1 | ‎LT-HFA-EMP-01 | ‎`ping 10.10.1.10` | ✅ עובדים מגיעים לשרתים |
+| ‎2 | ‎LT-HFA-EMP-01 | ‏`ping` למחשב Engineering | ‎✅ |
+| ‎3 | ‎LT-HFA-GUEST-01 | `ipconfig /renew` ואז `ipconfig /all` | ‏‎`10.10.21.x`, ‏DNS ‏‎`200.1.100.10` — ‏DHCP עדיין עובד |
+| ‎4 | ‎LT-HFA-GUEST-01 | ‎`ping 10.10.1.10` | ❌ ‏`Destination host unreachable` / timed out — **חסום** |
+| ‎5 | ‎LT-HFA-GUEST-01 | ‏`ping` למחשב Engineering | ❌ חסום |
+| ‎6 | ‎LT-HFA-GUEST-01 | ‎`ping 200.1.100.11` | ✅ **רק אחרי שלב 12** (האינטרנט עוד לא קיים) |
 
 </div>
 
-על **DIST2**: ‏`show access-lists GUEST-IN` ‏←‏ בשורה `deny ip any 10.0.0.0` יש התאמות (matches).
-על **ACC2**: ‏`show port-security interface fa0/23` ‏←‏ כתובת ה-MAC של המחשב הנייד נספרת על הפורט של ה-AP.
+🔍 ב-**A-DIST2**: ‏`show access-lists GUEST-IN` ‏←‏ שורת ה-`deny ip any 10.0.0.0` מראה עכשיו
+‏‎`(N match(es))`‎ — אלה הפינגים החסומים שלכם.\
+🔍 ב-**ACC2**: ‏`show port-security interface fa0/23` ‏←‏ ה-MAC של המחשב הנייד נספר בפורט של ה-AP.
+
+💾 ‏**File → Save** (מתגי ה-DIST נשמרו עם `copy run start`).
 
 ---
-
-## חלק 6 — שומרים
-‏**File → Save** (מתגי ה-DIST כבר נשמרו עם `copy run start`).
 
 ## נקודת ביקורת
 - [ ] שני ה-SSIDs עובדים; המחשבים הניידים מקבלים כתובות מה-VLAN הנכון
 - [ ] עובדים מגיעים לשרתים הפנימיים; אורחים לא
+- [ ] ‏`GUEST-IN` מוחלת `in` על VLAN 120 ב**שני** מתגי ה-A-DIST
 
 ## אם משהו לא עובד
 
@@ -254,7 +361,7 @@ copy running-config startup-config
 
 | בעיה | פתרון |
 |---|---|
-| אין Wireless0 ב-Config של המחשב הנייד | כרטיס ה-WPC300N לא מותקן (3.2) |
+| אין Wireless0 ב-Config של המחשב הנייד | כרטיס ה-WPC300N לא מותקן (משימה 3ב) |
 | אין קו רדיו מקווקו | שגיאת כתיב ב-SSID / במפתח / בהצפנה — הם חייבים להתאים ל-AP **בדיוק** |
 | המחשב הנייד מתחבר אבל מקבל ‎`169.254.x.x` | הפורט של ה-AP ב-VLAN הלא נכון (‏`show vlan brief` ב-ACC2), או ש-port-security על Fa0/22-23 קפדני מדי (בשלב 06 הגדרנו 30) |
 | אורח מגיע למחשבים פנימיים | ה-ACL הוחלה רק על DIST1, או הוחלה `out` במקום `in` |
@@ -262,11 +369,43 @@ copy running-config startup-config
 
 </div>
 
-## אתגר — ‏WPA2-Enterprise לעובדים
-שנו את INTEL-CORP ל-**WPA2-Enterprise**, כך שכל עובד מתחבר עם חשבון אישי שנבדק בשרת SRV-HFA-AAA
-‏(RADIUS). מה מגדירים ב-AP, בשרת ה-AAA ובמחשב הנייד?
+---
 
-<details dir="rtl"><summary>תשובה</summary>
+## 🏋 תרגילים
+
+### תרגיל א — הסדר הלא נכון ⭐⭐
+- 🎯 **המשימה:** להוכיח שסדר השורות ב-ACL חשוב.
+- 📁 **מתחילים מ:** ‏`step10.pkt` ‏←‏ **Save As** ‏`step10-exA.pkt`.
+- 👣 **צעדים:**
+  1. ב**שני** מתגי ה-A-DIST: ‏`configure terminal` ‏←‏ `no ip access-list extended GUEST-IN`.
+  2. הקלידו את הרשימה שוב, אבל שימו את `permit ip any any` בתור השורה **הראשונה**, ואחריה את השאר.
+  3. מ-LT-HFA-GUEST-01: ‏`ping 10.10.1.10`.
+- ✅ **גמרתם כש**אתם יודעים להסביר את התוצאה במשפט אחד.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+‏ACL עוצרת בשורה הראשונה שמתאימה. איזו שורה מתאימה ל**כל** חבילה?
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
+
+הפינג **עובד** — האורחים לא חסומים. ‏`permit ip any any` מתאימה לכל חבילה, ולכן אף פעם לא
+מגיעים לשורות ה-deny שמתחתיה. שורות ספציפיות קודם, שורות כלליות בסוף.
+</details>
+
+### תרגיל ב — ‏WPA2-Enterprise לעובדים ⭐⭐⭐
+- 🎯 **המשימה:** לשנות את INTEL-CORP ל-**WPA2-Enterprise**, כך שכל עובד מתחבר עם חשבון אישי
+  שנבדק בשרת SRV-HFA-AAA ‏(RADIUS).
+- 📁 **מתחילים מ:** ‏`step10.pkt` ‏←‏ **Save As** ‏`step10-exB.pkt`.
+- 👣 **צעדים:** חשבו על **שלושה** מקומות: ה-AP, שרת ה-AAA, המחשב הנייד. מה כל אחד מהם צריך?
+- ✅ **גמרתם כש**‏LT-HFA-EMP-01 מתחבר עם המשתמש `emp1` — או שאתם יודעים להסביר בספר למה PT
+  סירב ומה ניסיתם.
+
+<details dir="rtl"><summary>💡 רמז</summary>
+
+ה-AP חייב לדעת **איפה** נמצא שרת ה-RADIUS ומה הסוד המשותף. השרת חייב להכיר את ה-AP בתור
+client **וגם** שיהיו בו משתמשים. המחשב הנייד מקליד שם משתמש במקום משפט סיסמה.
+</details>
+<details dir="rtl"><summary>✔ תשובה</summary>
 
 1. **‏AP-HFA-A-EMP ‏←‏ Port 1:** ‏Authentication **WPA2** ‏(Enterprise), שרת RADIUS ‏‎`10.10.1.11`,
    ‏shared secret ‏`Intel#Rad`, ‏AES.
@@ -284,6 +423,14 @@ copy running-config startup-config
 
 עשיתם את השלב הזה על הדוגמה של אינטל. עכשיו עשו אותו שוב בפרויקט **שלכם**, עם הערכים
 מהתוכנית **שלכם** (`my-project/plan.md`). הפקודות זהות — רק הערכים משתנים.
+
+- [ ] פותחים את `my-project/step09.pkt` ‏←‏ **Save As** ‏`my-project/step10.pkt`
+- [ ] מציבים 2 נקודות גישה על פורטי ה-access של ה-VLANים של ה-WiFi שלכם; בודקים `show vlan brief`
+- [ ] מציבים מחשבים ניידים, מחליפים להם את הכרטיס ל-WPC300N
+- [ ] מגדירים את ה-SSIDs והמפתחות שלכם; המחשבים הניידים מקבלים את הכתובות הנכונות
+- [ ] עושים פינג מהמחשב של האורח **לפני** ה-ACL (רואים את הסכנה)
+- [ ] כותבים ACL אורחים לרשתות שלכם; מחילים `in` על **שני** השערים של VLAN האורחים
+- [ ] בודקים: עובד מגיע לשרתים, אורח לא
 
 <div dir="rtl">
 
