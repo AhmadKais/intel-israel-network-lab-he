@@ -39,6 +39,7 @@
 - [ ] **משימה 14** — ‏R-JLM-EDGE, חלק 2: ‏dynamic NAT ‏(10 דקות)
 - [ ] **משימה 15** — ‏R-JLM-EDGE, חלק 3: חומת אש CBAC וניהול (15 דקות)
 - [ ] **משימה 16** — בדיקות סופיות + המגבלה של dynamic NAT ‏(15 דקות)
+- [ ] **משימה 17** — תצוגה פיזית: עיר חדשה, ירושלים (15 דקות)
 - [ ] **תרגילים** א ו-ב
 - [ ] **🛠 הפרויקט שלכם**
 
@@ -449,6 +450,7 @@ interface vlan 130
 ---
 
 ## משימה 7 — ‏CC1, חלק 3: ‏EIGRP וניהול
+👉 **איפה:** עדיין ב-**SWL3-JLM-CC1**, שורת הפקודה `SWL3-JLM-CC1(config)#`‎.
 
 ### 7א — מפתח ה-EIGRP, ‏VLAN 100 והקישור כלפי מעלה
 ⌨️ מקלידים:
@@ -1019,8 +1021,42 @@ interface vlan 99
  exit
 ip default-gateway 10.20.0.1
 ```
-⌨️ **ניהול:** אותו בלוק כמו ב-9א (מ-`ip domain-name intel.lab` ועד
-`copy running-config startup-config`). ✅ ‏‎`[OK]`‎.
+⌨️ **ניהול** (אותו בלוק כמו ב-9א — כאן במלואו, מקלידים אותו שוב):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.20.0.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.20.1.11
+ntp server 10.20.5.1
+aaa new-model
+tacacs-server host 10.20.1.12 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
+✅ ‏‎`[OK]`‎.
 
 ### 9ג — ‏SW-JLM-F3-ACC1 (ביטחון + מנהלה)
 👉 **איפה:** ‏**SW-JLM-F3-ACC1** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
@@ -1097,7 +1133,42 @@ interface vlan 99
  exit
 ip default-gateway 10.20.0.1
 ```
-⌨️ **ניהול:** אותו בלוק כמו ב-9א. ✅ ‏‎`[OK]`‎.
+⌨️ **ניהול** (אותו בלוק כמו ב-9א — כאן במלואו, מקלידים אותו שוב):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.20.0.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.20.1.11
+ntp server 10.20.5.1
+aaa new-model
+tacacs-server host 10.20.1.12 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
+✅ ‏‎`[OK]`‎.
 
 ---
 
@@ -1383,6 +1454,7 @@ D     10.20.0.0/24 ..., D 10.20.1.0/24 ..., D 10.20.2.0/24 ...
 ---
 
 ## משימה 14 — ‏R-JLM-EDGE, חלק 2: ‏dynamic NAT
+👉 **איפה:** עדיין ב-**R-JLM-EDGE**, שורת הפקודה `R-JLM-EDGE(config)#`‎. (סגרתם את החלון? לוחצים על הנתב ‏←‏ CLI ‏←‏ נכנסים `admin` / `Intel#Adm1n` ‏←‏ `configure terminal`.)
 ⌨️ מקלידים:
 ```
 ip nat pool JLM-POOL 200.2.10.1 200.2.10.6 netmask 255.255.255.248
@@ -1412,6 +1484,7 @@ ip nat inside source list 10 pool JLM-POOL
 ---
 
 ## משימה 15 — ‏R-JLM-EDGE, חלק 3: חומת אש CBAC וניהול
+👉 **איפה:** עדיין ב-**R-JLM-EDGE**, שורת הפקודה `R-JLM-EDGE(config)#`‎.
 
 ### 15א — ‏CBAC
 ⌨️ מקלידים:
@@ -1513,11 +1586,58 @@ copy running-config startup-config
 
 ---
 
+## משימה 17 — תצוגה פיזית: עיר חדשה, ירושלים
+🧠 **למה:** כל המכשירים של ירושלים הופיעו בחדר השרתים של חיפה — אבל ירושלים היא עיר אחרת. כך
+פותחים **עיר חדשה** ומעבירים אליה אתר שלם. (רקע: [sites-and-views.md, חלק 4](../../docs/sites-and-views.md#part-4).)
+
+ירושלים היא **בניין אחד עם 3 קומות**, ולכן היא מקבלת בניין אחד עם ארון לכל קומה:
+
+<div dir="rtl">
+
+| מקום (בעיר `Jerusalem` ‏←‏ בניין `JLM Office`) | מכשירים |
+|---|---|
+| ארון `JLM Main Closet` | ‎R-JLM-EDGE, SWL3-JLM-CC1, SWL3-JLM-CC2, SW-JLM-SRV |
+| ארון `Floor 1 Closet` | ‎SW-JLM-F1-ACC1 |
+| ארון `Floor 2 Closet` | ‎SW-JLM-F2-ACC1 |
+| ארון `Floor 3 Closet` | ‎SW-JLM-F3-ACC1 |
+| הבניין עצמו | 3 השרתים (SRV-JLM-…), ‏13 המחשבים (PC-JLM-…), ‏3 המדפסות (PRN-JLM-…) |
+
+</div>
+
+### 17א — העיר, הבניין, הארונות (איך? ‏←‏ M25)
+1. הלשונית **Physical** ‏←‏ בסרגל לוחצים **Intercity**.
+2. ‏**New City** ‏←‏ גוררים אותה למקום פנוי ‏←‏ לוחצים על השם שלה ‏←‏ מקלידים `Jerusalem` ‏←‏ **Enter**.
+3. לוחצים **Jerusalem** ‏←‏ **New Building** ‏←‏ גוררים אותו ‏←‏ משנים שם ל-`JLM Office`.
+4. לוחצים **JLM Office** ‏←‏ **New Closet** ‏4 פעמים ‏←‏ גוררים כל אחד למקום פנוי ‏←‏ משנים את
+   השמות ל-`JLM Main Closet`, ‏`Floor 1 Closet`, ‏`Floor 2 Closet`, ‏`Floor 3 Closet`.
+
+✅ בסרגל כתוב **Intercity › Jerusalem › JLM Office**, ויש 4 ארונות.
+
+### 17ב — מעבירים את המכשירים (איך? ‏←‏ M26)
+1. בסרגל לוחצים **Navigation**.
+2. פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet**. גוררים כל שם עם **‎`-JLM-`‎** שהוא
+   מתג או נתב לארון שלו (הטבלה למעלה).
+3. פותחים **Haifa ‏←‏ HFA Data Center**. גוררים כל שרת, מחשב ומדפסת עם **‎`-JLM-`‎** אל
+   **Jerusalem ‏←‏ JLM Office**.
+4. סוגרים את החלון.
+
+✅ ב-**Haifa ‏←‏ HFA Data Center** לא נשאר אף שם עם ‎`-JLM-`‎. ‏**Intercity** מראה את Haifa,
+‏Jerusalem ו-Internet, עם קווים ביניהן (קישורי ה-WAN).
+
+❌ **קישור נפל אחרי ההעברה:** **Options ‏←‏ Preferences ‏←‏ Interface** ‏←‏ מורידים את הסימון
+מ-*Enable Cable Length Effects* ‏(M26).
+
+### 17ג — בודקים ששום דבר לא נשבר
+הלשונית **Logical** ‏←‏ ‏PC-JLM-SAL-01 ‏←‏ `ping 200.1.100.11` ‏←‏ ✅. ‏**File → Save**.
+
+---
+
 ## נקודת ביקורת
 - [ ] ‏EIGRP: לנתב הקצה יש 2 שכנים, והסיכום ‎`/21` מגיע דרך שניהם
 - [ ] ‏PAgP ‏`Po1(SU)`‎; ‏HSRP מחולק בין CC1 ל-CC2
 - [ ] כל המחשבים מקבלים כתובות מ-SRV-JLM-DHCP
 - [ ] האינטרנט עובד דרך dynamic NAT; תעבורה נכנסת חסומה על ידי CBAC
+- [ ] תצוגה פיזית: עיר Jerusalem ‏←‏ JLM Office ‏←‏ 4 ארונות, כל מכשיר ‎`-JLM-`‎ בפנים
 
 ## אם משהו לא עובד
 
@@ -1595,6 +1715,7 @@ copy running-config startup-config
 - [ ] מתגי ה-access, מתג השרתים, השרתים (מאגרי DHCP!)
 - [ ] המחשבים מקבלים כתובות דרך ה-relay
 - [ ] נתב הקצה: ‏EIGRP + סיכום, ‏dynamic NAT, ‏CBAC; טבלת הבדיקות של משימה 16
+- [ ] תצוגה פיזית: עיר חדשה לאתר הזה, הבניין והארונות שלו (משימה 17)
 
 <div dir="rtl">
 

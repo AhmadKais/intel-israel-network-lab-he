@@ -332,6 +332,7 @@ service-policy global_policy global
 ---
 
 ## משימה 6 — ‏ASA, חלק 3: ה-ACL החיצונית ו-SSH
+👉 **איפה:** עדיין ב-**ASA-HFA-FW1**, שורת הפקודה `ASA-HFA-FW1(config)#`‎. (סגרתם את החלון? לוחצים על ה-ASA ‏←‏ CLI ‏←‏ `enable` ‏←‏ `Intel#En4ble` ‏←‏ `configure terminal`.)
 
 ### 6א — החורים מבחוץ (עוד בשלבים 12 ו-15)
 🧠 נתב הקצה נמצא **בחוץ** (רמה 0). הוא חייב לשלוח פנימה לוגים, בקשות התחברות ובקשות שעה —
@@ -687,6 +688,10 @@ copy running-config startup-config
 </div>
 
 🔍 ב-ASA, **בזמן** שאתם גולשים ממחשב: ‏`show conn` מציג את החיבורים הפעילים.
+
+📍 **תצוגה פיזית (M24, ‏M26):** הלשונית **Physical** ‏←‏ **Navigation** ‏←‏ 9 המכשירים החדשים (ASA,
+נתב הקצה, מתג ה-DMZ, ‏6 שרתי ה-DMZ) חייבים להיות ב-**Haifa ‏←‏ HFA Data Center** — שם באמת נמצאים
+חומת אש וחדר שרתים. אם אחד מהם במקום אחר, גוררים אותו לשם. חוזרים ל-**Logical**.
 
 💾 ‏`write memory` ב-ASA, ‏`copy running-config startup-config` בכל השאר ‏←‏ **File → Save**.
 

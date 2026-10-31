@@ -365,3 +365,24 @@
 | גיבוי WAN | ‏**DSL** עם floating static route | ‎— | ‎— |
 
 </div>
+
+---
+
+## 8. פריסה פיזית (התצוגה הפיזית של Packet Tracer)
+
+נבנית בשלבים 09, ‏10, ‏11, ‏12, ‏13, ‏14 ו-16. איך ולמה: [sites-and-views.md](sites-and-views.md).
+
+<div dir="rtl">
+
+| עיר | בניין | ארון תקשורת ‏←‏ ציוד רשת | בבניין ‏←‏ מכשירי קצה |
+|---|---|---|---|
+| ‎Haifa | ‎HFA Data Center | ‎Main Wiring Closet ‏←‏ CORE1/2, ‏SW-HFA-SRV, ‏ASA-HFA-FW1, ‏R-HFA-EDGE, ‏SW-HFA-DMZ, ‏DSL-HFA | ‏SRV-HFA-SYSLOG, ‏SRV-HFA-AAA, ‏6 שרתי ה-DMZ |
+| ‎Haifa | ‎HFA Building A | ‎Closet A ‏←‏ A-ACC1/2, ‏A-DIST1/2 | מחשבי ENG ו-FIN, ‏PRN-HFA-A-01, ‏PC-HFA-ADMIN-01, שתי נקודות הגישה, 3 המחשבים הניידים |
+| ‎Haifa | ‎HFA Building B | ‎Closet B ‏←‏ B-ACC1/2, ‏B-DIST1/2 | מחשבי HR ו-MKT, ‏PRN-HFA-B-01 |
+| ‎Haifa | ‎HFA Building C | ‎Closet C ‏←‏ C-ACC1/2, ‏C-DIST1/2 | מחשבי RND ו-IT, ‏PRN-HFA-C-01 |
+| ‎Jerusalem | ‎JLM Office | ‎JLM Main Closet ‏←‏ R-JLM-EDGE, ‏CC1, ‏CC2, ‏SW-JLM-SRV · ‏Floor 1/2/3 Closet ‏←‏ F1/F2/F3-ACC1 | 3 השרתים, כל ה-PC-JLM-…, כל ה-PRN-JLM-… |
+| ‎Kiryat Gat | ‎KG Fab | ‎KG Main Closet ‏←‏ R-KG-EDGE, ‏DIST1/2, ‏ACC1/2/3, ‏SW-KG-SRV | 4 השרתים, כל ה-PC-KG-…, כל ה-PRN-KG-… |
+| ‎Internet | ‎ISP-A / ISP-B / ISP-C / Home | (בלי ארונות) | ‎‏ISP-A: ‏R-ISPA-BR/PE, ‏SW-ISPA-NET, ‏SRV-ISP-DNS/WEB1/WEB2 · ‏ISP-B: ‏R-ISPB-BR/PE, ‏CLOUD-DSL · ‏ISP-C: ‏R-ISPC-BR/PE, ‏SRV-ISPC-WEB6 · ‏Home: ‏SW-ISPC-HOME, ‏PC-HOME-01 |
+
+</div>
+

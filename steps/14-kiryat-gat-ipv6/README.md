@@ -37,6 +37,7 @@
 **שיעור 4 — בודקים**
 - [ ] **משימה 13** — בדיקות (15 דקות)
 - [ ] **משימה 14** — ‏failover של HSRPv6 ‏(10 דקות)
+- [ ] **משימה 15** — תצוגה פיזית: עיר חדשה, קריית גת (15 דקות)
 - [ ] **תרגילים** א ו-ב
 - [ ] **🛠 הפרויקט שלכם**
 
@@ -510,6 +511,7 @@ interface vlan 36
 ---
 
 ## משימה 7 — ‏DIST1, חלק 3: ‏MGMT, שרתים, ‏VLAN מדור קודם, ניהול
+👉 **איפה:** עדיין ב-**SWL3-KG-DIST1**, שורת הפקודה `SWL3-KG-DIST1(config)#`‎.
 
 ### 7א — ‏MGMT ו-SERVERS (שם הכתובות סטטיות, ולכן אין DHCPv6)
 ⌨️ מקלידים:
@@ -1014,8 +1016,34 @@ interface vlan 99
  no shutdown
  exit
 ```
-⌨️ **ניהול:** אותו בלוק כמו ב-9א (מ-`ip domain-name intel.lab` ועד
-`copy running-config startup-config`).
+⌨️ **ניהול** (אותו בלוק כמו ב-9א — כאן במלואו, מקלידים אותו שוב):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+login block-for 120 attempts 3 within 60
+ipv6 access-list MGMT6
+ permit ipv6 2001:DB8:30:99::/64 any
+ deny ipv6 any any log
+ exit
+line vty 0 15
+ transport input ssh
+ login local
+ ipv6 access-class MGMT6 in
+ exec-timeout 5 0
+line console 0
+ login local
+ logging synchronous
+ exit
+service timestamps log datetime msec
+logging host ipv6 2001:DB8:30:100::12
+ end
+copy running-config startup-config
+```
 
 ### 9ג — ‏SW-KG-ACC3 (Planning, ‏Training, מדפסת)
 👉 **איפה:** ‏**SW-KG-ACC3** ‏←‏ CLI.
@@ -1082,7 +1110,34 @@ interface vlan 99
  no shutdown
  exit
 ```
-⌨️ **ניהול:** אותו בלוק כמו ב-9א.
+⌨️ **ניהול** (אותו בלוק כמו ב-9א — כאן במלואו, מקלידים אותו שוב):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+login block-for 120 attempts 3 within 60
+ipv6 access-list MGMT6
+ permit ipv6 2001:DB8:30:99::/64 any
+ deny ipv6 any any log
+ exit
+line vty 0 15
+ transport input ssh
+ login local
+ ipv6 access-class MGMT6 in
+ exec-timeout 5 0
+line console 0
+ login local
+ logging synchronous
+ exit
+service timestamps log datetime msec
+logging host ipv6 2001:DB8:30:100::12
+ end
+copy running-config startup-config
+```
 
 🔍 **בודקים עכשיו (בכל אחד):** ‏`show vlan brief` ‏←‏ הפורטים נמצאים ב-VLANים של הטבלה למעלה.
 
@@ -1407,12 +1462,48 @@ copy running-config startup-config
 
 ---
 
+## משימה 15 — תצוגה פיזית: עיר חדשה, קריית גת
+🧠 **למה:** כמו ירושלים בשלב 13 — אתר חדש מקבל עיר משלו. (רקע:
+[sites-and-views.md, חלק 4](../../docs/sites-and-views.md#part-4).)
+
+<div dir="rtl">
+
+| מקום | מכשירים |
+|---|---|
+| `Kiryat Gat` ‏←‏ `KG Fab` ‏←‏ ארון `KG Main Closet` | ‎R-KG-EDGE, SWL3-KG-DIST1, SWL3-KG-DIST2, SW-KG-ACC1, SW-KG-ACC2, SW-KG-ACC3, SW-KG-SRV |
+| `Kiryat Gat` ‏←‏ `KG Fab` (הבניין עצמו) | 4 השרתים (SRV-KG-…), ‏15 המחשבים (PC-KG-…), ‏2 המדפסות (PRN-KG-…) |
+| ‎`Internet` ‏←‏ `ISP-C` | **SRV-ISPC-WEB6** — הוא שייך לספק, לא לנו |
+
+</div>
+
+### 15א — העיר, הבניין, הארון (איך? ‏←‏ M25)
+1. הלשונית **Physical** ‏←‏ **Intercity** ‏←‏ **New City** ‏←‏ גוררים אותה ‏←‏ משנים שם ל-`Kiryat Gat`.
+2. לוחצים **Kiryat Gat** ‏←‏ **New Building** ‏←‏ גוררים אותו ‏←‏ משנים שם ל-`KG Fab`.
+3. לוחצים **KG Fab** ‏←‏ **New Closet** ‏←‏ גוררים אותו ‏←‏ משנים שם ל-`KG Main Closet`.
+
+### 15ב — מעבירים את המכשירים (איך? ‏←‏ M26)
+1. ‏**Navigation** ‏←‏ פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet** ‏←‏ גוררים כל מתג
+   ונתב עם **‎`-KG-`‎** אל **Kiryat Gat ‏←‏ KG Fab ‏←‏ KG Main Closet**.
+2. פותחים **Haifa ‏←‏ HFA Data Center** ‏←‏ גוררים כל שרת, מחשב ומדפסת עם **‎`-KG-`‎** אל
+   **Kiryat Gat ‏←‏ KG Fab**.
+3. גוררים את **SRV-ISPC-WEB6** אל **Internet ‏←‏ ISP-C**.
+4. סוגרים את החלון.
+
+✅ ‏**Intercity** מראה 4 ערים: Haifa, ‏Jerusalem, ‏Kiryat Gat, ‏Internet. ב-**HFA Data Center** לא
+נשאר אף שם עם ‎`-KG-`‎.
+
+### 15ג — בודקים ששום דבר לא נשבר
+הלשונית **Logical** ‏←‏ ‏PC-KG-FAB-01 ‏←‏ Web Browser ‏←‏ `http://www6.isp-web.com` ‏←‏ ✅. ‏**File → Save**.
+
+---
+
 ## נקודת ביקורת
 - [ ] המחשבים מקבלים כתובות IPv6 אוטומטית, עם שער FE80::1 ושרת DNS
 - [ ] שכני OSPFv3 במצב FULL; למתגי ה-DIST יש את נתיב ברירת המחדל ‎`::/0`
 - [ ] גלישה ב-IPv6 ל-www6.isp-web.com עובדת
 - [ ] מחשבי ה-legacy מגיעים לאינטרנט דרך PAT
 - [ ] ה-failover של HSRPv6 עובד
+- [ ] תצוגה פיזית: עיר Kiryat Gat ‏←‏ KG Fab ‏←‏ KG Main Closet; ‏SRV-ISPC-WEB6 ב-Internet ‏←‏ ISP-C
 
 ## אם משהו לא עובד
 
@@ -1492,6 +1583,7 @@ copy running-config startup-config
 - [ ] מתגי ה-access (כל אחד יוצר את ה-VLANים שלו!), מתג השרתים
 - [ ] נתב הקצה: ‏OSPFv3, ברירות מחדל סטטיות, ‏PAT ל-VLAN מדור קודם, מסנן IPv6; נתיב אצל הספק
 - [ ] שרתים, מחשבים על Automatic; הבדיקות של משימה 13; ‏failover
+- [ ] תצוגה פיזית: עיר חדשה לאתר הזה; שרת ה-IPv6 של הספק בעיר Internet (משימה 15)
 
 <div dir="rtl">
 

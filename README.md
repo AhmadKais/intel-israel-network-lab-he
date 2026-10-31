@@ -126,7 +126,8 @@ flowchart LR
 
 ## מסמכי עזר
 
-- ‏[docs/basic-moves.md](docs/basic-moves.md) — **הפעולות הבסיסיות M1–M23, לחיצה אחרי לחיצה** (פתיחה/שמירה, הצבה, שינוי שם, כבלים, CLI, הגדרות IP, ‏DHCP, ‏Simulation…). כל שלב מפנה אליהן כך: "(איך? ‏←‏ Mn)"
+- ‏[docs/basic-moves.md](docs/basic-moves.md) — **הפעולות הבסיסיות M1–M28, לחיצה אחרי לחיצה** (פתיחה/שמירה, הצבה, שינוי שם, כבלים, CLI, הגדרות IP, ‏DHCP, ‏Simulation…). כל שלב מפנה אליהן כך: "(איך? ‏←‏ Mn)"
+- ‏[docs/sites-and-views.md](docs/sites-and-views.md) — **איך מחלקים את הרשת בין ערים ובניינים**, התצוגה הלוגית מול הפיזית, העברת מכשירים לעיר חדשה או לרשת אחרת
 - ‏[docs/exam-guide.md](docs/exam-guide.md) — **איך הבחינה על הפרויקט עובדת ואיך מתכוננים**
 - ‏[docs/progress-template.md](docs/progress-template.md) — טבלת ההתקדמות שלכם (מעתיקים ל-`my-project/progress.md`)
 - ‏[docs/project-plan-template.md](docs/project-plan-template.md) — **התוכנית של הפרויקט שלכם** (מעתיקים ל-`my-project/plan.md` בשלב 01)
