@@ -278,6 +278,17 @@ show running-config | include hostname|banner|enable secret|service password|ip 
 ✅ **כל אחד חייב להציג:** ‏hostname לוגי, ‏banner, ‏`enable secret`, ‏`service password-encryption`,
 ‏`ip ssh version 2`, ‏`logging host`, ‏`ntp server`.
 
+<div dir="rtl">
+
+> **חריגים צפויים (לפי התכנון — לא "מתקנים" אותם):**
+> - ‏**SW-HFA-DMZ** מנוהל רק מהקונסולה (שלב 11): אין בו `ip ssh`, ‏`logging host`, ‏`ntp server` ולא שורות VTY.
+> - **קריית גת:** רק ל-DIST1 יש שורת `ntp server` (שלב 14); ה-logging מופיע כ-`logging host ipv6 ...`‎.
+> - ‏**ASA** משתמש בפקודות משלו (`enable password`, ‏`ssh ...`‎, ‏`write memory`). עדיין אין לו banner —
+> מוסיפים: `configure terminal` ‏←‏ `banner motd Intel Israel - AUTHORIZED ACCESS ONLY` ‏←‏
+> ‏`end` ‏←‏ `write memory`.
+
+</div>
+
 ⌨️ אחר כך:
 ```
 show running-config | section vty
