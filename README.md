@@ -113,7 +113,7 @@ flowchart LR
 | ‎06 | [אבטחת שכבה 2](steps/06-layer2-security) | ‏Port-security, ‏DHCP snooping, הקשחה | 1–2 שיעורים |
 | ‎07 | [ניהול ב-SSH](steps/07-ssh-management) | ‏VLAN ניהול, ‏SSH, ‏ACL על VTY | 1–2 שיעורים |
 | ‎08 | [Core, ‏OSPF, שרתים](steps/08-core-ospf-servers) | קישורים מנותבים, אזורי OSPF, ‏MD5, ‏AAA/TACACS+, ‏Syslog | 3 שיעורים |
-| ‎09 | [בניינים B ו-C + virtual link](steps/09-buildings-b-c-virtual-link) | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים | 4 שיעורים |
+| ‎09 | [בניינים B ו-C + virtual link](steps/09-buildings-b-c-virtual-link) | **אתם** בונים 2 בניינים; OSPF virtual link, סיכום נתיבים; תצוגה פיזית (עיר + בניינים) | 4 שיעורים |
 | ‎10 | [רשת אלחוטית](steps/10-wireless) | ‏WiFi לעובדים ולאורחים, ACL לבידוד אורחים | 1–2 שיעורים |
 | ‎11 | [חומת אש ASA ו-DMZ](steps/11-asa-firewall-dmz) | ‏inside/outside/DMZ, ‏security levels, ‏ACL, ‏6 שרתי DMZ, ‏NTP | 3 שיעורים |
 | ‎12 | ‏[WAN: ספקים, BGP, ‏NAT](steps/12-wan-isp-bgp-nat) | ‏eBGP, ‏OSPF בתוך AS, ‏static NAT + PAT, גיבוי DSL | 3–4 שיעורים |
