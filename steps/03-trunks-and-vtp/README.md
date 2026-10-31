@@ -294,8 +294,10 @@ interface range gi1/0/1 - 2
 <div dir="rtl">
 
 > **הערה על ה-3650:** ה-3650 מדבר רק 802.1Q, ולכן הוא לא צריך (ולא מקבל) את הפקודה
-> ‏`switchport trunk encapsulation dot1q`. אם ה-PT שלכם דורש אותה, הקלידו אותה לפני
-> ‏`switchport mode trunk`.
+> ‏`switchport trunk encapsulation dot1q`.
+> ❌ **אם `switchport mode trunk` עונה** `Command rejected: An interface whose trunk
+> encapsulation is "Auto" can not be configured to "trunk" mode` ‏←‏ הקלידו
+> ‏`switchport trunk encapsulation dot1q`, ואז שוב `switchport mode trunk`, ואז המשיכו בשורה הבאה.
 
 </div>
 

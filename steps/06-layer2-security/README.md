@@ -356,7 +356,7 @@ interface fa0/21
 |---|---|
 | המחשבים מקבלים ‎`169.254.x.x` אחרי השלב הזה | חסר `no ip dhcp snooping information option`, או שהקישורים כלפי מעלה לא מוגדרים `trust` |
 | ‎`% Command rejected: Fa0/x is a dynamic port` | הפורט לא מוגדר `switchport mode access` — הגדירו את זה קודם |
-| פורט של מחשב אמיתי נכנס להפרה (violation) | יותר מדי כתובות MAC (למשל הזזתם מחשבים). מחקו את כתובות ה-MAC שנלמדו: בפורט `no switchport port-security`, ואז הקלידו שוב את שורות ה-port-security שלו ממשימה 3, ואז `shutdown` / `no shutdown` |
+| פורט של מחשב אמיתי נכנס להפרה (violation) | יותר מדי כתובות MAC (למשל הזזתם מחשבים). מחקו את כתובות ה-MAC שנלמדו: `configure terminal` ‏←‏ `interface fa0/X` ‏←‏ `no switchport port-security mac-address sticky` (הכתובות שנלמדו נמחקות) ‏←‏ `switchport port-security mac-address sticky` ‏←‏ `shutdown` ‏←‏ `no shutdown` ‏←‏ `end` |
 | פורט המדפסת למטה אחרי שרק הזזתם את הכבל שלה | ה-sticky זכר את ה-MAC של הפורט הקודם; שחזרו כמו במשימה 7 צעד 5 |
 
 </div>

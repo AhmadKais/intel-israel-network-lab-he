@@ -1786,7 +1786,7 @@ copy running-config startup-config
 | ‎1 | ‎B-DIST1 | ‎`show ip ospf neighbor` | ‏C-DIST1 ו-C-DIST2 במצב FULL | ‏area 2 עובד |
 | ‎2 | ‎CORE1 | ‎`show ip route ospf` | ‏‎`10.10.16.0/20`, ‏‎`10.10.32.0/20` — אבל **אין** ‎`10.10.48.0/20` | ‏area 3 לא נראה ל-core |
 | ‎3 | ‎PC-HFA-RND-01 | `ping 10.10.1.10` (שרת ה-Syslog) | ‎❌ ‏Request timed out | בניין C לא יכול לצאת |
-| ‎4 | ‎C-DIST1 | ‎`show ip route` | אין נתיבי `O IA` מ-areas 0 ו-1 | האי מושלם |
+| ‎4 | ‎CORE1 | ‎`ping 10.10.48.2` (C-DIST1) | ❌ נכשל | ל-core אין דרך לבניין C, ולכן שום תשובה לא חוזרת |
 
 </div>
 
@@ -1821,6 +1821,7 @@ configure terminal
 router ospf 1
  area 2 virtual-link 10.10.5.21
  area 2 virtual-link 10.10.5.22
+ area 2 range 10.10.32.0 255.255.240.0
  end
 copy running-config startup-config
 ```
@@ -1833,6 +1834,7 @@ copy running-config startup-config
 | פקודה | בשפה פשוטה |
 |---|---|
 | ‎‏`area 2 virtual-link 10.10.63.1` | "בנה חתיכה של area 0 **דרך area 2**, אל הנתב שה-router-ID שלו הוא 10.10.63.1" |
+| ‎‏`area 2 range ...`‎ (ב-C-DIST) | "עכשיו אני נוגע גם ב-area 0, אז שלח את ה-area של בניין B כסיכום **אחד**" — אחרת C-DIST יפרסם ל-core כל רשת של area 2 בנפרד |
 
 </div>
 
@@ -2031,7 +2033,7 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 |---|---|
 | ה-virtual link נשאר down | השתמשתם ב-**IP של ממשק** במקום ב-**router-ID**; או שאזור המעבר הוא לא ‎`2`; או של-C-DIST עדיין אין שכן במצב FULL ב-area 2 |
 | ל-C-DIST אין שכנים ב-area 2 | שגיאת כתיב במפתח ה-MD5 על קישור ‎10.10.36.x, או שחסר `network 10.10.36.0 0.0.0.15 area 2` |
-| ה-core רואה הרבה נתיבים קטנים מ-area 2 | חסר `area 2 range 10.10.32.0 255.255.240.0` ב-B-DIST1/2 |
+| ה-core רואה הרבה נתיבים קטנים מ-area 2 | חסר `area 2 range 10.10.32.0 255.255.240.0` ב-B-DIST1/2 או ב-C-DIST1/2 |
 | המחשבים בבניין C לא מקבלים כתובת | שגיאת כתיב בדומיין ה-VTP ‏`HFA-C` במתג access, או snooping בלי `trust` על הקישורים כלפי מעלה |
 | אזהרות ‎`% Access VLAN does not exist` | נורמלי בזמן ש-VTP לומד — ראו שלב 03 |
 | לכל הקישורים של 3650 חדש יש נקודות אדומות | חסר לו ספק כוח (משימה 2ג) |
