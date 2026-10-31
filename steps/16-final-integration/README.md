@@ -124,7 +124,8 @@
 
 4. כל מחשב ‏←‏ **Desktop → IP Configuration → DHCP** ‏(M16).
 5. כל מחשב ‏←‏ **Command Prompt** ‏←‏ `ping 10.10.16.1` (השער) — כדי ש-port-security ילמד את ה-MAC שלו.
-6. הלשונית **Physical** ‏←‏ **Navigation** ‏←‏ 5 המחשבים החדשים נמצאים ב-**Haifa ‏←‏ HFA Data Center**
+6. הלשונית **Physical** ‏←‏ **Navigation** ‏←‏ 5 המחשבים החדשים נמצאים ב-**Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet**
+   (או ישירות מתחת ל-HFA Data Center)
    ‏←‏ גוררים אותם אל **HFA Building A** ‏(M26) ‏←‏ הלשונית **Logical**.
 
 ✅ **אמורים לראות:** לכל מחשב יש כתובת ‎`10.10.16.x` וה-ping מקבל תשובות.
@@ -318,7 +319,7 @@ show running-config | section vty
 
 | ‎# | מאיפה | עושים | מה זה מוכיח |
 |---|---|---|---|
-| ‎1 | ‎PC-HFA-ENG-01 | ‏`ping` ל-PC-HFA-IT-01 | ניתוב בין VLANים + ‏OSPF areas 1 → 0 → 2 → 3 (virtual link) |
+| ‎1 | ‎PC-HFA-ENG-01 | ‏`ping` לכתובת של PC-HFA-IT-01 ‏(‎`10.10.49.x` — קוראים אותה עם `ipconfig` ב-IT-01) | ניתוב בין VLANים + ‏OSPF areas 1 → 0 → 2 → 3 (virtual link) |
 | ‎2 | ‎PC-HFA-ENG-01 | גלישה ל-`http://www.isp-web1.com` | ‏ASA ‏←‏ PAT בנתב הקצה ‏←‏ אינטרנט ב-BGP |
 | ‎3 | ‎PC-HOME-01 | גלישה ל-`http://www.intel.lab` | ‏static NAT + ‏ACL ב-ASA |
 | ‎4 | ‎LT-HFA-GUEST-01 | ‏`ping 10.10.1.10` ❌ / גלישה ל-`www.isp-web2.com` ✅ | בידוד אורחים |
@@ -328,11 +329,11 @@ show running-config | section vty
 | ‎8 | ‎PC-KG-FAB-01 | גלישה ל-`http://www6.isp-web.com` | ‏IPv6 מקצה לקצה |
 | ‎9 | ‎PC-KG-LEGACY-01 | ‎`ping 200.1.100.11` | ‎‏PAT ‏(overload) |
 | ‎10 | ‎PC-HOME-01 | לקוח VPN ‏←‏ `ping 10.10.1.10` | ‏VPN לגישה מרחוק |
-| ‎11 | ‎PC-HFA-IT-01 | ‏`ssh` למכשירים בחיפה ובירושלים | ‏SSH + ‏AAA + ‏ACL ניהול |
-| ‎12 | ‎PC-HFA-RND-01 | ‏`ssh` למתג ❌ | ה-ACL של הניהול חוסמת מי שאינו מנהל |
+| ‎11 | ‎PC-HFA-IT-01 | ‏`ssh -l admin 10.10.19.11` (חיפה) ו-`ssh -l admin 10.20.0.11` (ירושלים) | ‏SSH + ‏AAA + ‏ACL ניהול |
+| ‎12 | ‎PC-HFA-RND-01 | ‎‏`ssh -l admin 10.10.19.11` ❌ | ה-ACL של הניהול חוסמת מי שאינו מנהל |
 | ‎13 | **File → Save**, ואז מחקו את A-DIST1 (הכלי **Delete**) כדי לדמות מתג מת; אחר כך פתחו שוב את הקובץ השמור | ‏`ping -t` ממחשב ENG ממשיך | יתירות HSRP + ‏STP + ‏OSPF |
-| ‎14 | כבו את Gi0/1 ב-R-HFA-EDGE | ‏`show ip route` ‏←‏ ברירת מחדל דרך 200.2.9.1 | ‏floating static של ה-DSL |
-| ‎15 | כבו את הקישור ISPA-BR ↔ ISPC-BR | ‏PC-HOME-01 ‏←‏ www.intel.lab עדיין עובד | יתירות BGP |
+| ‎14 | ‎‏R-HFA-EDGE: ‏`configure terminal` ‏←‏ `interface gi0/1` ‏←‏ `shutdown` ‏←‏ `end` | ‎‏`show ip route static` ‏←‏ ‎`S* 0.0.0.0/0 [10/0] via 200.2.9.1` | ‏floating static של ה-DSL |
+| ‎15 | ‏R-ISPA-BR: ‏`configure terminal` ‏←‏ `interface gi0/2` (הקישור ל-ISPC-BR) ‏←‏ `shutdown` ‏←‏ `end` | ‏PC-HOME-01 ‏←‏ www.intel.lab עדיין עובד | יתירות BGP |
 | ‎16 | שרת DHCP זדוני על פורט access | המחשב עדיין מקבל את הכתובת האמיתית | ‎‏DHCP snooping |
 | ‎17 | מתג זדוני על פורט PortFast | הפורט עובר ל-err-disabled | ‎‏BPDU Guard |
 | ‎18 | ‏`show ntp status` בכל סניף | ‎‏synchronized | היררכיית NTP |

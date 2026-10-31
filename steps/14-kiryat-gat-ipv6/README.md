@@ -1486,7 +1486,7 @@ copy running-config startup-config
 ### 15ב — מעבירים את המכשירים (איך? ‏←‏ M26)
 1. ‏**Navigation** ‏←‏ פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet** ‏←‏ גוררים כל מתג
    ונתב עם **‎`-KG-`‎** אל **Kiryat Gat ‏←‏ KG Fab ‏←‏ KG Main Closet**.
-2. פותחים **Haifa ‏←‏ HFA Data Center** ‏←‏ גוררים כל שרת, מחשב ומדפסת עם **‎`-KG-`‎** אל
+2. באותו ארון (וגם ישירות מתחת ל-**HFA Data Center**) גוררים כל שרת, מחשב ומדפסת עם **‎`-KG-`‎** אל
    **Kiryat Gat ‏←‏ KG Fab**.
 3. גוררים את **SRV-ISPC-WEB6** אל **Internet ‏←‏ ISP-C**.
 4. סוגרים את החלון.

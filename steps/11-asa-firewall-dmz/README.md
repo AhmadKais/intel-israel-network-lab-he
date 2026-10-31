@@ -855,7 +855,7 @@ copy running-config startup-config
 
 מתרגם שמות לכתובות IP ‏(`www.intel.lab` ‏←‏ ‎`10.10.200.13`). ‏UDP 53 ‏(TCP 53 להעברות גדולות).
 
-**איפה מראים:** ‏Server ‏←‏ Services ‏←‏ DNS (הרשומות); מחשב ‏←‏ `nslookup <name>`‎
+**איפה מראים:** ‏Server ‏←‏ Services ‏←‏ DNS (הרשומות); מחשב ‏←‏ `nslookup <name>`‎ (למשל `nslookup www.intel.lab`)
 </details>
 
 **6. ★1 מה תפקידו של שרת FTP? באיזה פורט? הצג את ההגדרות שלו.**

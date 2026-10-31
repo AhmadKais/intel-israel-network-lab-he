@@ -493,7 +493,7 @@ interface fa0/9
 
 </div>
 
-**בדיקה:** ‏`show etherchannel summary` מציג ‎`(SU)`‎ ו-‎`(P)`‎; ‏`show spanning-tree vlan <שלכם>`‎
+**בדיקה:** ‏`show etherchannel summary` מציג ‎`(SU)`‎ ו-‎`(P)`‎; ‏`show spanning-tree vlan <שלכם>`‎ (למשל `show spanning-tree vlan 10`)
 מציג את המתג הנכון כ-root עבור כל אחד מה-VLANים שלכם.
 
 💾 שמרו בשם `my-project/step04.pkt`.
@@ -546,7 +546,7 @@ interface fa0/9
 למנוע לולאות בשכבה 2 ברשת עם יתירות: הוא חוסם חלק מהפורטים כך שיש בדיוק דרך פעילה אחת בין
 כל שני מתגים, ומשחרר דרך גיבוי אם הדרך הפעילה נופלת.
 
-**איפה מראים:** `show spanning-tree vlan <שלכם>`‎
+**איפה מראים:** `show spanning-tree vlan <שלכם>`‎ (למשל `show spanning-tree vlan 10`)
 </details>
 
 **5. ★2 איפה בפרויקט מיושם STP, ואיזה סוג STP אתה מיישם?**
@@ -567,7 +567,7 @@ interface fa0/9
 "This bridge is the root". כדי להפוך מתג אחר ל-root: `spanning-tree vlan 10 root primary` (או
 `spanning-tree vlan 10 priority 4096`).
 
-**איפה מראים:** `show spanning-tree vlan <שלכם>`‎ בשני מתגי ה-distribution
+**איפה מראים:** `show spanning-tree vlan <שלכם>`‎ (למשל `show spanning-tree vlan 10`) בשני מתגי ה-distribution
 </details>
 
 **7. ★2 הראה לי את מצב הפורטים. מה המשמעות של פורט במצב Block / Forwarding?**
@@ -578,7 +578,7 @@ interface fa0/9
 רק מקשיב ל-BPDU וזורק מסגרות נתונים, כדי לשבור לולאה. תפקידי פורטים: Root, ‏Designated,
 ‏Alternate/Backup.
 
-**איפה מראים:** `show spanning-tree vlan <שלכם>`‎
+**איפה מראים:** `show spanning-tree vlan <שלכם>`‎ (למשל `show spanning-tree vlan 10`)
 </details>
 
 **8. ★2 מה זה BPDU?**
@@ -642,7 +642,7 @@ Guard בפורטים שפונים למטה לשכבת ה-access.
 מאפשר BPDU, אבל חוסם את הפורט (root-inconsistent) אם מגיעה BPDU **עדיפה** — לפורטים בין
 מתגים, שדרכם אסור ש-root חדש יופיע.
 
-**איפה מראים:** `show running-config` בפורט שפונה למטה ‏←‏ `spanning-tree guard root`; ‏`show spanning-tree vlan <שלכם>`‎
+**איפה מראים:** `show running-config` בפורט שפונה למטה ‏←‏ `spanning-tree guard root`; ‏`show spanning-tree vlan <שלכם>`‎ (למשל `show spanning-tree vlan 10`)
 </details>
 
 ---

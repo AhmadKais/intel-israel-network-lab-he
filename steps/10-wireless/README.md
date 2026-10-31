@@ -356,7 +356,8 @@ copy running-config startup-config
 משימה 19).
 
 1. הלשונית **Physical** ‏←‏ בסרגל לוחצים **Navigation**.
-2. פותחים **Haifa ‏←‏ HFA Data Center**. גוררים את **AP-HFA-A-EMP**, ‏**AP-HFA-A-GUEST**,
+2. פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet** (שם לא שם? מחפשים ישירות מתחת
+   ל-**HFA Data Center**). גוררים את **AP-HFA-A-EMP**, ‏**AP-HFA-A-GUEST**,
    ‏**LT-HFA-EMP-01**, ‏**LT-HFA-EMP-02** ו-**LT-HFA-GUEST-01** אל **HFA Building A**.
 3. סוגרים את החלון ‏←‏ לוחצים **HFA Building A** במפה ‏←‏ 5 המכשירים שם, למעלה משמאל.
 4. הלשונית **Logical** ‏←‏ ‏LT-HFA-EMP-01 ‏←‏ `ping 10.10.1.10` ‏←‏ עדיין ✅.
@@ -486,7 +487,7 @@ client **וגם** שיהיו בו משתמשים. המחשב הנייד מקלי
 השאר (האינטרנט). מוחלת `in` על ה-SVI של האורחים (‏`ip access-group GUEST-IN in`). זו ה-ACL לבידוד
 אורחים של השלב הזה.
 
-**איפה מראים:** `show access-lists GUEST-IN`, `show running-config interface vlan <guest>`‎
+**איפה מראים:** `show access-lists GUEST-IN`, `show running-config interface vlan 120` (ה-VLAN של האורחים)‎
 </details>
 
 **2. ◆ מהו SSID? למה שני SSIDs?**
@@ -496,7 +497,7 @@ client **וגם** שיהיו בו משתמשים. המחשב הנייד מקלי
 השם של רשת אלחוטית. כל SSID ממופה ל-VLAN משלו — עובדים ל-VLAN העובדים, אורחים ל-VLAN האורחים —
 כך שהאורחים מופרדים מהחברה (דרישה 18).
 
-**איפה מראים:** ‏AP ‏←‏ Config ‏←‏ Wireless
+**איפה מראים:** ‏AP ‏←‏ Config ‏←‏ **Port 1** (השדה SSID)
 </details>
 
 **3. ◆ מה ההבדל בין WPA2-Personal ‏(PSK) ל-WPA2-Enterprise?**
@@ -506,7 +507,7 @@ client **וגם** שיהיו בו משתמשים. המחשב הנייד מקלי
 ‏Personal: כולם חולקים סיסמה אחת. ‏Enterprise: כל משתמש מתחבר עם שם משתמש וסיסמה משלו, שנבדקים
 בשרת RADIUS — עובד שעוזב פשוט מושבת.
 
-**איפה מראים:** ‏AP ‏←‏ Config ‏←‏ Wireless ‏←‏ Authentication
+**איפה מראים:** ‏AP ‏←‏ Config ‏←‏ **Port 1** ‏←‏ Authentication
 </details>
 
 ---

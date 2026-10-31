@@ -531,7 +531,8 @@ router ospf 1
 ```
 
 ### 6ה — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה).
+אם שורה `login block-for …`‎ או `ip tacacs source-interface …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -751,7 +752,8 @@ router ospf 1
 ```
 
 ### 7ד — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה).
+אם שורה `login block-for …`‎ או `ip tacacs source-interface …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -873,7 +875,8 @@ interface vlan 99
  exit
 ip default-gateway 10.10.35.1
 ```
-⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו).
+אם השורה `login block-for …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -987,7 +990,8 @@ interface vlan 99
  exit
 ip default-gateway 10.10.35.1
 ```
-⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו).
+אם השורה `login block-for …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -1289,7 +1293,8 @@ router ospf 1
 </div>
 
 ### 11ה — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה).
+אם שורה `login block-for …`‎ או `ip tacacs source-interface …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -1484,7 +1489,8 @@ router ospf 1
 ```
 
 ### 12ד — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה).
+אם שורה `login block-for …`‎ או `ip tacacs source-interface …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -1603,7 +1609,8 @@ interface vlan 99
  exit
 ip default-gateway 10.10.51.1
 ```
-⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו).
+אם השורה `login block-for …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -1717,7 +1724,8 @@ interface vlan 99
  exit
 ip default-gateway 10.10.51.1
 ```
-⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו).
+אם השורה `login block-for …`‎ נדחית, מדלגים רק על השורה הזו:
 ```
 ip domain-name intel.lab
 username admin privilege 15 secret Intel#Adm1n
@@ -1978,7 +1986,8 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 1. בסרגל לוחצים **Navigation** ‏←‏ נפתח חלון עם עץ.
 2. פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet**: כל המתגים כאן.
 3. **גוררים** כל מתג של בניין A (4 השמות בטבלה) אל **HFA Building A ‏←‏ Closet A**.
-4. פותחים **Haifa ‏←‏ HFA Data Center**: המחשבים, המדפסות והשרתים כאן. גוררים כל מכשיר קצה של
+4. המחשבים, המדפסות והשרתים נמצאים באותו ארון (על שולחן) או ישירות מתחת ל-**HFA Data Center** —
+   מחפשים בשניהם. גוררים כל מכשיר קצה של
    בניין A אל **HFA Building A** (הבניין עצמו, לא הארון).
 5. אותו דבר לבניין B, ואז לבניין C.
 6. סוגרים את חלון ה-Navigation.
@@ -1998,7 +2007,7 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 
 <div dir="rtl">
 
-> מעכשיו, מכשירים חדשים שתציבו בתצוגה הלוגית יופיעו בדרך כלל ב-**HFA Data Center**. כל שלב
+> מעכשיו, מכשירים חדשים שתציבו בתצוגה הלוגית יופיעו בדרך כלל ב-**HFA Data Center ‏←‏ Main Wiring Closet**. כל שלב
 > הבא אומר לכם לאן להעביר אותם. אם מכשיר מופיע במקום אחר, מוצאים אותו בעץ ה-**Navigation**
 > וגוררים אותו (M26).
 

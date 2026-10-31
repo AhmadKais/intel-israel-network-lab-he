@@ -452,7 +452,7 @@ interface range gi0/1 - 2
 (man-in-the-middle). הפתרון: **‏DHCP snooping** — רק פורטים שמסומנים `trust` (הקישורים כלפי מעלה
 לכיוון השרת האמיתי) רשאים לשלוח הצעות DHCP; הצעות מכל פורט אחר נזרקות.
 
-**איפה מראים:** `show ip dhcp snooping`, `show running-config interface <uplink>`‎ ‏←‏ `ip dhcp snooping trust`
+**איפה מראים:** `show ip dhcp snooping`, `show running-config interface <uplink>`‎ (למשל `show running-config interface gi0/1`) ‏←‏ `ip dhcp snooping trust`
 </details>
 
 **2. ★3 קיימת התקפה שנקראת DHCP starvation. הסבר מהי וכיצד ניתן למנוע אותה. היכן הגדרת את זה בפרויקט?**

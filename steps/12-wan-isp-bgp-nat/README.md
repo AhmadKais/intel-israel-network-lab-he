@@ -840,8 +840,8 @@ copy running-config startup-config
 
 ### 14ב — מעבירים את המכשירים (איך? ‏←‏ M26)
 1. בסרגל לוחצים **Navigation**.
-2. המכשירים החדשים נמצאים ב-**Haifa ‏←‏ HFA Data Center** (נתבים ומתגים ב-**Main Wiring Closet**
-   שלו, שרתים והמחשב בבניין עצמו). גוררים כל אחד אל הבניין שלו תחת **Internet** (הטבלה למעלה).
+2. המכשירים החדשים נמצאים ב-**Haifa ‏←‏ HFA Data Center** (מחפשים ב-**Main Wiring Closet**
+   שלו, וגם ישירות מתחת ל-**HFA Data Center**). גוררים כל אחד אל הבניין שלו תחת **Internet** (הטבלה למעלה).
 3. סוגרים את החלון.
 
 ✅ ב-**Intercity** רואים עכשיו שתי ערים, Haifa ו-Internet, מחוברות בקו (קישורי ה-WAN).

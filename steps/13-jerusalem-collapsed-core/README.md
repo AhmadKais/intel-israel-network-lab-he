@@ -1617,7 +1617,7 @@ copy running-config startup-config
 1. בסרגל לוחצים **Navigation**.
 2. פותחים **Haifa ‏←‏ HFA Data Center ‏←‏ Main Wiring Closet**. גוררים כל שם עם **‎`-JLM-`‎** שהוא
    מתג או נתב לארון שלו (הטבלה למעלה).
-3. פותחים **Haifa ‏←‏ HFA Data Center**. גוררים כל שרת, מחשב ומדפסת עם **‎`-JLM-`‎** אל
+3. באותו ארון (וגם ישירות מתחת ל-**HFA Data Center**) גוררים כל שרת, מחשב ומדפסת עם **‎`-JLM-`‎** אל
    **Jerusalem ‏←‏ JLM Office**.
 4. סוגרים את החלון.
 

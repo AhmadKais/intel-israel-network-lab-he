@@ -1106,7 +1106,7 @@ copy running-config startup-config
 ב-Ethernet ‏(broadcast ו-point-to-point): ‏Hello כל 10 שניות, ‏Dead אחרי 40 שניות. לשכנים חייבים
 להיות אותם תזמונים כדי שיתחברו.
 
-**איפה מראים:** `show ip ospf interface <int>`‎
+**איפה מראים:** `show ip ospf interface <int>`‎ (למשל `show ip ospf interface gi1/1/1`)
 </details>
 
 **4. ★1 כיצד ניתן לראות את ה-Topology Table של OSPF? ואת ה-Neighbor Table?**
@@ -1159,7 +1159,7 @@ Loopback0).
 יכולים לחלוק את הקטע — נבחרים DR/BDR. קישור Ethernet ‎/30 הוא מסוג broadcast כברירת מחדל, אלא אם
 מגדירים `ip ospf network point-to-point`.
 
-**איפה מראים:** `show ip ospf interface <int>`‎ ‏←‏ Network Type
+**איפה מראים:** `show ip ospf interface <int>`‎ (למשל `show ip ospf interface gi1/1/1`) ‏←‏ Network Type
 </details>
 
 **9. ★2 מהו type 1 LSA וכיצד הוא מסומן בטבלת הניתוב? ומהו type 3 LSA?**
@@ -1190,7 +1190,7 @@ Loopback0).
 `ip ospf message-digest-key 1 md5 <key>`‎) — נתב בלי המפתח לא יכול להפוך לשכן ולהזריק נתיבים
 (דרישה 22.18).
 
-**איפה מראים:** `show ip ospf interface <int>`‎ ‏←‏ "Message digest authentication enabled"
+**איפה מראים:** `show ip ospf interface <int>`‎ (למשל `show ip ospf interface gi1/1/1`) ‏←‏ "Message digest authentication enabled"
 </details>
 
 **12. ★1 מה תפקידו של שרת NTP? הצג את ההגדרות בפרויקט (גם בשרת וגם על גבי הנתב/המתג).**

@@ -159,8 +159,9 @@ Intercity (the country map)
            └── Wiring closet   e.g. Main Wiring Closet   (switches and routers in racks)
 ```
 
-בהתחלה הכול נמצא ב-**Home City ‏←‏ Corporate Office**: מתגים ונתבים ב-**Main Wiring Closet**
-שלו, מחשבים ומדפסות בבניין עצמו.
+בהתחלה הכול נמצא ב-**Home City ‏←‏ Corporate Office ‏←‏ Main Wiring Closet**: מתגים ונתבים
+ב-racks שלו, מחשבים, שרתים ומדפסות על שולחן. (לא מוצאים שם מכשיר קצה? מחפשים ישירות מתחת
+ל-**Corporate Office**.)
 
 ---
 
@@ -175,7 +176,7 @@ Intercity (the country map)
 
    | עיר | בניין | ארון | מכשירים |
    |---|---|---|---|
-   | Haifa | HFA Data Center (ה-*Corporate Office* אחרי שינוי שם) | Main Wiring Closet | ‏CORE1/2, ‏SW-HFA-SRV, השרתים, ‏ASA, ‏R-HFA-EDGE, ‏SW-HFA-DMZ, שרתי ה-DMZ |
+   | Haifa | HFA Data Center (ה-*Corporate Office* אחרי שינוי שם) | Main Wiring Closet | ‏CORE1/2, ‏SW-HFA-SRV, השרתים, ‏ASA, ‏R-HFA-EDGE, ‏SW-HFA-DMZ, שרתי ה-DMZ, ‏DSL-HFA |
    | Haifa | HFA Building A | Closet A | ‏A-DIST1/2, ‏A-ACC1/2 (+ מחשבים, מדפסת, נקודות גישה, מחשבים ניידים בבניין) |
    | Haifa | HFA Building B | Closet B | ‏B-DIST1/2, ‏B-ACC1/2 (+ מחשבים, מדפסת) |
    | Haifa | HFA Building C | Closet C | ‏C-DIST1/2, ‏C-ACC1/2 (+ מחשבים, מדפסת) |
@@ -222,22 +223,24 @@ Intercity (the country map)
 </div>
 
 ### 4.1 פותחים עיר חדשה ומעבירים אליה את המכשירים שלה (פיזי)
-דוגמה: הרגע בניתם את ירושלים (שלב 13). כל המכשירים שלה עדיין ב-Home City / Haifa.
+דוגמה: הרגע בניתם את ירושלים (שלב 13). כל המכשירים שלה עדיין ב-**Haifa ‏←‏ HFA Data Center ‏←‏
+Main Wiring Closet** (שם מתחיל כל מכשיר חדש).
 
 1. תצוגה פיזית ‏←‏ **Intercity** ‏←‏ **New City** ‏←‏ משנים שם ל-`Jerusalem` ‏(M25).
 2. לוחצים עליה ‏←‏ **New Building** ‏←‏ משנים שם ל-`JLM Office`.
-3. לוחצים על הבניין ‏←‏ **New Closet** ‏←‏ משנים שם ל-`JLM Main Closet`.
-4. חוזרים למקום שבו נמצאים מכשירי ירושלים עכשיו. **Navigation** ‏←‏ גוררים כל מתג ונתב
-   ‎`…-JLM-…`‎ אל **Jerusalem ‏←‏ JLM Office ‏←‏ JLM Main Closet**, וכל מחשב, מדפסת ושרת של ירושלים
-   אל **Jerusalem ‏←‏ JLM Office** ‏(M26).
+3. לוחצים על הבניין ‏←‏ **New Closet** ‏4 פעמים ‏←‏ משנים את השמות ל-`JLM Main Closet`, ‏`Floor 1 Closet`,
+   ‏`Floor 2 Closet`, ‏`Floor 3 Closet` (ארון לכל קומה).
+4. ‏**Navigation** ‏←‏ גוררים את נתב הקצה, שני מתגי ה-core ו-SW-JLM-SRV אל **JLM Main Closet**,
+   כל מתג קומה (‎`SW-JLM-F1-ACC1`‎ …) אל ארון הקומה שלו, וכל מחשב, מדפסת ושרת של ירושלים
+   אל **Jerusalem ‏←‏ JLM Office** ‏(M26). הטבלה המלאה בשלב 13, משימה 17.
 5. עוברים ל-**Intercity**. ✅ עכשיו קו מחבר את Haifa, ‏Jerusalem ו-Internet — אלה קישורי ה-WAN
    בין הערים.
 6. תצוגה לוגית: ‏`ping` ממחשב בירושלים לאינטרנט עדיין עובד.
 
 ❌ קישור נפל אחרי ההעברה ‏←‏ אפקט אורך הכבל דלוק — ראו ❌ ב-M26.
 
-**העברת קבוצה לוגית שלמה (cluster) לתוך cluster חדש:** תצוגה לוגית ‏←‏ **Move Object** ‏←‏ לוחצים על
-המכשיר ‏←‏ בוחרים את ה-cluster החדש בתפריט (M27).
+**העברת מכשיר לתוך cluster (בתצוגה הלוגית, לא עיר):** ‏**Move Object** ‏←‏ לוחצים על המכשיר ‏←‏
+בוחרים את ה-cluster בתפריט. חוזרים על זה לכל מכשיר (M27).
 
 ### 4.2 מעבירים מכשיר לרשת אחרת (לוגי)
 דוגמה: ‏PC-HFA-ENG-08 עובר מהנדסה בחיפה ל**מכירות בירושלים**.
