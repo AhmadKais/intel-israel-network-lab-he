@@ -544,7 +544,13 @@ Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
 ❌ ‏`Active` או `Idle` = לא פעילה ‏←‏ קודם עשו ping לכתובת של השכן. אם הפינג נכשל: בעיה בכבל או
 בממשק. אם הפינג עובד: ‏IP של `neighbor` או מספר AS שגויים.
 
-עשו אותו דבר ב-**R-ISPB-BR** וב-**R-ISPC-BR**. סמנו (2 מספרים בכל אחד):
+עכשיו בודקים באותה דרך את שני הנתבים האחרים:
+1. ‏**R-ISPB-BR** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `enable` ‏←‏ סיסמה `Intel#En4ble` ‏←‏ `show ip bgp summary`.
+   ✅ שתי שורות שמסתיימות במספר: ‎`200.0.12.1` ‏(AS **100**) ו-‎`200.0.23.2` ‏(AS **300**).
+2. ‏**R-ISPC-BR** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `enable` ‏←‏ סיסמה `Intel#En4ble` ‏←‏ `show ip bgp summary`.
+   ✅ שתי שורות שמסתיימות במספר: ‎`200.0.13.1` ‏(AS **100**) ו-‎`200.0.23.1` ‏(AS **200**).
+
+סמנו כל נתב ששתי השורות שלו מסתיימות במספר:
 - [ ] ‏ISPA-BR
 - [ ] ‏ISPB-BR
 - [ ] ‏ISPC-BR

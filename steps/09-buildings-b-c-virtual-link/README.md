@@ -531,7 +531,43 @@ router ospf 1
 ```
 
 ### 6ה — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** מסעיף 1.6 (ענו ‎`1024` לשאלה על המפתח).
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+ip tacacs source-interface loopback 0
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎ בסוף. 🔍 ‏`show ip interface brief` ‏←‏ ‏Loopback0 ‏‎`10.10.5.21`, ‏Gi1/1/1–4
 ו-Vlan40/50/60/99 עם הכתובות מסעיף 1.5.
@@ -715,7 +751,43 @@ router ospf 1
 ```
 
 ### 7ד — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+ip tacacs source-interface loopback 0
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎. לחצו Fast Forward Time. 🔍 ‏`show standby brief` ‏←‏ ‏Active ל-50, ‏Standby ל-40/60/99.
 
@@ -801,7 +873,42 @@ interface vlan 99
  exit
 ip default-gateway 10.10.35.1
 ```
-⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access** (סעיף 1.6).
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎.
 
@@ -880,7 +987,42 @@ interface vlan 99
  exit
 ip default-gateway 10.10.35.1
 ```
-⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access**.
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎. 🔍 ב-B-ACC2: ‏`show vtp status` ‏←‏ דומיין `HFA-B`, מצב Client;
 ‏`show interfaces trunk` ‏←‏ ‏Gi0/1, ‏Gi0/2 במצב trunking, ‏native 998.
@@ -1147,7 +1289,43 @@ router ospf 1
 </div>
 
 ### 11ה — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+ip tacacs source-interface loopback 0
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎.
 
@@ -1306,7 +1484,43 @@ router ospf 1
 ```
 
 ### 12ד — ניהול
-⌨️ הקלידו את **🅼 בלוק הניהול למתגי שכבה 3** (סעיף 1.6).
+⌨️ הקלידו את **🅼 בלוק הניהול** (זהה בכל 4 מתגי שכבה 3 — כאן במלואו, כדי שלא תצטרכו לגלול אחורה):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+ip tacacs source-interface loopback 0
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
 
 ✅ ‏‎`[OK]`‎.
 
@@ -1389,17 +1603,158 @@ interface vlan 99
  exit
 ip default-gateway 10.10.51.1
 ```
-⌨️ ואחר כך את **🅰 בלוק הניהול למתגי access**. ✅ ‏‎`[OK]`‎.
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
+
+✅ ‏‎`[OK]`‎.
 
 ### 13ב — ‏SW-HFA-C-ACC2
 👉 **איפה:** ‏**SW-HFA-C-ACC2** ‏←‏ CLI ‏←‏ **Enter** ‏←‏ `Switch>`‎.
 
-הקלידו **שוב את כל הבלוק של 13א**, כששתי שורות **משתנות**:
-- ‏`hostname SW-HFA-C-ACC2`
-- תחת `interface vlan 99`: ‏`ip address 10.10.51.12 255.255.255.0`
+בדיוק כמו 13א, עם **שני שינויים**: ‏`hostname SW-HFA-C-ACC2` וכתובת ניהול ‎`10.10.51.12`.
+הנה הבלוק המלא, כדי שלא תצטרכו לגלול:
 
-(ואם תרצו, `description printer` ב-Fa0/21 — זו רק תווית.)
-אחר כך את **🅰 בלוק הניהול**. ✅ ‏‎`[OK]`‎.
+⌨️ הקלידו:
+```
+enable
+configure terminal
+hostname SW-HFA-C-ACC2
+no ip domain-lookup
+enable secret Intel#En4ble
+service password-encryption
+banner motd #
+*  Intel Israel - AUTHORIZED ACCESS ONLY - all activity is logged  *
+#
+vtp mode transparent
+vtp domain HFA-C
+vtp version 2
+vtp password Intel#Vtp
+vtp mode client
+spanning-tree mode rapid-pvst
+interface range gi0/1 - 2
+ description TRUNK uplink to C-DIST1 / C-DIST2
+ switchport mode trunk
+ switchport trunk native vlan 998
+ switchport trunk allowed vlan 70,80,90,99,998
+ switchport nonegotiate
+ ip dhcp snooping trust
+ no shutdown
+interface range fa0/1 - 10
+ description RND users
+ switchport mode access
+ switchport access vlan 70
+interface range fa0/11 - 20
+ description IT users
+ switchport mode access
+ switchport access vlan 80
+interface range fa0/1 - 20
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ no cdp enable
+interface fa0/21
+ description PRN-HFA-C-01
+ switchport mode access
+ switchport access vlan 90
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ no cdp enable
+interface range fa0/22 - 24
+ description UNUSED
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+ exit
+ip dhcp snooping
+ip dhcp snooping vlan 70,80,90,99
+no ip dhcp snooping information option
+interface vlan 99
+ description MANAGEMENT
+ ip address 10.10.51.12 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 10.10.51.1
+```
+⌨️ ואחר כך הקלידו את **🅰 בלוק הניהול** (זהה בכל 4 מתגי ה-access — כאן במלואו):
+```
+ip domain-name intel.lab
+username admin privilege 15 secret Intel#Adm1n
+crypto key generate rsa
+```
+‏←‏ עונים **‎`1024`** ‏←‏ ואז:
+```
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+login block-for 120 attempts 3 within 60
+ip access-list standard MGMT-ONLY
+ permit 10.10.19.0 0.0.0.255
+ permit 10.10.35.0 0.0.0.255
+ permit 10.10.51.0 0.0.0.255
+ permit 10.10.49.0 0.0.0.255
+ deny any log
+ exit
+service timestamps log datetime msec
+logging trap informational
+logging host 10.10.1.10
+aaa new-model
+tacacs-server host 10.10.1.11 key Intel#Tac
+aaa authentication login default group tacacs+ local
+line vty 0 15
+ transport input ssh
+ login authentication default
+ access-class MGMT-ONLY in
+ exec-timeout 5 0
+line console 0
+ login authentication default
+ logging synchronous
+ end
+copy running-config startup-config
+```
+
+✅ ‏‎`[OK]`‎.
 
 🔍 ב-C-ACC2: ‏`show vlan brief` ‏←‏ ‏VLANים 70/80/90/99 הגיעו; ‏Fa0/1 ב-70, ‏Fa0/11 ב-80.
 
@@ -1408,8 +1763,8 @@ ip default-gateway 10.10.51.1
 ## משימה 14 — מכשירי הקצה של בניין C + רואים את הבעיה 🔍
 
 ### 14א — מכשירי קצה
-- המחשבים RND-01, ‏RND-02, ‏IT-01, ‏IT-02 ‏←‏ **DHCP**.
-- ‏PRN-HFA-C-01 ‏←‏ IP ‏‎`10.10.50.10` / ‏‎`255.255.255.0`, שער ‎`10.10.50.1`.
+- המחשבים RND-01, ‏RND-02, ‏IT-01, ‏IT-02 ‏←‏ **DHCP** (איך? ‏←‏ M16).
+- ‏PRN-HFA-C-01 ‏←‏ IP ‏‎`10.10.50.10` / ‏‎`255.255.255.0`, שער ‎`10.10.50.1` (איך? ‏←‏ M15).
 
 ✅ המחשבים מקבלים ‎`10.10.48.x` ‏(R&D) ו-‎`10.10.49.x` ‏(IT) — ה-DHCP עובד **בתוך** הבניין.
 
@@ -1436,6 +1791,9 @@ ip default-gateway 10.10.51.1
 🧠 **למה:** לתת לבניין C "חתיכה של area 0" דרך area 2.
 
 ### 15א — ב-B-DIST1 **וגם** ב-B-DIST2 ‏(ABRs של 0/2): מצביעים על ה-router-IDs של C
+👉 **איפה (בכל אחד):** לוחצים על המתג ‏←‏ **CLI** ‏←‏ **Enter** ‏←‏ ‏`Username:`‎ **admin** ‏←‏
+‏`Password:`‎ **Intel#Adm1n** (לא רואים כלום בזמן ההקלדה) ‏←‏ רואים את שורת הפקודה עם ‎`#`‎.
+
 ⌨️ מקלידים ב**כל אחד** מהשניים:
 ```
 configure terminal
@@ -1447,6 +1805,8 @@ copy running-config startup-config
 ```
 
 ### 15ב — ב-C-DIST1 **וגם** ב-C-DIST2 ‏(ABRs של 2/3): מצביעים על ה-router-IDs של B
+👉 **איפה:** נכנסים באותה דרך כמו ב-15א.
+
 ⌨️ מקלידים ב**כל אחד** מהשניים:
 ```
 configure terminal
@@ -1484,7 +1844,10 @@ Virtual Link OSPF_VL1 to router 10.10.63.2 is up
 ה-core ואת מתג השרתים.
 
 ב-**SW-HFA-A-ACC1, ‏SW-HFA-A-ACC2, ‏SWL3-HFA-A-DIST1, ‏SWL3-HFA-A-DIST2, ‏SWL3-HFA-CORE1,
-‏SWL3-HFA-CORE2, ‏SW-HFA-SRV** (נכנסים עם `admin` / `Intel#Adm1n`):
+‏SWL3-HFA-CORE2, ‏SW-HFA-SRV**, אחד אחרי השני.
+
+👉 **איפה (בכל אחד):** לוחצים על המתג ‏←‏ **CLI** ‏←‏ **Enter** ‏←‏ ‏`Username:`‎ **admin** ‏←‏
+‏`Password:`‎ **Intel#Adm1n** (לא רואים כלום בזמן ההקלדה) ‏←‏ רואים את שורת הפקודה עם ‎`#`‎.
 
 ⌨️ מקלידים:
 ```
