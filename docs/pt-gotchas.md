@@ -22,7 +22,7 @@
 
 | הפקודה שנכשלת | מה עושים |
 |---|---|
-| `switchport trunk encapsulation dot1q` במתג 3650 | ‏3650 תומך רק ב-dot1q — פשוט דלגו עליה והשתמשו ב-`switchport mode trunk`. במתג 3560 היא **חובה** לפני `mode trunk`. |
+| ‏`switchport mode trunk` במתג 3650 עונה `Command rejected: An interface whose trunk encapsulation is "Auto" can not be configured to "trunk" mode` | מקלידים `switchport trunk encapsulation dot1q`, ואז שוב `switchport mode trunk` (שלב 03). אם `mode trunk` התקבלה — לא צריך אותה. במתג 3560 היא **תמיד** חובה לפני `mode trunk`. |
 | `ipv6 unicast-routing` / `ipv6 address` נדחות במתג | ‏`sdm prefer dual-ipv4-and-ipv6 default` ‏←‏ `wr` ‏←‏ `reload`. במתג 2960 השתמשו ב-`sdm prefer lanbase-routing` אם הראשונה לא קיימת. |
 | `logging host 10.10.1.10` נדחית | תחביר ישן יותר: `logging 10.10.1.10`. |
 | הבלוק `tacacs server NAME` נדחה | תחביר ישן יותר: `tacacs-server host 10.10.1.11 key Intel#Tac`. |
