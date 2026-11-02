@@ -46,7 +46,7 @@
 | ‎`show standby brief` | ‎‏Active/Standby, ‏VIP, ‏priority, ‏`P` (preempt) |
 | ‎`show ip route` | הקודים O / O IA / O E2 / D / D EX / S / B / C |
 | ‎`show ip ospf neighbor` | מצב FULL |
-| ‎`show ip ospf interface brief` | ה-area של כל ממשק |
+| ‎`show ip ospf interface` | ה-`Area` של כל ממשק; ‏`Message digest authentication enabled` |
 | ‎`show ip ospf virtual-links` | ‎‏`Virtual Link ... is up` |
 | ‎`show ip eigrp neighbors` | השכנים מופיעים |
 | ‎`show ip bgp summary` | במצב השכן יש מספר (prefixes), לא Idle/Active |

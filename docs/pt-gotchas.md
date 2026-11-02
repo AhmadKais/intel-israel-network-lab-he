@@ -32,7 +32,7 @@
 | ה-ASA דוחה את בקשת ה-`enable password` | סיסמת ה-enable של ה-ASA ריקה בהדלקה הראשונה — פשוט לחצו Enter. |
 | ה-ASA ממשיך לחלק כתובות 192.168.1.x | בהגדרות ברירת המחדל יש שרת DHCP על `inside`: ‏`no dhcpd enable inside`. |
 | `standby 31 ipv6 FE80::1` נדחית | השתמשו ב-`standby 31 ipv6 autoconfig`, קראו את כתובת ה-link-local הווירטואלית עם `show standby brief`, והשתמשו בה כשער הסטטי בשרתים. |
-| ‏HSRP ל-IPv6 לא נתמך בגרסת ה-PT שלכם | ל-IPv6 כבר יש יתירות שער מובנית: שני מתגי ה-DIST שולחים Router Advertisements, ולכן המכשירים לומדים שני נתבי ברירת מחדל. תעדו את זה בספר הפרויקט. |
+| ‏HSRP ל-IPv6 לא נתמך בגרסת ה-PT שלכם | ל-IPv6 כבר יש יתירות שער מובנית: שני מתגי ה-DIST שולחים Router Advertisements, ולכן המכשירים לומדים שני נתבי ברירת מחדל. תעדו את זה בספר הפרויקט. **אבל** לשרתים ול-PC-KG-ADMIN-01 יש שער קבוע `FE80::1`, שעכשיו לא קיים: ב-DIST1 ‏←‏ `interface vlan 99` ‏←‏ `ipv6 address FE80::1 link-local`, ואותו דבר ב-`interface vlan 100`. לשני ה-VLANים האלה אין אז שער גיבוי. גם את זה כותבים בספר |
 | ‏`passive-interface default` של OSPFv3 נדחית | השמיטו את שורות ה-`passive-interface`. אז OSPFv3 שולח hellos גם ל-VLANי המשתמשים — שום דבר לא נשבר, כי אף נתב לא מקשיב שם, וה-prefixes של ה-VLANים עדיין מפורסמים. כתבו בספר הפרויקט שממשקים פסיביים לא היו זמינים. |
 | `ip summary-address eigrp` נדחית במתג | שימו את הפקודה על הממשק המנותב הפיזי (`Gi1/1/1`), לא על ה-SVI. |
 | ‏`spanning-tree guard root` לא מופיעה | היא שם — בדקו עם `show running-config interface gi1/0/1`; כשהיא פועלת, ‏`show spanning-tree vlan 10` מראה שהפורט חסום. |

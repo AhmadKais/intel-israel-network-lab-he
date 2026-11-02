@@ -1526,7 +1526,7 @@ copy running-config startup-config
 | המחשבים מקבלים רק כתובת `FE80::`‎ | חסר `ipv6 unicast-routing` ‏←‏ אין RAs; או שה-SVI של ה-VLAN למטה |
 | למחשבים אין DNS | חסר `ipv6 nd other-config-flag` / ‏`ipv6 dhcp server`; או הקלידו את ה-DNS ידנית |
 | ‏`standby 31 ipv6 FE80::1` נדחה | השתמשו ב-`standby 31 ipv6 autoconfig`, קראו את הכתובת הווירטואלית עם `show standby brief`, והשתמשו בה כשער של השרתים |
-| ‏HSRP ל-IPv6 לא נתמך בכלל | ל-IPv6 יש יתירות שער משלו: שני מתגי ה-DIST שולחים RAs והמחשבים לומדים שני שערים. כתבו את זה בספר הפרויקט |
+| ‏HSRP ל-IPv6 לא נתמך בכלל | ל-IPv6 יש יתירות שער משלו: שני מתגי ה-DIST שולחים RAs והמחשבים לומדים שני שערים. כתבו את זה בספר הפרויקט. **אבל** לשרתים ול-PC-KG-ADMIN-01 יש שער קבוע `FE80::1`, שעכשיו לא קיים: ב-DIST1 ‏←‏ `interface vlan 99` ‏←‏ `ipv6 address FE80::1 link-local`, ואותו דבר ב-`interface vlan 100`. לשני ה-VLANים האלה אין אז שער גיבוי. גם את זה כותבים בספר |
 | כל ה-IPv6 מת אחרי ה-ACL בנתב הקצה | חסרה השורה `permit icmp any any` ‏(IPv6 צריך ICMPv6) |
 | למחשב legacy אין אינטרנט | ‏`ip route 10.30.199.0 ...`‎ בנתב הקצה, ‏`ip route 0.0.0.0 ... 10.30.4.1` ב-DIST1, ‏NAT inside/outside |
 | הפורטים של VLAN אחד מתים במתג access | ‏VTP הוא transparent — ה-VLAN הזה לא נוצר **במתג הזה** |
