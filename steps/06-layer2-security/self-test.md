@@ -63,7 +63,7 @@
 | ‎☐ | ג1 | סביבת העבודה | מוסיפים **Server** בשם `SRV-ROGUE`, ‏Straight-Through: ‏**FastEthernet0** ‏←‏ ACC1 ‏**Fa0/9**. ‏IP סטטי ‎`10.10.16.250` / ‏‎`255.255.255.0` | כבל ירוק | משימה 6א |
 | ‎☐ | ג2 | ‎‏SRV-ROGUE ‏←‏ Services ‏←‏ DHCP | ‏**On**, ‏Default Gateway ‏‎`10.10.16.250`, ‏Start IP ‏‎`10.10.16.200`, מסכה ‎`255.255.255.0` ‏←‏ **Save** | ‎— | משימה 6ב |
 | ‎☐ | ג3 | מחשב ENG ‏←‏ IP Configuration | **Static**, ואז **DHCP** | כתובת ‎`.11`–‎`.254` עם שער **‎`10.10.16.1`**. ההתקפה נכשלה | ‏‎`.200` / שער ‎`.250` ‏←‏ Fa0/9 מוגדר trusted, או ש-VLAN 10 לא ב-snooping ‏(ב1, ב2) |
-| ‎☐ | ג4 | תיקון | מוחקים את SRV-ROGUE ‏(M7) | ‎— | ‎— |
+| ‎☐ | ג4 | תיקון | מוחקים את SRV-ROGUE ‏(M7). ב-ACC1: ‏`configure terminal` ‏←‏ `interface fa0/9` ‏←‏ `no switchport port-security mac-address sticky` ‏←‏ `switchport port-security mac-address sticky` ‏←‏ `end` ‏←‏ `show running-config interface fa0/9` | ‏`mac-address sticky` **בלי** כתובת MAC אחריו (ה-MAC של השרת המזויף נמחק) | משימה 6ה |
 
 </div>
 

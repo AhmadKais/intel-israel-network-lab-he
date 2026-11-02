@@ -309,7 +309,17 @@ Secure Port  MaxSecureAddr  CurrentAddr  SecurityViolation  Security Action
 4. חדשו את המחשב עוד פעם ‏←‏ חזרה לכתובת אמיתית עם שער ‎`.1`.
 
 ### 6ה — מנקים
-מחקו את SRV-ROGUE עם כלי ה-Delete ‏(M7).
+1. מחקו את SRV-ROGUE עם כלי ה-Delete ‏(M7).
+2. ה-sticky למד את ה-MAC של השרת המזויף ב-Fa0/9 וכתב אותו בהגדרות. מוחקים אותו. ב-ACC1:
+   ```
+   configure terminal
+   interface fa0/9
+    no switchport port-security mac-address sticky
+    switchport port-security mac-address sticky
+    end
+   ```
+   👉 בדיקה: ‏`show running-config interface fa0/9` ‏←‏ ✅ נשארה רק השורה
+   ‏`switchport port-security mac-address sticky`, **בלי** כתובת MAC אחריה.
 
 ---
 
