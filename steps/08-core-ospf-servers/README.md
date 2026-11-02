@@ -664,11 +664,6 @@ copy running-config startup-config
 | ‎`network 10.10.0.0 0.0.15.255 area 0` | "ממשקים בטווח הזה מצטרפים ל-area 0" |
 | ‎`area 1 range 10.10.16.0 255.255.240.0` | "פרסם את area 1 כנתיב סיכום אחד" |
 | ‎`ip ospf message-digest-key 1 md5 KEY` + `ip ospf authentication message-digest` | "דבר OSPF רק עם שכנים שמכירים את המפתח הזה" |
-| ‎`logging host 10.10.1.10` | "שלח עותק של כל הודעה לשרת ה-Syslog" |
-| ‎`service timestamps log datetime msec` | "שים תאריך ושעה על כל הודעה" |
-| ‎`aaa new-model` | "הפעל AAA" |
-| ‎`tacacs-server host ... key ...`‎ | "זה שרת ה-AAA, וזה הסוד המשותף שלנו" |
-| ‎`aaa authentication login default group tacacs+ local` | "בדוק התחברויות מול TACACS+; אם הוא לא עונה, השתמש במשתמשים המקומיים שלי" |
 
 </div>
 
@@ -927,13 +922,27 @@ ip tacacs source-interface loopback 0
 end
 copy running-config startup-config
 ```
-(‏`ip tacacs source-interface loopback 0` = "כשאתה פונה לשרת ה-AAA, שלח מ-Loopback0".)
 
 <div dir="rtl">
 
 > אם `ip tacacs source-interface` נדחה, רשמו את מתגי שכבה 3 בשרת ה-AAA לפי הכתובות שהם שולחים
 > מהן במקום זה. ל-DIST1 ול-DIST2 יש שני קישורים כלפי מעלה שווים, אז הוסיפו **את שניהם** לכל אחד:
 > ‏DIST1 ‏10.10.4.1 ו-10.10.4.5, ‏DIST2 ‏10.10.4.9 ו-10.10.4.13, ‏CORE1 ‏10.10.1.2, ‏CORE2 ‏10.10.1.3.
+
+</div>
+
+### מה הפקודות החדשות אומרות
+
+<div dir="rtl">
+
+| פקודה | בשפה פשוטה |
+|---|---|
+| ‎`logging host 10.10.1.10` | "שלח עותק של כל הודעה לשרת ה-Syslog" |
+| ‎`service timestamps log datetime msec` | "שים תאריך ושעה על כל הודעה" |
+| ‎`aaa new-model` | "הפעל AAA" |
+| ‎`tacacs-server host ... key ...`‎ | "זה שרת ה-AAA, וזה הסוד המשותף שלנו" |
+| ‎`aaa authentication login default group tacacs+ local` | "בדוק התחברויות מול TACACS+; אם הוא לא עונה, השתמש במשתמשים המקומיים שלי" |
+| ‎`ip tacacs source-interface loopback 0` | "כשאתה פונה לשרת ה-AAA, שלח מ-Loopback0" |
 
 </div>
 
