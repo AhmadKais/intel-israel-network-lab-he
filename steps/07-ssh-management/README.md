@@ -242,8 +242,10 @@ SW-HFA-A-ACC1#
 ```
 4. הקלידו `exit` כדי לצאת.
 
-❌ ‏‎`% Connection refused by remote host` ‏←‏ שם ה-ACL ב-`access-class` לא תואם ל-ACL (שגיאת
-כתיב = deny לכולם). ב-ACC1: ‏`show running-config` ‏←‏ השוו את החלק של `line vty` ל-`show access-lists`.\
+❌ ‏‎`% Connection refused by remote host` ‏←‏ רשימת האורחים לא נותנת לכם להיכנס. ב-ACC1:
+‏`show access-lists MGMT-ONLY` — שורת ה-permit חייבת להיות בדיוק `permit 10.10.19.0 0.0.0.255`.
+אחר כך `show running-config` ‏←‏ בחלק של `line vty`, השם אחרי `access-class` חייב להיות בדיוק
+‏`MGMT-ONLY` (אותיות גדולות חשובות).\
 ❌ ‏‎`% Connection timed out` ‏←‏ אין דרך ברשת. האם `ping 10.10.19.11` עובד?
 
 ---
@@ -376,7 +378,7 @@ show users                      -> who is connected right now (vty 0 admin ...)
 |---|---|
 | ‎`crypto key generate rsa` ‏←‏ ‎`% Please define a domain-name first` | הקלידו קודם `ip domain-name intel.lab` |
 | ‎`% Please define a hostname other than Switch` | הגדירו קודם hostname |
-| ‏SSH נדחה גם ממחשב המנהל | שגיאת כתיב בשם ה-ACL: ‏`access-class` שמצביע על שם שלא קיים = **deny לכולם**. השוו את החלק של `line vty` ב-`show running-config` ל-`show access-lists` |
+| ‏SSH נדחה גם ממחשב המנהל | טעות הקלדה ב-ACL: שורת ה-permit חייבת להיות בדיוק `permit 10.10.19.0 0.0.0.255`, והשם אחרי `access-class` חייב להיות בדיוק `MGMT-ONLY`. השוו את החלק של `line vty` ב-`show running-config` ל-`show access-lists` |
 | ‎`% Connection timed out` ממחשב המנהל | אין דרך ברשת: האם הוא מצליח `ping 10.10.19.11`? בדקו את ה-IP/השער שלו, ושבמתג `interface vlan 99` פעיל ויש `ip default-gateway` (שלב 05) |
 | ננעלתם מחוץ לכל דבר | ה-console עדיין עובד עם `admin` / `Intel#Adm1n` |
 

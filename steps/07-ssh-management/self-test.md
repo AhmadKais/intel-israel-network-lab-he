@@ -41,7 +41,7 @@
 
 | ‎☐ | ‎# | מקלידים | חייבים לראות | אם לא |
 |---|---|---|---|---|
-| ‎☐ | ב1 | ‎`ssh -l admin 10.10.19.11` | הבאנר, ואחריו `SW-HFA-A-ACC1#`‎ | ‏`Connection refused` ‏←‏ שם ה-ACL ב-`access-class` לא תואם ל-`MGMT-ONLY`. ‏`timed out` ‏←‏ א2 |
+| ‎☐ | ב1 | ‎`ssh -l admin 10.10.19.11` | הבאנר, ואחריו `SW-HFA-A-ACC1#`‎ | ‏`Connection refused` ‏←‏ ד3 (שורת ה-permit חייבת להיות בדיוק `permit 10.10.19.0 0.0.0.255`) ו-ד4 (השם אחרי `access-class` חייב להיות בדיוק `MGMT-ONLY`). ‏`timed out` ‏←‏ א2 |
 | ‎☐ | ב2 | ‎`ssh -l admin 10.10.19.12` | ‎`SW-HFA-A-ACC2#`‎ | משימה 5 ב-ACC2 |
 | ‎☐ | ב3 | ‎`ssh -l admin 10.10.19.2` | ‎`SWL3-HFA-A-DIST1#`‎ | משימה 5 ב-DIST1 |
 | ‎☐ | ב4 | ‎`ssh -l admin 10.10.19.3` | ‎`SWL3-HFA-A-DIST2#`‎ | משימה 5 ב-DIST2 |
