@@ -25,6 +25,7 @@
 | משתמש מנהל מקומי (SSH + גיבוי ל-AAA) | ‎`username admin privilege 15 secret` | ‎`Intel#Adm1n` |
 | מפתח משותף TACACS+ | מכשירים ↔ שרת AAA | ‎`Intel#Tac` |
 | מפתח משותף RADIUS (לא חובה, WPA2-Enterprise) | נקודת גישה ↔ שרת AAA | ‎`Intel#Rad` |
+| משתמשי WPA2-Enterprise ‏`emp1`, ‏`emp2` (לא חובה) | ‏SRV-HFA-AAA ‏←‏ משתמשי RADIUS | ‎`Emp#2026` |
 | סיסמת VTP | כל המתגים | ‎`Intel#Vtp` |
 | מפתח OSPF MD5 מספר 1 | קישורים מנותבים בחיפה | ‎`Intel#Ospf` |
 | ‏key chain של EIGRP MD5 | ירושלים | ‎`Intel#Eigrp` |
