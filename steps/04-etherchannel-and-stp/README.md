@@ -421,6 +421,14 @@ interface fa0/9
 ---
 
 ## נקודת ביקורת
+
+<div dir="rtl">
+
+> 🧪 **בדיקה עצמית:** קודם מריצים את [self-test.md](self-test.md). שם יש לכל סעיף כאן את
+> הפקודה המדויקת, מה המסך חייב להראות, ומה לתקן כשהוא לא מראה את זה.
+
+</div>
+
 - [ ] ‏`show etherchannel summary` ‏←‏ ‏`Po1(SU)`‎, שני הפורטים ‎`(P)`‎ — ב-DIST1 וב-DIST2
 - [ ] ‏DIST1 הוא ה-root של 10/30/99/110, ‏DIST2 של 20/120
 - [ ] פורטי ה-access מופיעים כ-`Edge` ‏(PortFast) ב-`show spanning-tree`

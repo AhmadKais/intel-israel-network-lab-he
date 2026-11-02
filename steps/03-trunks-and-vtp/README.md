@@ -295,8 +295,9 @@ interface range gi1/0/1 - 2
 
 > **הערה על ה-3650:** ה-3650 מדבר רק 802.1Q, ולכן הוא לא צריך (ולא מקבל) את הפקודה
 > ‏`switchport trunk encapsulation dot1q`.
-> ❌ **אם `switchport mode trunk` עונה** `Command rejected: An interface whose trunk
-> encapsulation is "Auto" can not be configured to "trunk" mode` ‏←‏ הקלידו
+> ❌ **אם `switchport mode trunk` עונה:**
+> ‏`Command rejected: An interface whose trunk encapsulation is "Auto" can not be configured to "trunk" mode`
+> ‏←‏ הקלידו
 > ‏`switchport trunk encapsulation dot1q`, ואז שוב `switchport mode trunk`, ואז המשיכו בשורה הבאה.
 
 </div>
@@ -602,6 +603,14 @@ Gig1/0/1    10,20,30,99,110,120,998
 ---
 
 ## נקודת ביקורת
+
+<div dir="rtl">
+
+> 🧪 **בדיקה עצמית:** קודם מריצים את [self-test.md](self-test.md). שם יש לכל סעיף כאן את
+> הפקודה המדויקת, מה המסך חייב להראות, ומה לתקן כשהוא לא מראה את זה.
+
+</div>
+
 - [ ] ל-DIST1 ול-DIST2 יש ספקי כוח והם דולקים
 - [ ] ‏`show vtp status` — אותו דומיין ואותו revision בכל 4 המתגים; ‏DIST1 ‏server, השאר client
 - [ ] ‏`show interfaces trunk` — כל הקישורים כלפי מעלה `trunking`, ‏native 998

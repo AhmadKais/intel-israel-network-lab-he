@@ -2018,6 +2018,14 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 ---
 
 ## נקודת ביקורת
+
+<div dir="rtl">
+
+> 🧪 **בדיקה עצמית:** קודם מריצים את [self-test.md](self-test.md). שם יש לכל סעיף כאן את
+> הפקודה המדויקת, מה המסך חייב להראות, ומה לתקן כשהוא לא מראה את זה.
+
+</div>
+
 - [ ] המחשבים בבניינים B ו-C מקבלים כתובות DHCP ממתגי ה-DIST של הבניין שלהם
 - [ ] תצוגה פיזית: עיר Haifa עם 4 בניינים; כל מכשיר בבניין שלו
 - [ ] כל 4 ה-virtual links ‏up
@@ -2048,10 +2056,10 @@ O IA  10.10.48.0/20 ...   <- building C (area 3) — arrived through the virtual
 - 🎯 **המשימה:** לראות מה הסיכום של area 2 מסתיר מה-core.
 - 📁 **מתחילים מ:** ה-`step09.pkt` שלכם (‏Save As ‏`step09-exA.pkt`).
 - 👣 **צעדים:**
-  1. ב-B-DIST1 **וגם** ב-B-DIST2: ‏`configure terminal` ‏←‏ `router ospf 1` ‏←‏
+  1. ב-**כל ארבעת** ה-ABR‏ (B-DIST1, ‏B-DIST2, ‏C-DIST1, ‏C-DIST2): ‏`configure terminal` ‏←‏ `router ospf 1` ‏←‏
      ‏`no area 2 range 10.10.32.0 255.255.240.0` ‏←‏ `end`.
   2. ‏Fast Forward Time. ב-CORE1: ‏`show ip route ospf`. ספרו את השורות שמתחילות ב-‎`10.10.3`.
-  3. החזירו את הסיכום בשניהם.
+  3. החזירו את הסיכום בכל הארבעה.
 - ✅ **גמרתם כש**אתם יודעים לומר כמה שורות נוספו, ולמה קישורי ה-‎`10.10.36.x` ביניהן.
 
 <details dir="rtl"><summary>💡 רמז</summary>
