@@ -347,6 +347,13 @@ Intel Israel הכוללת שלושה סניפים בערים שונות, המח�
 ---
 
 ## 16. פקודות
+
+<div dir="rtl">
+
+> **מבנה הפרק:** סעיף לכל טכנולוגיה, ובתוכו תת-סעיף לכל סניף. רשימת 31 הנושאים נמצאת ב-[P20](../final-project/README.md).
+
+</div>
+
 ✍️ לכל סוג התקן — `show running-config` עם הסבר לכל בלוק (ההסברים קיימים בקבצי השלבים):
 - מתג Access (למשל `SW-HFA-A-ACC1`): VLANs, Trunk, Port-security, DHCP Snooping, BPDU Guard, SSH, AAA.
 - מתג Distribution (למשל `SWL3-HFA-B-DIST1`): HSRP, DHCP, LACP, OSPF + Virtual link.
