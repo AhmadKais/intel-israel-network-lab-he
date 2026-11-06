@@ -198,5 +198,5 @@ git commit -m "Step 02 done"
 git push
 ```
 
-נכתב עבור Packet Tracer **8.2.x** (מתאים גם לגרסה 9). הפקודות נכתבו לפי תחביר IOS 15
+משתמשים ב-Packet Tracer **9.x**, אותה גרסה כמו של המורה. הפקודות נכתבו לפי תחביר IOS 15
 כפי ש-Packet Tracer מממש אותו.
