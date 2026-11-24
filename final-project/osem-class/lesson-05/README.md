@@ -942,6 +942,8 @@ copy running-config startup-config
 ### 🖱 הפתרון: על מה לוחצים ומה כותבים
 לוחצים על **ASA-S** ‏←‏ **CLI** ‏←‏ `enable` ‏←‏ **Enter** (אין סיסמה):
 
+⚠️ אם פתחתם את הלשונית **Config** של ה-ASA, אולי כבר רואים `ciscoasa#`‎ או `ciscoasa(config)#`‎. אז לא כותבים שוב `enable`. מתוך ‎`(config)#`‎ כותבים קודם `end`.
+
 ![שורת הפקודה ciscoasa#](images/step-login.png)
 
 ‏**ASA-S** ‏←‏ ‏CLI. כותבים `enable`, ובסיסמה לוחצים רק **Enter**:
