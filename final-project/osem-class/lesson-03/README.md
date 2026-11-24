@@ -36,6 +36,22 @@
 כבל אחד (trunk) מהמתג לנתב נושא את כל ה-VLAN-ים. חותכים את הפורט הפיזי ל**ממשקי משנה**: ‏g0/0.10 בשביל
 VLAN 10, ‏g0/0.20 בשביל VLAN 20... לכל אחד יש IP, והוא **השער (gateway)** של ה-VLAN שלו. לפורט הפיזי עצמו **אין IP**.
 
+💬 **במילים פשוטות:** הנתב הוא המסדרון בין הכיתות (ה-VLAN-ים). דלת פיזית אחת (g0/0) ועליה כמה שלטים: ‎.10, ‎.20, ‎.30...
+
+**דוגמה — PC-SAL-1 ‏(VLAN 20) עושה ping ל-PC-IT-1 ‏(VLAN 40):**
+
+<div dir="rtl">
+
+| ‎# | איפה | תג VLAN | מה קורה |
+|---|---|---|---|
+| ‎1 | ‎PC-SAL-1 | ‎— | ‏192.168.40.x לא ברשת שלי, אז אני שולח לשער ‎.252 |
+| ‎2 | ה-trunk למעלה לנתב | ‎20 | מגיע ל-g0/0.20 |
+| ‎3 | בתוך הנתב | ‎— | טבלת הניתוב: 192.168.40.0 נמצאת ב-g0/0.40 |
+| ‎4 | ה-trunk למטה למתג | ‎**40** | אותו כבל, תג אחר |
+| ‎5 | ‎PC-IT-1 | ‎— | הגיע |
+
+</div>
+
 ### ‏1.2 HSRP — שני נתבים, שער אחד
 למחשב יכול להיות **רק שער אחד**. אם הנתב הזה נופל, המחלקה מנותקת. ב-**HSRP** שני נתבים חולקים
 **כתובת IP וירטואלית** (VIP). המחשבים פונים ל-VIP ולא יודעים איזה נתב עונה.
@@ -52,10 +68,47 @@ VLAN 10, ‏g0/0.20 בשביל VLAN 20... לכל אחד יש IP, והוא **הש
 
 ‏`preempt` = כשהנתב הראשי חוזר, הוא לוקח בחזרה את תפקיד ה-Active.
 
+💬 **במילים פשוטות:** לחנות יש מספר טלפון אחד. שני עובדים יכולים לענות. הלקוחות מחייגים לאותו מספר ולא שמים לב שהעובד התחלף.
+
+**דוגמה — מה כל נתב "אומר":**
+
+<div dir="rtl">
+
+| מצב | ‎R-S-MAIN | ‎R-S-BKP | ‎‏Active |
+|---|---|---|---|
+| רגיל | ‎110 | ‎105 | ‎R-S-MAIN |
+| ‏g0/0 של הראשי נופל | שותק | ‎105 | ‏R-S-BKP (אחרי כ-10 שניות בלי hello) |
+| הראשי חוזר, עם `preempt` | ‎110 | ‎105 | שוב R-S-MAIN |
+| הראשי חוזר, **בלי** `preempt` | ‎110 | ‎105 | ‏R-S-BKP נשאר |
+
+</div>
+
 ### ‏1.3 DHCP וממסר (relay)
 ‏DHCP נותן למחשב כתובת בארבעה שלבים, **DORA**: ‏**D**iscover ‏←‏ **O**ffer ‏←‏ **R**equest ‏←‏ **A**ck.
 ה-Discover הוא **broadcast**, ונתב לא מעביר broadcast. הפקודה `ip helper-address` בנתב הופכת אותו להודעה
 ישירה לשרת: זה ה-**relay**.
+
+**דוגמה — PC-SAL-1 מבקש כתובת:**
+
+<div dir="rtl">
+
+| שלב | ממי למי | תוכן |
+|---|---|---|
+| ‎Discover | מ-0.0.0.0 ל-255.255.255.255 | "יש כאן שרת DHCP?" |
+| ‎relay | מ-192.168.20.254 ל-192.168.50.1 | הנתב מעביר ורושם "קיבלתי את זה ב-**192.168.20.254**" |
+| ‎Offer | מהשרת למחשב, דרך הנתב | "קח את 192.168.20.20" |
+| ‎Request | מהמחשב לכולם | "אני מסכים" |
+| ‎Ack | מהשרת למחשב | "היא שלך", ועוד שער ‎.252 ו-DNS |
+
+</div>
+
+❓ **שאלו את הכיתה:** בשרת יש ארבעה pools. איך הוא יודע לתת כתובת מ-192.168.20?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+מהרישום של הנתב (השדה נקרא *giaddr*): הבקשה הגיעה דרך 192.168.20.254, ולכן ה-pool של 192.168.20.0.
+
+</details>
 
 ### 1.4 השירותים
 
@@ -70,6 +123,9 @@ VLAN 10, ‏g0/0.20 בשביל VLAN 20... לכל אחד יש IP, והוא **הש
 | ‎POP3 | ‎TCP 110 | **קריאת** דואר |
 
 </div>
+
+**דוגמה — מה קורה כשפותחים `http://www.osem.com`:** המחשב שואל את ה-DNS ‏(UDP 53) "מה ה-IP?" ומקבל 192.168.50.1. הדפדפן פותח
+חיבור לפורט TCP 80 בכתובת הזו, והדף מגיע. אם האתר נפתח לפי IP אבל לא לפי שם, הבעיה ב-DNS.
 
 ### ‏1.5 DHCP Snooping
 תלמיד מביא נתב ביתי, והנתב נותן לכולם שער שגוי. עם **DHCP Snooping** המתג מקבל תשובות DHCP רק מפורטים **מהימנים (trusted)**.
@@ -239,7 +295,7 @@ copy running-config startup-config
 ![משתמש FTP](images/11-ftp.png)
 
 ### 3.6 דואר
-‏**EMAIL** ‏←‏ ‏Domain Name (1) ‏`osem.com` ‏←‏ ‏**Set** (2). ‏User (3) ‏`sakhnin1`, ‏Password (4) ‏`Osem#Mail` ‏←‏ ‏**+** (5). שוב בשביל `sakhnin2`.
+‏**EMAIL** ‏←‏ ‏Domain Name (1) ‏`osem.com` ‏←‏ ‏**Set** (2). ‏User (3) ‏`sakhnin1`, ‏Password (4) ‏`Osem#Mail` ‏←‏ `+` (5). שוב בשביל `sakhnin2`.
 
 ![משתמשי דואר](images/12-mail.png)
 
@@ -259,7 +315,7 @@ copy running-config startup-config
    ![האתר לפי שם](images/10-web.png)
 3. ‏**PC-SAL-1**: ‏`ping 192.168.50.1`, ואז `ftp 192.168.50.1` (משתמש `sakhnin`, סיסמה `Osem#Ftp`), ולסיום `quit`.
 
-‏   ![Ping ו-FTP](images/15-ftp-login.png)
+   ‏![Ping ו-FTP](images/15-ftp-login.png)
 4. ‏**PC-SAL-1**: ‏`tracert 192.168.40.21` (הכתובת של PC-IT-1, בדקו את שלכם עם `ipconfig`). הקפיצה הראשונה היא **‎.254**, הנתב הראשי. זכרו את זה למשימה 7!
 
    ![המסלול דרך R-S-MAIN](images/16-tracert.png)
@@ -305,6 +361,45 @@ show ip dhcp snooping
 
 ✅ במחשב: `ipconfig /release` ואז `ipconfig /renew` עדיין עובדים.
 
+### 6.1 רואים את ההתקפה
+"זר" מחלק כתובות. לצורך ההדגמה **R-S-BKP** משחק את התוקף:
+```
+configure terminal
+ip dhcp excluded-address 192.168.20.1 192.168.20.199
+ip dhcp pool ROGUE
+network 192.168.20.0 255.255.255.0
+default-router 192.168.20.99
+dns-server 6.6.6.6
+end
+```
+ב-**PC-SAL-2**: ‏`ipconfig /release` ואז `ipconfig /renew`. השער הוא **192.168.20.99** וה-DNS ‏**6.6.6.6**: כל התנועה של המחשב
+הולכת עכשיו אל התוקף!
+
+![השרת המזויף ענה ראשון](images/24-rogue.png)
+
+למה ה-snooping לא עצר אותו? כי הפורט אל R-S-BKP הוא **trusted**. ב-**SW-S-MAIN** לוקחים ממנו את האמון:
+```
+configure terminal
+interface fa0/5
+no ip dhcp snooping trust
+end
+```
+שוב release ו-renew ב-PC-SAL-2: השער **‎.252** וה-DNS ‏**192.168.50.1**. המתג זרק את ההצעה המזויפת.
+
+![למעלה הכתובת המזויפת, ואחריה פעמיים האמיתית](images/25-rogue-blocked.png)
+
+**מנקים** ב-R-S-BKP:
+```
+configure terminal
+no ip dhcp pool ROGUE
+no ip dhcp excluded-address 192.168.20.1 192.168.20.199
+end
+```
+וב-SW-S-MAIN, ‏`interface fa0/5`: ‏`ip dhcp snooping trust`.
+
+🧠 ה-snooping מגן רק במתג שבו הוא פועל. שרת זר שמחובר ל-SW-S-SAL עדיין יכול לרמות את השכנים שלו **באותו** מתג, ולכן הגנה
+מלאה מפעילה אותו בכל מתג מחלקה (תרגיל 4).
+
 ## משימה 7 — מפילים את הנתב הראשי
 1. ‏**R-S-MAIN**: ‏`configure terminal` ‏←‏ ‏`interface g0/0` ‏←‏ ‏`shutdown`.
 2. אחרי כ-10 שניות ב-**R-S-BKP**: ‏`show standby brief` ‏←‏ **Active**.
@@ -317,6 +412,21 @@ show ip dhcp snooping
 
    ![חזרנו לשגרה](images/23-back.png)
 5. ‏`copy running-config startup-config` בנתבים וב-SW-S-MAIN, ו-File ‏←‏ Save.
+
+### 🧯 לא עובד?
+
+<div dir="rtl">
+
+| מה רואים | כנראה | מה עושים |
+|---|---|---|
+| ‎`% Configuring IP routing on a LAN subinterface is only allowed if...`‎ | ה-IP נכתב לפני `encapsulation dot1Q` | קודם כותבים encapsulation |
+| שני הנתבים Active | הם לא רואים זה את זה | ‏trunk ב-Fa0/5 וב-Fa0/6, אותו מספר VLAN |
+| ‎`DHCP request failed` | חסר helper, השירות Off, או ש-STP עוד לא מוכן | `show run`, בשרת DHCP על On, מחכים ועושים ‎`/renew` |
+| כתובת 169.254.x.x | אף אחד לא ענה לבקשה | כמו בשורה הקודמת |
+| ‏ping לפי IP עובד, לפי שם לא | ‎‏DNS | `nslookup`, בודקים את הרשומה ואת ה-DNS במחשב |
+| מייל לא נשלח | לא לחצו Set לדומיין, או משתמש שגוי | ‏EMAIL ואז Set, בודקים `sakhnin1` / `Osem#Mail` |
+
+</div>
 
 ---
 
@@ -340,12 +450,64 @@ show ip dhcp snooping
 2. הפכו את R-S-BKP ל-Active רק ב-VLAN 40 (רמז: priority). בשביל מה זה טוב?
 3. הוסיפו `ftp.osem.com` ל-DNS והתחברו עם `ftp ftp.osem.com`.
 
+4. הפעילו DHCP snooping גם ב-**SW-S-SAL**: ‏VLAN 20, אמון רק ב-trunk-ים Fa0/1 ו-Fa0/4. בדקו ש-PC-SAL-2 עדיין מקבל כתובת.
+
+<details dir="rtl"><summary>תשובות (בדקנו אותן)</summary>
+
+1. ‏`DHCP request failed.`‎ המחשב PC-IT-1 ב-VLAN 40 עדיין מקבל כתובת: ה-helper מוגדר בכל ממשק משנה בנפרד. אחרי שמחזירים אותו, הכתובת מגיעה.
+2. ב-R-S-BKP, ‏`interface g0/0.40`: ‏`standby 40 priority 120`. הפקודה `show standby brief` מראה שהוא Active בקבוצה 40 ו-Standby בשאר. בשביל מה? לחלק את העומס בין שני הנתבים. מחזירים ל-105.
+3. ‏`Connected to ftp.osem.com`, משתמש `sakhnin`. ה-DNS רק מתרגם את השם, וה-FTP עצמו לא השתנה.
+4. הפקודות, והמחשב עדיין מקבל כתובת:
+
+<div dir="ltr">
+
+```
+configure terminal
+ip dhcp snooping
+ip dhcp snooping vlan 20
+no ip dhcp snooping information option
+interface range fa0/1 , fa0/4
+ip dhcp snooping trust
+end
+```
+
+</div>
+
+</details>
+
 ## 🎓 להסביר לבוחן
 - מה זה ממשק משנה ולמה צריך `encapsulation dot1Q`?
 - מה זה VIP? מה קורה, שלב אחר שלב, כש-R-S-MAIN נופל?
 - הסבירו DORA. למה צריך relay?
 - מה ההבדל בין SMTP ל-POP3?
 - איזו התקפה מונע DHCP Snooping, ואילו פורטים מהימנים?
+
+<details dir="rtl"><summary>תשובות לדוגמה</summary>
+
+1. חלק לוגי של פורט פיזי, אחד לכל VLAN. ‏`encapsulation dot1Q 20` אומר שמסגרות עם תג 20 שייכות אליו.
+2. כתובת ה-IP הווירטואלית שהמחשבים משתמשים בה כשער. הראשי מפסיק לשלוח hello, אחרי כ-10 שניות הגיבוי נהיה Active ולוקח את ה-VIP ואת ה-MAC הווירטואלי, והמחשבים ממשיכים.
+3. ‏Discover, ‏Offer, ‏Request, ‏Ack. ה-Discover הוא broadcast ונתב עוצר broadcast, ולכן הנתב מעביר אותו כהודעה ישירה.
+4. ‏SMTP ‏(25) שולח דואר ומעביר בין שרתים. ‏POP3 ‏(110) מוריד דואר מהתיבה.
+5. שרת DHCP מזויף שנותן שער שגוי (man in the middle). מהימנים: הפורט של השרת האמיתי, הנתבים והקישור למתג הגיבוי.
+
+</details>
+
+## ✏️ מבחן יציאה (3 דקות)
+1. איזו כתובת רושמים כשער במחשב ב-VLAN 30?
+2. עדיפות 110 ו-105: מי Active?
+3. מה כותבים בפורט הפיזי g0/0?
+4. באיזה פורט משתמש DNS?
+5. איפה כותבים `ip helper-address`?
+
+<details dir="rtl"><summary>תשובות</summary>
+
+1. ‏192.168.30.252.
+2. ‏110.
+3. רק `no shutdown`, בלי IP.
+4. ‏UDP 53.
+5. בממשק המשנה שאליו מגיעה הבקשה של המחשבים.
+
+</details>
 
 ## 🛠 הפרויקט שלכם
 - [ ] טבלה: VLAN, ראשי ‎.254, גיבוי ‎.253, ‏VIP ‎.252.

@@ -38,6 +38,12 @@
 ‏VLAN מחלק מתג פיזי אחד לכמה רשתות נפרדות. הודעת broadcast ממחלקת המשכורות לא מגיעה ל-IT. יש פחות
 broadcast, יותר אבטחה, ועובד יכול לעבור שולחן ולהישאר באותה רשת.
 
+💬 **במילים פשוטות:** בניין בית ספר אחד עם כמה כיתות. כולם תחת אותו גג, אבל מי שמדבר בכיתה 20 לא נשמע בכיתה 40.
+‏VLAN הוא כיתה עם דלת סגורה.
+
+**דוגמה.** במתג SW-S-SAL יש 3 מחשבים ב-VLAN 20. אם מעבירים אחד מהם ל-VLAN 40 (אותו כבל, אותו מתג), הוא כבר
+לא יכול לעשות ping לשניים האחרים.
+
 ### ‏1.2 Access ו-Trunk
 
 <div dir="rtl">
@@ -49,6 +55,20 @@ broadcast, יותר אבטחה, ועובד יכול לעבור שולחן ולה
 | תג 802.1Q | אין | יש: 4 בייטים שאומרים "המסגרת הזו שייכת ל-VLAN 20" |
 
 </div>
+
+**דוגמה — המסע של מסגרת מ-PC-SAL-1:**
+
+<div dir="rtl">
+
+| מקום | תג | למה |
+|---|---|---|
+| מ-PC-SAL-1 ל-SW-S-SAL ‏(access) | אין | מחשב לא יודע מה זה VLAN |
+| מ-SW-S-SAL ל-SW-S-MAIN ‏(trunk) | ‎**VLAN 20** | הרבה VLAN-ים חולקים את הכבל |
+| מ-SW-S-MAIN למתג השרת (access 50) | לא נשלחת | הקישור הזה מעביר רק VLAN 50 |
+
+</div>
+
+למספר ה-VLAN יש בתג 12 ביטים, ולכן יש VLAN-ים מ-1 עד 4094. מסגרת של ה-**native VLAN** (ברירת המחדל 1) עוברת ב-trunk בלי תג.
 
 ### ‏1.3 VTP
 ‏VTP מעתיק את רשימת ה-VLAN בין המתגים דרך ה-Trunk, ולכן יוצרים כל VLAN פעם אחת בלבד.
@@ -80,8 +100,36 @@ broadcast, יותר אבטחה, ועובד יכול לעבור שולחן ולה
 
 </div>
 
+💬 **במילים פשוטות:** לולאה היא כמו קבוצה שבה כל אחד מעביר כל הודעה לכולם, בלי סוף. ‏STP הוא הכלל "זה לא מעביר,
+אלא אם מישהו אחר חסר".
+
+**דוגמה — מי ה-root ב-VLAN 20?** (המספר הנמוך מנצח)
+
+<div dir="rtl">
+
+| מתג | עדיפות | ועוד VLAN | סך הכול |
+|---|---|---|---|
+| ‎SW-S-MAIN | ‎24576 | ‎20 | **24596, הוא ה-root** |
+| ‎SW-S-BKP | ‎28672 | ‎20 | ‎28692 |
+| ‎SW-S-SAL | 32768 (ברירת מחדל) | ‎20 | ‎32788 |
+
+</div>
+
+**ובאיזו דרך בוחר SW-S-SAL?** קישור של 100 מגה עולה 19. ישירות ל-root: ‏19. דרך מתג הגיבוי: 19 + 19 = **38**.
+הדרך הזולה מעבירה, והשנייה חסומה. עדיפויות שוות — ה-MAC הנמוך מנצח.
+
 ### ‏1.5 Port Security
 הפורט לומד את ה-MAC של המחשב הראשון (`sticky`) ומרשה רק אותו. ‏MAC אחר ‏←‏ הפורט עובר למצב **err-disabled**.
+
+<div dir="rtl">
+
+| מצב violation | המסגרות של הזר | סופר ורושם | הפורט |
+|---|---|---|---|
+| ‎`protect` | נזרקות | לא | נשאר פעיל |
+| ‎`restrict` | נזרקות | כן | נשאר פעיל |
+| `shutdown` (ברירת מחדל) | נזרקות | כן | ‎**err-disabled** |
+
+</div>
 
 ### 1.6 התוכנית
 
@@ -138,6 +186,17 @@ end
 show vlan brief
 ```
 ![חמישה VLAN-ים חדשים, עדיין בלי פורטים](images/03-vlan.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`vtp domain SAKHNIN` | שם הקבוצה של VTP | רק מתגים עם אותו שם מדברים |
+| ‎`vtp password` | סוד משותף | מתג זר לא יכול לשנות לנו VLAN-ים |
+| ‎`vtp mode server` | המתג הזה מנהל את הרשימה | מקום אחד ליצירת VLAN-ים |
+| `vlan 20` ו-`name` | יוצרת VLAN ונותנת לו שם | השם הוא תיעוד, המספר הוא מה שקובע |
+
+</div>
 
 ## משימה 2 — VTP client בשאר המתגים
 ב-**SW-S-BKP, SW-S-MGMT, SW-S-SAL, SW-S-IT ו-MLS-S-ASM** (לא ב-MLS-S-SRV):
@@ -249,7 +308,7 @@ interface range fa0/6 - 24 , g0/1 - 2
 shutdown
 end
 ```
-**MLS-S-ASM** (מתג 3560 — פקודה אחת נוספת!):
+‏**MLS-S-ASM** (מתג 3560 — פקודה אחת נוספת!):
 ```
 configure terminal
 interface range fa0/1 , fa0/4
@@ -290,7 +349,7 @@ interface range fa0/4 - 24 , g0/1 - 2
 shutdown
 end
 ```
-**MLS-S-SRV** (מתג 3560):
+‏**MLS-S-SRV** (מתג 3560):
 ```
 configure terminal
 vtp mode transparent
@@ -325,6 +384,20 @@ VLAN 50 ידנית במצב transparent.
 ✅ ב-SW-S-MAIN: ‏`show interfaces trunk`. (Fa0/5 ו-Fa0/6 יופיעו רק אחרי שמחברים את הנתבים.)
 
 ![פורטי ה-Trunk](images/08-trunk.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`switchport mode access` | פורט למכשיר אחד | מחשב לא צריך לפתוח trunk |
+| ‎`switchport access vlan 20` | שמה את הפורט ב-VLAN 20 | זו המחלקה |
+| ‎`spanning-tree portfast` | ירוק מיד | מחשב לא יוצר לולאה |
+| ‎`spanning-tree bpduguard enable` | סוגרת את הפורט אם חיברו מתג | מגנה על PortFast |
+| ‎`switchport port-security` | מפעילה את ההגנה | **בלי השורה הזו, השורות שאחריה לא עושות כלום** |
+| `maximum 1` ו-`sticky` | ‏MAC אחד, שנלמד לבד | לא צריך להקליד כתובות MAC |
+| ‎`switchport trunk encapsulation dot1q` | בוחרת את סוג התג (רק ב-3560) | ‏3560 מכיר גם ISL, ו-2960 מכיר רק dot1q |
+
+</div>
 
 ## משימה 5 — STP: אנחנו בוחרים מי ה-root
 **SW-S-MAIN:**
@@ -366,7 +439,7 @@ end
 ![הפורט החסום](images/10-stp-blocked.png)
 
 ## משימה 6 — בדיקה
-**PC-SAL-1** ‏←‏ ‏Command Prompt:
+‏**PC-SAL-1** ‏←‏ ‏Command Prompt:
 ```
 ping 192.168.20.22
 ping 192.168.10.21
@@ -402,6 +475,20 @@ ping 192.168.10.21
    ![ה-ping חזר](images/17-recover-ping.png)
 7. שומרים בכל מתג: `copy running-config startup-config`. אחר כך File ‏←‏ Save.
 
+### 🧯 לא עובד?
+
+<div dir="rtl">
+
+| מה רואים | כנראה | מה עושים |
+|---|---|---|
+| אין VLAN-ים ב-client | אין trunk, או דומיין/סיסמה שונים | ‎`show interfaces trunk`, `show vtp status`, `show vtp password` |
+| ‎`Command rejected: ... trunk encapsulation is "Auto"`‎ | מתג 3560 | קודם `switchport trunk encapsulation dot1q` |
+| הפורט ב-VLAN 1 | שכחתם `switchport access vlan` | ‎`show vlan brief` |
+| `BKN*`‎ או `root-inconsistent` | חסר VLAN 1 ב-`root primary` | מוסיפים ומחכים 50 שניות |
+| ‏err-disabled חוזר | הזר עדיין מחובר | מחזירים את ה-MAC המקורי **לפני** `shutdown` ו-`no shutdown` |
+
+</div>
+
 ---
 
 ## 🔎 מצאו את הטעות — מפרויקט אמיתי
@@ -420,9 +507,21 @@ ping 192.168.10.21
 </details>
 
 ## 🏋 תרגילים
-1. מחקו את הכבל SW-S-MAIN ↔ SW-S-SAL. כמה זמן עד ש-Fa0/1 נהיה ירוק? ציירו את המסלול החדש וחברו בחזרה.
+1. מפילים את המסלול הראשי: ב-SW-S-MAIN ‏`interface fa0/3` ואז `shutdown`. ב-SW-S-SAL מריצים `show spanning-tree vlan 20` כל 10 שניות. כמה זמן עד ש-Fa0/1 במצב FWD? מה ה-cost החדש? ציירו את המסלול החדש ועשו `no shutdown`.
 2. נסו ליצור `vlan 60` ב-SW-S-SAL. איזו הודעה קיבלתם, ולמה?
 3. הגדירו `switchport port-security violation restrict` ב-Fa0/5 ותקפו שוב. מה ההבדל מ-`shutdown`? החזירו ל-`shutdown`.
+
+<details dir="rtl"><summary>תשובות (בדקנו אותן)</summary>
+
+1. כ-30–35 שניות: LIS ‏(15), אחר כך LRN ‏(15), ואז FWD. הפורט Fa0/1 הוא עכשיו ה-Root port וה-cost הוא **38** ‏(19 + 19). המסלול: SW-S-SAL, אחר כך SW-S-BKP, אחר כך SW-S-MAIN.
+
+   ![מסלול הגיבוי מעביר, cost 38](images/18-stp-backup.png)
+2. ‏`VTP VLAN configuration not allowed when device is in CLIENT mode.`‎ רק ה-server יוצר VLAN-ים.
+3. ה-ping של הזר נכשל, אבל הפורט נשאר **connected** ‏(Secure-up), המונה עולה ומופיעה הודעה. עם `shutdown` הפורט נסגר ומנהל הרשת צריך לפתוח אותו. לא לשכוח להחזיר את ה-MAC של המחשב.
+
+   ![במצב restrict הפורט נשאר פעיל, 5 הפרות](images/19-restrict.png)
+
+</details>
 
 ## 🎓 להסביר לבוחן
 - מה ההבדל בין access ל-trunk? מה יש בתג 802.1Q?
@@ -430,6 +529,33 @@ ping 192.168.10.21
 - מה ההבדל בין PortFast, ‏BPDU Guard ו-Root Guard?
 - למה VTP מסוכן, ולמה MLS-S-SRV במצב transparent?
 - מה זה sticky MAC ו-err-disabled, ואיך משחזרים?
+
+<details dir="rtl"><summary>תשובות לדוגמה</summary>
+
+1. ‏Access = ‏VLAN אחד, בלי תג, למכשיר קצה. ‏Trunk = הרבה VLAN-ים, עם תג 802.1Q של 4 בייטים שיש בו את מספר ה-VLAN ‏(12 ביטים).
+2. הודעות broadcast מתרבות, טבלת ה-MAC קופצת בין פורטים והרשת קורסת. ה-root הוא ה-bridge ID הנמוך ביותר (עדיפות, ואחר כך MAC).
+3. ‏PortFast מדלג על ההמתנה בפורטים של מחשבים. ‏BPDU Guard סוגר פורט של מחשב ששומע מתג. ‏Root Guard חוסם פורט שממנו מישהו מנסה להיות root.
+4. מתג עם revision גבוה יותר דורס את רשימת ה-VLAN. המתג MLS-S-SRV מחובר בקישור access, ה-VTP לא מגיע אליו, ולכן יש לו רשימה משלו.
+5. ‏Sticky = המתג לומד את ה-MAC ורושם אותו בהגדרות. ‏err-disabled = פורט שנסגר על ידי הגנה. שחזור: מתקנים את הסיבה, `shutdown`, ‏`no shutdown`.
+
+</details>
+
+## ✏️ מבחן יציאה (3 דקות)
+1. איזה מצב VTP יוצר VLAN-ים ומעביר אותם הלאה?
+2. איזה מתג יהיה root: עדיפות 28672 או 24576?
+3. לפורט עם BPDU Guard חיברו מתג במקום מחשב. מה קורה?
+4. כתבו `switchport port-security maximum 1` ו-sticky, ושום דבר לא מוגן. איזו פקודה חסרה?
+5. למה ping מ-VLAN 20 ל-VLAN 10 נכשל עכשיו?
+
+<details dir="rtl"><summary>תשובות</summary>
+
+1. ‏Server.
+2. ‏24576.
+3. הפורט עובר ל-err-disabled.
+4. ‏`switchport port-security` עצמה.
+5. עדיין אין נתב.
+
+</details>
 
 ## 🛠 הפרויקט שלכם
 - [ ] טבלת VLAN: מספר, שם, רשת, מתג. ‏VLAN לכל מחלקה ועוד אחד לשרתים.

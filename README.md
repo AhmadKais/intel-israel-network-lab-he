@@ -139,6 +139,7 @@ flowchart LR
 ## מסמכי עזר
 
 - ‏[final-project/README.md](final-project/README.md) — **הפרויקט האמיתי, מההצעה עד יום הבחינה**
+- ‏[final-project/osem-class/README.md](final-project/osem-class/README.md) — **אוסם: פרויקט שלם עם 3 סניפים שבונים יחד בכיתה, ב-5 שיעורים**
 - ‏[docs/basic-moves.md](docs/basic-moves.md) — **הפעולות הבסיסיות M1–M28, לחיצה אחרי לחיצה** (פתיחה/שמירה, הצבה, שינוי שם, כבלים, CLI, הגדרות IP, ‏DHCP, ‏Simulation…). כל שלב מפנה אליהן כך: "(איך? ‏←‏ Mn)"
 - ‏[docs/sites-and-views.md](docs/sites-and-views.md) — **איך מחלקים את הרשת בין ערים ובניינים**, התצוגה הלוגית מול הפיזית, העברת מכשירים לעיר חדשה או לרשת אחרת
 - ‏[docs/exam-guide.md](docs/exam-guide.md) — **איך הבחינה על הפרויקט עובדת ואיך מתכוננים**
