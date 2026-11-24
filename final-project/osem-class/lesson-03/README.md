@@ -2,7 +2,7 @@
 
 <div dir="rtl">
 
-> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson03-start.pkt`](lesson03-start.pkt) · 💾 שומרים בשם `lesson03.pkt`
+> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson03-start.pkt`](lesson03-start.pkt) או הקובץ שלכם אחרי [חלק B](../from-zero/README.md#part-b) · 💾 שומרים בשם `lesson03.pkt`
 
 </div>
 
@@ -379,7 +379,9 @@ copy running-config startup-config
 
 ![1 שירות HTTP, 2 לחיצה על (edit) ליד index.html](images/step-http.png)
 
-‏**HTTP** ‏←‏ ליד `index.html` לוחצים **(edit)** ‏←‏ משנים את השורה אחרי ‎`<hr>`‎ ל-`Welcome to Osem - Sakhnin branch` ‏←‏ ‏**Save** (ומאשרים אם שואלים).
+‏**HTTP** ‏←‏ ליד `index.html` לוחצים **(edit)**. בשורה השלישית משאירים את ‎`<hr>`‎ ומחליפים את הטקסט שאחריו (‎`Welcome to Cisco Packet Tracer. … Mind Wide Open.`‎) ב-`Welcome to Osem - Sakhnin branch` ‏←‏ ‏**Save** (1) ‏←‏ ‏**Yes** כדי לדרוס את הקובץ.
+
+![השורה השלישית אחרי השינוי; 1 Save](images/step-http-edit.png)
 
 ![עריכת הדף](images/09-http-edit.png)
 

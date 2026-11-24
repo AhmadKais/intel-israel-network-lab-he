@@ -2,7 +2,7 @@
 
 <div dir="rtl">
 
-> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson02-start.pkt`](lesson02-start.pkt) · 💾 שומרים בשם `lesson02.pkt`
+> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson02-start.pkt`](lesson02-start.pkt) או הקובץ שלכם אחרי [חלק A](../from-zero/README.md#part-a) · 💾 שומרים בשם `lesson02.pkt`
 
 </div>
 
@@ -632,7 +632,7 @@ ping 192.168.10.21
    ![שחזור הפורט](images/16-recover.png)
 
    ![ה-ping חזר](images/17-recover-ping.png)
-7. שומרים בכל מתג: `copy running-config startup-config`. אחר כך File ‏←‏ Save.
+7. שומרים בכל **שבעת** המתגים: `copy running-config startup-config`. אחר כך File ‏←‏ Save.
 
 ## 👀 רואים את זה קורה — גבול ה-VLAN, התג ו-STP
 על מצב Simulation הסברנו ב[שיעור 1](../lesson-01/). מסננים: **ARP** ו-**ICMP**. במחשב PC-SAL-1:

@@ -2,7 +2,7 @@
 
 <div dir="rtl">
 
-> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson05-start.pkt`](lesson05-start.pkt) · 💾 שומרים בשם `lesson05.pkt`
+> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson05-start.pkt`](lesson05-start.pkt) או הקובץ שלכם אחרי [חלק D](../from-zero/README.md#part-d) · 💾 שומרים בשם `lesson05.pkt`
 
 </div>
 
@@ -312,6 +312,7 @@ access-list 120 permit ip 192.168.81.0 0.0.0.255 any
 interface g0/0.81
 ip access-group 120 in
 end
+copy running-config startup-config
 ```
 
 ![הנתב R-E-MAIN](images/step-m2-emain.png)
@@ -347,7 +348,11 @@ end
 configure terminal
 license boot module c1900 technology-package securityk9
 ```
-עונים `yes`, ואז:
+⚠️ **לא הודפס כלום?** זה קורה ב-Packet Tracer כשהנתב כבר הופעל מחדש קודם. כותבים **שוב את אותה פקודה**, ועכשיו מופיע ההסכם:
+
+![1 בפעם הראשונה: כלום. 2 שוב אותה פקודה: ההסכם (בתמונה R-A-EXT, נראה אותו דבר בכל 1941)](images/step-lic-twice.png)
+
+כשמופיע `ACCEPT? [yes/no]:`‎ עונים `yes`. חייבים לראות `Next reboot level = securityk9`. ואז:
 ```
 end
 copy running-config startup-config
@@ -625,6 +630,7 @@ ntp update-calendar
 logging host 192.168.63.1
 service timestamps log datetime msec
 end
+copy running-config startup-config
 ```
 
 ![הנתב R-A-MAIN](images/step-ssh-amain.png)
@@ -665,6 +671,7 @@ ntp update-calendar
 logging host 192.168.83.1
 service timestamps log datetime msec
 end
+copy running-config startup-config
 ```
 
 ![הנתב R-E-MAIN](images/step-ssh-emain.png)
@@ -679,7 +686,34 @@ end
 
 ❗ למתג שכבה 2 אין כתובת IP, ולכן אי אפשר לנהל אותו מרחוק. 💡 כתובת על ממשק VLAN, שער, ו-SSH עם המשתמש המקומי.
 
-ב-ISP ובנתבי EXT כותבים `line vty 0 4`, ובמתגים `line vty 0 15`:
+המכשירים:
+
+<div dir="rtl">
+
+| סוג | מכשירים | שורת ה-vty |
+|---|---|---|
+| נתבים | ‎ISP, R-S-EXT, R-A-EXT, R-E-EXT | ‎`line vty 0 4` |
+| מתגים, סכנין | ‎SW-S-MAIN, SW-S-BKP, SW-S-MGMT, SW-S-SAL, SW-S-IT, MLS-S-ASM, MLS-S-SRV | ‎`line vty 0 15` |
+| מתגים, אשדוד | ‎SW-A-MAIN, SW-A-BKP, SW-A-MGMT, SW-A-ASM, SW-A-ACC, MLS-A-SRV | ‎`line vty 0 15` |
+| מתגים, אילת | ‎SW-E-MAIN, SW-E-BKP, SW-E-MGMT, SW-E-ASM, SW-E-MEET, MLS-E-SRV | ‎`line vty 0 15` |
+
+</div>
+
+**כל אחד מארבעת הנתבים:**
+```
+configure terminal
+ip domain-name osem.com
+username admin privilege 15 secret Osem#Adm1
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+line vty 0 4
+transport input ssh
+login local
+end
+copy running-config startup-config
+```
+
+**כל אחד מ-19 המתגים:**
 ```
 configure terminal
 ip domain-name osem.com
@@ -690,11 +724,14 @@ line vty 0 15
 transport input ssh
 login local
 end
+copy running-config startup-config
 ```
 
 ![המתג SW-S-MAIN](images/step-ssh-sw.png)
 
-כתובת ניהול למתגים הראשיים, לדוגמה **SW-S-MAIN** (אשדוד: VLAN 60, אילת: VLAN 80):
+כתובת ניהול לשלושת המתגים הראשיים:
+
+**SW-S-MAIN:**
 ```
 configure terminal
 interface vlan 10
@@ -703,8 +740,32 @@ no shutdown
 exit
 ip default-gateway 192.168.10.252
 end
+copy running-config startup-config
 ```
 
+**SW-A-MAIN:**
+```
+configure terminal
+interface vlan 60
+ip address 192.168.60.240 255.255.255.0
+no shutdown
+exit
+ip default-gateway 192.168.60.252
+end
+copy running-config startup-config
+```
+
+**SW-E-MAIN:**
+```
+configure terminal
+interface vlan 80
+ip address 192.168.80.240 255.255.255.0
+no shutdown
+exit
+ip default-gateway 192.168.80.252
+end
+copy running-config startup-config
+```
 ![כתובת הניהול](images/step-sw-ip.png)
 
 ✅ ‏`ssh -l admin 192.168.10.240`
@@ -1007,3 +1068,5 @@ sequenceDiagram
 - [ ] ‏SSH 2, ‏AAA מהשרת, משתמש מקומי לגיבוי, NTP עם מפתח, Syslog.
 - [ ] ‏ASA עם inside/outside, ‏NAT ו-DHCP.
 - [ ] טבלת הבדיקות הסופית עם צילום מסך לכל שורה, לספר הפרויקט.
+
+➡ סיימתם? עושים את [הבדיקה הסופית](../from-zero/README.md#final): 14 בדיקות שמוכיחות שהפרויקט שלם.

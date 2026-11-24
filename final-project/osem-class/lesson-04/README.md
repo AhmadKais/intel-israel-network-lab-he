@@ -2,7 +2,7 @@
 
 <div dir="rtl">
 
-> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson04-start.pkt`](lesson04-start.pkt) · 💾 שומרים בשם `lesson04.pkt`
+> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson04-start.pkt`](lesson04-start.pkt) או הקובץ שלכם אחרי [חלק C](../from-zero/README.md#part-c) · 💾 שומרים בשם `lesson04.pkt`
 
 </div>
 
@@ -815,7 +815,7 @@ end
 
    ![הקו חזר](images/step-m6-noshut.png)
 
-4. שומרים בכל הנתבים: `copy running-config startup-config`. ‏File ‏←‏ Save.
+4. שומרים בכל **עשרת** הנתבים (גם ISP, אשדוד ואילת): `copy running-config startup-config`. אחר כך File ‏←‏ Save.
 
 ## 👀 רואים את זה קורה — NAT משנה את הכתובת
 על מצב Simulation הסברנו ב[שיעור 1](../lesson-01/). קודם ב-Realtime: ‏`ping 200.130.0.2` מ-PC-SAL-1 עובד.
