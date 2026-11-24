@@ -475,7 +475,56 @@ ping 192.168.10.21
    ![ה-ping חזר](images/17-recover-ping.png)
 7. שומרים בכל מתג: `copy running-config startup-config`. אחר כך File ‏←‏ Save.
 
-### 🧯 לא עובד?
+## 👀 רואים את זה קורה — גבול ה-VLAN, התג ו-STP
+על מצב Simulation הסברנו ב[שיעור 1](../lesson-01/). מסננים: **ARP** ו-**ICMP**. במחשב PC-SAL-1:
+```
+arp -d
+ping 192.168.20.22
+```
+**1. איפה השידור נעצר?** שלושה צעדים קדימה:
+
+![השידור הגיע למתגים, אבל לא למחשבים של VLAN אחר](images/sim-vlan.png)
+
+❓ המעטפה הגיעה ל-SW-S-MGMT ול-SW-S-IT. למה היא לא המשיכה ל-PC-MGMT-1 ול-PC-IT-1? ולמה היא לא הגיעה ל-MLS-S-SRV?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+ה-trunk נושא את VLAN 20 לכל מתג, אבל PC-MGMT-1 נמצא בפורט access של VLAN 10 ו-PC-IT-1 בפורט של VLAN 40, ולכן
+המסגרת לא יוצאת שם. הקישור ל-MLS-S-SRV הוא access VLAN 50, ולכן VLAN 20 בכלל לא נכנס אליו.
+
+</details>
+
+**2. התג.** פותחים את המעטפה ב-SW-S-MGMT ‏←‏ **Inbound PDU Details**:
+
+![TPID 0x8100, TCI 0x0014](images/sim-tag.png)
+
+<div dir="rtl">
+
+| שדה | ערך | משמעות |
+|---|---|---|
+| ‎TPID | ‎0x8100 | "יש לי תג VLAN" ‏(802.1Q) |
+| ‎TCI | ‎0x0014 | המספר 14 בהקסה = 1 × 16 + 4 = **20**, כלומר VLAN 20 |
+
+</div>
+
+עכשיו פותחים את המסגרת הראשונה ב-SW-S-SAL, זו שבאה מ-PC-SAL-1: אין תג. המחשב לא יודע כלום על VLAN.
+
+**3. ככה STP עובד.** עוד צעד אחד: מגיעים עותקים גם מ-SW-S-BKP. פותחים את המעטפה שהגיעה ל-MLS-S-ASM מ-SW-S-BKP
+ולוחצים **Next Layer**:
+
+![הפורט Fa0/4 חסום על ידי STP והמסגרת נזרקת](images/sim-stp.png)
+
+תוכנת Packet Tracer אומרת את זה: **blocked by STP, the device drops the frame**. בלי החסימה המסגרת הייתה מסתובבת לנצח.
+
+✏️ **נסו:** `ping 192.168.10.21`. באילו מחשבים מופיעה מעטפה?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+רק ב-PC-SAL-1, ושם היא מתה. הכתובת ברשת אחרת ולמחשב עוד אין שער, ולכן שום דבר לא יוצא.
+
+</details>
+
+## 🧯 לא עובד?
 
 <div dir="rtl">
 

@@ -295,7 +295,7 @@ copy running-config startup-config
 ![משתמש FTP](images/11-ftp.png)
 
 ### 3.6 דואר
-‏**EMAIL** ‏←‏ ‏Domain Name (1) ‏`osem.com` ‏←‏ ‏**Set** (2). ‏User (3) ‏`sakhnin1`, ‏Password (4) ‏`Osem#Mail` ‏←‏ `+` (5). שוב בשביל `sakhnin2`.
+‏**EMAIL** ‏←‏ ‏Domain Name (1) ‏`osem.com` ‏←‏ ‏**Set** (2). ‏User (3) ‏`sakhnin1`, ‏Password (4) ‏`Osem#Mail` ‏←‏ ‎`+`‎ (5). שוב בשביל `sakhnin2`.
 
 ![משתמשי דואר](images/12-mail.png)
 
@@ -413,7 +413,81 @@ end
    ![חזרנו לשגרה](images/23-back.png)
 5. ‏`copy running-config startup-config` בנתבים וב-SW-S-MAIN, ו-File ‏←‏ Save.
 
-### 🧯 לא עובד?
+## 👀 רואים את זה קורה — ה-relay וה-MAC הווירטואלי
+על מצב Simulation הסברנו ב[שיעור 1](../lesson-01/).
+
+### א. DHCP דרך ה-relay
+1. במחשב PC-SAL-1 ‏←‏ Desktop ‏←‏ **IP Configuration** ‏←‏ **Static**.
+2. עוברים ל-**Simulation** ‏←‏ מסננים: רק **DHCP**.
+3. ב-IP Configuration לוחצים **DHCP** וסוגרים את החלון.
+4. מתקדמים עד ש-**R-S-MAIN** מופיע בעמודה *At Device*, ופותחים את החבילה הזו.
+
+![נכנס broadcast, יוצא unicast](images/sim-relay.png)
+
+<div dir="rtl">
+
+| | נכנס | יוצא |
+|---|---|---|
+| IP מקור | 0.0.0.0 (עוד אין כתובת) | ‎**192.168.20.254** |
+| IP יעד | 255.255.255.255 (כולם) | **192.168.50.1** (השרת) |
+
+</div>
+
+זו כל המשמעות של `ip helper-address`. הבקשה באה מהרשת 192.168.20.0, ולכן השרת יודע מאיזה pool לתת.
+
+```mermaid
+sequenceDiagram
+    participant P as PC-SAL-1
+    participant R as Router (relay)
+    participant S as SRV-SAKHNIN
+    P->>R: Discover (broadcast)
+    R->>S: Discover (unicast to 192.168.50.1)
+    S->>R: Offer
+    R->>P: Offer
+    P->>R: Request (broadcast)
+    R->>S: Request
+    S->>R: ACK
+    R->>P: ACK
+```
+
+❓ גם R-S-BKP שולח עותק לשרת. זו בעיה?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+לא. לשני הנתבים יש helper, ולכן השרת מקבל את הבקשה פעמיים והמחשב משתמש בהצעה אחת. בגלל זה DHCP עובד גם
+כשנתב אחד נפל.
+
+</details>
+
+### ב. ה-ping וה-MAC הווירטואלי
+עוברים ל-**Realtime** ומחכים של-PC-SAL-1 תהיה כתובת. אחר כך **Simulation** ‏←‏ רק **ICMP** ‏←‏ `ping 192.168.50.1`. פותחים את החבילה
+ב-**R-S-MAIN** ‏←‏ **Next Layer**:
+
+![כתובת היעד היא ה-MAC הווירטואלי של HSRP](images/sim-hsrp.png)
+
+<div dir="rtl">
+
+| מסתכלים על | משמעות |
+|---|---|
+| נכנס: ‎`0000.0C07.AC14` | ה-**MAC הווירטואלי של HSRP**: המספר 14 בהקסה = 20 = מספר הקבוצה |
+| ‎*The subinterface GigabitEthernet0/0.20 accepts frames* | זה router-on-a-stick: התג בחר את ממשק המשנה |
+| כתובות ה-IP זהות בשני הצדדים | נתב לא משנה את ה-IP (בלי NAT) |
+| כתובות ה-MAC שונות בשני הצדדים | הנתב כותב כותרת שכבה 2 **חדשה** |
+
+</div>
+
+💡 אולי תראו עותקים גם במתגים ובמחשבים אחרים. מתג שעוד לא למד את ה-MAC הווירטואלי מציף, ומי שהחבילה
+לא מיועדת לו זורק אותה.
+
+✏️ **נסו:** ping למחשב ב-VLAN 30. מה ה-MAC של היעד כשהחבילה יוצאת מ-PC-SAL-1?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+שוב ‎`0000.0C07.AC14`: כל מה שיוצא מהרשת הולך לשער.
+
+</details>
+
+## 🧯 לא עובד?
 
 <div dir="rtl">
 

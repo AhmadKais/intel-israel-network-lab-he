@@ -283,7 +283,78 @@ copy running-config startup-config
 
    ![שמירה בשם](images/19-save-as.png)
 
-### 🧯 לא עובד?
+## 👀 רואים את זה קורה — ה-ping, צעד אחר צעד
+עד עכשיו הכול היה בלתי נראה. מצב **Simulation** עוצר את הזמן, ורואים כל חבילה.
+
+**איך משתמשים (אותו דבר בכל שיעור):**
+
+‏![1 Simulation, 2 Show All/None, 3 Edit Filters, 4 הצעד הבא](images/sim-panel.png)
+
+1. למטה מימין: **Simulation** (1). הזמן נעצר.
+2. לוחצים **Show All/None** (2) עד שכתוב *None*. אחר כך **Edit Filters** (3) ‏←‏ מסמנים רק מה שצריך.
+3. עושים את הפעולה (למשל ping) וסוגרים את חלון המחשב.
+4. לוחצים על כפתור **הצעד הבא** (4), לחיצה אחת בכל פעם.
+5. לוחצים על **מעטפה**, או על הריבוע הצבעוני בעמודה **Type**, כדי לפתוח את החבילה.
+   המשמעות: *In Layers* = איך היא נכנסה, *Out Layers* = איך היא יוצאת. **Next Layer** מסביר כל החלטה.
+6. **סיימתם? לוחצים Realtime.** אחרת שום דבר ברשת לא זז.
+
+💡 נפתח חלון *Buffer Full*? לוחצים **View Previous Events**. לא רואים את העמודה Type? גוררים את הקצה השמאלי של החלונית.
+
+**ועכשיו ברשת שלנו.** מסננים: **ARP** ו-**ICMP** (לשונית IPv4). במחשב PC-SAL-1 ‏←‏ Command Prompt:
+```
+arp -d
+ping 192.168.20.22
+```
+הפקודה `arp -d` מוחקת את מה שהמחשב למד, ולכן הוא חייב לשאול שוב.
+
+```mermaid
+sequenceDiagram
+    participant A as PC-SAL-1
+    participant S as SW-S-SAL
+    participant B as PC-SAL-2
+    participant C as PC-SAL-3
+    A->>S: ARP: who has 192.168.20.22?
+    S->>B: flood
+    S->>C: flood
+    B->>S: ARP reply: this is my MAC
+    S->>A: only to Fa0/2
+    A->>S: ping
+    S->>B: only to Fa0/3
+```
+
+**מסגרת 1: השאלה הולכת לכולם.** ❓ נחשו לפני שלוחצים: כמה מעטפות יהיו?
+
+![ה-ARP הגיע לכולם](images/sim-flood.png)
+
+המעטפה נמצאת ב-PC-SAL-2, ב-PC-SAL-3 **וגם** ב-SW-S-MAIN. זו **הצפה** (flood).
+
+**מסגרת 3: ה-ping הולך לפורט אחד.** פותחים את ה-ping במתג SW-S-SAL:
+
+![נכנס ב-Fa0/2, יוצא ב-Fa0/3](images/sim-switch.png)
+
+<div dir="rtl">
+
+| מסתכלים על | מה זה מוכיח |
+|---|---|
+| שכבות 3 עד 7 אפורות | המתג בכלל לא מסתכל על ה-IP |
+| כתובות ה-MAC זהות בשני הצדדים | מתג לא משנה את המסגרת |
+| נכנס ב-Fa0/2, יוצא **רק** ב-Fa0/3 | הוא למד, אין יותר הצפה |
+
+</div>
+
+לשונית **Inbound PDU Details**: החבילה כולה. מצאו את שתי כתובות ה-MAC ואת שתי כתובות ה-IP, והשוו ל-`arp -a`:
+
+![בתוך ה-ping](images/sim-inside.png)
+
+✏️ **נסו:** שוב ping, **בלי** `arp -d`. יש ARP? למה?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+לא. המחשב שמר את ה-MAC בטבלת ה-ARP שלו, ולכן ה-ping יוצא מיד.
+
+</details>
+
+## 🧯 לא עובד?
 
 <div dir="rtl">
 
