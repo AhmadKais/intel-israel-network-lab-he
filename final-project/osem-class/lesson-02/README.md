@@ -165,7 +165,39 @@ broadcast, יותר אבטחה, ועובד יכול לעבור שולחן ולה
 
 ---
 
+## 🔑 איך פותחים מכשיר (אותו דבר בכל שיעור)
+1. לוחצים על המכשיר. החלון נפתח על **Physical**. לוחצים **CLI** (1):
+
+   ![לוחצים על CLI](images/step-login-1.png)
+2. לוחצים בתוך הטקסט (2) ואז **Enter**:
+
+   ![לוחצים בטקסט ואז Enter](images/step-login-2.png)
+3. סיסמה `Osem#Con` ו-Enter, ‏`enable` ו-Enter, ‏`Osem#En1` ו-Enter. **כשמקלידים סיסמה לא רואים כלום.** חייב להופיע ‎`#`‎:
+
+   ![נכנסנו: השורה מסתיימת בסולמית](images/step-login-3.png)
+4. בסוף העבודה בכל מכשיר שומרים: `copy running-config startup-config`, ואז Enter. חייב להופיע ‎`[OK]`‎:
+
+   ![נשמר](images/step-save.png)
+
+## איך בנויה כל משימה
+‏🌐 הרשת עכשיו ‏←‏ ❗ הבעיה (ואיך רואים אותה) ‏←‏ 💡 הפתרון ‏←‏ 📋 מבצעים לבד בפרויקט ‏←‏ 🖱 הפתרון המלא: על מה לוחצים, מה כותבים ומה חייבים לראות.
+
 ## משימה 1 — יוצרים VLAN במתג הראשי
+**🌐 הרשת עכשיו.** שבעה מתגים, כולם מחוברים. עובדים על הראשי:
+
+![1 המתג SW-S-MAIN](images/step-map-m1.png)
+
+**❗ הבעיה.** כולם נמצאים ברשת **אחת**. ב-SW-S-MAIN כותבים `show vlan brief`:
+
+![כל 26 הפורטים נמצאים ב-VLAN 1](images/step-m1-before.png)
+
+כל הפורטים ב-VLAN 1: ‏broadcast של מחלקת השכר מגיע להנהלה, ל-IT ולשרתים. זה איטי וזה לא פרטי.
+
+**💡 הפתרון.** חמישה VLAN-ים, אחד לכל מחלקה ואחד לשרתים (תיאוריה 1.1). יוצרים אותם **פעם אחת**, בשרת VTP, ולא שבע פעמים.
+
+**📋 מבצעים בפרויקט.** ב-SW-S-MAIN: ‏VTP domain `SAKHNIN`, סיסמה `Osem#Vtp`, מצב server, ואת VLAN 10, 20, 30, 40, 50 עם השמות מהטבלה ב-1.6.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 לוחצים על **SW-S-MAIN** ‏←‏ **CLI** ‏←‏ נכנסים עם הסיסמה ‏←‏ `enable`:
 ```
 configure terminal
@@ -199,6 +231,17 @@ show vlan brief
 </div>
 
 ## משימה 2 — VTP client בשאר המתגים
+**🌐 הרשת עכשיו.** SW-S-MAIN מכיר חמישה VLAN-ים. חמשת המתגים האלה לא:
+
+![1 המתג SW-S-BKP, 2 המתג SW-S-MGMT, 3 המתג SW-S-SAL, 4 המתג SW-S-IT, 5 המתג MLS-S-ASM](images/step-map-m2.png)
+
+**❗ הבעיה.** ליצור 5 VLAN-ים ב-6 מתגים ביד = 30 פעמים, עם שגיאות הקלדה, ושוב בכל VLAN חדש.
+
+**💡 הפתרון.** VTP client: המתג **מקבל** את הרשימה מהשרת. צריך אותו domain ואותה סיסמה, אחרת הוא מסרב (תיאוריה 1.3).
+
+**📋 מבצעים בפרויקט.** הופכים את חמשת המתגים ל-VTP client. נחשו: האם ה-VLAN-ים יגיעו מיד?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 ב-**SW-S-BKP, SW-S-MGMT, SW-S-SAL, SW-S-IT ו-MLS-S-ASM** (לא ב-MLS-S-SRV):
 ```
 configure terminal
@@ -207,6 +250,21 @@ vtp password Osem#Vtp
 vtp mode client
 end
 ```
+
+מה חייבים לראות (אותו דבר בכל החמישה):
+
+![1 — המתג SW-S-BKP](images/step-m2-bkp.png)
+
+![2 — המתג SW-S-MGMT](images/step-m2-mgmt.png)
+
+![3 — המתג SW-S-SAL](images/step-m2-sal.png)
+
+![4 — המתג SW-S-IT](images/step-m2-it.png)
+
+![5 — המתג MLS-S-ASM](images/step-m2-asm.png)
+
+💡 הודעות כמו `RECV_PVID_ERR` יכולות להופיע כל עוד צד אחד כבר Trunk והשני עדיין לא. הן נעלמות אחרי משימה 4.
+
 ❓ שואלים את הכיתה: מריצים `show vlan brief` ב-SW-S-SAL. ה-VLAN-ים **לא** הגיעו. למה?
 
 ![המתג SW-S-SAL לפני ה-Trunk](images/04-sal-before.png)
@@ -218,6 +276,21 @@ end
 </details>
 
 ## משימה 3 — Trunk ו-Access במתג הראשי ובמתג הגיבוי
+**🌐 הרשת עכשיו.** רשימת ה-VLAN קיימת רק ב-SW-S-MAIN. מכאן פותחים את הדרכים:
+
+![1 המתג SW-S-MAIN, 2 המתג SW-S-BKP](images/step-map-m3.png)
+
+**❗ הבעיה.** כל קישור הוא access רגיל ומעביר VLAN **אחד**. ב-SW-S-MAIN, ‏`show interfaces trunk`:
+
+![ריק: אין אפילו Trunk אחד](images/step-m3-before.png)
+
+לא חזר כלום. לכן VLAN 20 לא יכול לעבור למתג אחר, וגם VTP לא.
+
+**💡 הפתרון.** **Trunk** בכל קישור בין מתגים: כבל אחד, כל ה-VLAN-ים, ותג על כל מסגרת (תיאוריה 1.2). פורטים פנויים מקבלים `shutdown`, כדי שאף אחד לא יתחבר.
+
+**📋 מבצעים בפרויקט.** בשני המתגים: Trunk בקישורים שבטבלה 1.6, ב-SW-S-MAIN הפורט Fa0/2 הוא access ב-VLAN 50 עם port security לשתי כתובות MAC, וכל שאר הפורטים כבויים.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **SW-S-MAIN:**
 ```
 configure terminal
@@ -236,6 +309,13 @@ interface range fa0/9 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![הפקודות. ההודעות אומרות שהקישורים יורדים ועולים בתור Trunk](images/step-m3-main-1.png)
+
+אחרי `shutdown` מופיעה הודעה לכל פורט, ואז `end`:
+
+![הפורטים הפנויים כבויים](images/step-m3-main-2.png)
+
 **SW-S-BKP:**
 ```
 configure terminal
@@ -246,6 +326,8 @@ interface range fa0/6 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![המתג SW-S-BKP, רגע לפני ה-shutdown האחרון](images/step-m3-bkp.png)
 
 <div dir="rtl">
 
@@ -259,6 +341,21 @@ end
 </div>
 
 ## משימה 4 — מתגי המחלקות
+**🌐 הרשת עכשיו.** צד אחד של כל קישור הוא Trunk. מתגי המחלקות עדיין כמו שהיו:
+
+![1 המתג SW-S-MGMT, 2 המתג SW-S-SAL, 3 המתג MLS-S-ASM, 4 המתג SW-S-IT, 5 המתג MLS-S-SRV](images/step-map-m4.png)
+
+**❗ הבעיה.** ב-SW-S-SAL, ‏`show vlan brief`: הפורטים של המחשבים ב-VLAN 1, כלומר המחשבים לא נמצאים במחלקה שלהם.
+
+![עדיין כולם ב-VLAN 1](images/step-m4-before.png)
+
+ובעיה שנייה: כל אחד יכול לנתק מחשב ולחבר מחשב זר, או מתג.
+
+**💡 הפתרון.** קישורים למעלה = Trunk. פורטים של מחשבים = **access** ב-VLAN של המחלקה, עם PortFast (ירוק מיד), BPDU Guard (בלי מתג זר) ו-port security (בלי מחשב זר).
+
+**📋 מבצעים בפרויקט.** כל קבוצה לוקחת מתג אחד. רושמים: אילו פורטים הם קישורים למעלה, אילו למחשבים, איזה VLAN, ורק אז מגדירים.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 כל קבוצה מקבלת מתג.
 
 **SW-S-MGMT:**
@@ -286,6 +383,9 @@ interface range fa0/4 , fa0/6 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![המתג SW-S-MGMT, רגע לפני ה-shutdown האחרון](images/step-m4-mgmt.png)
+
 הפורט Fa0/1 שמור לחומת האש ASA (שיעור 5), בלי Port Security: יעברו בו כמה כתובות MAC.
 
 **SW-S-SAL:**
@@ -308,6 +408,9 @@ interface range fa0/6 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![המתג SW-S-SAL](images/step-m4-sal.png)
+
 ‏**MLS-S-ASM** (מתג 3560 — פקודה אחת נוספת!):
 ```
 configure terminal
@@ -329,6 +432,9 @@ interface range fa0/5 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![המתג MLS-S-ASM](images/step-m4-asm.png)
+
 **SW-S-IT:**
 ```
 configure terminal
@@ -349,6 +455,9 @@ interface range fa0/4 - 24 , g0/1 - 2
 shutdown
 end
 ```
+
+![המתג SW-S-IT](images/step-m4-it.png)
+
 ‏**MLS-S-SRV** (מתג 3560):
 ```
 configure terminal
@@ -372,6 +481,9 @@ switchport port-security mac-address sticky
 switchport port-security violation shutdown
 end
 ```
+
+![תחילת ההגדרות ב-MLS-S-SRV](images/step-m4-srv.png)
+
 ![סוף ההגדרות ב-MLS-S-SRV. האזהרה של PortFast היא רגילה](images/07-srv.png)
 
 🧠 הקישור SW-S-MAIN ↔ MLS-S-SRV הוא **access VLAN 50**: יש שם רק שרתים, ולכן ה-VTP לא עובר ויוצרים את
@@ -400,6 +512,23 @@ VLAN 50 ידנית במצב transparent.
 </div>
 
 ## משימה 5 — STP: אנחנו בוחרים מי ה-root
+**🌐 הרשת עכשיו.** יש VLAN, ‏Trunk ומתג גיבוי. שתי דרכים לכל מחלקה = לולאה, ו-STP חוסם אחת מהן:
+
+![1 המתג SW-S-MAIN, 2 המתג SW-S-BKP, 3 המתג SW-S-SAL](images/step-map-m5.png)
+
+**❗ הבעיה.** אף פעם לא בחרנו root bridge, ולכן STP בחר לבד. ב-SW-S-MAIN, ‏`show spanning-tree vlan 20`:
+
+![המתג SW-S-MAIN הוא לא ה-root. ה-root נמצא מאחורי Fa0/8](images/step-m5-before-main.png)
+
+הפורט Fa0/8 מוביל אל **SW-S-IT**: המתג של מחלקת IT הוא המרכז של כל הסניף! כל העדיפויות הן 32768, ולכן ניצח ה-MAC הנמוך, במקרה. ל-SW-S-SAL זה עולה 38 להגיע אליו:
+
+![העלות מ-SW-S-SAL היא 38](images/step-m5-before-sal.png)
+
+**💡 הפתרון.** אנחנו מחליטים: המתג הראשי = `root primary`, הגיבוי = `root secondary`, ו-**Root Guard** כדי שאף מתג מחלקה לא ייקח את התפקיד (תיאוריה 1.4).
+
+**📋 מבצעים בפרויקט.** הופכים את SW-S-MAIN ל-root של VLAN 1,10,20,30,40,50, את SW-S-BKP לשני, ו-Root Guard בפורטים למחלקות. איזה פורט של SW-S-MAIN **לא** צריך לקבל Root Guard?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **SW-S-MAIN:**
 ```
 configure terminal
@@ -409,12 +538,17 @@ interface range fa0/1 , fa0/3 , fa0/4 , fa0/8
 spanning-tree guard root
 end
 ```
+
+![המתג SW-S-MAIN](images/step-m5-main.png)
+
 **SW-S-BKP:**
 ```
 configure terminal
 spanning-tree vlan 1,10,20,30,40,50 root secondary
 end
 ```
+
+![המתג SW-S-BKP](images/step-m5-bkp.png)
 
 <div dir="rtl">
 
@@ -439,6 +573,17 @@ end
 ![הפורט החסום](images/10-stp-blocked.png)
 
 ## משימה 6 — בדיקה
+**🌐 הרשת עכשיו.** חמש רשתות נפרדות על אותם כבלים. בודקים מ-PC-SAL-1 (1) אל PC-SAL-2 (2) ואל PC-MGMT-1 (3):
+
+![1 המחשב PC-SAL-1, 2 המחשב PC-SAL-2, 3 המחשב PC-MGMT-1](images/step-map-m6.png)
+
+**❗ הבעיה.** איך יודעים שה-VLAN-ים באמת מפרידים ולא רק מופיעים בטבלה?
+
+**💡 הפתרון.** שני ping: אחד ש**חייב** לעבוד (אותו VLAN) ואחד ש**חייב** להיכשל (VLAN אחר). בדיקה שבודקת רק הצלחה מוכיחה חצי.
+
+**📋 מבצעים בפרויקט.** לפני שלוחצים Enter, כותבים ניחוש לכל ping ולמה.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 ‏**PC-SAL-1** ‏←‏ ‏Command Prompt:
 ```
 ping 192.168.20.22
@@ -449,10 +594,24 @@ ping 192.168.10.21
 🧠 ה-ping השני **חייב** להיכשל: בין VLAN-ים צריך נתב. זה שיעור 3.
 
 ## משימה 7 — התקפה: מישהו זר מתחבר
+**🌐 הרשת עכשיו.** פורטים מוגנים. אנחנו משחקים את התוקף ב-PC-SAL-3 (2) ואת מנהל הרשת ב-SW-S-SAL (1):
+
+![1 המתג SW-S-SAL, 2 המחשב PC-SAL-3](images/step-map-m7.png)
+
+**❗ הבעיה.** אדם זר נכנס למשרד, מנתק את PC-SAL-3 ומחבר מחשב נייד לכבל שלו. בלי port security המחשב הנייד נמצא מיד ב-VLAN 20.
+
+**💡 הפתרון.** הפורט זוכר את ה-MAC של המחשב הראשון (`sticky`) וסוגר את עצמו מול כל MAC אחר (`violation shutdown`).
+
+**📋 מבצעים בפרויקט.** משנים את ה-MAC של PC-SAL-3, מראים שהוא מנותק, מוצאים את ההוכחה במתג ומחזירים את הפורט.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 1. ב-SW-S-SAL: ‏`show port-security interface fa0/2`. המצב **Secure-up**, כתובת sticky אחת.
 
    ![ה-Port Security עובד](images/12-port-security.png)
 2. מ-**PC-SAL-3** עושים ping ל-192.168.20.21, כדי שהמתג ילמד את ה-MAC שלו.
+
+   ![המחשב האמיתי PC-SAL-3 עובד](images/step-m7-ping.png)
+
 3. ‏PC-SAL-3 ‏←‏ ‏**Config** (1) ‏←‏ ‏**FastEthernet0** (2) ‏←‏ ‏MAC Address (3): רושמים בצד את הכתובת, ואז משנים את ארבע הספרות האחרונות ל-‎`9999` ולוחצים Tab. עכשיו הוא "זר".
 
    ![שינוי ה-MAC](images/13-mac-change.png)

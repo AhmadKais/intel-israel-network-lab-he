@@ -152,7 +152,29 @@
 
 ---
 
+## 🔑 פותחים מכשיר
+לוחצים על המכשיר ‏←‏ **CLI** (1) ‏←‏ לוחצים בטקסט ואז Enter ‏←‏ `Osem#Con` ‏←‏ `enable` ‏←‏ `Osem#En1`. עם תמונות: [שיעור 2](../lesson-02/).
+
+![לוחצים על CLI](images/step-login-1.png)
+
+**איך בנויה כל משימה:** ‏🌐 הרשת עכשיו ‏←‏ ❗ הבעיה ‏←‏ 💡 הפתרון ‏←‏ 📋 מבצעים לבד ‏←‏ 🖱 הפתרון המלא: על מה לוחצים, מה כותבים ומה חייבים לראות.
+
 ## משימה 1 — כתובות WAN
+**🌐 הרשת עכשיו.** שלושה סניפים מוכנים, שלושה איים. עשרה נתבים מחכים:
+
+![1 הנתב R-S-MAIN, 2 הנתב R-S-BKP, 3 הנתב R-S-EXT, 4 הספק ISP, 5 הנתב R-A-MAIN, 6 הנתב R-A-BKP, 7 הנתב R-A-EXT, 8 הנתב R-E-MAIN, 9 הנתב R-E-BKP, 10 הנתב R-E-EXT](images/step-map-m1.png)
+
+**❗ הבעיה.** כל הקווים הטוריים אדומים. ב-R-S-MAIN, ‏`show ip interface brief`:
+
+![הפורט Serial0/0/0: אין כתובת, והוא administratively down](images/step-m1-before.png)
+
+ל-`Serial0/0/0` אין כתובת והוא כבוי. פורט של נתב נולד כבוי.
+
+**💡 הפתרון.** לכל צד: כתובת מתוכנית ה-WAN ‏(1.5), ‏`no shutdown`, ובצד ה-**DCE** גם `clock rate` ‏(1.1).
+
+**📋 מבצעים בפרויקט.** מוצאים את השורות של הנתב שלכם בטבלה 1.5, מסמנים אילו צדדים הם DCE, ומגדירים. מתי שני המשולשים נהיים ירוקים?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **R-S-MAIN:**
 ```
 configure terminal
@@ -161,6 +183,9 @@ ip address 200.100.0.1 255.255.255.0
 no shutdown
 end
 ```
+
+![1 — הנתב R-S-MAIN. המילה down: הצד השני עדיין לא מוכן](images/step-m1-smain.png)
+
 **R-S-BKP:**
 ```
 configure terminal
@@ -169,6 +194,9 @@ ip address 200.90.0.1 255.255.255.0
 no shutdown
 end
 ```
+
+![2 — הנתב R-S-BKP](images/step-m1-sbkp.png)
+
 **R-S-EXT:**
 ```
 configure terminal
@@ -187,6 +215,9 @@ ip address 200.130.0.1 255.255.255.0
 no shutdown
 end
 ```
+
+![3 — הנתב R-S-EXT](images/step-m1-sext.png)
+
 **ISP:**
 ```
 configure terminal
@@ -206,6 +237,9 @@ clock rate 2000000
 no shutdown
 end
 ```
+
+![4 — הספק ISP](images/step-m1-isp.png)
+
 ❓ איזה צד מקבל `clock rate`? רק ה-**DCE**. בצד DTE הפקודה לא נחוצה.
 
 **אשדוד ואילת:** כל קבוצה מדביקה נתב אחד. בבלוקים יש **הכול** לסניף: WAN, ‏HSRP track, ‏EIGRP, ‏BGP ו-NAT.
@@ -251,6 +285,10 @@ ip route 0.0.0.0 0.0.0.0 200.110.0.1
 end
 ```
 
+![הנתב R-A-MAIN, התחלה](images/step-m1-amain-1.png)
+
+![הנתב R-A-MAIN, סוף](images/step-m1-amain-2.png)
+
 </div>
 
 **R-A-BKP**
@@ -278,6 +316,8 @@ exit
 ip route 0.0.0.0 0.0.0.0 200.120.0.2
 end
 ```
+
+![הנתב R-A-BKP](images/step-m1-abkp.png)
 
 </div>
 
@@ -324,6 +364,10 @@ exit
 end
 ```
 
+![הנתב R-A-EXT, התחלה](images/step-m1-aext-1.png)
+
+![הנתב R-A-EXT, סוף](images/step-m1-aext-2.png)
+
 </div>
 
 </details>
@@ -368,6 +412,10 @@ ip route 0.0.0.0 0.0.0.0 200.140.0.1
 end
 ```
 
+![הנתב R-E-MAIN, התחלה](images/step-m1-emain-1.png)
+
+![הנתב R-E-MAIN, סוף](images/step-m1-emain-2.png)
+
 </div>
 
 **R-E-BKP**
@@ -395,6 +443,8 @@ exit
 ip route 0.0.0.0 0.0.0.0 200.160.0.1
 end
 ```
+
+![הנתב R-E-BKP](images/step-m1-ebkp.png)
 
 </div>
 
@@ -443,6 +493,10 @@ exit
 end
 ```
 
+![הנתב R-E-EXT, התחלה](images/step-m1-eext-1.png)
+
+![הנתב R-E-EXT, סוף](images/step-m1-eext-2.png)
+
 </div>
 
 </details>
@@ -450,6 +504,21 @@ end
 ✅ כל הקווים הטוריים ירוקים.
 
 ## משימה 2 — HSRP עוקב אחרי קו האינטרנט
+**🌐 הרשת עכשיו.** ל-R-S-MAIN (1) ול-R-S-BKP (2) יש קו משלהם אל R-S-EXT.
+
+![1 הנתב R-S-MAIN, 2 הנתב R-S-BKP](images/step-map-m2.png)
+
+**❗ הבעיה.** מכבים את קו **האינטרנט** של הראשי (`interface s0/0/0`, ‏`shutdown`), מחכים 15 שניות וכותבים `show standby brief`:
+
+![הקו נפל, והראשי עדיין Active](images/step-m2-before.png)
+
+הוא **עדיין Active**! צד ה-LAN שלו תקין, ולכן HSRP לא רואה בעיה. כל המחשבים ממשיכים לשלוח לנתב שאין לו יציאה. (מחזירים: `no shutdown`.)
+
+**💡 הפתרון.** `track`: ‏HSRP עוקב אחרי הקו הטורי. אם הוא נופל, העדיפות יורדת ב-10.
+
+**📋 מבצעים בפרויקט.** מוסיפים track לחמש הקבוצות של R-S-MAIN. קודם מחשבים: מה תהיה העדיפות, ומי יהיה Active?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 בשיעור 3 הגיבוי נכנס רק כשה-LAN נפל. עכשיו הנתב הראשי מאבד עדיפות גם כשה**קו הטורי** שלו נופל. ב-**R-S-MAIN**:
 ```
 configure terminal
@@ -465,6 +534,9 @@ interface g0/0.50
 standby 50 track s0/0/0
 end
 ```
+
+![מחזירים את הקו, וחמש פקודות track](images/step-m2.png)
+
 🧠 הקו נופל ‏←‏ 110 − 10 = **100**, פחות מ-105 ‏←‏ הגיבוי מחליף.
 
 <div dir="rtl">
@@ -485,6 +557,21 @@ end
 </details>
 
 ## משימה 3 — OSPF בסכנין
+**🌐 הרשת עכשיו.** הקווים פועלים. כל נתב מכיר רק את השכנים שלו:
+
+![1 הנתב R-S-MAIN, 2 הנתב R-S-BKP, 3 הנתב R-S-EXT, 4 הנתב R-A-EXT](images/step-map-m3.png)
+
+**❗ הבעיה.** ב-R-S-EXT, ‏`show ip route`:
+
+![אין אפילו רשת 192.168 אחת, ואין נתיב ברירת מחדל](images/step-m3-before.png)
+
+אין אף רשת 192.168. כשמגיעה מהאינטרנט תשובה למחשב, R-S-EXT לא יודע לאן לשלוח אותה וזורק אותה.
+
+**💡 הפתרון.** פרוטוקול ניתוב: הנתבים **מספרים** אחד לשני מה הם מכירים. OSPF בסכנין, EIGRP באשדוד ובאילת (1.2). גם נתיבים סטטיים בשלושת הנתבים היו עובדים, עד שקו נופל: נתיב סטטי לא מגיב.
+
+**📋 מבצעים בפרויקט.** OSPF 52, ‏area 0, ‏router-id ‏1.1.1.1 / 1.1.1.2 / 1.1.1.3, ‏passive בכל ממשק משנה של ה-LAN, ונתיב ברירת מחדל אל הנתב הבא בכיוון האינטרנט.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **R-S-MAIN:**
 ```
 configure terminal
@@ -505,8 +592,34 @@ exit
 ip route 0.0.0.0 0.0.0.0 200.100.0.2
 end
 ```
+
+![1 — הנתב R-S-MAIN](images/step-m3-smain.png)
+
 ‏**R-S-BKP:** אותו דבר, עם `router-id 1.1.1.2`, עם `network 200.90.0.0 0.0.0.255 area 0` במקום 200.100, ועם
 `ip route 0.0.0.0 0.0.0.0 200.90.0.2`.
+
+הבלוק המלא של R-S-BKP:
+```
+configure terminal
+router ospf 52
+router-id 1.1.1.2
+network 192.168.10.0 0.0.0.255 area 0
+network 192.168.20.0 0.0.0.255 area 0
+network 192.168.30.0 0.0.0.255 area 0
+network 192.168.40.0 0.0.0.255 area 0
+network 192.168.50.0 0.0.0.255 area 0
+network 200.90.0.0 0.0.0.255 area 0
+passive-interface g0/0.10
+passive-interface g0/0.20
+passive-interface g0/0.30
+passive-interface g0/0.40
+passive-interface g0/0.50
+exit
+ip route 0.0.0.0 0.0.0.0 200.90.0.2
+end
+```
+
+![2 — הנתב R-S-BKP](images/step-m3-sbkp.png)
 
 **R-S-EXT:**
 ```
@@ -519,6 +632,8 @@ exit
 ip route 0.0.0.0 0.0.0.0 200.130.0.2
 end
 ```
+
+![3 — הנתב R-S-EXT](images/step-m3-sext.png)
 
 <div dir="rtl">
 
@@ -546,6 +661,21 @@ end
 ❓ למה יש `no auto-summary`? כדי ש-EIGRP יפרסם את הרשתות המדויקות ולא class שלם.
 
 ## משימה 4 — BGP לספק
+**🌐 הרשת עכשיו.** כל סניף מכיר את עצמו. בין הסניפים עומד הספק:
+
+![1 הנתב R-S-EXT, 2 הספק ISP, 3 הנתב R-E-EXT](images/step-map-m4.png)
+
+**❗ הבעיה.** הספק הוא **חברה אחרת**: אי אפשר להריץ איתו OSPF, כי אז הוא היה רואה את כל הרשת הפנימית והיה יכול לשנות לכם נתיבים. ב-ISP, ‏`show ip bgp summary` לא מחזיר כלום: אין לו אף שכן, ולכן הוא לא מעביר הלאה אף רשת.
+
+![ריק: BGP לא פועל](images/step-m4-before.png)
+
+🧠 האמת: במודל הקטן שלנו שלושת הסניפים מחוברים **לאותו** נתב של הספק, ולכן גם נתיב ברירת המחדל לבדו היה מגיע אליהם. באינטרנט האמיתי יש אלפי ספקים, ורק BGP מספר להם מי נמצא איפה.
+
+**💡 הפתרון.** eBGP: כל סניף הוא AS, והוא מפרסם לספק **רק** את הרשת הציבורית שלו (1.3).
+
+**📋 מבצעים בפרויקט.** סכנין = AS 511, הספק = AS 311. מגדירים את שני הצדדים. איזה AS כותבים אחרי `remote-as`, שלכם או של השכן?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **R-S-EXT:**
 ```
 configure terminal
@@ -554,6 +684,9 @@ neighbor 200.130.0.2 remote-as 311
 network 200.130.0.0 mask 255.255.255.0
 end
 ```
+
+![1 — הנתב R-S-EXT](images/step-m4-sext.png)
+
 **ISP:**
 ```
 configure terminal
@@ -563,6 +696,8 @@ neighbor 200.200.0.1 remote-as 411
 neighbor 200.150.0.1 remote-as 611
 end
 ```
+
+![2 — הספק ISP. ההודעה neighbor Up מופיעה לשלושת הסניפים](images/step-m4-isp.png)
 
 <div dir="rtl">
 
@@ -590,6 +725,21 @@ end
 ![הנתיבים של הספק](images/06-isp-routes.png)
 
 ## משימה 5 — NAT
+**🌐 הרשת עכשיו.** הנתיבים קיימים. מ-2 יוצאים לאינטרנט, ומ-5 נכנסים לשרת של אשדוד:
+
+![1 הנתב R-S-EXT, 2 המחשב PC-SAL-1, 3 הנתב R-A-EXT, 4 הנתב R-E-EXT, 5 המחשב PC-E-MEET-1](images/step-map-m5.png)
+
+**❗ הבעיה.** ב-PC-SAL-1 ‏←‏ `ping 200.130.0.2`:
+
+![יש כתובת ויש שער, ועדיין אין אינטרנט](images/step-m5-before.png)
+
+ה-ping **כן** מגיע לספק, אבל התשובה מיועדת ל-192.168.20.x, ולאף ספק אין נתיב לכתובת פרטית. התשובה מתה שם.
+
+**💡 הפתרון.** NAT בנתב הקצה: בדרך החוצה מחליפים את הכתובת הפרטית בציבורית, וזוכרים את זה בשביל התשובה (1.4).
+
+**📋 מבצעים בפרויקט.** PAT ב-R-S-EXT: את מי מתרגמים, לאיזו כתובת, אילו פורטים הם inside ואיזה outside? אחר כך מוצאים את ה-NAT הסטטי ואת ה-pool בבלוקים של אשדוד ואילת.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **R-S-EXT (PAT):**
 ```
 configure terminal
@@ -605,6 +755,8 @@ interface s0/0/1
 ip nat outside
 end
 ```
+
+![הנתב R-S-EXT](images/step-m5.png)
 
 <div dir="rtl">
 
@@ -640,13 +792,29 @@ end
 ‏![NAT דינמי](images/11-nat-eilat.png)
 
 ## משימה 6 — חותכים את הקו
+**🌐 הרשת עכשיו.** הכול עובד, עם שתי יציאות:
+
+![1 הנתב R-S-MAIN, 2 הנתב R-S-BKP, 3 המחשב PC-SAL-1](images/step-map-m6.png)
+
+**❗ הבעיה.** במשימה 2 ראינו שהראשי נשאר Active בלי אינטרנט. האם `track` באמת פתר את זה? צריך להוכיח.
+
+**💡 הפתרון.** חותכים שוב את אותו קו ומשווים: הפעם העדיפות חייבת לרדת ל-100 והגיבוי חייב להיכנס.
+
+**📋 מבצעים בפרויקט.** חותכים, בודקים `show standby brief`, בודקים `tracert` מ-PC-SAL-1, ומחזירים.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 1. ‏**R-S-MAIN**: ‏`interface s0/0/0` ‏←‏ ‏`shutdown`. מחכים 15 שניות, `show standby brief`: העדיפות **100**, והוא כבר לא Active (עובר דרך *Speak* ל-*Standby*).
+
+   ![הקו נחתך, ו-OSPF מאבד את השכן](images/step-m6-shut.png)
 
    ![העדיפות ירדה](images/14-track.png)
 2. ‏**PC-SAL-1**: ‏`tracert 200.130.0.2` ‏←‏ ‏‎.253 ואז 200.90.0.2: דרך הגיבוי, והאינטרנט עדיין עובד.
 
    ![אינטרנט דרך הגיבוי](images/15-track-pc.png)
 3. ‏`no shutdown`, ואחרי כ-30 שניות R-S-MAIN שוב Active.
+
+   ![הקו חזר](images/step-m6-noshut.png)
+
 4. שומרים בכל הנתבים: `copy running-config startup-config`. ‏File ‏←‏ Save.
 
 ## 👀 רואים את זה קורה — NAT משנה את הכתובת

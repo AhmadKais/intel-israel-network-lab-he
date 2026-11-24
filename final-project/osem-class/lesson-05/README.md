@@ -148,7 +148,31 @@
 
 ---
 
+## 🔑 פותחים מכשיר
+לוחצים על המכשיר ‏←‏ **CLI** (1) ‏←‏ לוחצים בטקסט ואז Enter ‏←‏ `Osem#Con` ‏←‏ `enable` ‏←‏ `Osem#En1`. עם תמונות: [שיעור 2](../lesson-02/).
+
+![לוחצים על CLI](images/step-login-1.png)
+
+**איך בנויה כל משימה:** ‏🌐 הרשת עכשיו ‏←‏ ❗ הבעיה ‏←‏ 💡 הפתרון ‏←‏ 📋 מבצעים לבד ‏←‏ 🖱 הפתרון המלא: על מה לוחצים, מה כותבים ומה חייבים לראות.
+
 ## משימה 1 — השרת
+**🌐 הרשת עכשיו.** שלושה סניפים באינטרנט. מתחילים מהשרת של סכנין:
+
+![1 השרת SRV-SAKHNIN](images/step-map-m1.png)
+
+**❗ הבעיה.** כמעט 30 מכשירים עם אותה סיסמה, שכתובה על פתק. עובד עוזב: משנים בכולם. משהו קרה בלילה: כל מכשיר מראה שעה אחרת ושומר לעצמו את ההודעות. שירות ה-AAA ריק וכבוי:
+
+![השירות AAA לפני: כבוי, בלי לקוחות ובלי משתמשים](images/step-aaa0.png)
+
+**💡 הפתרון.** שרת אחד שבודק משתמשים (**AAA**), נותן את השעה (**NTP**) ואוסף את ההודעות (**Syslog**). עכשיו מכינים את השרת, ובמשימה 4 מחברים אליו את הנתבים.
+
+**📋 מבצעים בפרויקט.** שני לקוחות AAA (שני הנתבים), משתמש אחד, NTP עם מפתח 1, ו-Syslog דולק.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+לוחצים על **SRV-SAKHNIN** ‏←‏ **Services** (1) ‏←‏ ‏AAA ‏(2), ‏NTP ‏(3), ‏SYSLOG ‏(4):
+
+![1 לשונית Services, 2 שירות AAA, 3 שירות NTP, 4 שירות SYSLOG](images/step-srv.png)
+
 ‏**SRV-SAKHNIN** ‏←‏ ‏Services ‏←‏ ‏**AAA** ‏←‏ ‏On (1). ‏Client Name (2), ‏Client IP (3), ‏Secret (4), ‏ServerType ‏←‏ ‏**Tacacs** ‏←‏ ‏**Add** (5):
 
 <div dir="rtl">
@@ -170,6 +194,10 @@
 
 ‏**SYSLOG** ‏←‏ בודקים שהוא On.
 
+![השירות Syslog דולק](images/step-sys.png)
+
+ההודעות של הנתבים מופיעות ברשימה הזו רק אחרי משימה 4.
+
 <div dir="rtl">
 
 | שדה | מה זה | חייב להתאים ל |
@@ -182,6 +210,17 @@
 </div>
 
 ## משימה 2 — ACL באשדוד ובאילת
+**🌐 הרשת עכשיו.** אשדוד: הנהלת החשבונות ב-VLAN 62, ההנהלה ב-VLAN 60, השרת ב-63. אילת: ההרכבה ב-81, ההנהלה ב-80.
+
+![1 הנתב R-A-MAIN, 2 הנתב R-A-BKP, 3 המחשב PC-A-ACC-1, 4 המחשב PC-A-MGMT-2, 5 הנתב R-E-MAIN, 6 הנתב R-E-BKP](images/step-map-m2.png)
+
+**❗ הבעיה.** בשיעור 3 פתחנו הכול לכולם. מחשב בהנהלת החשבונות יכול לעשות ping למחשב של המנהל ולנסות להיכנס לכל שירות בשרת. נראה את זה בצילום הראשון.
+
+**💡 הפתרון.** **ACL מורחב**, קרוב למקור: בממשק המשנה של VLAN 62, ב**שני** הנתבים (1.1).
+
+**📋 מבצעים בפרויקט.** לפני שמסתכלים: כותבים במילים, שורה אחר שורה, מה מותר ומה אסור, בסדר הנכון. לא לשכוח איך מחשב מקבל כתובת.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 **המטרה:** הנהלת החשבונות (VLAN 62) לא מגיעה להנהלה (VLAN 60), ומהשרת מקבלת רק web, ‏DNS ו-FTP.
 
 לפני: מ-**PC-A-ACC-1** בודקים מה הכתובת של PC-A-MGMT-2 ועושים לו ping. עובד.
@@ -202,7 +241,14 @@ interface g0/0.62
 ip access-group 110 in
 end
 ```
+
+‏**R-A-MAIN:**
+
 ![ה-ACL](images/06-acl.png)
+
+‏**R-A-BKP, אותן פקודות:**
+
+![הנתב R-A-BKP](images/step-m2-abkp.png)
 
 ❓ **למה צריך את השורה הראשונה?** למחשב שמבקש DHCP עדיין אין כתובת: הוא שולח מ-0.0.0.0, ואף שורה אחרת לא
 מרשה את זה. בדקנו בלעדיה, בשני הנתבים: `ipconfig /renew` נתקע.
@@ -242,6 +288,11 @@ ip access-list extended 110
 end
 copy running-config startup-config
 ```
+
+![אותו דבר ב-R-A-BKP](images/step-ftp-abkp.png)
+
+ב-R-A-MAIN בודקים עם `show access-lists`:
+
 ![השורה החדשה נמצאת לפני ה-deny](images/33-acl-ftp-fix.png)
 
 ✅ מ-PC-A-ACC-3 הרשימה מגיעה, ו-ping לשרת עדיין חסום. (יוצאים מ-FTP עם `quit`.)
@@ -249,6 +300,9 @@ copy running-config startup-config
 ![הפקודה dir עובדת](images/34-ftp-ok.png)
 
 ### 2.2 אילת
+
+❗ אותה בעיה באילת: ההרכבה מגיעה להנהלה. 💡 אותו רעיון, שורת deny אחת.
+
 **אילת** (הרכבה 81 לא מגיעה להנהלה 80), ב-**R-E-MAIN וב-R-E-BKP**:
 ```
 configure terminal
@@ -260,8 +314,30 @@ ip access-group 120 in
 end
 ```
 
+![הנתב R-E-MAIN](images/step-m2-emain.png)
+
+![הנתב R-E-BKP](images/step-m2-ebkp.png)
+
 ## משימה 3 — VPN סכנין ↔ אילת
+**🌐 הרשת עכשיו.** סכנין ואילת, כל אחד מאחורי NAT, והאינטרנט באמצע:
+
+![1 הנתב R-S-EXT, 2 הנתב R-E-EXT, 3 המחשב PC-E-MEET-1, 4 השרת SRV-SAKHNIN](images/step-map-m3.png)
+
+**❗ הבעיה.** עובד באילת צריך את השרת בסכנין. ב-PC-E-MEET-1 ‏←‏ `ping 192.168.50.1`:
+
+![הספק עונה: unreachable](images/step-m3-before.png)
+
+הספק לא מכיר כתובות פרטיות. וגם אם היינו מפרסמים את השרת עם NAT סטטי, הכול היה עובר **בלי הצפנה** וכל אחד היה יכול לנסות להיכנס.
+
+**💡 הפתרון.** **IPsec VPN** בין שני אתרים: החבילה הפרטית נוסעת, מוצפנת, בתוך חבילה ציבורית (1.2).
+
+**📋 מבצעים בפרויקט.** רישיון ‏←‏ מנהרה בשני הצדדים ‏←‏ בדיקה ‏←‏ מגלים למה נכשל ‏←‏ מתקנים. שני הצדדים חייבים להיות תמונת מראה.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 ### 3.1 הרישיון
+
+❗ הנתב לא מכיר את פקודות `crypto`. 💡 מפעילים את רישיון האבטחה, שומרים ומפעילים מחדש.
+
 ב-R-S-EXT מנסים `crypto isakmp policy 10`. ה-1941 לא מכיר את הפקודה:
 
 ![אין רישיון](images/10-no-licence.png)
@@ -277,6 +353,21 @@ end
 copy running-config startup-config
 reload
 ```
+
+אחרי `yes`, ב-R-E-EXT:
+
+![הנתב R-E-EXT קיבל את הרישיון](images/step-lic-e.png)
+
+כשמופיע `Proceed with reload? [confirm]`‎ לוחצים **Enter**. הנתב עולה מחדש:
+
+![הנתב עולה מחדש](images/step-reload.png)
+
+ב-R-E-EXT אחרי ההפעלה מחדש:
+
+![הרישיון עובד](images/step-lic-ok-e.png)
+
+ב-R-S-EXT:
+
 ![הרישיון התקבל](images/11-licence.png)
 
 אחרי ההפעלה מחדש נכנסים שוב: `show version | include security` ‏←‏ ‏`securityk9`
@@ -284,6 +375,9 @@ reload
 ![הרישיון פעיל](images/12-licence-ok.png)
 
 ### 3.2 המנהרה
+
+❗ לפני ההצפנה הנתבים חייבים להסכים על שפה ולזהות אחד את השני. 💡 שלב 1 (policy ומפתח), שלב 2 (transform-set), מה נכנס למנהרה (ACL), והכול נקשר ב-crypto map על הפורט היוצא.
+
 **R-S-EXT:**
 ```
 configure terminal
@@ -332,6 +426,11 @@ interface s0/0/0
 crypto map VPN-MAP
 end
 ```
+
+![הנתב R-E-EXT](images/step-vpn-e.png)
+
+וב-R-S-EXT:
+
 ![ההגדרה ב-R-S-EXT](images/13-vpn.png)
 
 <div dir="rtl">
@@ -384,6 +483,11 @@ end
 clear ip nat translation *
 copy running-config startup-config
 ```
+
+![הנתב R-E-EXT](images/step-nat-e.png)
+
+וב-R-S-EXT:
+
 ![שורה 5 נמצאת לפני שורה 10](images/16-nat-exempt.png)
 
 ✅ שוב ping, **רק מאילת**. התשובה הראשונה יכולה ללכת לאיבוד בזמן שהמנהרה עולה.
@@ -398,6 +502,23 @@ copy running-config startup-config
 מצד אחד בלבד. (בנתבים אמיתיים יש גם `clear crypto isakmp`. ב-Packet Tracer אין.)
 
 ## משימה 4 — SSH, ‏AAA, ‏NTP ו-Syslog
+**🌐 הרשת עכשיו.** השרת מוכן ממשימה 1. עכשיו המכשירים לומדים להשתמש בו:
+
+![1 הנתב R-S-MAIN, 2 הנתב R-S-BKP, 3 המחשב PC-MGMT-1, 4 המחשב PC-SAL-1, 5 המתג SW-S-MAIN](images/step-map-m4.png)
+
+**❗ הבעיה.** ב-PC-MGMT-1 ‏←‏ `telnet 192.168.10.254`. הנתב פותח את הקו וסוגר אותו: אין בכלל ניהול מרחוק. ואם רק נוסיף סיסמה, Telnet ישלח אותה **בלי הצפנה**:
+
+![החיבור נסגר](images/step-m4-before.png)
+
+ב-R-S-MAIN, ‏`show clock`: השנה היא 1993, ו-NTP כבוי. יומן כזה לא מוכיח כלום:
+
+![השנה 1993, ו-NTP לא מופעל](images/step-m4-clock.png)
+
+**💡 הפתרון.** SSH (מוצפן), AAA (המשתמש נבדק בשרת, ויש משתמש מקומי לגיבוי), NTP עם מפתח, Syslog, ו-access-class כדי שרק ההנהלה תיכנס (1.3, 1.4).
+
+**📋 מבצעים בפרויקט.** הסדר חשוב: קודם משתמש מקומי, ורק אחר כך `aaa new-model`. למה?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
 ### 4.1 ב-R-S-MAIN, ואותו דבר ב-R-S-BKP
 ```
 configure terminal
@@ -430,6 +551,10 @@ end
 copy running-config startup-config
 ```
 
+![1 — הנתב R-S-MAIN](images/step-ssh-smain.png)
+
+![2 — הנתב R-S-BKP](images/step-ssh-sbkp.png)
+
 <div dir="rtl">
 
 | פקודה | מה היא עושה | למה |
@@ -460,13 +585,17 @@ copy running-config startup-config
    ‏![NTP](images/22-ntp-ok.png)
 5. ב-R-S-MAIN: ‏`interface g0/1` ‏←‏ ‏`no shutdown` ‏←‏ ‏`shutdown`. בשרת ‏←‏ ‏SYSLOG: ההודעות הגיעו. שימו לב לקפיצה של התאריך מ-1993 להיום: NTP!
 
+   ![שתי הודעות על המסך, ואותן הודעות נשלחות לשרת](images/step-sysgen.png)
+
    ‏![Syslog](images/23-syslog.png)
 
 ### 4.3 אשדוד ואילת
+
+❗ אותה בעיה בעוד שני סניפים. 💡 אותן פקודות, וכל סניף עם השרת **שלו**.
+
 אשדוד משתמשת ב-**RADIUS**, אילת ב-**TACACS+‎**. הסוג חייב להיות זהה בנתב ובשרת!
 
 <details dir="rtl"><summary>R-A-MAIN, R-A-BKP (מדביקים אותו דבר בשניהם)</summary>
-
 
 <div dir="ltr">
 
@@ -498,12 +627,15 @@ service timestamps log datetime msec
 end
 ```
 
+![הנתב R-A-MAIN](images/step-ssh-amain.png)
+
+![הנתב R-A-BKP](images/step-ssh-abkp.png)
+
 </div>
 
 </details>
 
 <details dir="rtl"><summary>R-E-MAIN, R-E-BKP (מדביקים אותו דבר בשניהם)</summary>
-
 
 <div dir="ltr">
 
@@ -535,11 +667,18 @@ service timestamps log datetime msec
 end
 ```
 
+![הנתב R-E-MAIN](images/step-ssh-emain.png)
+
+![הנתב R-E-BKP](images/step-ssh-ebkp.png)
+
 </div>
 
 </details>
 
 ### 4.4 מתגים ונתבי קצה (שיעורי בית)
+
+❗ למתג שכבה 2 אין כתובת IP, ולכן אי אפשר לנהל אותו מרחוק. 💡 כתובת על ממשק VLAN, שער, ו-SSH עם המשתמש המקומי.
+
 ב-ISP ובנתבי EXT כותבים `line vty 0 4`, ובמתגים `line vty 0 15`:
 ```
 configure terminal
@@ -552,6 +691,9 @@ transport input ssh
 login local
 end
 ```
+
+![המתג SW-S-MAIN](images/step-ssh-sw.png)
+
 כתובת ניהול למתגים הראשיים, לדוגמה **SW-S-MAIN** (אשדוד: VLAN 60, אילת: VLAN 80):
 ```
 configure terminal
@@ -562,11 +704,33 @@ exit
 ip default-gateway 192.168.10.252
 end
 ```
+
+![כתובת הניהול](images/step-sw-ip.png)
+
 ✅ ‏`ssh -l admin 192.168.10.240`
 
 ‏![SSH למתג](images/24-ssh-switch.png)
 
 ## משימה 5 — חומת האש ASA
+**🌐 הרשת עכשיו.** מעבדת בדיקות (PC-LAB-1, ‏PC-LAB-2) מאחורי חומת אש שעדיין לא הוגדרה:
+
+![1 חומת האש ASA-S, 2 המחשב PC-LAB-1, 3 המחשב PC-MGMT-1](images/step-map-m5.png)
+
+**❗ הבעיה.** המעבדה צריכה להגיע לשרת, אבל אף אחד לא צריך להגיע **אל** המעבדה. ב-PC-LAB-1 ‏←‏ `ipconfig`, ‏`ping 192.168.50.1`: אין כתובת ואין רשת.
+
+![הכתובת 0.0.0.0, וה-ping נכשל](images/step-m5-before.png)
+
+נתב מעביר כל מה שלא נאסר, ולכן ב-ACL לבד צריך לרשום כל סכנה.
+
+**💡 הפתרון.** חומת אש עובדת הפוך: מבחוץ **הכול** אסור, אלא אם זו תשובה למישהו מבפנים (רמות אבטחה ו-`inspect`, ‏1.4).
+
+**📋 מבצעים בפרויקט.** inside = 100, outside = 0, נתיב ברירת מחדל ל-VIP, ‏NAT, ‏DHCP למעבדה, ו-inspect ל-icmp, http, dns. נחשו מי יכול לעשות ping למי.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+לוחצים על **ASA-S** ‏←‏ **CLI** ‏←‏ `enable` ‏←‏ **Enter** (אין סיסמה):
+
+![שורת הפקודה ciscoasa#](images/step-login.png)
+
 ‏**ASA-S** ‏←‏ ‏CLI. כותבים `enable`, ובסיסמה לוחצים רק **Enter**:
 ```
 configure terminal
