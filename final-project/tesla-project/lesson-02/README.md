@@ -1,0 +1,972 @@
+# שיעור 02 — המיתוג של הרצליה: VLAN, VTP, ‏Trunk, ‏STP ו-Port Security
+
+<div dir="rtl">
+
+> ⏱ 90 דקות · 🧰 Packet Tracer 9.x · 📂 קובץ התחלה: [`lesson02-start.pkt`](lesson02-start.pkt) או הקובץ שלכם אחרי [חלק A](../from-zero/README.md#part-a) · 💾 שומרים בשם `lesson02.pkt`
+
+</div>
+
+## מה יהיה לכם בסוף השיעור
+כל סניף הרצליה: כל מחלקה ב-VLAN משלה, מתג גיבוי בלי לולאות, ופורטים שנסגרים כשמישהו זר מתחבר.
+
+![הסניף המוכן](images/02-final.png)
+
+## 📖 הסיפור — פרק 2: קירות בתוך המתגים
+**איך הגענו לכאן.** בשיעור 1 חיברנו את המכירות. המחלקות האחרות ראו ורצו אותו דבר. חיברנו את כולן, עם **מתג גיבוי** כדי שתקלה אחת לא תעצור את הבניין (זה קובץ ההתחלה, או [חלק A](../from-zero/) למי שבונה לבד).
+
+**איפה אנחנו עכשיו.** שבעה מתגים, שבעה מחשבים, שרת אחד. הכול ירוק, וזו בדיוק הבעיה: **כולם ברשת אחת**. מחלקת השירות מקבלת כל שידור של המכירות. ושתי דרכים לכל מחלקה הן לולאה שמחכה לקרות.
+
+**מה רוצים היום.** חמש מחלקות על אותם כבלים שלא רואות זו את זו, דרך גיבוי שלא הופכת ללולאה, ושקעים שלא מקבלים זרים.
+
+**הדרך של היום:**
+
+<div dir="rtl">
+
+| משימה | על איזו שאלה היא עונה | למה דווקא עכשיו |
+|---|---|---|
+| ‎1 VLAN | אילו מחלקות יש? | לפני שמפרידים, מחליטים למה |
+| ‎2 VTP | איך כל המתגים לומדים את הרשימה? | להקליד אותה בכל מתג זה איטי ומלא טעויות |
+| ‎3 Trunk | איך חמש מחלקות עוברות בכבל אחד? | הרשימה קיימת, אבל עדיין לא עוברת בין המתגים |
+| ‎4 Access | איזה שקע שייך למי? | הכבישים פתוחים, עכשיו מחברים את הבתים |
+| ‎5 STP | באיזו משתי הדרכים משתמשים? | רק עכשיו יש מספיק דרכים ללולאה |
+| 6 בדיקה | הן באמת מופרדות? | קיר הוא קיר רק אם אי אפשר לעבור דרכו |
+| 7 התקפה | ומה אם זר נכנס? | שומרים על השקע אחרי שיודעים מה רגיל |
+
+</div>
+
+## תכנון הזמן (90 דקות, עם הפסקות)
+
+<div dir="rtl">
+
+| דקות | חלק |
+|---|---|
+| ‎0–20 | חלק 1 — קוראים את התיאוריה ועונים על כל ❓ לפני שפותחים את התשובה |
+| ‎20–32 | משימות 1–2 — VLAN ו-VTP |
+| ‎32–52 | משימות 3–4 — פורטי Trunk ו-Access |
+| ‎52–62 | משימה 5 — STP |
+| ‎62–78 | משימות 6–7 — בדיקות, והתקפה על Port Security |
+| ‎78–90 | מצאו את הטעות, שאלות, ספר הפרויקט |
+
+</div>
+
+בקובץ ההתחלה כל המתגים כבר מחוברים ועם הגדרות הבסיס משיעור 1 (קונסול `Tesla#Con`, ‏enable ‏`Tesla#En1`). למחשבים כבר יש כתובות.
+
+![ההתחלה: כל הקישורים ב-VLAN 1](images/01-start.png)
+
+---
+
+## חלק 1 — תיאוריה: קודם מבינים
+
+### 1.1 מה זה VLAN?
+‏VLAN מחלק מתג פיזי אחד לכמה רשתות נפרדות. הודעת broadcast ממחלקת המכירות לא מגיעה ל-IT. יש פחות
+broadcast, יותר אבטחה, ועובד יכול לעבור שולחן ולהישאר באותה רשת.
+
+💬 **במילים פשוטות:** בניין בית ספר אחד עם כמה כיתות. כולם תחת אותו גג, אבל מי שמדבר בכיתה 20 לא נשמע בכיתה 40.
+‏VLAN הוא כיתה עם דלת סגורה.
+
+**דוגמה.** במתג SW-HZ-SALES יש 3 מחשבים ב-VLAN 22. אם מעבירים אחד מהם ל-VLAN 42 (אותו כבל, אותו מתג), הוא כבר
+לא יכול לעשות ping לשניים האחרים.
+
+### ‏1.2 Access ו-Trunk
+
+<div dir="rtl">
+
+| | ‎Access | ‎Trunk |
+|---|---|---|
+| מעביר | ‏VLAN אחד | הרבה VLAN-ים |
+| מחבר | מחשב, שרת, מדפסת | מתג ↔ מתג, מתג ↔ נתב |
+| תג 802.1Q | אין | יש: 4 בייטים שאומרים "המסגרת הזו שייכת ל-VLAN 22" |
+
+</div>
+
+**דוגמה — המסע של מסגרת מ-PC-SALES-1:**
+
+<div dir="rtl">
+
+| מקום | תג | למה |
+|---|---|---|
+| מ-PC-SALES-1 ל-SW-HZ-SALES ‏(access) | אין | מחשב לא יודע מה זה VLAN |
+| מ-SW-HZ-SALES ל-SW-HZ-MAIN ‏(trunk) | ‎**VLAN 22** | הרבה VLAN-ים חולקים את הכבל |
+| מ-SW-HZ-MAIN למתג השרת (access 52) | לא נשלחת | הקישור הזה מעביר רק VLAN 52 |
+
+</div>
+
+למספר ה-VLAN יש בתג 12 ביטים, ולכן יש VLAN-ים מ-1 עד 4094. מסגרת של ה-**native VLAN** (ברירת המחדל 1) עוברת ב-trunk בלי תג.
+
+### ‏1.3 VTP
+‏VTP מעתיק את רשימת ה-VLAN בין המתגים דרך ה-Trunk, ולכן יוצרים כל VLAN פעם אחת בלבד.
+
+<div dir="rtl">
+
+| מצב | יוצר VLAN? | לומד מאחרים? |
+|---|---|---|
+| ‎Server | כן | כן |
+| ‎Client | לא | כן |
+| ‎Transparent | כן, רק לעצמו | לא |
+
+</div>
+
+הדומיין והסיסמה חייבים להיות **זהים** בכל המתגים. ⚠️ מתג עם מספר **revision** גבוה יותר מוחק את הרשימה
+של כולם, לכן נזהרים כשמחברים מתג משומש לרשת.
+
+### ‏1.4 STP — למה מתג גיבוי הוא מסוכן
+שני מסלולים = **לולאה**: הודעת broadcast מסתובבת לנצח והרשת קורסת תוך שניות. ‏**Spanning Tree** בוחר
+**root bridge** אחד (העדיפות הנמוכה ביותר) וחוסם את הפורטים המיותרים. כשקישור נופל, הפורט החסום מתעורר.
+
+<div dir="rtl">
+
+| תוספת | איפה | מה היא עושה |
+|---|---|---|
+| ‎PortFast | פורטים של מחשבים | מדלגת על 30 שניות ההמתנה |
+| ‎BPDU Guard | פורטים של מחשבים | סוגרת את הפורט אם מישהו חיבר **מתג** |
+| ‎Root Guard | במתג הראשי, לכיוון המחלקות | אף מתג מחלקה לא יכול להפוך ל-root |
+
+</div>
+
+💬 **במילים פשוטות:** לולאה היא כמו קבוצה שבה כל אחד מעביר כל הודעה לכולם, בלי סוף. ‏STP הוא הכלל "זה לא מעביר,
+אלא אם מישהו אחר חסר".
+
+**דוגמה — מי ה-root ב-VLAN 22?** (המספר הנמוך מנצח)
+
+<div dir="rtl">
+
+| מתג | עדיפות | ועוד VLAN | סך הכול |
+|---|---|---|---|
+| ‎SW-HZ-MAIN | ‎24576 | ‎22 | **24598, הוא ה-root** |
+| ‎SW-HZ-BKP | ‎28672 | ‎22 | ‎28694 |
+| ‎SW-HZ-SALES | 32768 (ברירת מחדל) | ‎22 | ‎32790 |
+
+</div>
+
+**ובאיזו דרך בוחר SW-HZ-SALES?** קישור של 100 מגה עולה 19. ישירות ל-root: ‏19. דרך מתג הגיבוי: 19 + 19 = **38**.
+הדרך הזולה מעבירה, והשנייה חסומה. עדיפויות שוות — ה-MAC הנמוך מנצח.
+
+### ‏1.5 Port Security
+הפורט לומד את ה-MAC של המחשב הראשון (`sticky`) ומרשה רק אותו. ‏MAC אחר ‏←‏ הפורט עובר למצב **err-disabled**.
+
+<div dir="rtl">
+
+| מצב violation | המסגרות של הזר | סופר ורושם | הפורט |
+|---|---|---|---|
+| ‎`protect` | נזרקות | לא | נשאר פעיל |
+| ‎`restrict` | נזרקות | כן | נשאר פעיל |
+| `shutdown` (ברירת מחדל) | נזרקות | כן | ‎**err-disabled** |
+
+</div>
+
+### 1.6 התוכנית
+
+<div dir="rtl">
+
+| ‎VLAN | שם | רשת | מתג המחלקה |
+|---|---|---|---|
+| ‎12 | ‎MANAGEMENT | ‎192.168.12.0/24 | ‎SW-HZ-MGMT |
+| ‎22 | ‎SALES | ‎192.168.22.0/24 | ‎SW-HZ-SALES |
+| ‎32 | ‎SERVICE | ‎192.168.32.0/24 | ‎MLS-HZ-SVC |
+| ‎42 | ‎IT | ‎192.168.42.0/24 | ‎SW-HZ-IT |
+| ‎52 | ‎SERVERS | ‎192.168.52.0/24 | ‎MLS-HZ-SRV |
+
+</div>
+
+<div dir="rtl">
+
+| ממכשיר | פורט | למכשיר | פורט |
+|---|---|---|---|
+| ‎SW-HZ-MAIN | ‎Fa0/1 | ‎SW-HZ-MGMT | ‎Fa0/5 |
+| ‎SW-HZ-MAIN | ‎Fa0/2 | ‎MLS-HZ-SRV | ‎Fa0/1 |
+| ‎SW-HZ-MAIN | ‎Fa0/3 | ‎SW-HZ-SALES | ‎Fa0/4 |
+| ‎SW-HZ-MAIN | ‎Fa0/4 | ‎MLS-HZ-SVC | ‎Fa0/1 |
+| ‎SW-HZ-MAIN | ‎Fa0/5, Fa0/6 | ‎R-HZ-BKP, R-HZ-MAIN | שיעור 3 |
+| ‎SW-HZ-MAIN | ‎Fa0/7 | ‎SW-HZ-BKP | ‎Fa0/3 |
+| ‎SW-HZ-MAIN | ‎Fa0/8 | ‎SW-HZ-IT | ‎Fa0/2 |
+| ‎SW-HZ-BKP | ‎Fa0/1 | ‎SW-HZ-MGMT | ‎Fa0/3 |
+| ‎SW-HZ-BKP | ‎Fa0/2 | ‎SW-HZ-SALES | ‎Fa0/1 |
+| ‎SW-HZ-BKP | ‎Fa0/4 | ‎MLS-HZ-SVC | ‎Fa0/4 |
+| ‎SW-HZ-BKP | ‎Fa0/5 | ‎SW-HZ-IT | ‎Fa0/3 |
+
+</div>
+
+---
+
+## 🔑 איך פותחים מכשיר (אותו דבר בכל שיעור)
+1. לוחצים על המכשיר. החלון נפתח על **Physical**. לוחצים **CLI** (1):
+
+   ![לוחצים על CLI](images/step-login-1.png)
+2. לוחצים בתוך הטקסט (2) ואז **Enter**:
+
+   ![לוחצים בטקסט ואז Enter](images/step-login-2.png)
+3. סיסמה `Tesla#Con` ו-Enter, ‏`enable` ו-Enter, ‏`Tesla#En1` ו-Enter. **כשמקלידים סיסמה לא רואים כלום.** חייב להופיע ‎`#`‎:
+
+   ![נכנסנו: השורה מסתיימת בסולמית](images/step-login-3.png)
+4. בסוף העבודה בכל מכשיר שומרים: `copy running-config startup-config`, ואז Enter. חייב להופיע ‎`[OK]`‎:
+
+   ![נשמר](images/step-save.png)
+
+## איך בנויה כל משימה
+‏🌐 הרשת עכשיו ‏←‏ ❗ הבעיה (ואיך רואים אותה) ‏←‏ 💡 הפתרון ‏←‏ 📋 מבצעים לבד בפרויקט ‏←‏ 🖱 הפתרון המלא: על מה לוחצים, מה כותבים ומה חייבים לראות.
+
+## משימה 1 — יוצרים VLAN במתג הראשי
+**📖 איך הגענו לכאן.** כל המחלקות מחוברות, וכולן ב-VLAN 1.
+
+**🌐 הרשת עכשיו.** שבעה מתגים, כולם מחוברים. עובדים על הראשי:
+
+![1 המתג SW-HZ-MAIN](images/step-map-m1.png)
+
+**❗ הבעיה.** כולם נמצאים ברשת **אחת**. ב-SW-HZ-MAIN כותבים `show vlan brief`:
+
+![כל 26 הפורטים נמצאים ב-VLAN 1](images/step-m1-before.png)
+
+כל הפורטים ב-VLAN 1: ‏broadcast של מחלקת השכר מגיע להנהלה, ל-IT ולשרתים. זה איטי וזה לא פרטי.
+
+**🎯 מה רוצים עכשיו.** מחליטים אילו מחלקות יש: חמישה VLAN, עם מספר ושם, במתג אחד.
+
+**💡 הפתרון.** חמישה VLAN-ים, אחד לכל מחלקה ואחד לשרתים (תיאוריה 1.1). יוצרים אותם **פעם אחת**, בשרת VTP, ולא שבע פעמים.
+
+**📋 מבצעים בפרויקט.** ב-SW-HZ-MAIN: ‏VTP domain `HERZLIYA`, סיסמה `Tesla#Vtp`, מצב server, ואת VLAN 12, 22, 32, 42, 52 עם השמות מהטבלה ב-1.6.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+לוחצים על **SW-HZ-MAIN** ‏←‏ **CLI** ‏←‏ נכנסים עם הסיסמה ‏←‏ `enable`:
+```
+configure terminal
+vtp domain HERZLIYA
+vtp password Tesla#Vtp
+vtp mode server
+vlan 12
+name MANAGEMENT
+vlan 22
+name SALES
+vlan 32
+name SERVICE
+vlan 42
+name IT
+vlan 52
+name SERVERS
+end
+show vlan brief
+```
+![חמישה VLAN-ים חדשים, עדיין בלי פורטים](images/03-vlan.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`vtp domain HERZLIYA` | שם הקבוצה של VTP | רק מתגים עם אותו שם מדברים |
+| ‎`vtp password` | סוד משותף | מתג זר לא יכול לשנות לנו VLAN-ים |
+| ‎`vtp mode server` | המתג הזה מנהל את הרשימה | מקום אחד ליצירת VLAN-ים |
+| `vlan 22` ו-`name` | יוצרת VLAN ונותנת לו שם | השם הוא תיעוד, המספר הוא מה שקובע |
+
+</div>
+
+<details dir="rtl" open><summary><b>📘 הסבר שאר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`show vlan brief` | רשימת ה-VLAN והפורטים בכל אחד. פורטים של trunk לא מופיעים. |
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** מתג אחד מכיר את הרשימה. שישה אחרים לא.
+
+## משימה 2 — VTP client בשאר המתגים
+**📖 איך הגענו לכאן.** המתג SW-HZ-MAIN מכיר את חמשת ה-VLAN.
+
+**🌐 הרשת עכשיו.** SW-HZ-MAIN מכיר חמישה VLAN-ים. חמשת המתגים האלה לא:
+
+![1 המתג SW-HZ-BKP, 2 המתג SW-HZ-MGMT, 3 המתג SW-HZ-SALES, 4 המתג SW-HZ-IT, 5 המתג MLS-HZ-SVC](images/step-map-m2.png)
+
+**❗ הבעיה.** ליצור 5 VLAN-ים ב-6 מתגים ביד = 30 פעמים, עם שגיאות הקלדה, ושוב בכל VLAN חדש.
+
+**🎯 מה רוצים עכשיו.** המתגים האחרים **מקבלים** את הרשימה במקום להקליד אותה, וכך יש מקום אחד לשינויים.
+
+**💡 הפתרון.** VTP client: המתג **מקבל** את הרשימה מהשרת. צריך אותו domain ואותה סיסמה, אחרת הוא מסרב (תיאוריה 1.3).
+
+**📋 מבצעים בפרויקט.** הופכים את חמשת המתגים ל-VTP client. נחשו: האם ה-VLAN-ים יגיעו מיד?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+ב-**SW-HZ-BKP, SW-HZ-MGMT, SW-HZ-SALES, SW-HZ-IT ו-MLS-HZ-SVC** (לא ב-MLS-HZ-SRV):
+```
+configure terminal
+vtp domain HERZLIYA
+vtp password Tesla#Vtp
+vtp mode client
+end
+```
+
+מה חייבים לראות (אותו דבר בכל החמישה):
+
+![1 — המתג SW-HZ-BKP](images/step-m2-bkp.png)
+
+![2 — המתג SW-HZ-MGMT](images/step-m2-mgmt.png)
+
+![3 — המתג SW-HZ-SALES](images/step-m2-sales.png)
+
+![4 — המתג SW-HZ-IT](images/step-m2-it.png)
+
+![5 — המתג MLS-HZ-SVC](images/step-m2-svc.png)
+
+💡 הודעות כמו `RECV_PVID_ERR` יכולות להופיע כל עוד צד אחד כבר Trunk והשני עדיין לא. הן נעלמות אחרי משימה 4.
+
+❓ שאלו את עצמכם: מריצים `show vlan brief` ב-SW-HZ-SALES. ה-VLAN-ים **לא** הגיעו. למה?
+
+![המתג SW-HZ-SALES לפני ה-Trunk](images/04-sales-before.png)
+
+<details dir="rtl"><summary>תשובה</summary>
+
+ה-VTP עובר רק דרך **Trunk**, ועדיין לא הגדרנו אף אחד. זו המשימה הבאה.
+
+</details>
+
+<details dir="rtl" open><summary><b>📘 הסבר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`vtp domain HERZLIYA` | שם קבוצת ה-VTP. רק מתגים עם שם **זהה לגמרי** חולקים את רשימת ה-VLAN (אותיות גדולות משנות). |
+| ‎`vtp password Tesla#Vtp` | סוד משותף, כדי שמתג זר לא ישנה את ה-VLAN שלנו. חייב להיות זהה בכולם. |
+| ‎`vtp mode client` | המתג הזה רק מקבל את הרשימה. `vlan 12` בו נדחה. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+| ‎`show vlan brief` | רשימת ה-VLAN והפורטים בכל אחד. פורטים של trunk לא מופיעים. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** הלקוחות מוכנים, אבל הרשימה לא מגיעה אליהם: הקישורים עדיין לא מעבירים אותה.
+
+## משימה 3 — Trunk ו-Access במתג הראשי ובמתג הגיבוי
+**📖 איך הגענו לכאן.** הרשימה מוכנה, וכל קישור בין מתגים עדיין מעביר VLAN אחד.
+
+**🌐 הרשת עכשיו.** רשימת ה-VLAN קיימת רק ב-SW-HZ-MAIN. מכאן פותחים את הדרכים:
+
+![1 המתג SW-HZ-MAIN, 2 המתג SW-HZ-BKP](images/step-map-m3.png)
+
+**❗ הבעיה.** כל קישור הוא access רגיל ומעביר VLAN **אחד**. ב-SW-HZ-MAIN, ‏`show interfaces trunk`:
+
+![ריק: אין אפילו Trunk אחד](images/step-m3-before.png)
+
+לא חזר כלום. לכן VLAN 22 לא יכול לעבור למתג אחר, וגם VTP לא.
+
+**🎯 מה רוצים עכשיו.** הופכים את הקישורים ל-trunk, שמעביר את כל ה-VLAN עם תג, וסוגרים שקעים שאף אחד לא משתמש בהם.
+
+**💡 הפתרון.** **Trunk** בכל קישור בין מתגים: כבל אחד, כל ה-VLAN-ים, ותג על כל מסגרת (תיאוריה 1.2). פורטים פנויים מקבלים `shutdown`, כדי שאף אחד לא יתחבר.
+
+**📋 מבצעים בפרויקט.** בשני המתגים: Trunk בקישורים שבטבלה 1.6, ב-SW-HZ-MAIN הפורט Fa0/2 הוא access ב-VLAN 52 עם port security לשתי כתובות MAC, וכל שאר הפורטים כבויים.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+**SW-HZ-MAIN:**
+```
+configure terminal
+interface range fa0/1 , fa0/3 - 8
+switchport mode trunk
+exit
+interface fa0/2
+switchport mode access
+switchport access vlan 52
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+interface range fa0/9 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![הפקודות. ההודעות אומרות שהקישורים יורדים ועולים בתור Trunk](images/step-m3-main-1.png)
+
+אחרי `shutdown` מופיעה הודעה לכל פורט, ואז `end`:
+
+![הפורטים הפנויים כבויים](images/step-m3-main-2.png)
+
+**SW-HZ-BKP:**
+```
+configure terminal
+interface range fa0/1 - 5
+switchport mode trunk
+exit
+interface range fa0/6 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![המתג SW-HZ-BKP, רגע לפני ה-shutdown האחרון](images/step-m3-bkp.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`interface range fa0/1 , fa0/3 - 8` | מגדירה כמה פורטים יחד | שימו לב ל**רווחים** ליד הפסיק והמקף |
+| ‎`switchport mode trunk` | מעביר את כל ה-VLAN-ים | בין מתגים ולנתבים |
+| ‎`switchport port-security maximum 2` | שתי כתובות MAC ב-Fa0/2 | השרת **וגם** המתג MLS-HZ-SRV עצמו |
+| `shutdown` בפורטים פנויים | סוגרת אותם | אף אחד לא יכול להתחבר לשקע פנוי |
+
+</div>
+
+<details dir="rtl" open><summary><b>📘 הסבר שאר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`show interfaces trunk` | אילו פורטים הם trunk, ואילו VLAN עוברים. |
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`exit` | רמה אחת אחורה, למשל מפורט להגדרות כלליות. השורה הבאה שייכת לרמה העליונה. |
+| ‎`interface fa0/2` | בוחרים פורט. כל מה שמתחת חל עליו, עד `exit`. |
+| ‎`switchport mode access` | הפורט שייך ל-VLAN אחד, למכשיר קצה אחד. |
+| ‎`switchport access vlan 52` | לאיזה VLAN הפורט שייך. |
+| ‎`switchport port-security` | **מפעיל** port security. בלי השורה הזו שלוש האחרות לא עושות כלום. |
+| ‎`switchport port-security mac-address sticky` | לומד את ה-MAC שמחובר עכשיו וזוכר אותו. |
+| ‎`switchport port-security violation shutdown` | מה עושים עם זר: מכבים את הפורט. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** צד אחד של כל trunk מוכן. הצד השני נמצא במתגי המחלקות.
+
+## משימה 4 — מתגי המחלקות
+**📖 איך הגענו לכאן.** המתג הראשי ומתג הגיבוי מדברים trunk. מתגי המחלקות עוד לא עונים.
+
+**🌐 הרשת עכשיו.** צד אחד של כל קישור הוא Trunk. מתגי המחלקות עדיין כמו שהיו:
+
+![1 המתג SW-HZ-MGMT, 2 המתג SW-HZ-SALES, 3 המתג MLS-HZ-SVC, 4 המתג SW-HZ-IT, 5 המתג MLS-HZ-SRV](images/step-map-m4.png)
+
+**❗ הבעיה.** ב-SW-HZ-SALES, ‏`show vlan brief`: הפורטים של המחשבים ב-VLAN 1, כלומר המחשבים לא נמצאים במחלקה שלהם.
+
+![עדיין כולם ב-VLAN 1](images/step-m4-before.png)
+
+ובעיה שנייה: כל אחד יכול לנתק מחשב ולחבר מחשב זר, או מתג.
+
+**🎯 מה רוצים עכשיו.** מסיימים את ה-trunk, שמים כל מחשב ב-VLAN של המחלקה שלו, ושומרים על השקע שלו.
+
+**💡 הפתרון.** קישורים למעלה = Trunk. פורטים של מחשבים = **access** ב-VLAN של המחלקה, עם PortFast (ירוק מיד), BPDU Guard (בלי מתג זר) ו-port security (בלי מחשב זר).
+
+**📋 מבצעים בפרויקט.** כל קבוצה לוקחת מתג אחד. רושמים: אילו פורטים הם קישורים למעלה, אילו למחשבים, איזה VLAN, ורק אז מגדירים.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+כל קבוצה מקבלת מתג.
+
+**SW-HZ-MGMT:**
+```
+configure terminal
+interface range fa0/3 , fa0/5
+switchport mode trunk
+exit
+interface fa0/1
+switchport mode access
+switchport access vlan 12
+spanning-tree portfast
+exit
+interface fa0/2
+switchport mode access
+switchport access vlan 12
+spanning-tree portfast
+spanning-tree bpduguard enable
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+interface range fa0/4 , fa0/6 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![המתג SW-HZ-MGMT, רגע לפני ה-shutdown האחרון](images/step-m4-mgmt.png)
+
+הפורט Fa0/1 שמור לחומת האש ASA (שיעור 5), בלי Port Security: יעברו בו כמה כתובות MAC.
+
+**SW-HZ-SALES:**
+```
+configure terminal
+interface range fa0/1 , fa0/4
+switchport mode trunk
+exit
+interface range fa0/2 - 3 , fa0/5
+switchport mode access
+switchport access vlan 22
+spanning-tree portfast
+spanning-tree bpduguard enable
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+interface range fa0/6 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![המתג SW-HZ-SALES](images/step-m4-sales.png)
+
+‏**MLS-HZ-SVC** (מתג 3560 — פקודה אחת נוספת!):
+```
+configure terminal
+interface range fa0/1 , fa0/4
+switchport trunk encapsulation dot1q
+switchport mode trunk
+exit
+interface range fa0/2 - 3
+switchport mode access
+switchport access vlan 32
+spanning-tree portfast
+spanning-tree bpduguard enable
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+interface range fa0/5 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![המתג MLS-HZ-SVC](images/step-m4-svc.png)
+
+**SW-HZ-IT:**
+```
+configure terminal
+interface range fa0/2 - 3
+switchport mode trunk
+exit
+interface fa0/1
+switchport mode access
+switchport access vlan 42
+spanning-tree portfast
+spanning-tree bpduguard enable
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+interface range fa0/4 - 24 , g0/1 - 2
+shutdown
+end
+```
+
+![המתג SW-HZ-IT](images/step-m4-it.png)
+
+‏**MLS-HZ-SRV** (מתג 3560):
+```
+configure terminal
+vtp mode transparent
+vlan 52
+name SERVERS
+exit
+interface range fa0/1 - 2
+switchport mode access
+switchport access vlan 52
+exit
+interface range fa0/3 - 24 , g0/1 - 2
+shutdown
+exit
+interface fa0/2
+spanning-tree portfast
+spanning-tree bpduguard enable
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+end
+```
+
+![תחילת ההגדרות ב-MLS-HZ-SRV](images/step-m4-srv.png)
+
+![סוף ההגדרות ב-MLS-HZ-SRV. האזהרה של PortFast היא רגילה](images/07-srv.png)
+
+🧠 הקישור SW-HZ-MAIN ↔ MLS-HZ-SRV הוא **access VLAN 52**: יש שם רק שרתים, ולכן ה-VTP לא עובר ויוצרים את
+VLAN 52 ידנית במצב transparent.
+
+✅ ב-SW-HZ-SALES: ‏`show vtp status` ו-`show vlan brief`. ה-VLAN-ים הגיעו, ו-Fa0/2, ‏Fa0/3, ‏Fa0/5 נמצאים ב-VLAN 22.
+
+![ה-VTP עבד](images/06-sales-vtp-vlan.png)
+
+✅ ב-SW-HZ-MAIN: ‏`show interfaces trunk`. (Fa0/5 ו-Fa0/6 יופיעו רק אחרי שמחברים את הנתבים.)
+
+![פורטי ה-Trunk](images/08-trunk.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`switchport mode access` | פורט למכשיר אחד | מחשב לא צריך לפתוח trunk |
+| ‎`switchport access vlan 22` | שמה את הפורט ב-VLAN 22 | זו המחלקה |
+| ‎`spanning-tree portfast` | ירוק מיד | מחשב לא יוצר לולאה |
+| ‎`spanning-tree bpduguard enable` | סוגרת את הפורט אם חיברו מתג | מגנה על PortFast |
+| ‎`switchport port-security` | מפעילה את ההגנה | **בלי השורה הזו, השורות שאחריה לא עושות כלום** |
+| `maximum 1` ו-`sticky` | ‏MAC אחד, שנלמד לבד | לא צריך להקליד כתובות MAC |
+| ‎`switchport trunk encapsulation dot1q` | בוחרת את סוג התג (רק ב-3560) | ‏3560 מכיר גם ISL, ו-2960 מכיר רק dot1q |
+
+</div>
+
+<details dir="rtl" open><summary><b>📘 הסבר שאר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`show vlan brief` | רשימת ה-VLAN והפורטים בכל אחד. פורטים של trunk לא מופיעים. |
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`interface range fa0/3 , fa0/5` | מגדיר כמה פורטים ביחד. שימו לב לרווחים סביב הפסיק והמקף. |
+| ‎`switchport mode trunk` | הפורט מעביר את **כל** ה-VLAN, עם תג. בין מתגים ובין מתג לנתב. |
+| ‎`exit` | רמה אחת אחורה, למשל מפורט להגדרות כלליות. השורה הבאה שייכת לרמה העליונה. |
+| ‎`interface fa0/1` | בוחרים פורט. כל מה שמתחת חל עליו, עד `exit`. |
+| ‎`switchport port-security maximum 1` | כמה כתובות MAC מותרות בפורט. |
+| ‎`switchport port-security mac-address sticky` | לומד את ה-MAC שמחובר עכשיו וזוכר אותו. |
+| ‎`switchport port-security violation shutdown` | מה עושים עם זר: מכבים את הפורט. |
+| ‎`shutdown` | מכבה את הפורט. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+| ‎`vtp mode transparent` | המתג הזה שומר רשימה משלו ולא לומד מ-VTP. מתאים למתג שצריך VLAN אחד בלבד. |
+| ‎`vlan 52` | יוצר את ה-VLAN עם המספר הזה. המספר הוא מה שנוסע בתג. |
+| ‎`name SERVERS` | שם ל-VLAN, בשביל בני אדם. המתג עובד עם המספר. |
+| ‎`show vtp status` | ‏domain, מצב ומספר גרסה. ה-domain חייב להיות זהה בכולם. |
+| ‎`show interfaces trunk` | אילו פורטים הם trunk, ואילו VLAN עוברים. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** עכשיו לכל מחלקה שתי דרכים למעלה. שתי דרכים הן לולאה. מי מחליט איזו עובדת?
+
+## משימה 5 — STP: אנחנו בוחרים מי ה-root
+**📖 איך הגענו לכאן.** לכל מתג מחלקה יש קישור לראשי וקישור לגיבוי.
+
+**🌐 הרשת עכשיו.** יש VLAN, ‏Trunk ומתג גיבוי. שתי דרכים לכל מחלקה = לולאה, ו-STP חוסם אחת מהן:
+
+![1 המתג SW-HZ-MAIN, 2 המתג SW-HZ-BKP, 3 המתג SW-HZ-SALES](images/step-map-m5.png)
+
+**❗ הבעיה.** אף פעם לא בחרנו root bridge, ולכן STP בחר לבד. ב-SW-HZ-MAIN, ‏`show spanning-tree vlan 22`:
+
+![המתג SW-HZ-MAIN הוא לא ה-root. ה-root נמצא מאחורי Fa0/8](images/step-m5-before-main.png)
+
+הפורט Fa0/8 מוביל אל **SW-HZ-IT**: המתג של מחלקת IT הוא המרכז של כל הסניף! כל העדיפויות הן 32768, ולכן ניצח ה-MAC הנמוך, במקרה. ל-SW-HZ-SALES זה עולה 38 להגיע אליו:
+
+![העלות מ-SW-HZ-SALES היא 38](images/step-m5-before-sales.png)
+
+**🎯 מה רוצים עכשיו.** בוחרים בעצמנו את המנהל (root bridge), ומגינים על הבחירה.
+
+**💡 הפתרון.** אנחנו מחליטים: המתג הראשי = `root primary`, הגיבוי = `root secondary`, ו-**Root Guard** כדי שאף מתג מחלקה לא ייקח את התפקיד (תיאוריה 1.4).
+
+**📋 מבצעים בפרויקט.** הופכים את SW-HZ-MAIN ל-root של VLAN 1,12,22,32,42,52, את SW-HZ-BKP לשני, ו-Root Guard בפורטים למחלקות. איזה פורט של SW-HZ-MAIN **לא** צריך לקבל Root Guard?
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+**SW-HZ-MAIN:**
+```
+configure terminal
+spanning-tree mode pvst
+spanning-tree vlan 1,12,22,32,42,52 root primary
+interface range fa0/1 , fa0/3 , fa0/4 , fa0/8
+spanning-tree guard root
+end
+```
+
+![המתג SW-HZ-MAIN](images/step-m5-main.png)
+
+**SW-HZ-BKP:**
+```
+configure terminal
+spanning-tree vlan 1,12,22,32,42,52 root secondary
+end
+```
+
+![המתג SW-HZ-BKP](images/step-m5-bkp.png)
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה | למה |
+|---|---|---|
+| ‎`root primary` | עדיפות 24576 | המתג הראשי הוא המרכז, והמסלול הקצר עובר דרכו |
+| ‎`root secondary` | עדיפות 28672 | מחליף אם המתג הראשי נופל |
+| ‎`spanning-tree guard root` | ‎‏Root Guard | לא ב-Fa0/7: למתג הגיבוי **מותר** להיות root |
+
+</div>
+
+⚠️ חייבים לכלול את **VLAN 1**. בבדיקה שלנו שכחנו אותו, ו-Root Guard חסם את הפורטים במצב
+`root-inconsistent`, כי מתג אחר היה ה-root של VLAN 1.
+
+✅ אחרי כ-50 שניות, `show spanning-tree vlan 22` ב-SW-HZ-MAIN: ‏**This bridge is the root**.
+העדיפות 24598 היא 24576 ועוד 22 (מספר ה-VLAN).
+
+![ה-Root bridge](images/09-stp-root.png)
+
+✅ ב-SW-HZ-SALES: הפורט Fa0/1 (לגיבוי) במצב **Altn BLK** — הוא מחכה — ו-Fa0/4 במצב **Root FWD**.
+
+![הפורט החסום](images/10-stp-blocked.png)
+
+<details dir="rtl" open><summary><b>📘 הסבר שאר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`show spanning-tree vlan 22` | מי ה-root, ומצב כל פורט: FWD עובד, BLK ממתין. |
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`spanning-tree mode pvst` | ‏PVST: עץ נפרד לכל VLAN. |
+| ‎`spanning-tree vlan 1,12,22,32,42,52 root primary` | הופך את המתג הזה ל-root של ה-VLAN האלה (עדיפות 24576; הנמוך מנצח). |
+| ‎`interface range fa0/1 , fa0/3 , fa0/4 , fa0/8` | מגדיר כמה פורטים ביחד. שימו לב לרווחים סביב הפסיק והמקף. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+| ‎`spanning-tree vlan 1,12,22,32,42,52 root secondary` | הסגן (עדיפות 28672): root רק אם הראשון נופל. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** הכול מוגדר. הגיע הזמן להוכיח שהקירות עומדים.
+
+## משימה 6 — בדיקה
+**📖 איך הגענו לכאן.** ה-VLAN, ה-trunk, הפורטים וה-STP מוכנים.
+
+**🌐 הרשת עכשיו.** חמש רשתות נפרדות על אותם כבלים. בודקים מ-PC-SALES-1 (1) אל PC-SALES-2 (2) ואל PC-MGMT-1 (3):
+
+![1 המחשב PC-SALES-1, 2 המחשב PC-SALES-2, 3 המחשב PC-MGMT-1](images/step-map-m6.png)
+
+**❗ הבעיה.** איך יודעים שה-VLAN-ים באמת מפרידים ולא רק מופיעים בטבלה?
+
+**🎯 מה רוצים עכשיו.** הוכחה לשני הכיוונים: אותה מחלקה **יכולה**, מחלקה אחרת **לא**.
+
+**💡 הפתרון.** שני ping: אחד ש**חייב** לעבוד (אותו VLAN) ואחד ש**חייב** להיכשל (VLAN אחר). בדיקה שבודקת רק הצלחה מוכיחה חצי.
+
+**📋 מבצעים בפרויקט.** לפני שלוחצים Enter, כותבים ניחוש לכל ping ולמה.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+‏**PC-SALES-1** ‏←‏ ‏Command Prompt:
+```
+ping 192.168.22.22
+ping 192.168.12.21
+```
+![אותו VLAN עובד, VLAN אחר לא](images/11-ping.png)
+
+🧠 ה-ping השני **חייב** להיכשל: בין VLAN-ים צריך נתב. זה שיעור 3.
+
+<details dir="rtl" open><summary><b>📘 הסבר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`ping 192.168.22.22` | שולח 4 הודעות בדיקה. תשובות = הדרך עובדת ב**שני** הכיוונים. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** האנשים שלנו לא עוברים. ומה עם מי שנכנס למשרד עם מחשב נייד?
+
+## משימה 7 — התקפה: מישהו זר מתחבר
+**📖 איך הגענו לכאן.** הרשת מופרדת, וכל פורט זוכר את כתובת ה-MAC של המחשב שלו.
+
+**🌐 הרשת עכשיו.** פורטים מוגנים. אנחנו משחקים את התוקף ב-PC-SALES-3 (2) ואת מנהל הרשת ב-SW-HZ-SALES (1):
+
+![1 המתג SW-HZ-SALES, 2 המחשב PC-SALES-3](images/step-map-m7.png)
+
+**❗ הבעיה.** אדם זר נכנס למשרד, מנתק את PC-SALES-3 ומחבר מחשב נייד לכבל שלו. בלי port security המחשב הנייד נמצא מיד ב-VLAN 22.
+
+**🎯 מה רוצים עכשיו.** תוקפים את עצמנו: מנתקים מחשב, מחברים זר, ורואים את הפורט נכבה. אחר כך מתקנים.
+
+**💡 הפתרון.** הפורט זוכר את ה-MAC של המחשב הראשון (`sticky`) וסוגר את עצמו מול כל MAC אחר (`violation shutdown`).
+
+**📋 מבצעים בפרויקט.** משנים את ה-MAC של PC-SALES-3, מראים שהוא מנותק, מוצאים את ההוכחה במתג ומחזירים את הפורט.
+
+### 🖱 הפתרון: על מה לוחצים ומה כותבים
+1. ב-SW-HZ-SALES: ‏`show port-security interface fa0/2`. המצב **Secure-up**, כתובת sticky אחת.
+
+   ![ה-Port Security עובד](images/12-port-security.png)
+2. מ-**PC-SALES-3** עושים ping ל-192.168.22.21, כדי שהמתג ילמד את ה-MAC שלו.
+
+   ![המחשב האמיתי PC-SALES-3 עובד](images/step-m7-ping.png)
+
+3. ‏PC-SALES-3 ‏←‏ ‏**Config** (1) ‏←‏ ‏**FastEthernet0** (2) ‏←‏ ‏MAC Address (3): רושמים בצד את הכתובת, ואז משנים את ארבע הספרות האחרונות ל-‎`9999` ולוחצים Tab. עכשיו הוא "זר".
+
+   ![שינוי ה-MAC](images/13-mac-change.png)
+4. שוב ping: נכשל.
+
+   ![אין חיבור](images/15-violation-pc.png)
+5. ב-SW-HZ-SALES: ‏`show port-security interface fa0/5` ואחריו `show interfaces status`. המצב **Secure-shutdown**, מונה ההפרות 1, והפורט **err-disabled**.
+
+   ![המתג תפס את הזר](images/14-violation.png)
+6. משחזרים: קודם מחזירים למחשב את **ה-MAC המקורי**, ואז ב-SW-HZ-SALES:
+   ```
+   configure terminal
+   interface fa0/5
+   shutdown
+   no shutdown
+   end
+   ```
+   ![שחזור הפורט](images/16-recover.png)
+
+   ![ה-ping חזר](images/17-recover-ping.png)
+7. שומרים בכל **שבעת** המתגים: `copy running-config startup-config`. אחר כך File ‏←‏ Save.
+
+<details dir="rtl" open><summary><b>📘 הסבר הפקודות של המשימה</b></summary>
+
+<div dir="rtl">
+
+| פקודה | מה היא עושה, ולמה היא כאן |
+|---|---|
+| ‎`show port-security interface fa0/2` | מצב הפורט, כמה הפרות, וה-MAC האחרון. |
+| ‎`show interfaces status` | כל פורט: מחובר או לא, וה-VLAN שלו. |
+| ‎`configure terminal` | פותח מצב הגדרות (‎`(config)#`‎). רק מכאן אפשר לשנות. |
+| ‎`interface fa0/5` | בוחרים פורט. כל מה שמתחת חל עליו, עד `exit`. |
+| ‎`shutdown` | מכבה את הפורט. |
+| ‎`no shutdown` | מדליק את הפורט. פורטים של נתב כבויים כברירת מחדל. |
+| ‎`end` | יוצאים ישר ל-‎`#`‎, מכל עומק. |
+
+</div>
+
+</details>
+
+**⏭ מה הלאה.** הקירות חזקים, חזקים מדי: אף אחד לא עובר, גם כשמותר. זה שיעור 3.
+
+## 👀 רואים את זה קורה — גבול ה-VLAN, התג ו-STP
+על מצב Simulation הסברנו ב[שיעור 1](../lesson-01/). מסננים: **ARP** ו-**ICMP**. במחשב PC-SALES-1:
+```
+arp -d
+ping 192.168.22.22
+```
+**1. איפה השידור נעצר?** שלושה צעדים קדימה:
+
+![השידור הגיע למתגים, אבל לא למחשבים של VLAN אחר](images/sim-vlan.png)
+
+❓ המעטפה הגיעה ל-SW-HZ-MGMT ול-SW-HZ-IT. למה היא לא המשיכה ל-PC-MGMT-1 ול-PC-IT-1? ולמה היא לא הגיעה ל-MLS-HZ-SRV?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+ה-trunk נושא את VLAN 22 לכל מתג, אבל PC-MGMT-1 נמצא בפורט access של VLAN 12 ו-PC-IT-1 בפורט של VLAN 42, ולכן
+המסגרת לא יוצאת שם. הקישור ל-MLS-HZ-SRV הוא access VLAN 52, ולכן VLAN 22 בכלל לא נכנס אליו.
+
+</details>
+
+**2. התג.** פותחים את המעטפה ב-SW-HZ-MGMT ‏←‏ **Inbound PDU Details**:
+
+![TPID 0x8100, TCI 0x0016](images/sim-tag.png)
+
+<div dir="rtl">
+
+| שדה | ערך | משמעות |
+|---|---|---|
+| ‎TPID | ‎0x8100 | "יש לי תג VLAN" ‏(802.1Q) |
+| ‎TCI | ‎0x0016 | המספר 16 בהקסה = 1 × 16 + 6 = **22**, כלומר VLAN 22 |
+
+</div>
+
+עכשיו פותחים את המסגרת הראשונה ב-SW-HZ-SALES, זו שבאה מ-PC-SALES-1: אין תג. המחשב לא יודע כלום על VLAN.
+
+**3. ככה STP עובד.** עוד צעד אחד: מגיעים עותקים גם מ-SW-HZ-BKP. פותחים את המעטפה שהגיעה ל-MLS-HZ-SVC מ-SW-HZ-BKP
+ולוחצים **Next Layer**:
+
+![הפורט Fa0/4 חסום על ידי STP והמסגרת נזרקת](images/sim-stp.png)
+
+תוכנת Packet Tracer אומרת את זה: **blocked by STP, the device drops the frame**. בלי החסימה המסגרת הייתה מסתובבת לנצח.
+
+✏️ **נסו:** `ping 192.168.12.21`. באילו מחשבים מופיעה מעטפה?
+
+<details dir="rtl"><summary>תשובה</summary>
+
+רק ב-PC-SALES-1, ושם היא מתה. הכתובת ברשת אחרת ולמחשב עוד אין שער, ולכן שום דבר לא יוצא.
+
+</details>
+
+## 🧯 לא עובד?
+
+<div dir="rtl">
+
+| מה רואים | כנראה | מה עושים |
+|---|---|---|
+| אין VLAN-ים ב-client | אין trunk, או דומיין/סיסמה שונים | ‎`show interfaces trunk`, `show vtp status`, `show vtp password` |
+| ‎`Command rejected: ... trunk encapsulation is "Auto"`‎ | מתג 3560 | קודם `switchport trunk encapsulation dot1q` |
+| הפורט ב-VLAN 1 | שכחתם `switchport access vlan` | ‎`show vlan brief` |
+| `BKN*`‎ או `root-inconsistent` | חסר VLAN 1 ב-`root primary` | מוסיפים ומחכים 50 שניות |
+| ‏err-disabled חוזר | הזר עדיין מחובר | מחזירים את ה-MAC המקורי **לפני** `shutdown` ו-`no shutdown` |
+
+</div>
+
+---
+
+## 🔎 מצאו את הטעות — מפרויקטים אמיתיים
+1. הקישורים מתג ראשי ↔ מחלקות היו במצב **access**.
+2. מתג הגיבוי לא הוגדר בכלל: הכול ב-VLAN 1.
+3. פורטים 9–24 במתג הראשי נשארו **trunk**, למרות שכלום לא מחובר אליהם.
+4. ל-VLAN 42 של **IT** קראו "servers".
+
+<details dir="rtl"><summary>תשובה</summary>
+
+1. קישור access מעביר VLAN אחד בלבד, ו-VTP לא עובר דרכו. התיקון: trunk.
+2. אם המתג הראשי נופל למחלקות אין מסלול: זה גיבוי רק בציור. התיקון: trunk, ‏VTP client ו-root secondary.
+3. מי שמתחבר שם מקבל את **כל** ה-VLAN-ים. התיקון: `shutdown`.
+4. תיעוד שגוי גורם לטעויות. השם חייב להתאים לתפקיד.
+
+</details>
+
+## 🏋 תרגילים
+1. מפילים את המסלול הראשי: ב-SW-HZ-MAIN ‏`interface fa0/3` ואז `shutdown`. ב-SW-HZ-SALES מריצים `show spanning-tree vlan 22` כל 10 שניות. כמה זמן עד ש-Fa0/1 במצב FWD? מה ה-cost החדש? ציירו את המסלול החדש ועשו `no shutdown`.
+2. נסו ליצור `vlan 64` ב-SW-HZ-SALES. איזו הודעה קיבלתם, ולמה?
+3. הגדירו `switchport port-security violation restrict` ב-Fa0/5 ותקפו שוב. מה ההבדל מ-`shutdown`? החזירו ל-`shutdown`.
+
+<details dir="rtl"><summary>תשובות (בדקנו אותן)</summary>
+
+1. כ-30–35 שניות: LIS ‏(15), אחר כך LRN ‏(15), ואז FWD. הפורט Fa0/1 הוא עכשיו ה-Root port וה-cost הוא **38** ‏(19 + 19). המסלול: SW-HZ-SALES, אחר כך SW-HZ-BKP, אחר כך SW-HZ-MAIN.
+
+   ![מסלול הגיבוי מעביר, cost 38](images/18-stp-backup.png)
+2. ‏`VTP VLAN configuration not allowed when device is in CLIENT mode.`‎ רק ה-server יוצר VLAN-ים.
+3. ה-ping של הזר נכשל, אבל הפורט נשאר **connected** ‏(Secure-up), המונה עולה ומופיעה הודעה. עם `shutdown` הפורט נסגר ומנהל הרשת צריך לפתוח אותו. לא לשכוח להחזיר את ה-MAC של המחשב.
+
+   ![במצב restrict הפורט נשאר פעיל, 5 הפרות](images/19-restrict.png)
+
+</details>
+
+## 🎓 להסביר לבוחן
+- מה ההבדל בין access ל-trunk? מה יש בתג 802.1Q?
+- מה קורה בלולאה בלי STP? איך נבחר ה-root bridge?
+- מה ההבדל בין PortFast, ‏BPDU Guard ו-Root Guard?
+- למה VTP מסוכן, ולמה MLS-HZ-SRV במצב transparent?
+- מה זה sticky MAC ו-err-disabled, ואיך משחזרים?
+
+<details dir="rtl"><summary>תשובות לדוגמה</summary>
+
+1. ‏Access = ‏VLAN אחד, בלי תג, למכשיר קצה. ‏Trunk = הרבה VLAN-ים, עם תג 802.1Q של 4 בייטים שיש בו את מספר ה-VLAN ‏(12 ביטים).
+2. הודעות broadcast מתרבות, טבלת ה-MAC קופצת בין פורטים והרשת קורסת. ה-root הוא ה-bridge ID הנמוך ביותר (עדיפות, ואחר כך MAC).
+3. ‏PortFast מדלג על ההמתנה בפורטים של מחשבים. ‏BPDU Guard סוגר פורט של מחשב ששומע מתג. ‏Root Guard חוסם פורט שממנו מישהו מנסה להיות root.
+4. מתג עם revision גבוה יותר דורס את רשימת ה-VLAN. המתג MLS-HZ-SRV מחובר בקישור access, ה-VTP לא מגיע אליו, ולכן יש לו רשימה משלו.
+5. ‏Sticky = המתג לומד את ה-MAC ורושם אותו בהגדרות. ‏err-disabled = פורט שנסגר על ידי הגנה. שחזור: מתקנים את הסיבה, `shutdown`, ‏`no shutdown`.
+
+</details>
+
+## ✏️ מבחן יציאה (3 דקות)
+1. איזה מצב VTP יוצר VLAN-ים ומעביר אותם הלאה?
+2. איזה מתג יהיה root: עדיפות 28672 או 24576?
+3. לפורט עם BPDU Guard חיברו מתג במקום מחשב. מה קורה?
+4. כתבו `switchport port-security maximum 1` ו-sticky, ושום דבר לא מוגן. איזו פקודה חסרה?
+5. למה ping מ-VLAN 22 ל-VLAN 12 נכשל עכשיו?
+
+<details dir="rtl"><summary>תשובות</summary>
+
+1. ‏Server.
+2. ‏24576.
+3. הפורט עובר ל-err-disabled.
+4. ‏`switchport port-security` עצמה.
+5. עדיין אין נתב.
+
+</details>
+
+## ⏭ מה עשינו, ומה הלאה
+**מה עשינו.** בניין אחד הפך לחמש רשתות נפרדות. יש דרך גיבוי, וזר שמתחבר מכבה את הפורט.
+
+**מה עדיין חסר.** בנינו קירות כל כך טובים ש**אף אחד לא עובר**. המכירות לא יכולות לקבל קובץ מ-IT, אף אחד לא מגיע לשרת, וכל כתובת מוקלדת ביד.
+
+**מה הלאה.** ב[שיעור 3](../lesson-03/) פותחים **דלתות בקירות**: שני נתבים, ושרת שמשרת את כולם.
+
+## 🛠 ספר הפרויקט
+- [ ] טבלת ה-VLAN: מספר, שם, רשת, מתג.
+- [ ] טבלת פורטים לכל מתג.
+- [ ] פסקה על כל אחד: VLAN, ‏trunk, ‏VTP, ‏STP, ‏port security. איזו בעיה הוא פתר **כאן**?
+- [ ] צילומי מסך: `show vlan brief`, ‏`show vtp status`, ‏`show interfaces trunk`, ‏`show spanning-tree`, וההתקפה.
+- [ ] שומרים את הקובץ בשם חדש לפני שיעור 3, כדי שתמיד אפשר יהיה לחזור.
